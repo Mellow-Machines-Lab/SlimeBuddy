@@ -141,16 +141,20 @@ class Engine {
     if (grab) return;
     const F push[3] = {lean, squash, forward};
     for (int i = 0; i < 3; ++i) pull[i].v = clamp(pull[i].v + push[i], -kGrabVelocity, kGrabVelocity);
-    if (dazeMs) dazeLids_ = lids, dazeEnd_ = elapsedMs + dazeMs;
+    if (dazeMs) dazeLids_ = lids, dazeEnd_ = elapsedMs + dazeMs, dazed_ = true;
   }
+  // The time left of it measured across the clock's wrap (a uint32_t of
+  // milliseconds, which wraps after 49.7 days), and forgotten once it's
+  // over (step), so an old one never comes back when the clock passes it
+  // again.
   F daze() const {
-    if (!dazeEnd_ || elapsedMs >= dazeEnd_) return 0;
-    const uint32_t left = dazeEnd_ - elapsedMs;
-    return left >= kDazeOpenMs ? dazeLids_ : dazeLids_ * int(left) / int(kDazeOpenMs);
+    const int32_t left = int32_t(dazeEnd_ - elapsedMs);
+    if (!dazed_ || left <= 0) return 0;
+    return left >= int32_t(kDazeOpenMs) ? dazeLids_ : dazeLids_ * int(left) / int(kDazeOpenMs);
   }
 
  private:
-  bool stamped_ = false;
+  bool stamped_ = false, dazed_ = false;
   F dazeLids_ = 0;
   uint32_t dazeEnd_ = 0;
   uint32_t previous_ = 0;

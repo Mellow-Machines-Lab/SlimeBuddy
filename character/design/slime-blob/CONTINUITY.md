@@ -222,9 +222,20 @@ The strip's working and idle counts each sit in a chip outlined as the
 drawer's rows' chips are, so the drawer says what they mean: the working
 count's bright, by a spinner that turns once a second, and the idle
 count's dim, by a sleeper's z. The lane is drawn again for the spinner
-only while sessions work.
+only while sessions work. The counts never run past the strip's
+margin: the names before them are cut to what they leave. While
+something needs you, the strip is the only place that says who's
+asking (the needs-you card says only to continue on your Mac), so the
+name comes first: the agent and its thread (or project) whole, then the
+thread alone, each with the working and idle chips while there's room
+for them (the idle one goes first), and else the thread cut to the room
+there is with no chips; the helpers and the to-do list wait until
+nothing needs you. A finished turn with no thread names its agent
+alone, with no dot after it.
 
-Every other prop (the alert, result and start cards, the listening cue
+Every other prop (the alert, result and start cards, the listening cue,
+a mic in a breathing ring with LISTENING beside it in the large font
+to read at arm's length, in a row over the head,
 and the touch marks) has a **200 ms visibility ramp** for
 entry and exit (`gel/scenes.h` `Ramp`): a cubic Hermite from its current
 value and slope to the target, so from rest it is a smoothstep and a
@@ -826,9 +837,11 @@ off it, and now and then lifts it to its mouth for a sip
 (`OutfitLayer::kSipMs`). At night a
 crescent moon and twinkling stars sit behind everything, and in the
 morning the sun up in the sky on its left where the moon is, glowing,
-its rays turning and breathing, drawn last of all
-onto only the background's black, so the body, its outfit, the stream's
-words and the sign stay in front. Each sits on anchors the painter takes from
+its rays turning and breathing, drawn after the body and its props onto
+only the background's black, so the body and its outfit stay in front,
+and before the stream's words, which fall behind it as they do behind
+the body (drawn after them, the sky left their dim pixels as holes in
+the moon), and the sign, which stays in front. Each sits on anchors the painter takes from
 the very vertices it projects for the body (the rig's `Anchors`, both
 faces' one type: the dome's apex, ring 6's sides and front for a brim,
 ring 15's front for the hands) and the face art's eye centres, so a layer
@@ -845,7 +858,10 @@ nightcap in, while the sky and the pyjamas fade in at once), each on its own, so
 asleep on a winter night brings the Zs while the nightcap, the pyjamas
 and the snow stay. The
 sign fades out over 200 ms once it's down, at the opacity Behaviour
-gives it. The layers read the engine and never change it. What's worn
+gives it. It's held at the body's front, but a lean or a finish carrying
+the body sideways carries it only as far as keeps it whole on the
+panel, its hands `SignLayer::kEdge` in from the sides and clear of the
+rounded corners, so the longest sign still reads. The layers read the engine and never change it. What's worn
 is kept drawn and blended again each frame, moved to the sixteenth of a
 pixel with the anchor it rides (`OutfitLayer::kSlack`), so a hat glides
 with the body rather than stepping a pixel at a time; the Zs, drawn with
@@ -886,7 +902,9 @@ background's black only, so the body, its props and what it wears cover
 them, and a word hidden behind it costs nothing to draw, clear or push.
 On the desk, while the Mac sends lanes: the to-do list's progress along
 the monitor's foot, the turn's clock in its corner from the first
-minute (amber from `tier4`), and, in the working look with no
+minute, in minutes and seconds ("12:05") and from the first hour in
+hours and minutes ("1h45", at most "99h59"; `deskClock`), amber from
+`tier4`, and, in the working look with no
 call for 20 s, a thought cloud. When the agents stop, the words on
 screen linger 1.5 s (`Stream::kEndMs`), falling where they dropped, and a
 word may still come forward in that time, as a turn's end does to gather

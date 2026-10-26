@@ -145,7 +145,8 @@ ramps and springs can, and no jolt at an event. By file:
   (`test_the_working_spinner_turns_once_a_second`), the lane clear of the AMOLED's
   rounded corners (`test_the_lane_clears_the_rounded_corners`), the layers on the body's
   anchors, coming and going through the rig's layer stack, each at its
-  opacity, the sign fading out at its own, drawing by coverage (a
+  opacity, the sign fading out at its own and, carried far to either
+  side, held `SignLayer::kEdge` in from the panel's, drawing by coverage (a
   polygon's exact area in each pixel, so a lid 3/16 of a pixel thin never
   flickers, `test_polygon_edges_move_a_sixteenth_at_a_time`; arts of
   different shapes cross-fading with nothing showing through,
@@ -159,7 +160,11 @@ ramps and springs can, and no jolt at an event. By file:
   allocating nothing, and the work stream
   (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
   lanes' columns behind the body, a hit's knock and daze and its lids
-  opening after, every gag drawn off the heap), and the agents' drawer
+  opening after, every gag drawn off the heap), a hit's daze ending and
+  forgotten across the engine clock's wrap
+  (`test_a_daze_ends_across_the_clock_wrap`), the desk's turn clock in
+  hours and minutes from the hour, never wrapping
+  (`test_the_desk_clock_shows_hours_from_the_hour`), and the agents' drawer
   (`test_drawer.cpp`: a pull up the strip opening it and what the Mac
   hears, a swipe up the face staying the face's, a short pull springing
   back, a tap on a row picking it, shutting itself after 15 s and saying
@@ -175,7 +180,9 @@ ramps and springs can, and no jolt at an event. By file:
   `tests/scenarios-gel/` against its `tests/golden-gel/`: every canonical
   mood and factual state, failure and neutral-finish frames, the host lane
   at the panel's size (`lane.jsonl`: the working count in its chip, a long name that
-  needs you, the finish's marks and the bubble in each of its fonts), the
+  needs you, cut with no chips, a short one whole with them and no helpers
+  or to-do list, the finish's marks, one with no thread, and the bubble in
+  each of its fonts), the
   comedy (`comedy.jsonl`: the yawn, the sneeze's wind-up, the doze, the
   long yawn, the zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT's hand-off, a stroke, a boop

@@ -21,6 +21,11 @@ void paintStreamBehind(Surface& surface, const Stream& stream, uint32_t t);
 // monitor's foot, the turn's clock in its corner (amber from tier4),
 // and a thought cloud while no call has come for Stream::kThinkMs.
 void paintStreamDesk(Surface& surface, const Stream& stream, const Engine& e, const Strip& strip, uint32_t t);
+// The turn's clock `secs` in: minutes and seconds ("12:05"), then from
+// the first hour hours and minutes ("1h45"), in as few glyphs, at most
+// "99h59"; empty before the first minute. `out` holds kDeskClockBytes.
+constexpr size_t kDeskClockBytes = 8;
+void deskClock(uint32_t secs, char* out);
 // The word forward and what it does, over the body and its props, aimed at
 // `at`, the body's anchors this frame.
 void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors& at, const Engine& e, uint32_t t);

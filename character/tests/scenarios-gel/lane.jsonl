@@ -61,3 +61,17 @@
 {"t":"state","base":"working","mood":"happy","busy":2,"helpers":2,"idle":1,"todo":{"done":3,"total":7},"vol":0}
 {"clock":10000}
 {"shot":"working-todo"}
+// While something needs you, who's asking comes first: a short name whole
+// with the working and idle chips after it, and no helpers or to-do list.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"happy","busy":2,"helpers":3,"idle":1,"todo":{"done":3,"total":7},"vol":0,"attn":{"agent":"codex","project":"landing","name":"fix-nav","id":8}}
+{"clock":1504}
+{"shot":"needs-you-short-name"}
+// A finish whose turn has no thread: the agent alone, with no dot after it.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"happy","busy":1,"vol":0}
+{"t":"do","id":14,"name":"task_complete","args":{"outcome":"success","who":{"agent":"claude"}}}
+{"clock":504}
+{"shot":"finish-no-thread"}

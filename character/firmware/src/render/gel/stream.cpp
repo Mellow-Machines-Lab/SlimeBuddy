@@ -310,6 +310,18 @@ void paintStreamBehind(Surface& surface, const Stream& stream, uint32_t t) {
   }
 }
 
+void deskClock(uint32_t secs, char* out) {
+  const unsigned mins = unsigned(secs / 60);
+  if (mins == 0)
+    out[0] = 0;
+  else if (mins < 60)
+    std::snprintf(out, kDeskClockBytes, "%u:%02u", mins, unsigned(secs % 60));
+  else if (mins < 100 * 60)
+    std::snprintf(out, kDeskClockBytes, "%uh%02u", mins / 60, mins % 60);
+  else
+    std::snprintf(out, kDeskClockBytes, "99h59");
+}
+
 void paintStreamDesk(Surface& surface, const Stream& stream, const Engine& e, const Strip& strip, uint32_t t) {
   // Only while the Mac plays the stream: it sends a lane for each agent at
   // work.
@@ -340,10 +352,9 @@ void paintStreamDesk(Surface& surface, const Stream& stream, const Engine& e, co
     r.round(m.x + 6, m.y + m.h - 6, span, 3, 1, rgb565(30, 60, 75));
     if (done > 0) r.round(m.x + 6, m.y + m.h - 6, done, 3, 1, kPassInk);
   }
-  const uint32_t secs = (t - stream.since) / 1000;
-  if (secs >= 60) {
-    char clock[8];
-    std::snprintf(clock, sizeof(clock), "%u:%02u", unsigned(secs / 60 % 100), unsigned(secs % 60));
+  char clock[kDeskClockBytes];
+  deskClock((t - stream.since) / 1000, clock);
+  if (clock[0]) {
     const uint16_t ink = hasTag(e.scenes.when, "tier4") ? rgb565(239, 189, 103) : rgb565(110, 160, 180);
     r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
     r.text(clock, m.x + m.w - glyphCount(clock) * kSmall.w / 2 - 4, m.y + 10, ink, kSmall);

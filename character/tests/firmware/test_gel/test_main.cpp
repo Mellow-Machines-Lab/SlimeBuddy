@@ -2105,6 +2105,35 @@ static void test_the_layers_come_and_go_through_the_stack() {
   TEST_ASSERT_TRUE(up > 10000);
   TEST_ASSERT_INT_WITHIN(up / 10, up / 2, sign(500));
   TEST_ASSERT_EQUAL_INT(0, sign(0));
+  // The longest sign, its hands carried far to either side, stays
+  // SignLayer::kEdge in from the panel's sides, hands and all; one that
+  // would have stayed on it is held where its hands are.
+  const char* longest = "Eighteen glyphs ok";
+  TEST_ASSERT_EQUAL_INT(18, glyphCount(longest));
+  for (int side : {-1, 1}) {
+    rig::Anchors carried = at;
+    carried.handF.x = at.handF.x + side * 200 * 16;
+    std::fill(px.begin(), px.end(), 0);
+    paintSign(s, {longest, 1000, 1000}, carried);
+    int x0 = s.width, x1 = -1;
+    for (int y = 0; y < s.height; ++y)
+      for (int x = 0; x < s.width; ++x)
+        if (px[size_t(y) * s.width + x]) x0 = std::min(x0, x), x1 = std::max(x1, x);
+    TEST_ASSERT_TRUE(x1 >= 0);
+    TEST_ASSERT_TRUE(x0 >= SignLayer::kEdge);
+    TEST_ASSERT_TRUE(x1 <= s.width - 1 - SignLayer::kEdge);
+    TEST_ASSERT_TRUE(side < 0 ? x0 <= SignLayer::kEdge + 1 : x1 >= s.width - 2 - SignLayer::kEdge);
+  }
+  rig::Anchors nudged = at;
+  nudged.handF.x = at.handF.x + 20 * 16;
+  std::fill(px.begin(), px.end(), 0);
+  paintSign(s, {"bye bye code", 1000, 1000}, nudged);
+  const std::vector<uint16_t> moved(px);
+  std::fill(px.begin(), px.end(), 0);
+  paintSign(s, {"bye bye code", 1000, 1000}, at);
+  for (int y = 0; y < s.height; ++y)
+    for (int x = 0; x + 20 < s.width; ++x)
+      TEST_ASSERT_EQUAL_HEX16(px[size_t(y) * s.width + x], moved[size_t(y) * s.width + x + 20]);
 }
 
 // The pyjamas come with the nightcap, and with no other hat, but while it
@@ -3157,10 +3186,51 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
 
+// A hit's daze across the engine clock's wrap (a uint32_t of milliseconds,
+// 49.7 days): it lasts its time, and once over it's forgotten, so the
+// clock coming round past its end again leaves the eyes open.
+static void test_a_daze_ends_across_the_clock_wrap() {
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 480; t += 16) e->step(t);
+  e->elapsedMs = 0xFFFFFFFFu - 400;
+  e->jolt(0, 0, 0, q(.75), 900);
+  TEST_ASSERT_TRUE(e->daze() >= q(.75));
+  uint32_t t = 496;
+  for (; e->elapsedMs > 1000; t += 16) e->step(t);  // past the wrap, 400 ms in
+  TEST_ASSERT_TRUE(e->elapsedMs < 100);
+  TEST_ASSERT_TRUE(e->daze() >= q(.75));  // still dazed, until the last kDazeOpenMs of its 0.9 s
+  for (const uint32_t end = t + 600; t <= end; t += 16) e->step(t);
+  TEST_ASSERT_TRUE(e->daze() == F(0));  // and open after it
+  // The clock round again, before where the daze ended: still open.
+  e->elapsedMs = 100;
+  TEST_ASSERT_TRUE(e->daze() == F(0));
+  e->step(t);
+  TEST_ASSERT_TRUE(e->daze() == F(0));
+}
+
+// The desk's turn clock: nothing in the first minute, minutes and seconds
+// to the hour, then hours and minutes, never wrapping (it once showed
+// "5:00" after 1 h 45 m).
+static void test_the_desk_clock_shows_hours_from_the_hour() {
+  char clock[kDeskClockBytes];
+  const struct {
+    uint32_t secs;
+    const char* shows;
+  } kClocks[] = {{0, ""},           {59, ""},          {60, "1:00"},         {3599, "59:59"},
+                 {3600, "1h00"},     {6300, "1h45"},    {359999, "99h59"}, {360000, "99h59"},
+                 {0xFFFFFFFFu, "99h59"}};
+  for (const auto& c : kClocks) {
+    deskClock(c.secs, clock);
+    TEST_ASSERT_EQUAL_STRING(c.shows, clock);
+  }
+}
+
 int main() {
   UNITY_BEGIN();
   RUN_TEST(test_fixed_math_and_motion);
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
+  RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
+  RUN_TEST(test_the_desk_clock_shows_hours_from_the_hour);
   RUN_TEST(test_software_clock_matches_binary64);
   RUN_TEST(test_a_divisor_divides_exactly);
   RUN_TEST(test_all_expressions_draw_inside_native_surface);

@@ -63,6 +63,11 @@ struct SignLayer {
   static constexpr int kPad = 20;                 // the words from the card's sides, clear of the hands
   static constexpr int kGap = 4;                  // the card's bottom over the lane, at the lowest
   static constexpr int kRisePx = 90, kBobPx = 3;  // its signLift
+  static constexpr int kHand = 12;                // the radius of the hand gripping either side
+  // The hands' outer edges from the panel's sides, and clear of its rounded
+  // corners, at the nearest: a lean or a finish carrying the body sideways
+  // carries the sign only as far.
+  static constexpr int kEdge = 8;
 };
 
 // How far its lids hang at night (Q12, as PaintControls::blink): 0 by day,

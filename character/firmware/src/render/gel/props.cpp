@@ -208,12 +208,15 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   r.alpha = 255;
   if (F listening = s.visible(Scenes::kListeningProp, now); listening > F(0)) {
     r.alpha = (listening * 255).integer();
-    // Its ring breathes in sixteenths of a pixel, two pixels wide, its
-    // outer edge 15.5 to 21.5 px out.
-    circle16(r, x(500) * 16 + 8, y(144) * 16 + 8, 15 * 16 - 8 + (s.listeningPulse * 96).integer(), 2 * 16, blue);
-    round(492, 119, 16, 31, 8, light);
-    r.line({x(500), y(153)}, {x(500), y(164)}, 2, blue);
-    text("LISTENING", 500, 223, light);
+    // The mic and its label in a row over the head, centred together, the
+    // label in the large font to read at arm's length, as the cards' do,
+    // and clear of the dome's top. The ring breathes in sixteenths of a
+    // pixel, two pixels wide, its outer edge 15.5 to 21.5 px out.
+    constexpr int kMic = 372, kLabel = 555;
+    circle16(r, x(kMic) * 16 + 8, y(144) * 16 + 8, 15 * 16 - 8 + (s.listeningPulse * 96).integer(), 2 * 16, blue);
+    round(kMic - 8, 119, 16, 31, 8, light);
+    r.line({x(kMic), y(153)}, {x(kMic), y(164)}, 2, blue);
+    text("LISTENING", kLabel, 144, light, kLarge);
   }
   if (F start = s.visible(Scenes::kStartProp, now); start > F(0)) {
     r.alpha = (start * 255).integer();

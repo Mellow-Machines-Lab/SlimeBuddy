@@ -733,17 +733,20 @@ void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at) {
   const int bottom = s.height * 4 / 5;  // the lane's top: shapes stop there
   const Font& f = kSign;
   const int tw = stringWidth(f, sign.text), w = tw + 2 * SignLayer::kPad, h = f.h + 10;
-  // Centred on its front, held at its hands' ring, never into the lane.
-  const int x = at.handF.x / 16 - w / 2;
+  // Centred on its front, held at its hands' ring, never into the lane,
+  // nor past the panel's sides.
   const int y = std::min(at.handF.y / 16 - h / 2, bottom - SignLayer::kGap - h) +
                 signLift(sign.ms, SignLayer::kRisePx, SignLayer::kBobPx);
+  // (A hand's disk takes the kHand pixels either side of its middle's.)
+  const int edge = s.inset(y, y + h) + SignLayer::kEdge + SignLayer::kHand, most = s.width - 1 - edge - w;
+  const int x = most < edge ? (s.width - w) / 2 : std::clamp(at.handF.x / 16 - w / 2, edge, most);
   r.round(x, y, w, h, 12, kCardInk);
   r.ring(x, y, w, h, 12, 2, kCardRim);
   text(r, f, x + SignLayer::kPad, y + 5, sign.text, kWords);
   // A little gel hand at either side, gripping it.
   for (int side : {-1, 1}) {
     const int hx = side < 0 ? x : x + w, hy = y + h / 2;
-    r.disk(hx, hy, 12, kGel);
+    r.disk(hx, hy, SignLayer::kHand, kGel);
     r.alpha = 160;
     r.disk(hx - 4, hy - 5, 3, kShine);
     r.alpha = 255;

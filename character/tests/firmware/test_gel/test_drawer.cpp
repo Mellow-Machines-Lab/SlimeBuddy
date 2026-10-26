@@ -309,7 +309,7 @@ void test_holding_boot_to_talk_shuts_it() {
   TEST_ASSERT_EQUAL_INT(0, mac.open());
 }
 
-// BOOT pressed while it's open shuts it, and does what BOOT does.
+// BOOT pressed while it's open only shuts it: the press is the drawer's.
 void test_boot_shuts_it() {
   Board b;
   pullOpen(b);
@@ -317,7 +317,8 @@ void test_boot_shuts_it() {
   b.line("{\"t\":\"dbg.press\",\"ms\":100}");
   b.run(200 + app::Device::kDrawerMs);
   TEST_ASSERT_EQUAL_INT(1, b.count(kClosed));
-  TEST_ASSERT_EQUAL_INT(1, b.count("\"kind\":\"tap\""));
+  // It only shuts the drawer: no tap, so the Mac opens no thread.
+  TEST_ASSERT_EQUAL_INT(0, b.count("\"kind\":\"tap\""));
   TEST_ASSERT_EQUAL_INT(0, b.open());
 }
 

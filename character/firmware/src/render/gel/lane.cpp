@@ -237,14 +237,17 @@ void plug(Raster& r, int x, int cy, uint16_t ink) {  // a plug on its cord, poin
 // them.
 constexpr int kChipH = 36, kChipRadius = 9, kChipPad = 8, kChipEnd = 7, kChipGap = 4, kChipAfter = 12;
 
+// Which of the counts the strip shows (counts()'s `shown`).
+enum : unsigned { kShowBusy = 1, kShowHelpers = 2, kShowIdle = 4, kShowTodo = 8, kShowAll = 15 };
+
 // The counts after the names: how many sessions work, by a spinner on
 // `spin`, the helpers at work (a mini each, a little droplet of the gel
 // with two eyes), the agents idle, by a sleeper's z, the two in chips, and
 // last, as Pixel's strip has it, how far down its to-do list the longest
-// turn with one is ("3/7"), from x, each with the gap after it. Drawn when
-// r is given; either way, the x after them, so the names leave them the
-// room they take.
-int counts(Raster* r, const Strip& s, int x, int cy, int spin) {
+// turn with one is ("3/7"), from x, each with the gap after it, those in
+// `shown` alone. Drawn when r is given; either way, the x after them, so
+// the names leave them the room they take.
+int counts(Raster* r, const Strip& s, int x, int cy, int spin, unsigned shown = kShowAll) {
   const Font& f = kSign;
   const int ty = cy - f.h / 2;
   const uint16_t grey = inkRgb565(kInkGrey), eye = inkRgb565(kInkEye);
@@ -261,8 +264,9 @@ int counts(Raster* r, const Strip& s, int x, int cy, int spin) {
     }
     return x + w + kChipAfter;
   };
-  if (s.busy > 0) x = chip(s.busy, kWorkingRing, kWorkingInk, [&](int at) { spinner(*r, at, cy, spin, kWorkingInk); });
-  if (s.helpers > 0) {
+  if (s.busy > 0 && shown & kShowBusy)
+    x = chip(s.busy, kWorkingRing, kWorkingInk, [&](int at) { spinner(*r, at, cy, spin, kWorkingInk); });
+  if (s.helpers > 0 && shown & kShowHelpers) {
     const int minis = std::min(s.helpers, kMinis), miniW = 20;
     const uint16_t gel = 0x75BE, ink = 0x0000;
     for (int i = 0; r && i < minis; ++i) {
@@ -278,8 +282,9 @@ int counts(Raster* r, const Strip& s, int x, int cy, int spin) {
     }
     x += kIcon;
   }
-  if (s.idle > 0) x = chip(s.idle, kIdleRing, kIdleInk, [&](int at) { sleeper(*r, at, cy, kIdleInk); });
-  if (s.todoTotal > 0) {
+  if (s.idle > 0 && shown & kShowIdle)
+    x = chip(s.idle, kIdleRing, kIdleInk, [&](int at) { sleeper(*r, at, cy, kIdleInk); });
+  if (s.todoTotal > 0 && shown & kShowTodo) {
     std::snprintf(n, sizeof(n), "%d/%d", s.todoDone, s.todoTotal);
     x = number(x, eye) + kIcon;
   }
@@ -321,17 +326,40 @@ void strip(Lane& l, const Strip& s, int spin) {
     paintRule(r, margin, l.w - margin, l.y(kStripTop), false, dim);
   else
     r.round(margin, l.y(kStripTop), l.w - 2 * margin, 2, 1, dim);
-  const int countsWidth = counts(nullptr, s, 0, cy, spin);
+  // The room the counts in `shown` take after the names: the gap before
+  // them, and up to the last one's end, so they stop at the margin.
+  auto countsRoom = [&](unsigned shown) {
+    const int w = counts(nullptr, s, 0, cy, spin, shown);
+    return w ? kIcon + w - kChipAfter : 0;
+  };
+  const int right = l.w - margin, names = margin + 2 * kIcon;
   int x = margin;
+  unsigned shown = kShowAll;
   if (s.agent) {
+    // Who's asking, which the needs-you card doesn't say: its thread (or
+    // project) first, whole if it can be, then the agent before it, and
+    // only then the working and idle chips, while there's room for them;
+    // the helpers and the to-do list wait until nothing needs you. The
+    // first of these that fits, else the thread cut to the room there is.
     const uint16_t amber = inkRgb565(kInkAmber);
     dot(r, x, cy, amber);
     char more[12] = "";
     if (s.more > 0) std::snprintf(more, sizeof(more), "+%d", s.more);
     const int moreRoom = more[0] ? glyphCount(more) * f.w + 12 : 0;
-    char who[48];
-    std::snprintf(who, sizeof(who), "%s \xC2\xB7 %s", s.agent, s.name && *s.name ? s.name : s.project);
-    x = text(r, f, x + 2 * kIcon, ty, who, amber, l.w - margin - (x + 2 * kIcon) - moreRoom - countsWidth);
+    const char* what = s.name && *s.name ? s.name : s.project;
+    const bool named = what && *what;
+    char both[48];
+    std::snprintf(both, sizeof(both), named ? "%s \xC2\xB7 %s" : "%s", s.agent, what);
+    const char* const tries[] = {both, named ? what : s.agent};
+    const unsigned chips[] = {kShowBusy | kShowIdle, kShowBusy, 0};
+    const char* who = tries[1];
+    shown = 0;
+    bool whole = false;
+    for (const char* name : tries)
+      for (unsigned c : chips)
+        if (!whole && glyphCount(name) * f.w <= right - names - moreRoom - countsRoom(c))
+          who = name, shown = c, whole = true;
+    x = text(r, f, names, ty, who, amber, right - names - moreRoom - countsRoom(shown));
     if (more[0]) x = text(r, f, x + 12, ty, more, grey);
     x += kIcon;
   } else if (s.doneAgent) {
@@ -342,13 +370,27 @@ void strip(Lane& l, const Strip& s, int spin) {
       cross(r, x, cy, rgb565(kClayRgb));
     else
       dots(r, x, cy, eye);
+    // Whose turn it was, and its thread after a dot if it has one, cut to
+    // what the counts leave; fewer counts, the chips last, if they'd leave
+    // less than the agent's name.
     char who[48];
-    std::snprintf(who, sizeof(who), "%s \xC2\xB7 %s", s.doneAgent, s.doneThread ? s.doneThread : "");
-    x = text(r, f, x + 2 * kIcon, ty, who, eye, l.w - margin - (x + 2 * kIcon) - countsWidth) + kIcon;
+    if (s.doneThread && *s.doneThread)
+      std::snprintf(who, sizeof(who), "%s \xC2\xB7 %s", s.doneAgent, s.doneThread);
+    else
+      std::snprintf(who, sizeof(who), "%s", s.doneAgent);
+    const int least = (glyphCount(s.doneAgent) + 2) * f.w;
+    const unsigned fewer[] = {kShowAll, kShowBusy | kShowIdle, kShowBusy, 0};
+    shown = 0;
+    for (unsigned c : fewer)
+      if (right - names - countsRoom(c) >= least) {
+        shown = c;
+        break;
+      }
+    x = text(r, f, names, ty, who, eye, right - names - countsRoom(shown)) + kIcon;
   }
   // Then how many work, the helpers at work, and the agents idle, waiting
   // for you.
-  counts(&r, s, x, cy, spin);
+  counts(&r, s, x, cy, spin, shown);
   if (s.noApp) plug(r, l.w - margin - 24, cy, grey);
 }
 
@@ -431,6 +473,10 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at, e);
   }
+  // The sky onto the background's black before the stream's words, which
+  // fall behind it as they do behind the body: drawn after them, it would
+  // leave their dim pixels as holes in the moon or the sun.
+  paintSky(surface, e, layers, t);
   if (stream) {
     Measure measure(profile.stream);
     paintStreamBehind(surface, *stream, now);
@@ -438,7 +484,6 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintStreamFront(surface, *stream, at, e, now);
   }
   if (sign.text) paintSign(surface, sign, at);
-  paintSky(surface, e, layers, t);
   paintTicket(surface, done);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
