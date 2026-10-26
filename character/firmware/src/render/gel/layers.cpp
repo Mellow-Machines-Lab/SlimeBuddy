@@ -588,10 +588,15 @@ struct Kept {
   uint32_t ms = 0, movedAt = 0;
   Point last[kAnchors]{};
 };
-uint8_t hatBytes[OutfitLayer::kHatBytes], wornBytes[OutfitLayer::kWornBytes];
+// Room for the hat's and the pyjamas' recordings: one block made at start,
+// so on the board it's PSRAM's, not its scarce internal memory's (17 KB).
+struct Rooms {
+  uint8_t hat[OutfitLayer::kHatBytes], worn[OutfitLayer::kWornBytes];
+};
+Rooms& rooms = *new Rooms;
 // The hat, on the brim's front; and the pyjamas, on the hem's front, or else
 // what's over its eyes, on the left eye (it never wears both).
-Kept keptHat{{hatBytes, OutfitLayer::kHatBytes}}, keptWorn{{wornBytes, OutfitLayer::kWornBytes}};
+Kept keptHat{{rooms.hat, OutfitLayer::kHatBytes}}, keptWorn{{rooms.worn, OutfitLayer::kWornBytes}};
 
 int floor16(int v) { return v >= 0 ? v / 16 : -((15 - v) / 16); }
 
