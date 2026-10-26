@@ -21,8 +21,8 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09  # v5
         with:
           submodules: recursive
-      - name: The pack checks out (its moods, its rig, its studio entry)
-        run: make setup && /usr/bin/python3 engine/characters/charactergen.py --check character
+      - name: The pack checks out (its moods, its rig, its studio entry, with the other character's beside it)
+        run: make setup && /usr/bin/python3 engine/internal/tools/packs.py && /usr/bin/python3 engine/characters/charactergen.py --check character
       - name: The slime's generated files are fresh
         run: node character/tools/slimegen/slimegen.mjs --check
       - name: The pack's tool tests
