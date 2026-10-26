@@ -1986,6 +1986,23 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL(int(Eyewear::kGlasses), int(eyewearFor(tags({"day", "friday", "reading"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"day", "friday"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"night", "friday"}))));
+  TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"morning", "friday"}))));  // from noon
+  TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"evening", "friday"}))));
+  {
+    // The shades come off while it shows a feeling: its eyes are seen.
+    auto friday = std::make_unique<Engine>();
+    Facts idle;
+    idle.base = SceneState::kIdle;
+    friday->setFacts(idle);
+    friday->setOccasion(tags({"day", "friday"}), 0);
+    friday->step(500);
+    TEST_ASSERT_EQUAL_UINT32(uint32_t(Eyewear::kShades), layerContents(*friday).worn);
+    Request r;
+    r.anim = SceneState::kTaskComplete, r.hasId = true, r.id = "1", r.outcome = Outcome::kSuccess;
+    friday->oneShot(r);
+    friday->step(600);
+    TEST_ASSERT_EQUAL_UINT32(0, layerContents(*friday).worn);
+  }
   // The pyjamas' rings: the lap's over the hem's, each from the left side to
   // the right, the hem's front the lowest, under the hands'.
   for (const auto* ring : {at.lap, at.hem}) {
@@ -2808,6 +2825,48 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
   TEST_ASSERT_TRUE(doneFrames > 150);
   TEST_ASSERT_TRUE(glowKeeps > 20);  // a lane under a steady glow is kept, glow and all
 }
+// A card kept from the last frame is drawn whole again from the first
+// row anything drew over it after it, the frame before: a work-stream
+// word falling across the start card, as at a session's first prompt,
+// left stamped copies of itself in it for two seconds. Two surfaces
+// taking turns, each frame equal to a third cleared whole first.
+static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
+  constexpr int kW = 502, kH = 410;
+  std::vector<uint16_t> pa(kW * kH), pb(pa.size()), pf(pa.size());
+  Surface turns[2] = {{kW, kH, pa.data()}, {kW, kH, pb.data()}}, fresh{kW, kH, pf.data()};
+  for (Surface* s : {&turns[0], &turns[1], &fresh}) s->corner = 110;
+  auto e = std::make_unique<Engine>();
+  Facts f;
+  f.base = SceneState::kWorking;
+  e->setFacts(f);
+  Request r;
+  r.anim = SceneState::kStarting, r.hasId = true, r.id = "1", r.hold = true;
+  e->oneShot(r);
+  Stream stream;
+  Stream::Lane lane;
+  lane.slot = 1, lane.count = 1, std::strcpy(lane.word, "read");
+  uint32_t t = 0;
+  int over = 0;
+  for (int i = 0; i < 90; ++i) {
+    if (i == 10) stream.setLanes(&lane, 1, true, false, t);
+    if (i == 12) stream.startCall("read", 1, CallGag::kLand, 1, t);  // it comes forward and lands on the crown
+    e->step(t += 33);
+    Surface& s = turns[i % 2];
+    const uint32_t kept = s.cardKey;
+    paintFrame(s, *e, false, 0, nullptr, {}, Strip{}, {}, rig::kRest, nullptr, t, &stream, t);
+    over += kept && s.cardKeyTo < (1 << 30);
+    fresh.invalidate();
+    paintFrame(fresh, *e, false, 0, nullptr, {}, Strip{}, {}, rig::kRest, nullptr, t, &stream, t);
+    if (std::memcmp(s.pixels, fresh.pixels, s.bytes())) {
+      size_t at = 0;
+      while (s.pixels[at] == fresh.pixels[at]) ++at;
+      TEST_FAIL_MESSAGE(("kept frame differs from a fresh one at " + std::to_string(i) + ", first at (" +
+                         std::to_string(at % kW) + ", " + std::to_string(at / kW) + ")")
+                            .c_str());
+    }
+  }
+  TEST_ASSERT_TRUE(over > 0);  // the word did fall over the card
+}
 // A still card a surface already shows isn't drawn again;
 // its inside is what the surface kept. A surface that lost its pixels
 // draws it whole.
@@ -3281,6 +3340,7 @@ int main() {
   RUN_TEST(test_tracked_clear_matches_full_clear);
   RUN_TEST(test_histories_stay_off_the_heap);
   RUN_TEST(test_kept_cards_and_lanes_match_a_fresh_frame);
+  RUN_TEST(test_what_falls_over_a_kept_card_doesnt_stay_in_it);
   RUN_TEST(test_a_named_finish_shows_no_card);
   RUN_TEST(test_a_finished_turn_glows_and_hangs_a_ticket);
   RUN_TEST(test_a_still_card_is_drawn_once_into_each_surface);

@@ -1208,7 +1208,7 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 Boop has been comfy for under a minute.
 
 NOW (14:00, Wednesday)
@@ -1522,11 +1522,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 
 NOW (14:00, Wednesday)
 You stroked Boop.
@@ -1544,11 +1544,11 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 3 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 2 min ago: You stroked Boop.
   Boop made an engaged face (small), and said "Ngh".
 
@@ -1568,11 +1568,11 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 6 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 5 min ago: You stroked Boop.
   Boop made an engaged face (small), and said "Ngh".
 3 min ago: You shook Boop.

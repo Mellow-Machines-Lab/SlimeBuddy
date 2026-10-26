@@ -631,12 +631,3 @@ Boop has been proud for 1 h.
 NOW (15:59, Wednesday)
 Nothing has happened for 119 min; claude sits idle on "landing".
 Boop did nothing on its own.
-=== pass 8
-HISTORY (oldest first; indented lines add to the line above)
-just now: Nothing has happened for 119 min; claude sits idle on "landing".
-  Boop made an engaged face (small), and said "Rrr...".
-Boop has been proud for 2 h.
-
-NOW (16:00, Wednesday)
-Nothing has happened for 2 hours.
-Boop did nothing on its own.

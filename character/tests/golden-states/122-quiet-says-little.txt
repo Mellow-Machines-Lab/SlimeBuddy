@@ -319,7 +319,6 @@ just now: claude started turn 1 on "landing".
 just now: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
   Boop made an engaged face (small).
-just now: claude finished turn 1 on "landing": done, a short turn, no tool calls.
 
 NOW (14:00, Wednesday)
 claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
@@ -634,7 +633,6 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
   Boop made an engaged face (small).
-1 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls.
 1 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
   Boop played a success in a happy face (small).
@@ -651,7 +649,6 @@ HISTORY (oldest first; indented lines add to the line above)
 8 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
   Boop made an engaged face (small).
-7 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls.
 7 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
   Boop played a success in a happy face (small).
@@ -977,7 +974,6 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
   Boop made an engaged face (small).
-8 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls.
 8 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
   Boop played a success in a happy face (small).

@@ -339,7 +339,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an engaged face (small), and said "Validate".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Probe".
+  Boop made an engaged face (small), and said "Trial".
 
 NOW (14:19, Wednesday)
 claude is still working on "landing", a very long turn, running tests.
@@ -349,10 +349,10 @@ Boop did nothing on its own.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Probe".
+  Boop made an engaged face (small), and said "Trial".
 2 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Verify".
+  Boop made an engaged face (small), and said "Test".
 
 NOW (14:22, Wednesday)
 claude finished turn 1 on "landing": done, a very long turn, 3 tool calls.

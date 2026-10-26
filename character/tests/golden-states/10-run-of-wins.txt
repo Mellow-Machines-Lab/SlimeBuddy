@@ -1252,7 +1252,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 3 on "landing".
 1 min ago: claude finished turn 3 on "landing": done, a short turn, 1 tool call, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Mm-hm".
+  Boop played a success in a happy face (small), and said "Ooh!".
 Boop has been curious for 1 min.
 
 NOW (14:04, Wednesday)
@@ -1271,7 +1271,7 @@ HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 3 on "landing".
 7 min ago: claude finished turn 3 on "landing": done, a short turn, 1 tool call, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Mm-hm".
+  Boop played a success in a happy face (small), and said "Ooh!".
 5 min ago: claude started turn 4 on "landing".
 Boop has been curious for 7 min.
 

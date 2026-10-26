@@ -1208,7 +1208,7 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 Boop has been comfy for under a minute.
 
 NOW (14:00, Wednesday)
@@ -1522,11 +1522,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 
 NOW (14:01, Wednesday)
 You poked Boop again.
@@ -1832,11 +1832,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
@@ -2154,11 +2154,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
@@ -2166,7 +2166,7 @@ just now: You poked Boop again.
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop made a curious face (small), and said "Whoa".
 
 NOW (14:01, Wednesday)
 You poked Boop 3 times in a row, again.
@@ -2472,11 +2472,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
@@ -2484,11 +2484,11 @@ just now: You poked Boop again.
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop made a curious face (small), and said "Whoa".
 just now: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Tickles".
 Boop has been comfy for under a minute.
 
 NOW (14:01, Wednesday)

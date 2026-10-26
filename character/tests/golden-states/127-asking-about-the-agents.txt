@@ -1248,7 +1248,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a happy face (small), and said "Hehehe...".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
-  Boop played a success in a happy face (small), and said "Heh...".
+  Boop played a success in a happy face (small), and said "Ahh...".
 
 NOW (14:07, Wednesday)
 You said to Boop: "so, is it finished?"
@@ -1268,9 +1268,9 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a happy face (small), and said "Hehehe...".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
-  Boop played a success in a happy face (small), and said "Heh...".
+  Boop played a success in a happy face (small), and said "Ahh...".
 just now: You said to Boop: "so, is it finished?"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:07, Wednesday)
 codex started turn 1 on "landing".
@@ -1290,9 +1290,9 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a happy face (small), and said "Hehehe...".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
-  Boop played a success in a happy face (small), and said "Heh...".
+  Boop played a success in a happy face (small), and said "Ahh...".
 2 min ago: You said to Boop: "so, is it finished?"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: codex started turn 1 on "landing".
 
 NOW (14:09, Wednesday)
@@ -1313,12 +1313,12 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a happy face (small), and said "Hehehe...".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
-  Boop played a success in a happy face (small), and said "Heh...".
+  Boop played a success in a happy face (small), and said "Ahh...".
 2 min ago: You said to Boop: "so, is it finished?"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: codex started turn 1 on "landing".
 just now: You said to Boop: "is codex done?"
-  Boop made a proud face (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop made a proud face (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 
 NOW (14:09, Wednesday)
 You said to Boop: "how many agents are running?"
@@ -1338,12 +1338,12 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a happy face (small), and said "Hehehe...".
 4 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
-  Boop played a success in a happy face (small), and said "Heh...".
+  Boop played a success in a happy face (small), and said "Ahh...".
 3 min ago: You said to Boop: "so, is it finished?"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: codex started turn 1 on "landing".
 just now: You said to Boop: "is codex done?"
-  Boop made a proud face (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop made a proud face (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 just now: You said to Boop: "how many agents are running?"
   Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
 

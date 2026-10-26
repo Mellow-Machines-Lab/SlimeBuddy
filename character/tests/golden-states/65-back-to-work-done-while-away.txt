@@ -333,7 +333,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an engaged face (small), and said "Hup".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Nnh".
 
 NOW (14:13, Wednesday)
 claude is still working on "landing", a very long turn.
@@ -349,10 +349,10 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an engaged face (small), and said "Hup".
 10 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Nnh".
 5 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop made an engaged face (small), and said "Hrr...".
 
 NOW (14:19, Wednesday)
 claude is still working on "landing", a very long turn.
@@ -368,10 +368,10 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an engaged face (small), and said "Hup".
 14 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Nnh".
 10 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop made an engaged face (small), and said "Hrr...".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
   Boop made an engaged face (small), and said "Rrr... tik".
@@ -389,10 +389,10 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an engaged face (small), and said "Hup".
 19 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Nnh".
 14 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop made an engaged face (small), and said "Hrr...".
 8 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
   Boop made an engaged face (small), and said "Rrr... tik".
@@ -410,7 +410,6 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
   Boop made an engaged face (small), and said "Test".
-just now: claude finished turn 1 on "landing": done, a very long turn, 1 tool call.
 
 NOW (14:30, Wednesday)
 claude finished turn 1 on "landing": done, a very long turn, 1 tool call, saying it's done.
@@ -709,15 +708,7 @@ or nothing as its Example does. A prompt that sounds like
 something still holds up its sign.
 
 HISTORY (oldest first; indented lines add to the line above)
-Boop has been curious for 1 h.
-
-NOW (15:30, Wednesday)
-Nothing has happened for 1 hour.
-Boop did nothing on its own.
-=== pass 10
-HISTORY (oldest first; indented lines add to the line above)
 just now: Nothing has happened for 1 hour.
-  Boop made an engaged face (small), and said "Hup".
 Boop has been curious for 1 h.
 
 NOW (15:30, Wednesday)

@@ -1,4 +1,4 @@
-<!-- Boop's replies' signs: what it holds up replying to what you said on push-to-talk (ReactOutput's replies, react.move's answers to what you said). Each line's first tag is the reply it's for (yes, no, huh, and dunno, a huh to a question; hello, bye, thanks, love, ouch, comfort, hehe, nap, hush, unhush, dance, notme; status holds up what the agents are doing instead), and any more are the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9) or the moment's: working (an agent works), waiting (something waits on you), makeup (within 10 minutes of an ouch). {words} is a phrase of what you said, at most 12 characters ("hello" from "Hello!"): such a line is offered once for each. For each reply, only the lines with the most tags that fit are offered, never the one shown last while another fits; the brain (react.sign) picks the one that best answers what you said, of those for the reply it makes, and with no brain's pick the app picks one at random, never your words. At most 18 characters once filled, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
+<!-- Boop's replies' signs: what it holds up replying to what you said on push-to-talk (ReactOutput's replies, react.move's answers to what you said). Each line's first tag is the reply it's for (yes, no, huh, and dunno, a huh to a question; hello, bye, thanks, love, ouch, comfort, hehe, nap, hush, unhush, dance, notme; status holds up what the agents are doing instead), and any more are the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9) or the moment's: working (an agent works), waiting (something waits on you), makeup (within 10 minutes of an ouch), nobrain (the shrug with no brain to answer, no Jev key yet). {words} is a phrase of what you said, at most 12 characters ("hello" from "Hello!"): such a line is offered once for each. For each reply, only the lines with the most of the moment's tags that fit are offered, the calendar's among the plain ones (a night line is one of several, not the only one), never the one shown last while another fits; the brain (react.sign) picks the one that best answers what you said, of those for the reply it makes, and with no brain's pick the app picks one at random, never your words. At most 18 characters once filled, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
 - [yes] yep!
 - [yes] uh-huh
 - [yes] mhm!
@@ -15,6 +15,8 @@
 - [huh] huh?
 - [huh] come again?
 - [huh] '{words}'?
+- [huh nobrain] no brain yet :(
+- [huh nobrain] need my brain!
 - [hello] hi hi!
 - [hello] oh, hi!
 - [hello] good, u?
@@ -42,6 +44,8 @@
 - [comfort] there there
 - [comfort] i'm here
 - [comfort night] bed time?
+- [comfort working] u got this
+- [comfort working] we'll fix it
 - [hehe] hehe
 - [hehe] lol
 - [hehe] {words} lol

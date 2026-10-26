@@ -368,7 +368,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 just now: claude needs you on "landing".
 just now: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Hup".
 
 NOW (14:04, Wednesday)
 You said to Boop: "just tell claude yes"
@@ -387,9 +387,9 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 1 min ago: claude needs you on "landing".
 1 min ago: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Hup".
 just now: You said to Boop: "just tell claude yes"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 
 NOW (14:04, Wednesday)
 You said to Boop: "you're useless"
@@ -408,9 +408,9 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 1 min ago: claude needs you on "landing".
 1 min ago: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop made an engaged face (small), and said "Hup".
 1 min ago: You said to Boop: "just tell claude yes"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 just now: You said to Boop: "you're useless"
   Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 

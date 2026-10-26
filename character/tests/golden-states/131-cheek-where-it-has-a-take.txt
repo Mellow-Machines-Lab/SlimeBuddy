@@ -305,7 +305,6 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a refactor, in a sentence.
   Boop made an engaged face (small), and said "Tch".
-just now: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 
 NOW (14:04, Wednesday)
 claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
@@ -607,7 +606,6 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for a refactor, in a sentence.
   Boop made an engaged face (small), and said "Tch".
-5 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 5 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: calm → curious.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -913,7 +911,6 @@ or nothing as its Example does. A prompt that sounds like
 something still holds up its sign.
 
 HISTORY (oldest first; indented lines add to the line above)
-10 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 10 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: calm → curious.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -936,8 +933,7 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 2 on "landing".
 3 min ago: You asked claude on "landing" for something new, in a sentence, playfully.
   Your words: "so cute", "lol".
-  Boop made an engaged face (small), and said "Tch".
-just now: claude finished turn 2 on "landing": done, a long turn, no tool calls.
+  Boop made an engaged face (small), and said "Nnh".
 
 NOW (14:17, Wednesday)
 claude finished turn 2 on "landing": done, a long turn, no tool calls, saying it's done, apologetic.
@@ -1240,12 +1236,11 @@ HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 2 on "landing".
 8 min ago: You asked claude on "landing" for something new, in a sentence, playfully.
   Your words: "so cute", "lol".
-  Boop made an engaged face (small), and said "Tch".
-5 min ago: claude finished turn 2 on "landing": done, a long turn, no tool calls.
+  Boop made an engaged face (small), and said "Nnh".
 5 min ago: claude finished turn 2 on "landing": done, a long turn, no tool calls, saying it's done, apologetic.
   Its words: "I apologize".
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop played a success in a happy face (small), and said "Heh...".
 Boop has been curious for 5 min.
 
 NOW (14:22, Wednesday)

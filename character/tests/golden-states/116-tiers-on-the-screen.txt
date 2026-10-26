@@ -328,7 +328,6 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
   Boop made an engaged face (small), and said "Probe".
-just now: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls.
 
 NOW (14:12, Wednesday)
 claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, saying it's done.

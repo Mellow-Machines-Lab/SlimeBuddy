@@ -1208,7 +1208,7 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop made a curious face (small), and said "Boop".
 Boop has been comfy for 3 min.
 
 NOW (14:04, Wednesday)

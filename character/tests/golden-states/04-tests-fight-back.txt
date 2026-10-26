@@ -1212,7 +1212,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop made an annoyed face (medium), and said "Hmph Ouch".
 2 min ago: claude's tests failed again on "fix-nav" (landing), 3 times in a row.
   Boop's mood changed: calm → comfy.
-  Boop made an annoyed face (medium), and said "Ugh... Oops".
+  Boop made an annoyed face (medium), and said "Huh... Broken".
 Boop has been comfy for 2 min.
 
 NOW (14:07, Wednesday)

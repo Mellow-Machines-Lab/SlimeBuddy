@@ -521,7 +521,9 @@ struct Look {
 // The nightcap's swing for the engine's clock.
 int swingFor(const Engine& e) { return int(e.elapsedMs % 2000 / OutfitLayer::kSwingMs * OutfitLayer::kSwingMs); }
 // Peekaboo's gesture takes it all off, and it sleeps with its eyes bare;
-// the nightcap comes with its pyjamas, but while it wears its reading
+// the shades come off while it shows a feeling (a reaction, a face the
+// Mac lends it, needs you, listening), so its eyes are seen; the
+// nightcap comes with its pyjamas, but while it wears its reading
 // glasses.
 Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
@@ -530,7 +532,10 @@ Look lookFor(const Engine& e) {
   const Outfit hat = outfitFor(when);
   const int colors = hasTag(when, "lunar") ? 1 : hasTag(when, "programmers") && !hasTag(when, "party") ? 2 : 0;
   const bool nightcap = hat == Outfit::kNightcap;
-  const Eyewear eyes = state == SceneState::kAsleep ? Eyewear::kNone : eyewearFor(when);
+  const bool feeling = e.router.hasMoment || (e.router.hasOverlay && e.router.overlayExpression >= 0) ||
+                       state == SceneState::kNeedsYou || state == SceneState::kListening;
+  const Eyewear worn = state == SceneState::kAsleep ? Eyewear::kNone : eyewearFor(when);
+  const Eyewear eyes = worn == Eyewear::kShades && feeling ? Eyewear::kNone : worn;
   return {hat, hat == Outfit::kPartyHat ? colors : 0, nightcap ? swingFor(e) : 0, eyes,
           nightcap && eyes == Eyewear::kNone};
 }

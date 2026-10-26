@@ -1209,7 +1209,7 @@ HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop made a curious face (small), and said "Oh".
 Boop has been comfy for 5 min.
 
 NOW (14:40, Wednesday)
@@ -1220,7 +1220,7 @@ HISTORY (oldest first; indented lines add to the line above)
 7 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop made a curious face (small), and said "Oh".
 2 min ago: You hushed Boop from the Mac: it says nothing for 30 min.
   Boop made an engaged face (small).
 Boop has been comfy for 7 min.
@@ -1233,7 +1233,7 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop made a curious face (small), and said "Oh".
 4 min ago: You hushed Boop from the Mac: it says nothing for 30 min.
   Boop made an engaged face (small).
 2 min ago: You said to Boop: "okay okay, you can talk now"

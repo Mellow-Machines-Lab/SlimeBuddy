@@ -104,7 +104,7 @@
 {"shot": "helper"}
 // And so does its return's.
 {"clock": 49500}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "done", "as": "back"}}
+{"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "back", "as": "back"}}
 {"clock": 49900}
 {"shot": "back"}
 // A run of the same: its count.

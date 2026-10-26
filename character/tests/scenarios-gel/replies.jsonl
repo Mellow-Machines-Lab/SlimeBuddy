@@ -105,3 +105,12 @@
 {"t":"do","name":"react","play":"now","args":{"sign":"yay!","reply":"dance","say":{},"mood":"happy","loops":1}}
 {"clock":2700}
 {"shot":"dance-idle"}
+// A reply while something needs you: "tell claude yes" gets notme's
+// glance and sign over the needs-you screen, no voice, then it's back.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"when":["day"],"attn":{"agent":"claude","project":"landing","more":0,"id":7}}
+{"clock":1000}
+{"t":"do","name":"react","play":"now","args":{"sign":"that's ur job","reply":"notme","say":{},"mood":"skeptical","loops":1}}
+{"clock":1400}
+{"shot":"notme-over-needs-you"}

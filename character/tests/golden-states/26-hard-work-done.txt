@@ -306,7 +306,6 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a refactor, in a sentence.
   Boop made an engaged face (small), and said "Tch".
-just now: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 Boop has been engaged for 4 min.
 
 NOW (14:04, Wednesday)

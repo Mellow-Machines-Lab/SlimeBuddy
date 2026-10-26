@@ -829,7 +829,9 @@ the same tags, after the face art and before the props
 hat; a party hat for party, New Year's, Lunar New Year and Programmers'
 Day; a striped nightcap at night, flopping down its left side to a
 tassel by its cheek, with pyjamas to match but while it wears reading
-glasses; a bobble hat in winter), shades on a Friday's day, and the air
+glasses; a bobble hat in winter), shades on a Friday from noon to
+night, off while it shows a feeling (a reaction, a face the Mac lends
+it, needs you, listening) so its eyes are seen, and the air
 (snow, confetti, hearts, Zs asleep at night), and last the sign a
 reaction holds up. In the morning, while it's idle or at work, it
 holds a mug of coffee at its side in a little gel hand, steam curling up

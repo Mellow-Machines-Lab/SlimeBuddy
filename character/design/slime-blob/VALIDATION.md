@@ -156,7 +156,9 @@ ramps and springs can, and no jolt at an event. By file:
   `test_text_glides_between_pixels`, the outfit half a pixel down while
   the body moves), tracked
   clearing and kept cards and lanes matching a fresh frame, a finished
-  turn's ticket and glow coming and going over them, steady frames
+  turn's ticket and glow coming and going over them, a word falling over
+  a kept card not staying in it
+  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
   allocating nothing, and the work stream
   (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
   lanes' columns behind the body, a hit's knock and daze and its lids

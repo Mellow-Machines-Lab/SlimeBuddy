@@ -125,8 +125,11 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   // again every frame cost 2.3 ms on the board.
   const uint32_t cards = cardsKey(s, e.timeMs());
   int cardsTo = 1 << 30;
+  Box drawn[Surface::kMaxCards];
+  int drawnCount = 0;
   auto drawCard = [&](const Card& card, uint16_t ink, uint16_t rim, auto&& on, int over = 1 << 30) {
     const Placed c = place(surface, card);
+    if (drawnCount < Surface::kMaxCards) drawn[drawnCount++] = {c.x, c.y, c.x + c.w, c.y + c.h};
     const int from =
         cards && cards == surface.cardKey ? std::min({firstDrawnRow(surface, c), surface.cardKeyTo, over}) : c.y;
     cardsTo = over;
@@ -299,8 +302,11 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
         r.disk(x(bx + spot.x), y(by + spot.y), 2, ink);
     }
   }
-  // Nothing after the cards draws over them.
+  // What's drawn over the cards after them, as the frame goes on, lowers
+  // cardKeyTo (Surface::touch).
   surface.cardKey = cards;
   surface.cardKeyTo = cardsTo;
+  std::copy(drawn, drawn + drawnCount, surface.cardBoxes);
+  surface.cardBoxCount = drawnCount;
 }
 }  // namespace render::gel

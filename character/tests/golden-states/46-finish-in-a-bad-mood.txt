@@ -304,7 +304,6 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-just now: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 Boop has been sad for 3 min.
 
 NOW (14:03, Wednesday)
@@ -608,7 +607,6 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -913,7 +911,6 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -1225,7 +1222,6 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -1542,7 +1538,6 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 1 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -1557,7 +1552,7 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: annoyed → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 
 NOW (14:05, Wednesday)
 You poked Boop 4 times in a row.
@@ -1855,7 +1850,6 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-2 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 2 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -1870,11 +1864,11 @@ just now: You poked Boop 2 times in a row.
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: annoyed → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Yep".
+  Boop made a curious face (small), and said "Whoa".
 just now: claude started turn 2 on "landing".
 Boop has been comfy for under a minute.
 
@@ -1886,7 +1880,6 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a few words.
   Boop made an engaged face (small), and said "Tch".
-3 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call.
 3 min ago: claude finished turn 1 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: sad → wounded.
   Boop played a success in a happy face (small), and said "Hehehe...".
@@ -1901,15 +1894,14 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: annoyed → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop made a curious face (small), and said "Yep".
 1 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Yep".
+  Boop made a curious face (small), and said "Whoa".
 1 min ago: claude started turn 2 on "landing".
 1 min ago: You asked claude on "landing" for something new, in a few words.
   Boop made an engaged face (small), and said "Krr...".
-just now: claude finished turn 2 on "landing": done, a long turn, no tool calls, the 2nd quick win of a streak.
 Boop has been comfy for 1 min.
 
 NOW (14:06, Wednesday)

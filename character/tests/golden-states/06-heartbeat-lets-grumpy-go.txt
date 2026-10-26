@@ -930,17 +930,3 @@ HISTORY (oldest first; indented lines add to the line above)
 NOW (15:54, Wednesday)
 Nothing has happened for 112 min; claude sits idle on "landing".
 Boop did nothing on its own.
-=== pass 9
-HISTORY (oldest first; indented lines add to the line above)
-7 min ago: Nothing has happened for 112 min; claude sits idle on "landing".
-  Boop made an engaged face (small), and said "Hup".
-
-NOW (16:02, Wednesday)
-Nothing has happened for 2 hours.
-Boop did nothing on its own.
-=== pass 10
-HISTORY (oldest first; indented lines add to the line above)
-
-NOW (17:02, Wednesday)
-Nothing has happened for 3 hours.
-Boop did nothing on its own.
