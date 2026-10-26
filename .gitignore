@@ -1,0 +1,9 @@
+# Boop.app, which make bundle builds here
+Boop.app/
+.DS_Store
+__pycache__/
+*.py[cod]
+node_modules/
+# The pack's generated build output and local notes (the engine ignores the same)
+character/tools/facegen/build/
+character/references/*/frames/
