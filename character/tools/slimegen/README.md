@@ -1,6 +1,6 @@
 # Slime asset generator
 
-Updated 2026-10-25.
+Updated 2026-10-26.
 
 Run `node character/tools/slimegen/slimegen.mjs` at the repo root; `--check`
 checks freshness without writing. No dependencies, device or network.
@@ -33,7 +33,8 @@ pacing is the steering's.
 `slime.h` holds the expression profiles, the idle gags and which
 expressions play them, the scene recipes with each row's takes and the two
 rows' fourth takes, the gesture state's ten takes, each with a gag of its
-own and the face it borrows, the notice state's three takes' faces, the
+own and the face it borrows, which moods keep their own face through a
+gesture, the notice state's three takes' faces, the
 contact kinds' names (a rig clip's cues name them), the looks' occasions
 with their tags as `firmware/src/render/tags.h` numbers them, the mood graph's edges (the bridges the gel draws), and the sound
 effects, three takes of each sketch (`sound/sfx.js`) at 11,025 Hz.

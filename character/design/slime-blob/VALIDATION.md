@@ -36,8 +36,9 @@ when:
 - a sound sketch renders differently from one seed, doesn't start from
   silence, isn't finite, is louder than 0.8, longer than 3 s, or isn't
   silent at no gain;
-- the gestures or the notices are out of `render::Gesture`'s order, or an
-  occasion needs a tag `render/tags.h` hasn't.
+- the gestures or the notices are out of `render::Gesture`'s order, a
+  family a gesture's face gives way to has no mood, or an occasion needs
+  a tag `render/tags.h` hasn't.
 
 ## The engine (`test_gel`)
 
@@ -105,7 +106,8 @@ ramps and springs can, and no jolt at an event. By file:
   glow and ticket (`test_a_finished_turn_glows_and_hangs_a_ticket`: the
   glow's timing, strength and reach, nothing past the panel's corners,
   the ticket above the top as it comes, in the middle or left of a
-  success's trophy, and gone back up), comedy, the ten gestures, the notice
+  success's trophy, and gone back up), comedy, the ten gestures (a low or cross mood keeping its own face
+  through one: `test_a_low_or_cross_mood_keeps_its_face_through_a_gesture`), the notice
   playing the rig's clip (`test_a_notice_plays_its_rig_clip`: perking up
   tall, off the ground and landing flat, its eyes and mouth, a sound at
   each cue, no gag), a reply's clip (`test_a_reply_plays_its_clip_once`:

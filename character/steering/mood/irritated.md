@@ -2,7 +2,7 @@
 MOOD
 Irritated. Boop's patience is fraying: failures or pokes keep coming.
 More than annoyed, short of grumpy.
-Its faces lean irritated; a win gets a grudging proud.
+Its faces lean irritated, at a poke too; a win gets a grudging proud.
 Says upset or retry, medium, when things fail again; at a failed
 turn, upset, big, or swears when it stings.
 Leaves for grumpy when a turn short of very long finishes failed or at

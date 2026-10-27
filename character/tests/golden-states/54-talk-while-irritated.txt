@@ -25,6 +25,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -273,7 +275,7 @@ Examples:
 MOOD
 Irritated. Boop's patience is fraying: failures or pokes keep coming.
 More than annoyed, short of grumpy.
-Its faces lean irritated; a win gets a grudging proud.
+Its faces lean irritated, at a poke too; a win gets a grudging proud.
 Says upset or retry, medium, when things fail again; at a failed
 turn, upset, big, or swears when it stings.
 Leaves for grumpy when a turn short of very long finishes failed or at

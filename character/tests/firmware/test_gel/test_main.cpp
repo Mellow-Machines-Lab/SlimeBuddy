@@ -1232,6 +1232,39 @@ static void test_comedy_plays_in_idle_and_asleep() {
     }
   }
 }
+// A low or cross mood keeps its own face through a gesture, so a touch
+// never cheers it on the screen on its own; any other mood borrows the
+// gesture's face while it plays.
+static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
+  TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kCalm]);
+  TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kHappy]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kSad]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kIrritated]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kGrumpy]);
+  linkkit::Rng rng;
+  // The face showing a frame into gesture g, played from idle in a mood.
+  auto shown = [&](Mood mood, Gesture g) {
+    GelFace face;
+    face.reset(0, rng);
+    FaceSource s;
+    FaceContext c;
+    c.mood = s.mood = mood;
+    face.sync(s, c, 0);
+    for (uint32_t t = 16; t <= 480; t += 16) face.step(t, rng);
+    s.anim = SceneState::kGesture;
+    s.animVariant = uint8_t(g);
+    s.at = 496;
+    face.sync(s, c, 496);
+    face.step(512, rng);
+    return face.engine().expression;
+  };
+  for (Gesture g : {Gesture::kStroke, Gesture::kNose, Gesture::kTickle, Gesture::kPeekaboo}) {
+    TEST_ASSERT_EQUAL_INT(slime::kGestureFaces[int(g)], shown(Mood::kCalm, g));
+    TEST_ASSERT_EQUAL_INT(slime::kSad, shown(Mood::kSad, g));
+    TEST_ASSERT_EQUAL_INT(slime::kIrritated, shown(Mood::kIrritated, g));
+  }
+}
+
 // The gesture state has a take for each of
 // render::Gesture, each its own gag under the face it borrows; the board
 // names the take, and no bag deals it. Each plays held, under its face with
@@ -3318,6 +3351,7 @@ int main() {
   RUN_TEST(test_timing_comes_from_the_recipe_table);
   RUN_TEST(test_comedy_plays_in_idle_and_asleep);
   RUN_TEST(test_each_gesture_plays_its_own_gag);
+  RUN_TEST(test_a_low_or_cross_mood_keeps_its_face_through_a_gesture);
   RUN_TEST(test_a_notice_plays_its_rig_clip);
   RUN_TEST(test_a_reply_plays_its_clip_once);
   RUN_TEST(test_hushed_its_lips_are_zipped);

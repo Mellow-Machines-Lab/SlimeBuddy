@@ -595,7 +595,12 @@ recipe whose body contacts dent the dome, pulse the touch mark and sound a
 squish on its first loop, and a gag of its own (`expressions.json`
 `gestures`, keyed as Comedy's are) that acting plays with it. The board
 borrows a face for each while it plays, as a react's expression is
-borrowed, and the mood stays.
+borrowed, and the mood stays. A low or cross mood keeps its own face
+through a gesture instead, so a touch never cheers it on the screen
+alone: a mood whose family is one of `expressions.json`'s
+`gestureFaceGivesWayTo` (frustration, sadness, alarm and strain; slime.h's
+`kKeepsFaceThroughGestures`). The brain's reaction after it follows the
+mood too.
 
 | Gesture | What the body does | Face it borrows | Gag |
 | --- | --- | --- | --- |

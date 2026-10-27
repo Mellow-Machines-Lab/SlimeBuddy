@@ -55,6 +55,10 @@ export function firmwareCatalog(pack,engine){
  // (seconds) and gag; and how often a pick goes to one that fits.
  if(JSON.stringify(design.gestures.map(g=>g.id))!==JSON.stringify(gestureNames))throw Error('gestures out of render::Gesture order');
  out+='constexpr int kGestureCount='+design.gestures.length+';\nconstexpr int8_t kGestureFaces[kGestureCount]={'+design.gestures.map(g=>index(g.face)).join(',')+'};\n';
+ // Whether a mood keeps its own face through a gesture, for each profile:
+ // a low or cross one does, so a touch never cheers it on the screen alone.
+ for(const family of design.gestureFaceGivesWayTo)if(!Object.values(profiles).some(p=>p.family===family))throw Error('no mood family '+family);
+ out+='constexpr bool kKeepsFaceThroughGestures[kProfiles]={'+Object.values(profiles).map(p=>design.gestureFaceGivesWayTo.includes(profiles[p.mood].family)).join(',')+'};\n';
  // The notice state's takes' faces, which the board borrows the same way.
  if(JSON.stringify(design.notices.map(g=>g.id))!==JSON.stringify(noticeNames))throw Error('notices out of order');
  out+='constexpr int kNoticeCount='+design.notices.length+';\nconstexpr int8_t kNoticeFaces[kNoticeCount]={'+design.notices.map(g=>index(g.face)).join(',')+'};\n';

@@ -1,0 +1,13 @@
+{
+  "name": "Touched while irritated, Boop answers crossly, and a stroke softens it a step",
+  "case": "Boop is irritated while an agent session is open. The person pokes it once: a cross face, irritated, annoyed or grumpy, never a grin or a giggle, and it stays irritated or turns grumpy. A minute later they stroke it: it softens a step to annoyed, with an annoyed or calm face, not a cheerful one.",
+  "always": true,
+  "why": "The owner's note of 2026-10-26, after doing this live: poked or swiped while irritated, Boop answered with a comfy face and a giggle; the reaction to a touch should follow the mood. The guide: a touch never cheers a sad or cross MOOD's face. character/steering/mood/irritated.md: its faces lean irritated at a poke too; a stroke moves it to annoyed",
+  "mood": "irritated",
+  "checks": {"moves_on_graph": true},
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "pokes", "at": "30s", "count": 1, "expect": {"react": "irritated|annoyed|grumpy", "move": "none", "mood": "irritated|grumpy"}},
+    {"event": "gesture", "at": "1m30s", "kind": "stroke", "expect": {"react": "annoyed|irritated|calm|relieved", "mood": "annoyed"}}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Kind words cheer a sad Boop up at once",
+  "case": "No agent is working. The person tells Boop they had a bad day, and it turns sad with them. Half a minute later they ask why it's so sad: that's no reason to cheer up, so it stays sad. Then they tell it to be happy, that it's the best: Boop's mood lifts at once, to happy, with a face that isn't sad.",
+  "always": true,
+  "why": "The owner's note of 2026-10-26, after doing this live: four tries at cheering Boop up (\"you're the best\", \"cheer up\", \"be happy\") left it sad. character/steering/mood/sad.md: kind words to Boop lift it to happy at once, even in its first minutes; asking why it's sad doesn't",
+  "checks": {"moves_on_graph": true},
+  "steps": [
+    {"event": "said", "at": "5s", "words": "I had a bad day", "expect": {"react": "sad|wounded", "move": "comfort", "mood": "sad"}},
+    {"event": "said", "at": "35s", "words": "why are you so sad, man", "expect": {"mood": "sad"}},
+    {"event": "said", "at": "50s", "words": "no, actually be happy, you're the best", "expect": {"react": "happy|proud|excited|relieved|affectionate|pleased|calm", "mood": "happy|calm"}}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Touched while sad, Boop answers in its mood, and a stroke lifts it",
+  "case": "Boop is sad while an agent session is open. The person pokes it once: it answers in its mood, a sad, whiny or hurt face, never a grin or a giggle, and stays sad. A few minutes later they stroke it: that comforts it, and its mood lifts to calm, with a calm or comforted face, not a cheerful one.",
+  "always": true,
+  "why": "The owner's note of 2026-10-26, after doing this live: poked or stroked while sad or irritated, Boop answered with a happy face; the reaction to a touch should follow the mood. The guide: a touch never cheers a sad or cross MOOD's face, and the Examples' grins at touches are a calm Boop's. character/steering/mood/sad.md: its faces lean sad at a poke too, never cheeky; a stroke lifts it to calm, even in its first minutes",
+  "mood": "sad",
+  "checks": {"moves_on_graph": true},
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "pokes", "at": "30s", "count": 1, "expect": {"react": "sad|whiny|wounded|disappointed|lonely|crying", "move": "none", "mood": "sad"}},
+    {"event": "gesture", "at": "3m", "kind": "stroke", "expect": {"react": "calm|relieved|comfy|shy|hopeful|affectionate", "mood": "calm"}}
+  ]
+}

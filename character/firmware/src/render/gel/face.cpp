@@ -462,9 +462,11 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   if (timeout != e.router.timedOut) e.linkTimedOut(timeout);
   e.setOccasion(context.when, context.lookMs);
   // The Mac's borrowed expression, else a gesture's or a notice's own face
-  // while it plays.
+  // while it plays. A low or cross mood keeps its own face through a
+  // gesture.
   int borrowed = context.borrowed ? expressionFromName(moodName(source.mood)) : -1;
-  if (borrowed < 0 && source.anim == SceneState::kGesture)
+  if (borrowed < 0 && source.anim == SceneState::kGesture &&
+      !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
     borrowed = slime::kGestureFaces[std::min<int>(source.animVariant, slime::kGestureCount - 1)];
   if (borrowed < 0 && source.anim == SceneState::kNotice)
     borrowed = slime::kNoticeFaces[std::min<int>(source.animVariant, slime::kNoticeCount - 1)];

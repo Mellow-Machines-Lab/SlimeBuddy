@@ -5013,6 +5013,12 @@
     "doze-and-snap",
     "sneeze-and-shake"
   ],
+  "gestureFaceGivesWayTo": [
+    "frustration",
+    "sadness",
+    "alarm",
+    "strain"
+  ],
   "gestures": [
     {
       "id": "handoff",

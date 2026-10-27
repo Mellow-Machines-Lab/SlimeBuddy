@@ -88,6 +88,7 @@ inline constexpr int kIdleGagCount=sizeof(kIdleGags);
 inline constexpr int kMaxGestures=3+kOwnGags+kIdleGagCount;
 inline constexpr int kGestureCount=10;
 inline constexpr int8_t kGestureFaces[kGestureCount]={6,20,22,34,8,14,34,38,35,7};
+inline constexpr bool kKeepsFaceThroughGestures[kProfiles]={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,true,true,true,false,false};
 inline constexpr int kNoticeCount=3;
 inline constexpr int8_t kNoticeFaces[kNoticeCount]={34,7,6};
 struct IdleOccasion {uint32_t when;uint16_t after;uint8_t gag;};

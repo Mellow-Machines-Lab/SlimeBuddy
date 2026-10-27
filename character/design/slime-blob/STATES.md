@@ -1,6 +1,6 @@
 # State coverage and event mapping
 
-Updated 2026-10-25. The board's 25 states (the firmware's `kStateNames`,
+Updated 2026-10-26. The board's 25 states (the firmware's `kStateNames`,
 `firmware/src/render/types.cpp`) fall into nine visual scene families, below.
 Each state's takes (three each; idle's six or seven and asleep's four,
 with their comedy, a successful finish's four and a gesture's ten) are
@@ -21,7 +21,7 @@ remaining matrix was implemented and exercised.
 | Helpers | delegating, helper_return | Dispatch/live helpers vs an observed returning helper |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
 | Result | reply_ready, task_complete, error, stopped | Reply vs whole-task success/failure vs tool error vs interruption |
-| Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face) |
+| Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face, or the mood's own in a low or cross mood) |
 
 `test_gel` plays every one of the 1,050 mood/state cells, each of its
 takes, the two completion outcomes and four start contexts apart. Shared

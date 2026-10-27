@@ -11,5 +11,5 @@ Leaves for determined too when the person sounds frustrated; irritated
 at 3+ pokes in a row; grumpy when a turn short of very long finishes
 failed; whiny when the agent gives up; sad when a very long turn fails
 or the person shares sad news; wounded at rude words to Boop; calm
-when the person says sorry to Boop. Fades to calm once Boop has been
-annoyed for 3 min, unless NOW is a failure.
+when the person says sorry to Boop or strokes it. Fades to calm once
+Boop has been annoyed for 3 min, unless NOW is a failure.

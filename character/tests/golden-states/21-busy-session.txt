@@ -25,6 +25,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -333,6 +335,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -648,6 +652,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -957,6 +963,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -1267,6 +1275,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -1605,6 +1615,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -1970,6 +1982,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -2296,6 +2310,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
@@ -2623,6 +2639,8 @@ How to choose:
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
+- A touch never cheers a sad or cross MOOD's face: the Examples'
+  grins at touches are a calm Boop's.
 How to read HISTORY and NOW:
 - HISTORY is oldest first. Each line says how long ago it happened.
   Lines indented under it add to it: the words it quotes or a note,
