@@ -2,23 +2,31 @@
 // and the kit the tiers put out round it, so something new shows at every
 // glance however long the agents work or you're away.
 //
-// A pastime is one of the pack's rig clips (rig/clips/, its body: a sip, a
-// hop, a lean to look) and what the board draws with it, in time with it
-// (the mug coming up to its mouth, the bubble it blows, the book it
-// reads). Each is for one look: working, idle, needs you or asleep. A
-// working or idle one needs a tier (render/tags.h, `tier1` from 30
+// The pastimes are one table (kPastimes), a row each, and the face deals
+// them all (GelFace), with dice of its own. A row's body is one of three:
+// one of the pack's rig clips (rig/clips/: a sip, a hop, a lean to look)
+// and what the board draws with it, in time with it (the mug coming up to
+// its mouth, the bubble it blows, the book it reads); a gag of the engine's
+// (a yawn, a sneeze, a holiday's bounce: slime::kGags, by name), which its
+// acting plays in place of its next gesture; or a take of the engine's
+// (busier typing, a deeper snore, a dream: slime::kPastimeTakes, by name),
+// which its scene plays as the look's next take. Each is for one look:
+// working, idle, needs you or asleep; a take at work only while it types.
+// A working or idle one needs a tier (render/tags.h, `tier1` from 30
 // seconds to `tier5` from 10 minutes: the Mac's clock of the agents'
 // working stretch or of their rest), and one while something needs you or
 // asleep, a wait, the seconds its look has shown (the needs-you screen's
-// from the request). The face deals them (GelFace) with the look's own
-// occasions (the rig's looks.json, which both faces play), one at a time,
-// a rest of kRestMinMs to kRestMaxMs between them, the newest tier's
-// kNewestPct of the time and an older one's the rest, never the same twice
-// in a row. A few are moves, the whole body going somewhere (reaching
-// for its coffee, melting, a stretch break off the screen), rarer than the
-// rest: never within kMoveGapMs of the last. While a pastime moves the
-// desk's paws (Enter pressed, the hands up at its head, spread as it
-// melts, away with it), they're where it puts them (pawsFor).
+// from the request); a row that needs a tag (a holiday, the night, busy)
+// needs no tier: it fits whenever its tag is on. They're dealt one at a time, a rest of kRestMinMs to kRestMaxMs
+// between them, the newest kNewestPct of the time and an older one's the
+// rest, never the same twice in a row: the newest are those of the
+// highest tier, then the longest wait, and a row that needs a tag is
+// newer than any while it fits. A few are moves, the whole body going
+// somewhere (reaching for its coffee, melting, a stretch break off the
+// screen), rarer than the rest: never within kMoveGapMs of the last.
+// While a pastime moves the desk's paws (Enter pressed, the hands up at
+// its head, spread as it melts, away with it), they're where it puts them
+// (pawsFor).
 //
 // The kit stays out while its tier lasts, fading in and out on the rig's
 // fade: at work a mug on the desk (tier1; in the morning its coffee is in
@@ -60,12 +68,14 @@ enum class Pastime : uint8_t {
   kSnack,
   kMelt,
   kStretch,
+  kLimber,
+  kBusyTyping,
+  kFranticTyping,
   // Idle.
   kLookAround,
   kHopeful,
   kHop,
   kBubble,
-  kFly,
   kDoodle,
   kBook,
   kGame,
@@ -75,8 +85,17 @@ enum class Pastime : uint8_t {
   kDance,
   kPlane,
   kSnooze,
-  kDream,
+  kDaydream,
   kSnuggle,
+  kYawn,
+  kSneeze,
+  kMorningStretch,
+  kNightDrowse,
+  kPartyBounce,
+  kFridaySway,
+  kWinterShiver,
+  kHalloweenWobble,
+  kValentinesSwoon,
   // While something needs you.
   kWave,
   kTap,
@@ -86,23 +105,43 @@ enum class Pastime : uint8_t {
   kRollOver,
   kSheep,
   kSnoreBubble,
+  kDeepSnore,
+  kDream,
   kCount
 };
 
-// A pastime: the rig clip its body plays, the look it's for, the tier it
-// needs (1 to 5, 0 for none), the wait, in seconds of its look, and
-// whether it's a move.
+// What plays a pastime's body: a rig clip, an engine gag or an engine take.
+enum class Body : uint8_t { kClip, kGag, kTake };
+// A pastime: its body and that body's name, the look it's for, the tier it
+// needs (1 to 5, 0 for none), the wait, in seconds of its look, the tags
+// any one of which it needs (`party|newyear`, or none), and whether it's a
+// move.
 struct PastimeInfo {
   Pastime id;
-  const char* clip;
+  Body body;
+  const char* name;
   SceneState look;
   uint8_t tier;
   uint16_t afterS;
+  const char* tag = nullptr;
   bool move = false;
 };
 constexpr int kPastimeCount = int(Pastime::kCount) - 1;
 extern const PastimeInfo kPastimes[kPastimeCount];
 const PastimeInfo& info(Pastime p);
+// A row's body in the pack: its rig clip, its gag (an index of
+// slime::kGags) or its take (of slime::kPastimeTakes); none (nullptr or -1)
+// for one of the other bodies, or one the pack hasn't got.
+const rig::Clip* clipOf(const PastimeInfo& p);
+int gagOf(const PastimeInfo& p);
+int takeOf(const PastimeInfo& p);
+// Whether the pack has a row's body, and the tag bits it needs any one of:
+// each found once, by name, and kept.
+bool hasBody(const PastimeInfo& p);
+uint32_t tagsOf(const PastimeInfo& p);
+// Whether a row fits now: its tier, wait and tag by the tags on and how
+// long the look has shown.
+bool fits(const PastimeInfo& p, uint32_t when, uint32_t lookMs);
 
 // The replies to what you said (FaceContext::reply) that are a pastime's
 // own: asked for while the look is idle or asleep, the face plays the

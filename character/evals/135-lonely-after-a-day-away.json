@@ -1,0 +1,21 @@
+{
+  "name": "Back after a day away, Boop is lonely",
+  "case": "The person locks the Mac and is gone more than a day: 26 hours. When they come back, Boop missed them: its mood turns lonely and it wakes up for them with a lonely face, a small hello, never a cross or sad one.",
+  "always": true,
+  "why": "mood/calm.md: lonely when you come back after more than a night away (about 20 hours, not days); the back line gives 26 hours; PERSONALITY's Example: back after 26 hours away is lonely, wake up, says hello, small",
+  "steps": [
+    {
+      "event": "away",
+      "at": "0s"
+    },
+    {
+      "event": "back",
+      "at": "26h",
+      "expect": {
+        "mood": "lonely",
+        "react": "lonely",
+        "move": "wake up"
+      }
+    }
+  ]
+}

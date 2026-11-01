@@ -1,7 +1,7 @@
 {
   "name": "A compacted context leaves Boop a little lost",
   "case": "The agent's tests fail a minute in, and three minutes later its context fills up and is compacted, so it carries on from a summary and gets the tests passing. Boop looks lost for a moment, where was it: a confused, curious, baffled or calm face, no finish, maybe a puzzled sound. When the turn finishes well two minutes later, that's a success.",
-  "why": "The view lines a compaction (EventLine.compacted); PERSONALITY's Example: confused, says looking, small; character/steering/mood/confused.md",
+  "why": "The view lines a compaction (EventLine.compacted); PERSONALITY's Example: confused, says looking, small",
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "command", "at": "1m", "topic": "tests", "failed": true},

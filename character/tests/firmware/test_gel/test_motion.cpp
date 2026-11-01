@@ -47,11 +47,9 @@ bool same(const Spring& a, const Spring& b) { return a.x == b.x && a.v == b.v; }
 // and a damping (stiffness the frequency's square).
 constexpr double kModeFrequency[] = {11, 13, 18, 16}, kModeDamping[] = {4.6, 4.5, 5.3, 6};
 
-Request request(SceneState anim, const char* id) {
+Request request(SceneState anim) {
   Request r;
   r.anim = anim;
-  r.hasId = true;
-  r.id = id;
   return r;
 }
 
@@ -167,7 +165,7 @@ void test_the_motion_v1_numbers() {
       if (t == 3008 || t == 3200) {
         const auto before = modes(e->motion);
         TEST_ASSERT_TRUE(
-            e->oneShot(request(t == 3008 ? SceneState::kPoked : SceneState::kTapSpam, t == 3008 ? "p" : "s")));
+            e->play(request(t == 3008 ? SceneState::kPoked : SceneState::kTapSpam)));
         const double dv[2][4] = {{-2.6, -3.5, 3.5, 4.8}, {4.5, -2.6, 5, 0}};
         for (int i = 0; i < 4; ++i) {
           TEST_ASSERT_TRUE(e->motion.modes[i].x == before[i].x);
@@ -474,8 +472,8 @@ Facts facts(SceneState base, SceneState act = SceneState::kWorking, const char* 
 // Every setter (a mood, facts, a reaction, a borrowed face, a lost link, the
 // tags, the finger) changes what the engine aims for and never where a
 // spring is or how fast it moves, nor the clock; a poke or a shake adds to
-// the body's velocity alone. A reaction already had, and a touch while an
-// agent needs you, are refused and kick nothing. Two engines with one seed
+// the body's velocity alone. A touch while an agent needs you is refused
+// and kicks nothing. Two engines with one seed
 // fed the same draw the same, frame for frame, however another engine is
 // driven meanwhile, and another seed draws otherwise. Every frame keeps its
 // bounds.
@@ -511,24 +509,22 @@ void test_setters_keep_springs_and_replay() {
   struct Call {
     uint32_t at;
     Kind kind;
-    const char* id = "";
     bool refused = false, kicks = false;
   };
   const Call calls[] = {{1000, kHappy},
                         {2000, kWorking},
                         {3000, kTesting},
-                        {4000, kPoke, "p1", false, true},
-                        {4100, kPoke, "p1", true},  // a reaction already had
-                        {5000, kTapSpam, "t1", false, true},
+                        {4000, kPoke, false, true},
+                        {5000, kTapSpam, false, true},
                         {6000, kGrumpy},
                         {7000, kNight},
                         {8000, kNeedsYou},
-                        {9000, kPoke, "p2", true},  // a touch while an agent needs you
+                        {9000, kPoke, true},  // a touch while an agent needs you
                         {12000, kIdle},
-                        {13000, kFinish, "done"},
+                        {13000, kFinish},
                         {14000, kBorrow},
                         {15000, kLetGo},
-                        {17000, kGesture, "g1"},
+                        {17000, kGesture},
                         {19000, kClear},
                         {20000, kLost},
                         {22000, kFound},
@@ -538,7 +534,7 @@ void test_setters_keep_springs_and_replay() {
                         {25000, kAsleep},
                         {30000, kSad},
                         {33000, kIdle},
-                        {35000, kListen, "mic"},
+                        {35000, kListen},
                         {37000, kStop},
                         {40000, kWaiting}};
   // Makes the call; false when the engine refuses it.
@@ -554,28 +550,27 @@ void test_setters_keep_springs_and_replay() {
       case kNeedsYou: e.setFacts(facts(SceneState::kWorking, SceneState::kWorking, "9")); break;
       case kIdle: e.setFacts(facts(SceneState::kIdle)); break;
       case kAsleep: e.setFacts(facts(SceneState::kAsleep)); break;
-      case kPoke: return e.oneShot(request(SceneState::kPoked, k.id));
-      case kTapSpam: return e.oneShot(request(SceneState::kTapSpam, k.id));
+      case kPoke: return e.play(request(SceneState::kPoked));
+      case kTapSpam: return e.play(request(SceneState::kTapSpam));
       case kNight: e.setOccasion(tagBit("night"), 5000); break;
       case kFinish:
-        r = request(SceneState::kTaskComplete, k.id);
+        r = request(SceneState::kTaskComplete);
         r.outcome = Outcome::kSuccess;
-        return e.oneShot(r);
-      case kBorrow: e.holdExpression(slime::kProud); break;
-      case kLetGo: e.holdExpression(-1); break;
+        return e.play(r);
+      case kBorrow: e.borrow(slime::kProud); break;
+      case kLetGo: e.borrow(-1); break;
       case kGesture:
-        r = request(SceneState::kGesture, k.id);
+        r = request(SceneState::kGesture);
         r.variant = 5;
-        r.hold = true;
-        return e.oneShot(r);
-      case kClear: e.clearTransient(); break;
+        return e.play(r);
+      case kClear: e.clear(); break;
       case kLost: e.linkTimedOut(true); break;
       case kFound: e.linkTimedOut(false); break;
       case kDown: e.dragStart(q(.3), q(.2)); break;
       case kMove: e.dragMove(q(.25), q(-.15), 0); break;
       case kUp: e.dragEnd(); break;
-      case kListen: return e.oneShot(request(SceneState::kListening, k.id));
-      case kStop: r.stop = true; return e.oneShot(r);
+      case kListen: return e.play(request(SceneState::kListening));
+      case kStop: e.clear(); break;
     }
     return true;
   };
@@ -595,7 +590,7 @@ void test_setters_keep_springs_and_replay() {
     }
     // Another engine, fed otherwise, meanwhile.
     if (t % 2400 == 0) c->setMood((t / 2400) % slime::kProfiles);
-    if (t % 3100 == 0) c->oneShot(request(SceneState::kPoked, std::to_string(t).c_str()));
+    if (t % 3100 == 0) c->play(request(SceneState::kPoked));
     if (t == 9000) c->setFacts(facts(SceneState::kWorking, SceneState::kSearching));
     for (Engine* e : {a.get(), c.get(), b.get(), d.get()}) e->step(t);
     frames::check(*a, &before);
@@ -634,7 +629,7 @@ std::array<double, 3> aim(const Engine& e) {
   const double reveal = active ? std::max(kick(kSuccess), kick(kFailure)) * strength : 0;
   double present = 0;
   if (active)
-    for (int kind : {kStart, kHelper, kReply, kError, kStopped}) present = std::max(present, kick(kind));
+    for (int kind : {kStart, kReply}) present = std::max(present, kick(kind));
   present *= strength;
   const bool finish = s.route.state == SceneState::kTaskComplete;
   const bool success = finish && s.route.outcome == Outcome::kSuccess,
@@ -684,7 +679,7 @@ std::array<double, 3> aim(const Engine& e) {
                : failure ? -.035
                          : 0) *
                   reveal +
-              present * (s.route.state == SceneState::kError ? -.025 : .018) + echo[2]};
+              present * .018 + echo[2]};
 }
 
 }  // namespace
@@ -710,7 +705,6 @@ void test_the_scenes_formulas() {
       {slime::kCalm, facts(SceneState::kWorking), SceneState::kNone, Outcome::kNone, 40000},
       {slime::kCurious, facts(SceneState::kWorking, SceneState::kTerminal), SceneState::kNone, Outcome::kNone, 30000},
       {slime::kHappy, facts(SceneState::kWorking), SceneState::kReplyReady, Outcome::kNone, 6000},
-      {slime::kCalm, facts(SceneState::kWorking), SceneState::kError, Outcome::kNone, 6000},
       {slime::kHappy, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kSuccess, 6000},
       {slime::kCalm, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kFailure, 6000},
       {slime::kCalm, facts(SceneState::kWorking, SceneState::kDelegating), SceneState::kNone, Outcome::kNone, 20000},
@@ -725,10 +719,9 @@ void test_the_scenes_formulas() {
     e->setMood(run.mood);
     e->setFacts(run.facts);
     if (run.anim != SceneState::kNone) {
-      Request r = request(run.anim, "r");
+      Request r = request(run.anim);
       r.outcome = run.outcome;
-      r.hold = true;
-      TEST_ASSERT_TRUE(e->oneShot(r));
+      TEST_ASSERT_TRUE(e->play(r));
     }
     int generation = -1, iteration = -1;
     for (uint32_t t = 16; t <= run.ms; t += 16) {

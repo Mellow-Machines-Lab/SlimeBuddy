@@ -1,0 +1,14 @@
+{
+  "name": "Lonely a while after a day away, Boop asks to be petted, and a stroke answers",
+  "case": "The person comes back after more than a day away, opens claude, and doesn't touch or talk to Boop, which turns lonely. Once it has been lonely a while, an idle check-in has it ask to be petted: \"pet me?\", with its two answers. The person strokes it, which answers the question, and Boop is lonely no more: happy or comfy.",
+  "why": "asks.md's [pet lonely touch]: offered once lonely has lasted Asks.lonelyMs, its option says it's for a lonely moment; a touch answers it (the board's ev ask, touch); mood/lonely.md: a stroke ends it at once",
+  "talk": "chatty",
+  "steps": [
+    {"event": "away", "at": "0s"},
+    {"event": "back", "at": "26h", "expect": {"mood": "lonely"}},
+    {"event": "session started", "at": "26h30s"},
+    {"event": "wait", "at": "26h16m", "expect": {"sign": "pet me?"}},
+    {"event": "gesture", "at": "26h17m", "kind": "stroke"},
+    {"event": "ask answered", "at": "26h17m1s", "pick": "touch", "expect": {"mood": "comfy|happy"}}
+  ]
+}

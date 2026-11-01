@@ -107,7 +107,7 @@
 {"clock":200}
 {"t":"do","id":1,"name":"task_complete","args":{"outcome":"success","mood":"happy","loops":4,"turn":1}}
 {"clock":216}
-{"expect":{"moment":{"anim":"task_complete","variant":2}}}
+{"expect":{"moment":{"anim":"task_complete","variant":1}}}
 // One at tier2, a minute, is the confetti, held once.
 {"t":"dbg.reset"}
 {"clock":0}

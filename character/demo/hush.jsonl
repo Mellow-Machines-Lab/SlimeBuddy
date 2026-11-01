@@ -6,7 +6,7 @@
 {"agent": "prompt", "text": "Tidy up the settings page", "after": 1}
 {"brain": {"react.face": "curious", "say": "start", "react.intensity": "medium"}}
 {"you": "talk", "text": "shh, be quiet for a bit", "after": 2}
-{"brain": {"react.face": "disappointed", "react.move": "hush", "react.intensity": "medium"}, "mood": "tired", "after": 0.7, "note": "Zipped for half an hour"}
+{"brain": {"react.face": "disappointed", "react.move": "hush", "react.intensity": "medium"}, "mood": "lazy", "after": 0.7, "note": "Zipped for half an hour"}
 {"you": "poke", "after": 4}
 {"brain": {"react.face": "amused", "say": "tickled", "react.intensity": "small"}, "note": "A face, and nothing said"}
 {"agent": "edit", "file": "src/settings/page.js", "old": "legacy()", "new": "tidy()", "say": "I'll drop the old layout code.", "takes": 3}

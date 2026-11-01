@@ -35,7 +35,6 @@ void Engine::sync(int forced) {
   const int gag = scenes.gag();
   acting.setSuppressed((route.state != SceneState::kIdle && gag < 0) || grab, motion.time);
   acting.hold(gag, scenes.generation, scenes.iteration, motion.time);
-  if (route.moment) router.duration(*route.requestId, scenes.recipe.duration);
 }
 void Engine::step(uint32_t ms) {
   uint32_t delta = stamped_ ? std::min(uint32_t(ms - previous_), uint32_t(45)) : 0;
@@ -46,14 +45,9 @@ void Engine::step(uint32_t ms) {
   if (dazed_ && int32_t(dazeEnd_ - elapsedMs) <= 0) dazed_ = false;
   T dt = T::ratio(delta, 1000);
   motion.advance(dt, motion.time + dt, random);
-  router.advance(timeMs());
   sync();
   bridge.advance(dt);
-  auto ended = scenes.advance(dt, timeMs(), grab, random);
-  if (!ended.empty()) {
-    router.finish(ended);
-    sync();
-  }
+  scenes.advance(dt, timeMs(), grab, random);
   acting.advance(dt, motion.time, grab, random);
   // Held, the pull follows the finger quickly; let go, it settles back on a
   // softer spring, a wobble rather than a snap.
@@ -130,8 +124,8 @@ bool Engine::admits(const ContactEvent& c, SceneState state, bool quiet, bool pr
   if (comedy(c.kind)) return soundRandom.unit() < slime::kRoutineProbability;
   if (quiet) return false;
   if (protect && reveals(c.kind)) {
-    // The request and the contact's kind, as its key.
-    const uint64_t identity = identityKey(":" + std::to_string(c.kind), identityKey(c.requestId));
+    // What showed and the contact's kind, as one key.
+    const uint64_t identity = c.key ^ uint64_t(c.kind) << 56;
     if (revealed_.find([&](uint64_t k) { return k == identity; })) return false;
     revealed_.add(identity);
   }
@@ -153,9 +147,9 @@ void Engine::consumeCues() {
   const bool quiet = state == SceneState::kIdle || state == SceneState::kAsleep || state == SceneState::kNoApp ||
                      state == SceneState::kListening || state == SceneState::kWaiting;
   const bool protect =
-      state == SceneState::kNeedsYou || state == SceneState::kTaskComplete || state == SceneState::kError;
-  static const char* recipes[] = {"keyboard", "knock",  "squish", "ding",   "complete", "failed", nullptr, "squish",
-                                  "squish",   "squish", "failed", "squish", "sneeze",   "breath", "bounce"};
+      state == SceneState::kNeedsYou || state == SceneState::kTaskComplete;
+  static const char* recipes[] = {"keyboard", "knock",  "squish", "ding",   "complete", "failed",
+                                  nullptr,    "squish", "squish", "sneeze", "breath",   "bounce"};
   static_assert(std::size(recipes) == slime::kContactKinds, "a recipe, or none, for every contact kind");
   // The scene's contacts, then a gag's, then a rig clip's cues'.
   for (const auto* list : {&scenes.contacts, &acting.contacts, &clipContacts_})

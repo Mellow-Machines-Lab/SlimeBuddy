@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "render/gel/motion.h"
+#include "render/gel/router.h"
 #include "render/tags.h"
 namespace render::gel {
 // A profile's gestures, as slimegen sizes them: the first takes of idle and
@@ -30,12 +31,10 @@ struct Bag {
     return last;
   }
 };
-// A contact as it fires: a scene's, or a gag's (requestId "gag"), named by
-// its request, generation, iteration and index, never as one string:
-// building one on every contact cost the board's heap a few allocations
-// each.
+// A contact as it fires: a scene's, or a gag's (Shows::kGag), named by what
+// showed, its generation, iteration and index.
 struct ContactEvent {
-  std::string requestId;
+  uint64_t key = 0;
   int generation = 0, iteration = 0, index = 0;
   uint8_t kind = 0;
   int side = 0;
@@ -50,8 +49,8 @@ struct Acting {
   // its lids are closed (critically damped).
   Spring channels[6], slide, lids;
   Bag<slime::kMaxGestures> bags[slime::kProfiles];
-  // performance is the take playing (an idle occasion's numbered after the
-  // takes), or -1; playing, a recipe's gag (kGags) playing in its place.
+  // performance is the take playing, or -1; playing, a recipe's or a
+  // pastime's gag (kGags) playing in its place.
   int emotion = slime::kCalm, performance = -1, playing = -1, expression = slime::kCalm, chosen = -1, cursor = 0,
       contactCursor = 0, count = 0;
   T start, nextPerformance = 1;
@@ -60,22 +59,16 @@ struct Acting {
   // iteration): acting deals nothing of its own meanwhile.
   bool holding = false;
   int heldGeneration = 0, heldIteration = 0;
-  // The tags on and how long the look has shown (Engine::setOccasion).
-  uint32_t when = 0, lookMs = 0;
   // This step's gag contacts, the sounds of a sneeze or the zoomies.
   std::vector<ContactEvent> contacts;
   Acting() { contacts.reserve(4); }
-  // Idle's takes for an expression: its three gestures, its own gags, then
-  // every expression's idle gags.
-  static int takes(int profile) { return kGestures + slime::kProfile[profile].gagCount + slime::kIdleGagCount; }
-  // A take's gag; none for the three gestures. After the takes, idle's
-  // occasions.
+  // Idle's takes for an expression: its three gestures, then its own gags.
+  // The comedy every mood shares is the face's to deal, as pastimes.
+  static int takes(int profile) { return kGestures + slime::kProfile[profile].gagCount; }
+  // A take's gag; none for the three gestures.
   static const slime::Gag* gag(int profile, int take) {
-    const auto& p = slime::kProfile[profile];
     if (take < kGestures) return nullptr;
-    if (take >= takes(profile)) return &slime::kGags[slime::kIdleOccasions[take - takes(profile)].gag];
-    take -= kGestures;
-    return &slime::kGags[take < p.gagCount ? p.gags[take] : slime::kIdleGags[take - p.gagCount]];
+    return &slime::kGags[slime::kProfile[profile].gags[take - kGestures]];
   }
   // A take's impulses and timing.
   static const slime::Performance& gesture(int profile, int take) {
@@ -92,6 +85,11 @@ struct Acting {
   // It plays from now, and acting's own next gesture waits three seconds
   // after it ends.
   void hold(int gag, int generation, int iteration, T time);
+  // A pastime's gag (kGags), which the face dealt: it plays from now in
+  // place of the next gesture, which waits three seconds after it ends.
+  void play(int gag, T time);
+  // Gag g starts now, in place of a performance: hold's and play's start.
+  void begin(int g, T time);
   void setMood(int id, T time) {
     emotion = id;
     performance = playing = -1;

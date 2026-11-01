@@ -2,26 +2,22 @@
 // here, naming what's wrong, rather than baking a slime that can't move or
 // sound as it should. The board's behaviour is pinned by its own tests
 // (test_gel); these are the inputs' own rules.
-import {states} from './scenes.mjs';
 
 const fail=(what)=>{throw Error('slimegen: '+what);};
 
-// The mood graph: every edge goes to another mood, once, at most eight from
-// any mood; the ordinary edges alone reach every mood from every other; and
-// each intensity ladder climbs by ordinary edges.
-function graphRules(graph) {
-  const ids=Object.keys(graph.nodes);
-  for(const [id,n] of Object.entries(graph.nodes)){
-    const to=[...n.ordinary,...n.dramatic];
-    for(const next of to)if(!ids.includes(next)||next===id)fail(`${id} → ${next} isn't an edge to another mood`);
-    if(new Set(to).size!==to.length)fail(`${id} names an edge twice`);
-    if(to.length>8)fail(`${id} has ${to.length} edges, more than eight`);
-    const reached=new Set([id]),pending=[id];
-    while(pending.length)for(const next of graph.nodes[pending.pop()].ordinary)if(!reached.has(next))reached.add(next),pending.push(next);
-    if(reached.size!==ids.length)fail(`the ordinary edges from ${id} reach ${reached.size} of ${ids.length} moods`);
+// The pack's mood graph (character.json), over its lasting moods: every
+// edge goes to another lasting mood, once; and the ordinary edges alone
+// reach every lasting mood from every other.
+function graphRules(character) {
+  const lasting=character.moods.filter(m=>m.meaning),ids=lasting.map(m=>m.id),by=new Map(lasting.map(m=>[m.id,m]));
+  for(const m of lasting){
+    const to=[...m.moves.ordinary,...m.moves.dramatic];
+    for(const next of to)if(!ids.includes(next)||next===m.id)fail(`${m.id} → ${next} isn't an edge to another lasting mood`);
+    if(new Set(to).size!==to.length)fail(`${m.id} names an edge twice`);
+    const reached=new Set([m.id]),pending=[m.id];
+    while(pending.length)for(const next of by.get(pending.pop()).moves.ordinary)if(!reached.has(next))reached.add(next),pending.push(next);
+    if(reached.size!==ids.length)fail(`the ordinary edges from ${m.id} reach ${reached.size} of ${ids.length} lasting moods`);
   }
-  for(const [name,ladder] of Object.entries(graph.intensityLadders))
-    for(let i=1;i<ladder.length;i++)if(!graph.nodes[ladder[i-1]].ordinary.includes(ladder[i]))fail(`the ${name} ladder's ${ladder[i-1]} → ${ladder[i]} isn't an ordinary edge`);
 }
 
 // The expressions: one for each mood, of that mood, with its three
@@ -37,22 +33,16 @@ function expressionRules(graph,design,sound) {
     if(e.performances.length!==3)fail(`${id} has ${e.performances.length} gestures, not three`);
     for(const gag of e.gags||[])if(!design.gags[gag])fail(`${id} names no gag ${gag}`);
   }
-  for(const gag of design.idleGags)if(!design.gags[gag])fail(`idle names no gag ${gag}`);
   for(const n of design.notices)if(!design.expressions[n.face])fail(`${n.id} borrows no expression ${n.face}`);
 }
 
-// The occasions: each its own id, needing a tag or a wait, on looks the
-// board has; a gag of its own, another occasion's or a recipe's, and a
-// recipe only for looks other than idle.
-function occasionRules(design) {
-  const ids=design.occasions.map(o=>o.id);
-  if(new Set(ids).size!==ids.length)fail('two occasions share an id');
-  for(const o of design.occasions){
-    if(!o.when.length&&!o.after)fail(`${o.id} needs neither a tag nor a wait`);
-    for(const look of o.looks)if(!states.includes(look))fail(`${o.id} plays in ${look}, which isn't a state`);
-    if(typeof o.gag==='string'&&!design.occasions.some(other=>other.id===o.gag&&typeof other.gag==='object'))fail(`${o.id} borrows no gag ${o.gag}`);
+// The pastimes' bodies: each its own id, and a gag or a recipe.
+function pastimeRules(design) {
+  const ids=design.pastimes.map(o=>o.id);
+  if(new Set(ids).size!==ids.length)fail('two pastimes share an id');
+  for(const o of design.pastimes){
+    if(o.gag&&typeof o.gag!=='object')fail(`${o.id}'s gag isn't one of its own`);
     if(!o.gag&&!o.recipe)fail(`${o.id} has neither a gag nor a recipe`);
-    if(o.recipe&&o.looks.includes('idle'))fail(`${o.id} gives idle a recipe: idle's occasions are gags`);
   }
 }
 
@@ -69,9 +59,9 @@ function soundRules(sfx) {
   }
 }
 
-export function checkDesign({graph,design,sound,sfx}) {
-  graphRules(graph);
+export function checkDesign({character,graph,design,sound,sfx}) {
+  graphRules(character);
   expressionRules(graph,design,sound);
-  occasionRules(design);
+  pastimeRules(design);
   soundRules(sfx);
 }

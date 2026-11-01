@@ -13,52 +13,110 @@
 #include "render/maths.h"
 #include "render/palette.h"
 #include "render/tags.h"
+#include "rig_tables.h"  // the staged pack's (characters/charactergen.py)
 
 namespace render::gel {
 
 const PastimeInfo kPastimes[kPastimeCount] = {
-    {Pastime::kSip, "sip", SceneState::kWorking, 1, 0},
-    {Pastime::kPeek, "peek", SceneState::kWorking, 1, 0},
-    {Pastime::kHum, "hum", SceneState::kWorking, 1, 0},
-    {Pastime::kDone, "done-beat", SceneState::kWorking, 1, 0},
-    {Pastime::kPonder, "ponder", SceneState::kWorking, 2, 0},
-    {Pastime::kRead, "read", SceneState::kWorking, 2, 0},
-    {Pastime::kNod, "nod", SceneState::kWorking, 2, 0},
-    {Pastime::kBop, "bop", SceneState::kWorking, 3, 0},
-    {Pastime::kDrum, "drum", SceneState::kWorking, 3, 0},
-    {Pastime::kSticky, "sticky", SceneState::kWorking, 3, 0},
-    {Pastime::kPhonesOn, "phones-on", SceneState::kWorking, 3, 0},
-    {Pastime::kReach, "coffee-reach", SceneState::kWorking, 3, 0, true},
-    {Pastime::kRefill, "refill", SceneState::kWorking, 4, 0},
-    {Pastime::kSnack, "snack", SceneState::kWorking, 4, 0},
-    {Pastime::kMelt, "melt", SceneState::kWorking, 4, 0, true},
-    {Pastime::kStretch, "stretch-break", SceneState::kWorking, 5, 0, true},
-    {Pastime::kLookAround, "look-around", SceneState::kIdle, 1, 0},
-    {Pastime::kHopeful, "hopeful", SceneState::kIdle, 1, 0},
-    {Pastime::kHop, "hop", SceneState::kIdle, 1, 0},
-    {Pastime::kBubble, "bubble", SceneState::kIdle, 2, 0},
-    {Pastime::kFly, "fly", SceneState::kIdle, 2, 0},
-    {Pastime::kDoodle, "doodle", SceneState::kIdle, 2, 0},
-    {Pastime::kBook, "book", SceneState::kIdle, 3, 0},
-    {Pastime::kGame, "game", SceneState::kIdle, 3, 0},
-    {Pastime::kWater, "water", SceneState::kIdle, 3, 0},
-    {Pastime::kBrb, "brb", SceneState::kIdle, 4, 0},
-    {Pastime::kTower, "tower", SceneState::kIdle, 4, 0},
-    {Pastime::kDance, "dance", SceneState::kIdle, 4, 0},
-    {Pastime::kPlane, "plane", SceneState::kIdle, 4, 0},
-    {Pastime::kSnooze, "snooze", SceneState::kIdle, 5, 0},
-    {Pastime::kDream, "dream", SceneState::kIdle, 5, 0},
-    {Pastime::kSnuggle, "snuggle", SceneState::kIdle, 5, 0},
-    {Pastime::kWave, "wave", SceneState::kNeedsYou, 0, 30},
-    {Pastime::kTap, "tap", SceneState::kNeedsYou, 0, 120},
-    {Pastime::kWatch, "watch", SceneState::kNeedsYou, 0, 300},
-    {Pastime::kDrowsy, "drowsy", SceneState::kNeedsYou, 0, 600},
-    {Pastime::kRollOver, "roll-over", SceneState::kAsleep, 0, 60},
-    {Pastime::kSheep, "sheep", SceneState::kAsleep, 0, 120},
-    {Pastime::kSnoreBubble, "snore-bubble", SceneState::kAsleep, 0, 240},
+    {Pastime::kSip, Body::kClip, "sip", SceneState::kWorking, 1, 0},
+    {Pastime::kPeek, Body::kClip, "peek", SceneState::kWorking, 1, 0},
+    {Pastime::kHum, Body::kClip, "hum", SceneState::kWorking, 1, 0},
+    {Pastime::kDone, Body::kClip, "done-beat", SceneState::kWorking, 1, 0},
+    {Pastime::kPonder, Body::kClip, "ponder", SceneState::kWorking, 2, 0},
+    {Pastime::kRead, Body::kClip, "read", SceneState::kWorking, 2, 0},
+    {Pastime::kNod, Body::kClip, "nod", SceneState::kWorking, 2, 0},
+    {Pastime::kBop, Body::kClip, "bop", SceneState::kWorking, 3, 0},
+    {Pastime::kDrum, Body::kClip, "drum", SceneState::kWorking, 3, 0},
+    {Pastime::kSticky, Body::kClip, "sticky", SceneState::kWorking, 3, 0},
+    {Pastime::kPhonesOn, Body::kClip, "phones-on", SceneState::kWorking, 3, 0},
+    {Pastime::kReach, Body::kClip, "coffee-reach", SceneState::kWorking, 3, 0, nullptr, true},
+    {Pastime::kRefill, Body::kClip, "refill", SceneState::kWorking, 4, 0},
+    {Pastime::kSnack, Body::kClip, "snack", SceneState::kWorking, 4, 0},
+    {Pastime::kMelt, Body::kClip, "melt", SceneState::kWorking, 4, 0, nullptr, true},
+    {Pastime::kStretch, Body::kClip, "stretch-break", SceneState::kWorking, 5, 0, nullptr, true},
+    {Pastime::kLimber, Body::kClip, "stretch", SceneState::kWorking, 4, 0},
+    {Pastime::kBusyTyping, Body::kTake, "busy-typing", SceneState::kWorking, 0, 0, "busy"},
+    {Pastime::kFranticTyping, Body::kTake, "frantic-typing", SceneState::kWorking, 0, 0, "frantic"},
+    {Pastime::kLookAround, Body::kClip, "look-around", SceneState::kIdle, 1, 0},
+    {Pastime::kHopeful, Body::kClip, "hopeful", SceneState::kIdle, 1, 0},
+    {Pastime::kHop, Body::kClip, "hop", SceneState::kIdle, 1, 0},
+    {Pastime::kBubble, Body::kClip, "bubble", SceneState::kIdle, 2, 0},
+    {Pastime::kDoodle, Body::kClip, "doodle", SceneState::kIdle, 2, 0},
+    {Pastime::kBook, Body::kClip, "book", SceneState::kIdle, 3, 0},
+    {Pastime::kGame, Body::kClip, "game", SceneState::kIdle, 3, 0},
+    {Pastime::kWater, Body::kClip, "water", SceneState::kIdle, 3, 0},
+    {Pastime::kBrb, Body::kClip, "brb", SceneState::kIdle, 4, 0},
+    {Pastime::kTower, Body::kClip, "tower", SceneState::kIdle, 4, 0},
+    {Pastime::kDance, Body::kClip, "dance", SceneState::kIdle, 4, 0},
+    {Pastime::kPlane, Body::kClip, "plane", SceneState::kIdle, 4, 0},
+    {Pastime::kSnooze, Body::kClip, "snooze", SceneState::kIdle, 5, 0},
+    {Pastime::kDaydream, Body::kClip, "daydream", SceneState::kIdle, 5, 0},
+    {Pastime::kSnuggle, Body::kClip, "snuggle", SceneState::kIdle, 5, 0},
+    {Pastime::kYawn, Body::kGag, "yawn-and-settle", SceneState::kIdle, 1, 0},
+    {Pastime::kSneeze, Body::kGag, "sneeze-and-shake", SceneState::kIdle, 1, 0},
+    {Pastime::kMorningStretch, Body::kGag, "pastime:morning-stretch", SceneState::kIdle, 0, 0, "morning"},
+    {Pastime::kNightDrowse, Body::kGag, "pastime:night-drowse", SceneState::kIdle, 0, 0, "night"},
+    {Pastime::kPartyBounce, Body::kGag, "pastime:party-bounce", SceneState::kIdle, 0, 0, "party|newyear|lunar|programmers"},
+    {Pastime::kFridaySway, Body::kGag, "pastime:friday-sway", SceneState::kIdle, 0, 0, "friday"},
+    {Pastime::kWinterShiver, Body::kGag, "pastime:winter-shiver", SceneState::kIdle, 0, 0, "winter"},
+    {Pastime::kHalloweenWobble, Body::kGag, "pastime:halloween-wobble", SceneState::kIdle, 0, 0, "halloween"},
+    {Pastime::kValentinesSwoon, Body::kGag, "pastime:valentines-swoon", SceneState::kIdle, 0, 0, "valentines"},
+    {Pastime::kWave, Body::kClip, "wave", SceneState::kNeedsYou, 0, 30},
+    {Pastime::kTap, Body::kClip, "tap", SceneState::kNeedsYou, 0, 120},
+    {Pastime::kWatch, Body::kClip, "watch", SceneState::kNeedsYou, 0, 300},
+    {Pastime::kDrowsy, Body::kClip, "drowsy", SceneState::kNeedsYou, 0, 600},
+    {Pastime::kRollOver, Body::kClip, "roll-over", SceneState::kAsleep, 0, 60},
+    {Pastime::kSheep, Body::kClip, "sheep", SceneState::kAsleep, 0, 120},
+    {Pastime::kSnoreBubble, Body::kClip, "snore-bubble", SceneState::kAsleep, 0, 240},
+    {Pastime::kDeepSnore, Body::kTake, "deep-snore", SceneState::kAsleep, 0, 0, "night"},
+    {Pastime::kDream, Body::kTake, "dream", SceneState::kAsleep, 0, 1800},
 };
 
 const PastimeInfo& info(Pastime p) { return kPastimes[std::clamp(int(p), 1, kPastimeCount) - 1]; }
+
+namespace {
+// A row as the pack has it, found by name once and kept: the tag bits any
+// one of which it needs, and its body.
+struct Resolved {
+  bool found = false;
+  uint32_t tags = 0;
+  const rig::Clip* clip = nullptr;
+  int gag = -1, take = -1;
+};
+const Resolved& resolved(const PastimeInfo& p) {
+  static Resolved table[kPastimeCount];
+  Resolved& r = table[std::clamp(int(p.id), 1, kPastimeCount) - 1];
+  if (r.found) return r;
+  r.found = true;
+  for (const char* tag = p.tag; tag && *tag;) {
+    const char* end = std::strchr(tag, '|');
+    const size_t n = end ? size_t(end - tag) : std::strlen(tag);
+    char name[24] = {};
+    std::memcpy(name, tag, std::min(n, sizeof name - 1));
+    r.tags |= tagBit(name);
+    tag = end ? end + 1 : nullptr;
+  }
+  if (p.body == Body::kClip) r.clip = rig::kRig.clip(p.name);
+  if (p.body == Body::kGag)
+    for (int i = 0; i < slime::kGagCount && r.gag < 0; ++i)
+      if (!std::strcmp(p.name, slime::kGags[i].gesture.type)) r.gag = i;
+  if (p.body == Body::kTake)
+    for (int i = 0; i < slime::kPastimeTakeCount && r.take < 0; ++i)
+      if (!std::strcmp(p.name, slime::kPastimeTakes[i].id)) r.take = i;
+  return r;
+}
+}  // namespace
+
+const rig::Clip* clipOf(const PastimeInfo& p) { return resolved(p).clip; }
+int gagOf(const PastimeInfo& p) { return resolved(p).gag; }
+int takeOf(const PastimeInfo& p) { return resolved(p).take; }
+bool hasBody(const PastimeInfo& p) { return clipOf(p) || gagOf(p) >= 0 || takeOf(p) >= 0; }
+uint32_t tagsOf(const PastimeInfo& p) { return resolved(p).tags; }
+
+bool fits(const PastimeInfo& p, uint32_t when, uint32_t lookMs) {
+  const uint32_t tags = tagsOf(p);
+  return render::fits(tierBit(p.tier), p.afterS, when, lookMs) && (!tags || (when & tags));
+}
 
 Pastime pastimeFor(const char* reply) {
   for (const auto& r : kReplyPastimes)
@@ -94,8 +152,7 @@ constexpr uint16_t kMug = rgb565(214, 92, 84), kMugDark = rgb565(150, 56, 52), k
                    kGlass = rgb565(170, 196, 206),
                    kCheese = rgb565(255, 214, 96), kPepperoni = rgb565(200, 60, 50), kStar = rgb565(255, 240, 170),
                    kBlanket = rgb565(150, 104, 200), kBlanketDark = rgb565(104, 66, 150),
-                   kPlaid = rgb565(214, 186, 240), kFly = rgb565(30, 30, 36),
-                   kWing = rgb565(200, 230, 250), kBubbleRim = rgb565(190, 236, 255), kBook = rgb565(206, 72, 88),
+                   kPlaid = rgb565(214, 186, 240), kBubbleRim = rgb565(190, 236, 255), kBook = rgb565(206, 72, 88),
                    kPage = rgb565(250, 246, 232), kLine = rgb565(170, 170, 190), kConsole = rgb565(124, 104, 210),
                    kScreen = rgb565(150, 230, 170), kCan = rgb565(90, 180, 120), kWater = rgb565(110, 190, 255),
                    kPaper = rgb565(250, 250, 255), kGold = rgb565(232, 190, 80), kSheep = rgb565(250, 250, 246),
@@ -893,29 +950,6 @@ void blow(const Stage& s, const PastimeShow& p, int from, int popAt) {
   }
 }
 
-// Where the fly is `age` in: looping round its head, then off up and away.
-Point flyAt(const Stage& s, int age) {
-  if (age < 3600)
-    return {s.eyesX() + s.X(150) * sinT(age * 1000 / 1600) / 1000,
-            s.crownY() + s.Y(44) + s.Y(36) * sinT(age * 2000 / 1600) / 1000};
-  const int k = eased(age, 3700, 4500);
-  const Point from{s.eyesX() + s.X(150), s.crownY() + s.Y(44)};
-  return {mix(from.x, s.X(540), k), mix(from.y, -s.Y(30), k)};
-}
-
-void fly(const Stage& s, const PastimeShow& p) {
-  Raster& r = s.r;
-  const int age = int(p.age);
-  const Point f = flyAt(s, age);
-  const int flap = (p.t / 40) % 2;
-  r.alpha = 170;
-  r.disk(f.x - 3, f.y - 4 - flap, 4, kWing);
-  r.disk(f.x + 3, f.y - 4 - flap, 4, kWing);
-  r.alpha = 255;
-  r.disk(f.x, f.y, 3, kFly);
-  if (age % 1200 < 500) say(r, "bzz", f.x + s.X(22), f.y - s.Y(12), kGrey);
-}
-
 // A heart drawn on the glass with a fingertip, then admired.
 void doodle(const Stage& s, const PastimeShow& p) {
   Raster& r = s.r;
@@ -1307,7 +1341,6 @@ void paintPastimes(Surface& surface, const PastimeShow& show, const rig::Anchors
     case Pastime::kHopeful: hopeful(s, show); break;
     case Pastime::kHop: hop(s, show); break;
     case Pastime::kBubble: blow(s, show, 300, 3400); break;
-    case Pastime::kFly: fly(s, show); break;
     case Pastime::kDoodle: doodle(s, show); break;
     case Pastime::kBook: book(s, show); break;
     case Pastime::kGame: game(s, show); break;
@@ -1320,7 +1353,7 @@ void paintPastimes(Surface& surface, const PastimeShow& show, const rig::Anchors
       zs(r, s.rightX() + s.X(8), s.sideY(), int(show.age));
       snore(s, show, 5000);
       break;
-    case Pastime::kDream:
+    case Pastime::kDaydream:
     case Pastime::kSheep: dream(s, s.X(392), s.Y(56), int(show.age)); break;
     case Pastime::kSnuggle:
       blanket(s, show);

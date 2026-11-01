@@ -181,13 +181,13 @@ static void test_request_identity_and_cache_bounds() {
     }
   }
   TEST_ASSERT_EQUAL_INT(80, dings);
-  TEST_ASSERT_EQUAL_INT(64, e->scenes.alerts.size());
+  TEST_ASSERT_TRUE(e->scenes.alert.key == showKey(Shows::kNeedsYou, 80));
 }
-// The bounded histories (moments seen, saved alerts and
-// moments, cue identities) keep their 64 entries as keys in fixed tables
-// inside the engine. A hundred distinct needs-you requests with long names
-// and a hundred moments, each remembered, leave the heap where it was; as
-// strings they held about 25 KB of the board's internal RAM.
+// What the engine keeps of what showed (the alert and the reaction held,
+// and the reveals' bounded history) is numbers inside the engine. A hundred
+// distinct needs-you requests with long names and a hundred reactions leave
+// the heap where it was; as strings they held about 25 KB of the board's
+// internal RAM.
 static void test_histories_stay_off_the_heap() {
   auto e = std::make_unique<Engine>();
   e->step(0);
@@ -202,14 +202,13 @@ static void test_histories_stay_off_the_heap() {
     for (int k = 0; k < 40; ++k) e->step(t += 16);
     e->setFacts(Facts{});
     Request r;
-    r.anim = i % 2 ? SceneState::kPoked : SceneState::kTaskComplete, r.hasId = true, r.id = "moment-" + std::to_string(i);
-    r.outcome = Outcome::kSuccess, r.hold = true;
-    e->oneShot(r);
+    r.anim = i % 2 ? SceneState::kPoked : SceneState::kTaskComplete;
+    r.outcome = Outcome::kSuccess;
+    e->play(r);
     for (int k = 0; k < 40; ++k) e->step(t += 16);
-    e->clearTransient();
+    e->clear();
   }
-  TEST_ASSERT_EQUAL_INT(64, e->scenes.alerts.size());
-  TEST_ASSERT_EQUAL_INT(64, e->scenes.moments.size());
+  TEST_ASSERT_TRUE(shows(e->scenes.alert.key) == Shows::kNeedsYou && shows(e->scenes.held.key) == Shows::kReaction);
   TEST_ASSERT_TRUE_MESSAGE(allocLive - before < 2048, std::to_string(allocLive - before).c_str());
 }
 static void test_grid_voice_lead_and_late_cues() {
@@ -244,11 +243,8 @@ static void test_external_source_holds_without_repeating_reveal() {
   Request req;
   req.anim = SceneState::kTaskComplete;
   req.outcome = Outcome::kSuccess;
-  req.hasId = true;
-  req.id = "held";
-  req.hold = true;
   req.variant = 0;
-  e->oneShot(req);
+  e->play(req);
   int reveals = 0;
   for (int t = 16; t <= 6400; t += 16) {
     e->step(t);
@@ -257,55 +253,33 @@ static void test_external_source_holds_without_repeating_reveal() {
   }
   TEST_ASSERT_EQUAL_INT(1, reveals);
   TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTaskComplete);
-  TEST_ASSERT_TRUE(e->scenes.visible(Scenes::kResultProp, e->timeMs()) == F(0));
-  e->clearTransient();
+  e->clear();
   TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTesting);
 }
 // A card revealed late, in its recipe's last 480 ms (no recipe's is yet),
 // still shows: it rises whole over kCardRevealMs, then falls over the
-// recovery, where it never rose at all.
+// recovery, where it never rose at all. The start's, the one card left.
 static void test_a_card_revealed_late_rises_then_falls() {
   auto e = std::make_unique<Engine>();
   e->step(0);
   Request req;
-  req.anim = SceneState::kTaskComplete;
-  req.outcome = Outcome::kFailure;
-  req.hold = true;
-  e->oneShot(req);
+  req.anim = SceneState::kStarting;
+  req.ctx = StartCtx::kNewTask;
+  e->play(req);
   e->step(16);
   slime::Recipe& r = e->scenes.recipe;
   int moved = 0;
   for (int i = 0; i < r.count; ++i)
-    if (r.contacts[i].kind == kFailure) r.contacts[i].at = r.duration - T(200), ++moved;
+    if (r.contacts[i].kind == kStart) r.contacts[i].at = r.duration - T(200), ++moved;
   TEST_ASSERT_EQUAL_INT(1, moved);
   const int end = F(r.duration + T(1000)).integer();
   F most = 0;
   for (int t = 32; t <= end; t += 16) {
     e->step(uint32_t(t));
-    most = max(most, e->scenes.visible(Scenes::kResultProp, e->timeMs()));
+    most = max(most, e->scenes.visible(Scenes::kStartProp, e->timeMs()));
   }
   TEST_ASSERT_TRUE(most > q(.99));
-  TEST_ASSERT_TRUE(e->scenes.visible(Scenes::kResultProp, e->timeMs()) == F(0));
-}
-// A failure or a reply whose finish names whose turn it was shows no card:
-// its ticket takes the card's place (render/gel/done.h).
-static void test_a_named_finish_shows_no_card() {
-  for (bool named : {false, true}) {
-    auto e = std::make_unique<Engine>();
-    e->step(0);
-    e->scenes.cardless = named;
-    Request req;
-    req.anim = SceneState::kTaskComplete;
-    req.outcome = Outcome::kFailure;
-    req.hold = true;
-    e->oneShot(req);
-    F most = 0;
-    for (int t = 16; t <= 6400; t += 16) {
-      e->step(uint32_t(t));
-      most = max(most, e->scenes.visible(Scenes::kResultProp, e->timeMs()));
-    }
-    TEST_ASSERT_TRUE(named ? most == F(0) : most > q(.99));
-  }
+  TEST_ASSERT_TRUE(e->scenes.visible(Scenes::kStartProp, e->timeMs()) == F(0));
 }
 // A finished turn's marks (render/gel/done.h). The glow comes over
 // kGlowInMs to kGlowPeak at the panel's edge (a reply's to kGlowPeakFaint),
@@ -385,46 +359,6 @@ static void test_a_finished_turn_glows_and_hangs_a_ticket() {
   paintTicket(s, d);
   TEST_ASSERT_EQUAL_INT(0, lit(0, 1, kW, kH));
 }
-// Every result card has a mark over its label, none an empty top half: a
-// cross for a failure or a tool error, a soft stop square when stopped,
-// three dots for the other neutral ones (a finish with no outcome, a reply
-// ready). A success shows its trophy and no card (render/gel/finish.h).
-static void test_every_result_card_has_a_mark() {
-  struct Card {
-    SceneState anim;
-    Outcome outcome;
-    uint16_t fill;
-  };
-  const uint16_t bad = rgb565(62, 43, 56), neutral = rgb565(36, 56, 71);
-  const Card cards[] = {{SceneState::kTaskComplete, Outcome::kFailure, bad},
-                        {SceneState::kError, Outcome::kNone, bad},
-                        {SceneState::kTaskComplete, Outcome::kNone, neutral},
-                        {SceneState::kReplyReady, Outcome::kNone, neutral},
-                        {SceneState::kStopped, Outcome::kNone, neutral}};
-  constexpr int kW = 502, kH = 410;
-  std::vector<uint16_t> px(kW * kH);
-  Surface s{kW, kH, px.data()};
-  for (const Card& card : cards) {
-    auto e = std::make_unique<Engine>();
-    e->step(0);
-    Request req;
-    req.anim = card.anim;
-    req.outcome = card.outcome;
-    req.hold = true;
-    e->oneShot(req);
-    for (int t = 16; t <= 2400; t += 16) e->step(uint32_t(t));
-    s.invalidate(), s.clear();
-    paint(s, *e);
-    int marked = 0, filled = 0;  // between the card's sides, over its label
-    for (int y = kH * 95 / 1000; y < kH * 180 / 1000; ++y)
-      for (int x = kW * 440 / 1000; x < kW * 560 / 1000; ++x) {
-        const uint16_t v = px[size_t(y) * kW + x];
-        filled += v == card.fill, marked += v != card.fill;
-      }
-    TEST_ASSERT_TRUE_MESSAGE(filled > 1000, "the card shows");
-    TEST_ASSERT_TRUE_MESSAGE(marked > 40, "with a mark over its label");
-  }
-}
 // An alert interrupted before
 // its knocks and ding resumes where it stopped, so each plays exactly once;
 // one interrupted after them returns to its silent hold. Interrupted by
@@ -454,18 +388,15 @@ static void test_interrupted_alert_signals_exactly_once() {
       run(after);
       Request mic;
       mic.anim = SceneState::kListening;
-      mic.hasId = true;
-      mic.id = "mic";
       if (timeout)
         e->linkTimedOut(true);
       else
-        e->oneShot(mic);
+        e->play(mic);
       run(640);
-      mic.stop = true;
       if (timeout)
         e->linkTimedOut(false);
       else
-        e->oneShot(mic);
+        e->clear();
       TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kNeedsYou);
       TEST_ASSERT_TRUE(e->scenes.quietRestored);
       run(4800);
@@ -559,10 +490,10 @@ static void test_face_and_props_move_without_jumps() {
     if (t == 160 || t == 1600) {
       Request mic;
       mic.anim = SceneState::kListening;
-      mic.hasId = true;
-      mic.id = "mic" + std::to_string(t);
-      mic.stop = t == 1600;
-      e->oneShot(mic);
+      if (t == 1600)
+        e->clear();
+      else
+        e->play(mic);
     }
     e->step(t);
     F now = e->scenes.visible(Scenes::kAlertProp, e->timeMs());
@@ -1124,43 +1055,47 @@ static void test_timing_comes_from_the_recipe_table() {
   // A finish's result reaches the strip (screens.cpp's tick or cross).
   TEST_ASSERT_TRUE(f.outcome(Mood::kSad, SceneState::kTaskComplete, 1, Outcome::kFailure) == Outcome::kFailure);
 }
-// Idle's takes are an expression's three gestures,
-// its own gags and the three idle gags, and its bag deals the gags from its
-// second round. A yawn stretches up with its eyes squeezed; a doze droops
-// the lids and sinks the dome, then snaps open with a blink; the zoomies
-// slide it edge to edge and back; a sneeze is a contact a second in that
-// may sound, lurching it forward, all off the heap; the long yawn ends
-// heavy-lidded, then wakes. Asleep snores only after a round of still
+// Idle's takes are an expression's three gestures and its own gags, and
+// its bag deals the gags from its second round; the comedy every mood
+// shares, the yawn and the sneeze, is the face's to deal, as pastimes. A
+// yawn stretches up with its eyes squeezed; the zoomies slide it edge to
+// edge and back; a sneeze is a contact a second in that may sound,
+// lurching it forward, all off the heap; the long yawn ends heavy-lidded,
+// then wakes. Asleep snores only after a round of still
 // rests, and a lost link never.
 static void test_comedy_plays_in_idle_and_asleep() {
-  TEST_ASSERT_EQUAL_INT(7, slime::kMaxGestures);
-  TEST_ASSERT_EQUAL_INT(6, Acting::takes(slime::kCalm));
+  TEST_ASSERT_EQUAL_INT(4, slime::kMaxGestures);
+  TEST_ASSERT_EQUAL_INT(3, Acting::takes(slime::kCalm));
   for (int p : {slime::kBored, slime::kTired, slime::kLazy, slime::kComfy, slime::kExcited})
-    TEST_ASSERT_EQUAL_INT(7, Acting::takes(p));
+    TEST_ASSERT_EQUAL_INT(4, Acting::takes(p));
   TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 2));
-  const char* calm[] = {"yawn-and-settle", "doze-and-snap", "sneeze-and-shake"};
-  for (int i = 0; i < 3; ++i) TEST_ASSERT_EQUAL_STRING(calm[i], Acting::gesture(slime::kCalm, 3 + i).type);
+  const int yawning = gagOf(info(Pastime::kYawn)), sneezing = gagOf(info(Pastime::kSneeze));
+  TEST_ASSERT_EQUAL_STRING("yawn-and-settle", slime::kGags[yawning].gesture.type);
+  TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", slime::kGags[sneezing].gesture.type);
   TEST_ASSERT_EQUAL_STRING("long-yawn", Acting::gesture(slime::kTired, 3).type);
   TEST_ASSERT_EQUAL_STRING("zoomies", Acting::gesture(slime::kExcited, 3).type);
-  TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", Acting::gesture(slime::kExcited, 6).type);
   // The bag: its first round the three gestures, then every take, never the last again.
   Bag<slime::kMaxGestures> bag;
   Random random(53);
-  int dealt[15], seen[2][6]{};
-  for (int& d : dealt) d = bag.next(random, 6);
-  for (int i = 0; i < 15; ++i) {
+  int dealt[11], seen[2][4]{};
+  for (int& d : dealt) d = bag.next(random, 4);
+  for (int i = 0; i < 11; ++i) {
     if (i < 3) TEST_ASSERT_TRUE(dealt[i] < 3);
-    if (i >= 3) ++seen[(i - 3) / 6][dealt[i]];
+    if (i >= 3) ++seen[(i - 3) / 4][dealt[i]];
     if (i) TEST_ASSERT_TRUE(dealt[i] != dealt[i - 1]);
   }
   for (const auto& round : seen)
     for (int n : round) TEST_ASSERT_EQUAL_INT(1, n);
-  auto play = [](int profile, int take, uint32_t ms) {
+  // A take of its own, or with `gag`, that gag as the face deals it.
+  auto play = [](int profile, int take, uint32_t ms, int gag = -1) {
     auto e = std::make_unique<Engine>();
     e->setMood(profile);
     e->step(0);
     e->step(16);
-    e->acting.perform(e->motion.time, e->random, take);
+    if (gag >= 0)
+      e->playGag(gag);
+    else
+      e->acting.perform(e->motion.time, e->random, take);
     std::vector<std::array<F, 6>> frames;  // closure, slide, squash, lift, forward, the eyes' closing
     for (uint32_t t = 32; t <= 32 + ms; t += 16) {
       e->step(t);
@@ -1173,25 +1108,19 @@ static void test_comedy_plays_in_idle_and_asleep() {
   auto at = [](const std::vector<std::array<F, 6>>& frames, double s) {
     return frames[size_t(std::lround(s * 1000 / 16)) - 1];
   };
-  const auto yawn = play(slime::kCalm, 3, 3000);
+  const auto yawn = play(slime::kCalm, 0, 3000, yawning);
   TEST_ASSERT_TRUE(at(yawn, 1.2)[3] > q(.04) && at(yawn, 1.2)[5] > q(.7));
-  const auto doze = play(slime::kCalm, 4, 3600);
-  for (int at : {75, 100, 125, 150}) TEST_ASSERT_TRUE(doze[at][0] > q(.55));  // 1.2 to 2.4 s
-  TEST_ASSERT_TRUE(doze[112][2] < doze[0][2] - q(.03));                       // it sinks
-  F snap = 0;
-  for (int at = 160; at < 180; ++at) snap = max(snap, doze[at][0]);
-  TEST_ASSERT_TRUE(snap > q(.7) && doze[200][0] < q(.05));  // a blink, then open
   const auto zoom = play(slime::kExcited, 3, 3600);
   F most = 0, least = 0;
   for (const auto& f : zoom) most = max(most, f[1]), least = min(least, f[1]);
   TEST_ASSERT_TRUE(most > q(.45) && least < q(-.45) && abs(zoom.back()[1]) < q(.02));
-  TEST_ASSERT_TRUE(at(play(slime::kCalm, 5, 2800), 1.15)[4] > q(.08));  // the sneeze lurches forward
+  TEST_ASSERT_TRUE(at(play(slime::kCalm, 0, 2800, sneezing), 1.15)[4] > q(.08));  // the sneeze lurches forward
   const auto longYawn = play(slime::kTired, 3, 5400);
   TEST_ASSERT_TRUE(at(longYawn, 3.2)[5] > q(.35) && at(longYawn, 5)[5] < q(.05));
   // A sneeze is one contact, a second in, and allocates nothing.
   auto e = std::make_unique<Engine>();
   e->step(0);
-  e->acting.perform(e->motion.time, e->random, 5);
+  e->playGag(sneezing);
   int sneezes = 0;
   allocCount = 0;
   allocCounting = true;
@@ -1289,7 +1218,6 @@ static void test_each_gesture_plays_its_own_gag() {
     std::snprintf(type, sizeof type, "gesture:%s", gestureName(Gesture(g)));
     TEST_ASSERT_EQUAL_STRING(type, slime::kGags[r.gag].gesture.type);
     TEST_ASSERT_TRUE(slime::kGestureFaces[g] >= 0 && slime::kGestureFaces[g] < slime::kProfiles);
-    TEST_ASSERT_EQUAL_UINT8(g, f.pick(SceneState::kGesture, Mood::kHappy, g + 1, Outcome::kNone, StartCtx::kNone, rng));
     TEST_ASSERT_EQUAL_UINT32(uint32_t(F(r.duration).integer()), f.loopMs(Mood::kHappy, SceneState::kGesture, g));
   }
   const uint32_t random = f.engine().random.state;
@@ -1624,101 +1552,22 @@ static void test_a_notice_plays_its_rig_clip() {
     TEST_ASSERT_EQUAL_MEMORY(&rig::kRest, &face.mixer().channels(), sizeof rig::kRest);
   }
 }
-// A look's takes for tags and waits, dealt only
-// while they fit, and only the one that fits. Idle drowses at night,
-// stretches in the morning, bounces at a party and at New Year's (the
-// party's own bounce), and nods off at idle's last tier, tier5, by that tag
-// alone however long it has shown; with no tag on, or tags none needs, it
-// plays none. Work types busier while busy and frantically while frantic,
-// and plays nothing of its own at tier4 (the rig's stretch and the
-// pastimes play there: test_a_rig_clip_plays_on_the_gel); asleep snores
-// deeper at night and dreams after half an hour.
-static void test_occasions_play_only_while_they_fit() {
-  // The occasions idle played, by their gags.
-  auto idle = [](uint32_t when, uint32_t lookMs) {
-    auto e = std::make_unique<Engine>();
-    e->setOccasion(when, lookMs);
-    std::set<std::string> played;
-    int last = -1;
-    for (uint32_t t = 0; t <= 120000; t += 16) {
-      e->step(t);
-      if (e->acting.performance != last && e->acting.performance >= Acting::takes(e->emotion)) {
-        const auto& o = slime::kIdleOccasions[e->acting.performance - Acting::takes(e->emotion)];
-        TEST_ASSERT_TRUE(fits(o.when, o.after, when, lookMs));
-        played.insert(slime::kGags[o.gag].gesture.type);
-      }
-      last = e->acting.performance;
-    }
-    return played;
-  };
-  using Played = std::set<std::string>;
-  TEST_ASSERT_TRUE(idle(0, 0).empty());
-  TEST_ASSERT_TRUE(idle(tagBit("day") | tagBit("weekend"), 0).empty());
-  TEST_ASSERT_TRUE((idle(tagBit("night"), 0) == Played{"occasion:night-drowse"}));
-  TEST_ASSERT_TRUE((idle(tagBit("morning"), 0) == Played{"occasion:morning-stretch"}));
-  TEST_ASSERT_TRUE((idle(tagBit("party"), 0) == Played{"occasion:party-bounce"}));
-  TEST_ASSERT_TRUE((idle(tagBit("newyear"), 0) == Played{"occasion:party-bounce"}));
-  TEST_ASSERT_TRUE(idle(0, 7200000).empty());
-  TEST_ASSERT_TRUE((idle(tagBit("tier5"), 0) == Played{"occasion:nod-off"}));
-  // Work: an occasion's take is numbered after the row's own; the ones
-  // played, as kLookOccasions numbers them.
-  auto work = [](SceneState base, uint32_t when, uint32_t lookMs) {
-    auto e = std::make_unique<Engine>();
-    Facts facts;
-    facts.base = base;
-    e->setFacts(facts);
-    e->setOccasion(when, lookMs);
-    std::set<int> played;
-    for (uint32_t t = 0; t <= 60000; t += 16) {
-      e->step(t);
-      if (e->scenes.variant >= takes(int(base))) {
-        const int i = e->scenes.variant - takes(int(base));
-        const auto& o = slime::kLookOccasions[i];
-        TEST_ASSERT_EQUAL_INT(int(base), o.row);
-        TEST_ASSERT_TRUE(fits(o.when, o.after, when, lookMs));
-        played.insert(i);
-      }
-    }
-    return played;
-  };
-  // Exactly one occasion played: the one that needs these tags and this
-  // wait, with this gag (or none).
-  auto only = [](const std::set<int>& played, uint32_t when, uint16_t after, const char* gag) {
-    TEST_ASSERT_EQUAL_INT(1, int(played.size()));
-    const auto& o = slime::kLookOccasions[*played.begin()];
-    TEST_ASSERT_TRUE(o.when == when && o.after == after);
-    if (gag)
-      TEST_ASSERT_EQUAL_STRING(gag, slime::kGags[o.recipe.gag].gesture.type);
-    else
-      TEST_ASSERT_EQUAL_INT(-1, o.recipe.gag);
-  };
-  TEST_ASSERT_TRUE(work(SceneState::kWorking, 0, 0).empty());
-  TEST_ASSERT_TRUE(busyTags(2) == tagBit("busy") && busyTags(5) == tagBit("frantic"));
-  only(work(SceneState::kWorking, busyTags(2), 0), tagBit("busy"), 0, nullptr);
-  only(work(SceneState::kWorking, busyTags(5), 0), tagBit("frantic"), 0, nullptr);
-  TEST_ASSERT_TRUE(work(SceneState::kWorking, 0, 7200000).empty());
-  TEST_ASSERT_TRUE(work(SceneState::kWorking, tagBit("tier4"), 0).empty());
-  only(work(SceneState::kAsleep, tagBit("night"), 0), tagBit("night"), 0, nullptr);
-  only(work(SceneState::kAsleep, 0, 1800000), 0, 1800, "occasion:dream");
-  TEST_ASSERT_TRUE(work(SceneState::kAsleep, 0, 1799000).empty());
-}
-// A clip authored once in the pack's rig/clips/ plays on the gel: the
-// look's occasion (rig/looks.json, working's stretch from tier4) through
-// its mixer, laid over the engine's pose (applyRig), dealt with its
-// pastimes (test_pastimes_are_dealt_by_tier_after_a_rest). Without the tag
+// A clip authored once in the pack's rig/clips/ plays on the gel: work's
+// stretch from tier4, a row of its pastimes (kLimber), through its mixer,
+// laid over the engine's pose (applyRig). The rig's working look has no
+// occasions of its own: the gel's pastimes are one table. Without the tier
 // it doesn't play; the mixer stays at rest, so nothing it draws changes;
 // and a reaction fades it out.
 static void test_a_rig_clip_plays_on_the_gel() {
   const rig::Clip* stretch = rig::kRig.clip("stretch");
   TEST_ASSERT_NOT_NULL(stretch);
-  const rig::Look* working = rig::kRig.look(SceneState::kWorking);
-  TEST_ASSERT_EQUAL_INT(1, working->fitting(tagBit("tier4"), 0));
-  TEST_ASSERT_EQUAL_PTR(stretch, working->fitting(tagBit("tier4") | tagBit("day"), 0, 0));
-  TEST_ASSERT_EQUAL_INT(0, working->fitting(tagBit("tier3"), 0));
+  TEST_ASSERT_EQUAL_PTR(stretch, clipOf(info(Pastime::kLimber)));
+  TEST_ASSERT_EQUAL_INT(4, info(Pastime::kLimber).tier);
+  TEST_ASSERT_EQUAL_INT(0, rig::kRig.look(SceneState::kWorking)->fitting(tagBit("tier4"), 0));
   // The tallest squash and the most shut eyes the gel's mixer reaches at
-  // work, over two minutes while no pastime of its own plays (a look's
-  // occasion, then), and when it first left rest. The Mac's state comes
-  // every 10 s, as it does, so the link stays up.
+  // work, over five minutes while the stretch plays, and when it first
+  // left rest. The Mac's state comes every 10 s, as it does, so the link
+  // stays up.
   struct Seen {
     int squash = 0, open = 1000;
     uint32_t moved = 0;
@@ -1731,7 +1580,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
     m.base = SceneState::kWorking, m.act = SceneState::kTerminal, m.mood = Mood::kHappy, m.when = when;
     b.onState(m, 0);
     Seen seen;
-    for (uint32_t t = 16; t <= 120000u; t += 16) {
+    for (uint32_t t = 16; t <= 300000u; t += 16) {
       if (t % 10000 < 16) b.onState(m, t);
       if (pokeAt && t == pokeAt) {
         app::ReactionIn in;
@@ -1742,7 +1591,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
       }
       b.advance(t, rng);
       const rig::Channels& c = static_cast<GelFace&>(b.face()).mixer().channels();
-      if (static_cast<GelFace&>(b.face()).pastimes(t).playing == Pastime::kNone) {
+      if (static_cast<GelFace&>(b.face()).pastimes(t).playing == Pastime::kLimber) {
         seen.squash = std::min<int>(seen.squash, c[rig::Channel::kSquash]);
         seen.open = std::min<int>(seen.open, std::min(c[rig::Channel::kEyeOpenL], c[rig::Channel::kEyeOpenR]));
       }
@@ -1861,6 +1710,7 @@ void test_the_scenes_formulas();
 void test_every_pastime_has_its_clip_and_its_turn();
 void test_each_pastime_draws_and_ends();
 void test_pastimes_are_dealt_by_tier_after_a_rest();
+void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
 void test_the_kit_follows_the_tiers();
 void test_the_headphones_play_a_tune();
 void test_work_settles_by_tier();
@@ -1939,7 +1789,7 @@ static void test_tracked_clear_matches_full_clear() {
   Surface tracked{502, 410, a.data()}, full{502, 410, b.data()};
   auto e = std::make_unique<Engine>();
   for (int state = 0; state < int(SceneState::kCount); ++state) {
-    e->clearTransient();
+    e->clear();
     e->linkTimedOut(SceneState(state) == SceneState::kNoApp);
     Facts f;
     f.base = SceneState(state) == SceneState::kAsleep ? SceneState::kAsleep
@@ -1950,9 +1800,7 @@ static void test_tracked_clear_matches_full_clear() {
     e->setFacts(f);
     Request r;
     r.anim = reactionFromName(stateName(SceneState(state)));
-    r.hasId = true;
-    r.id = std::to_string(state);
-    if (r.anim != SceneState::kNone) e->oneShot(r);
+    if (r.anim != SceneState::kNone) e->play(r);
     e->setMood(state % slime::kProfiles);
     e->step(state * 1600 + 1504);
     full.invalidate();
@@ -2031,8 +1879,8 @@ static void test_layers_follow_the_bodys_anchors() {
     friday->step(500);
     TEST_ASSERT_EQUAL_UINT32(uint32_t(Eyewear::kShades), layerContents(*friday).worn);
     Request r;
-    r.anim = SceneState::kTaskComplete, r.hasId = true, r.id = "1", r.outcome = Outcome::kSuccess;
-    friday->oneShot(r);
+    r.anim = SceneState::kTaskComplete, r.outcome = Outcome::kSuccess;
+    friday->play(r);
     friday->step(600);
     TEST_ASSERT_EQUAL_UINT32(0, layerContents(*friday).worn);
   }
@@ -2193,8 +2041,8 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(30, tagIndex("hushed"));  // last, after reading: the Mac's list (Occasions.all) agrees
-  TEST_ASSERT_EQUAL_INT(31, kTagCount);
+  TEST_ASSERT_EQUAL_INT(21, tagIndex("hushed"));  // last, after reading: the Mac's list (Occasions.board) agrees
+  TEST_ASSERT_EQUAL_INT(22, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -2812,13 +2660,13 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
       f.attention = {};
       e->setFacts(f);
       Request r;
-      r.anim = SceneState::kTaskComplete, r.hasId = true, r.id = "9", r.outcome = Outcome::kSuccess, r.hold = true;
-      e->oneShot(r);
+      r.anim = SceneState::kTaskComplete, r.outcome = Outcome::kSuccess;
+      e->play(r);
     } else if (i == 260) {
-      e->clearTransient();
+      e->clear();
       Request r;
-      r.anim = SceneState::kStarting, r.hasId = true, r.id = "10", r.hold = true;
-      e->oneShot(r);
+      r.anim = SceneState::kStarting;
+      e->play(r);
     }
     e->step(t += 33);
     const char* bubble = i >= 300 && i < 330 ? "Technical difficulties" : nullptr;
@@ -2873,8 +2721,8 @@ static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
   f.base = SceneState::kWorking;
   e->setFacts(f);
   Request r;
-  r.anim = SceneState::kStarting, r.hasId = true, r.id = "1", r.hold = true;
-  e->oneShot(r);
+  r.anim = SceneState::kStarting;
+  e->play(r);
   Stream stream;
   Stream::Lane lane;
   lane.slot = 1, lane.count = 1, std::strcpy(lane.word, "read");
@@ -3333,7 +3181,6 @@ int main() {
   RUN_TEST(test_grid_voice_lead_and_late_cues);
   RUN_TEST(test_external_source_holds_without_repeating_reveal);
   RUN_TEST(test_a_card_revealed_late_rises_then_falls);
-  RUN_TEST(test_every_result_card_has_a_mark);
   RUN_TEST(test_interrupted_alert_signals_exactly_once);
   RUN_TEST(test_face_and_props_move_without_jumps);
   RUN_TEST(test_it_falls_asleep_squashing_shut);
@@ -3356,12 +3203,12 @@ int main() {
   RUN_TEST(test_a_reply_plays_its_clip_once);
   RUN_TEST(test_hushed_its_lips_are_zipped);
   RUN_TEST(test_a_nap_or_a_dance_plays_its_pastime_when_idle);
-  RUN_TEST(test_occasions_play_only_while_they_fit);
   RUN_TEST(test_a_rig_clip_plays_on_the_gel);
   RUN_TEST(test_the_rig_carries_reaches_and_melts_the_gel);
   RUN_TEST(test_every_pastime_has_its_clip_and_its_turn);
   RUN_TEST(test_each_pastime_draws_and_ends);
   RUN_TEST(test_pastimes_are_dealt_by_tier_after_a_rest);
+  RUN_TEST(test_a_tagged_pastime_plays_only_while_its_tag_is_on);
   RUN_TEST(test_the_kit_follows_the_tiers);
   RUN_TEST(test_the_headphones_play_a_tune);
   RUN_TEST(test_work_settles_by_tier);
@@ -3375,7 +3222,6 @@ int main() {
   RUN_TEST(test_histories_stay_off_the_heap);
   RUN_TEST(test_kept_cards_and_lanes_match_a_fresh_frame);
   RUN_TEST(test_what_falls_over_a_kept_card_doesnt_stay_in_it);
-  RUN_TEST(test_a_named_finish_shows_no_card);
   RUN_TEST(test_a_finished_turn_glows_and_hangs_a_ticket);
   RUN_TEST(test_a_still_card_is_drawn_once_into_each_surface);
   RUN_TEST(test_steady_frames_allocate_nothing);

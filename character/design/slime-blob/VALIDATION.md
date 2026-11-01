@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-10-26. What checks the gel slime, and which rule each check
+Updated 2026-11-01. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -19,26 +19,22 @@ None of them contacts Jev, a paid API or a device.
 
 `slimegen.mjs` checks the design before it bakes it (`check.mjs`), and
 `--check` fails unless every generated file is the one checked in:
-`slime.h`, `slime_art.h`, `slime_mesh.h`, the pack's moods in
-`character.json` and [MOODS.md](MOODS.md). It fails, naming what's wrong,
-when:
+`slime.h`, `slime_art.h`, `slime_mesh.h` and [MOODS.md](MOODS.md). It
+fails, naming what's wrong, when:
 
-- an edge goes to a mood that isn't one, or to itself, or twice, or a mood
-  has more than eight; the ordinary edges alone don't reach every mood
-  from every other; or an intensity ladder (`intensityLadders`) doesn't
-  climb by ordinary edges;
+- in the pack's `character.json`, a move goes to a mood that isn't a
+  lasting one, or to itself, or twice; or the ordinary moves alone don't
+  reach every lasting mood from every other;
 - a canonical mood has no expression of its own or no sound profile, an
-  expression hasn't three gestures, a mood or idle names a gag there
-  isn't, or a notice take borrows an expression there isn't;
-- two occasions share an id, one needs neither a tag nor a wait, plays in
-  a state the board hasn't, borrows a gag no occasion has, has neither a
-  gag nor a recipe, or gives idle a recipe;
+  expression hasn't three gestures, a mood names a gag there isn't, or a
+  notice take borrows an expression there isn't;
+- two pastimes' bodies share an id, or one has neither a gag of its own
+  nor a recipe;
 - a sound sketch renders differently from one seed, doesn't start from
   silence, isn't finite, is louder than 0.8, longer than 3 s, or isn't
   silent at no gain;
 - the gestures or the notices are out of `render::Gesture`'s order, a
-  family a gesture's face gives way to has no mood, or an occasion needs
-  a tag `render/tags.h` hasn't.
+  family a gesture's face gives way to has no mood.
 
 ## The engine (`test_gel`)
 
@@ -101,8 +97,7 @@ ramps and springs can, and no jolt at an event. By file:
   morph (the awake face squashing shut on its slow spring, to lines, the
   sleeping face crossing in once it's 0.9 shut, waking quick, sleep's
   spring kept through a mood change), the night's lids, a finger moving the dome its own
-  way, every result card's mark and none for a finish that names whose
-  turn it was (`test_a_named_finish_shows_no_card`), a finished turn's
+  way, a finished turn's
   glow and ticket (`test_a_finished_turn_glows_and_hangs_a_ticket`: the
   glow's timing, strength and reach, nothing past the panel's corners,
   the ticket above the top as it comes, in the middle or left of a
@@ -122,13 +117,17 @@ ramps and springs can, and no jolt at an event. By file:
   (`test_hushed_its_lips_are_zipped`: `hushed` the tags' last, the zip's
   ends and its ticks' tips inked only while it's on, nothing between the
   ticks, and the same frame whether a clip opens the mouth or not), the
-  occasions, a clip of the rig's on both faces (the stretch from `tier4`,
-  over the gel's pose and on Pixel's rig face, faded out by a reaction),
-  the pastimes (`test_pastimes.cpp`: each one's clip in the rig and its
-  turn, each drawing above the lane and over at its clip's end, half an
-  hour at `tier2` dealing only working ones of `tier1` and `tier2`, after
-  a rest of 4 to 10 s, never the same twice running, the newest tier's
-  about 60% of the time, and none with no tier; the kit by the tiers, the
+  rig's stretch from `tier4` on both faces (a row of the gel's pastimes,
+  over its pose, and on Pixel's rig face, faded out by a reaction), the
+  pastimes (`test_pastimes.cpp`: each row's body in the pack and its
+  turn, each with a clip drawing above the lane and over at its clip's
+  end, half an hour at `tier2` dealing only working ones of `tier1` and
+  `tier2`, after a rest of 4 to 10 s, never the same twice running, the
+  newest tier's about 60% of the time, and none with no tier nor tag; the
+  occasions, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
+  only while its tag is on, about three deals in eight, idle's as acting's
+  gag and work's and asleep's as the scene's take, busier typing only
+  while busy and the dream after half an hour; the kit by the tiers, the
   hat winning the head, none while something needs you; the headphones'
   tune, a note from each cup in turn every 3 s, out past the band's ends,
   and none while bopping; the headphones put on first, coming down over
@@ -187,12 +186,12 @@ ramps and springs can, and no jolt at an event. By file:
   needs you, cut with no chips, a short one whole with them and no helpers
   or to-do list, the finish's marks, one with no thread, and the bubble in
   each of its fonts), the
-  comedy (`comedy.jsonl`: the yawn, the sneeze's wind-up, the doze, the
+  comedy (`comedy.jsonl`: the yawn and the sneeze's wind-up, asked for, the
   long yawn, the zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT's hand-off, a stroke, a boop
   on the nose, a shake and peekaboo, each by the board's own input, its
-  variation expected), the occasions (`occasions.jsonl`: a party's bounce,
-  a night's drowse, frantic typing, in a nightcap and a party hat, and
+  variation expected), the occasions (`occasions.jsonl`: asked for by name, a
+  party's bounce, a night's drowse, frantic typing, in a nightcap and a party hat, and
   `tier4`'s kit), the pastimes (`pastimes.jsonl`: the working kit at
   `tier5` and a pastime over it, the done beat's tick, reading closely
   with the glass fogged, the headphones coming down, the coffee reach's

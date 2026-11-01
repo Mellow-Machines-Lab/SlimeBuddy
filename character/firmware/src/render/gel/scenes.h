@@ -37,9 +37,9 @@ inline const slime::Recipe& take(int profile, int row, int variant) {
   return variant < kGestures ? slime::kRecipes[profile][row][variant]
                              : slime::kFourthTakes[profile][slime::kFourthRow[row]];
 }
-// Idle's takes: an expression's three gestures, its own gags, then the idle
-// gags (acting.h Acting::takes), at most this many.
-static_assert(slime::kMaxGestures == 7, "three gestures, an own gag and three idle gags");
+// Idle's takes: an expression's three gestures, then its own gags
+// (acting.h Acting::takes), at most this many.
+static_assert(slime::kMaxGestures == 4, "three gestures and an own gag");
 enum ContactKind {
   kKey,
   kKnock,
@@ -49,10 +49,7 @@ enum ContactKind {
   kFailure,
   kResult,
   kStart,
-  kHelper,
   kReply,
-  kError,
-  kStopped,
   // Comedy's: a gag's sneeze and zoomies, a snore's breath.
   kSneeze,
   kBreath,
@@ -60,7 +57,7 @@ enum ContactKind {
 };
 static_assert(kZoom + 1 == slime::kContactKinds, "contact kinds as slimegen numbers them");
 // A reveal: the alert's, or a card's or a start's.
-constexpr bool reveals(int kind) { return kind >= kAlert && kind <= kStopped; }
+constexpr bool reveals(int kind) { return kind >= kAlert && kind <= kReply; }
 // Comedy's contacts sound even in a quiet state, with the routine chance.
 constexpr bool comedy(int kind) { return kind >= kSneeze; }
 // A prop's visibility over kPropRampMs: a cubic Hermite from
@@ -86,7 +83,7 @@ struct Ramp {
 struct Scenes {
   Spring activity[3], desk, quietMix;
   Route route;
-  std::string requestId;
+  uint64_t key = 0;  // what shows (Route::key)
   int mood = slime::kCalm, expression = slime::kCalm, profileExpression = slime::kCalm;
   int generation = 0, iteration = 0, variant = 0, cursor = 0;
   T started, ageMs, revealAt;
@@ -96,57 +93,52 @@ struct Scenes {
   bool hasLast = false, resultRevealed = false, completed = false, quietRestored = false;
   const char* phase = "sustain";
   Bag<slime::kMaxTakes> bags[slime::kCanonical][slime::kRecipeStates];
-  // The catalog is immutable. Keep its address and the jitter seed instead
-  // of copying every contact into each of the two 64-entry histories. An
-  // alert also keeps how far it got, so an interrupted one resumes there.
+  // A take kept: the catalog is immutable, so its address and its jitter's
+  // seed, not its contacts. The needs-you showing and the reaction held
+  // each keep theirs, and an alert how far it got, so one interrupted
+  // resumes there.
   struct Saved {
-    uint64_t id;  // identityKey of the request
+    uint64_t key = 0;  // what it showed (Route::key)
     int variant, profile;
     const slime::Recipe* recipe;
     uint32_t seed;
     T ageMs;
     int cursor = 0;
   };
-  History<Saved, 64> alerts, moments;
+  Saved alert, held;
   // Each prop keeps the content it last showed while its ramp fades it out.
-  enum Prop { kAlertProp, kResultProp, kStartProp, kListeningProp, kTouchProp, kProps };
+  enum Prop { kAlertProp, kStartProp, kListeningProp, kTouchProp, kProps };
   struct Slot {
     bool on = false;
-    std::string id;
+    uint64_t key = 0;
     Ramp ramp;
     Ramp reveal;  // a card's (cardReveal)
   } slots[kProps];
   struct {
-    std::string requestId, agent, project, name;
+    std::string agent, project, name;
     int more = 0;
     bool known = false;
   } alertProp;
   struct {
-    SceneState state = SceneState::kIdle;
-    bool known = false, gift = false;  // a gift: proud's bug beside its card
-    const char* label = "FINISHED";
-    Outcome outcome = Outcome::kNone;
-  } resultProp;
-  struct {
     const char* label = "START";
   } startProp;
   F listeningPulse = q(.5);
-  // The finish playing names whose turn it was, which the face marks
-  // itself (render/gel/done.h): it shows no result card of its own.
-  bool cardless = false;
   SceneState touchKind = SceneState::kIdle;
-  // The tags on and how long the look has shown (Engine::setOccasion): a
-  // look's occasion (kLookOccasions) is dealt by them, numbered after the
-  // row's takes.
+  // The tags on and how long the look has shown (Engine::setOccasion).
   uint32_t when = 0, lookMs = 0;
-  // The gag the recipe playing carries for acting (a gesture's, an
-  // occasion's), as kGags numbers it, or -1.
+  // The gag the recipe playing carries for acting (a gesture's, a
+  // pastime's), as kGags numbers it, or -1.
   int gag() const { return generation ? recipe.gag : -1; }
   // The successful finish playing: its variation's, from its reveal.
   FinishShow finishShow() const;
   void setRoute(const Route&, T time, int expression, Random&);
   void pickRecipe(T time, Random&);
-  std::string advance(T dt, T time, bool grab, Random&);
+  // A pastime's take (slime::kPastimeTakes) the face dealt: the look's next
+  // take, from now, numbered after its row's own.
+  void playTake(int take, T time, Random&);
+  // A take starts over from `time`: its age, contacts and reveal.
+  void restartTake(T time);
+  void advance(T dt, T time, bool grab, Random&);
   F envelope(T time, int kind) const;
   F recovery() const {
     return !std::strcmp(phase, "recover")   ? smooth((recipe.duration - ageMs) / 480)
@@ -160,7 +152,7 @@ struct Scenes {
     const auto& slot = slots[prop];
     return slot.ramp.value(time) * (card(prop) ? slot.reveal.value(time) : F(1));
   }
-  static bool card(Prop prop) { return prop == kResultProp || prop == kStartProp; }
+  static bool card(Prop prop) { return prop == kStartProp; }
 
  private:
   const char* phaseAt(T age) const;

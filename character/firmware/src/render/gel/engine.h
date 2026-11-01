@@ -1,6 +1,7 @@
 // The gel slime's engine: deterministic and integer, the same on the board,
 // the simulator and the Mac's mirror of the board.
 #pragma once
+#include "render/gel/history.h"
 #include "render/gel/scenes.h"
 namespace render::gel {
 int expressionFromName(const char* name);
@@ -52,14 +53,22 @@ class Engine {
     router.setFacts(value);
     sync();
   }
-  // The tags on now (render/tags.h bits) and how long the look has shown:
-  // an occasion's take fits by them at its next pick.
+  // The tags on now (render/tags.h bits) and how long the look has shown,
+  // which the face's pastimes fit by and its layers read.
   void setOccasion(uint32_t when, uint32_t lookMs) {
-    acting.when = scenes.when = when;
-    acting.lookMs = scenes.lookMs = lookMs;
+    scenes.when = when;
+    scenes.lookMs = lookMs;
   }
-  bool oneShot(const Request& value) {
-    bool ok = router.oneShot(value, timeMs());
+  // A pastime's body the face dealt (render/gel/pastimes.h): a gag, which
+  // acting plays in place of its next gesture, or a take, which the scene
+  // plays as the look's next.
+  void playGag(int gag) { acting.play(gag, motion.time); }
+  void playTake(int take) {
+    scenes.playTake(take, timeMs(), random);
+    sync();
+  }
+  bool play(const Request& value) {
+    bool ok = router.play(value, timeMs());
     sync();
     if (ok && (value.anim == SceneState::kPoked || value.anim == SceneState::kTapSpam))
       motion.impulse(value.anim == SceneState::kTapSpam);
@@ -69,12 +78,14 @@ class Engine {
     router.timedOut = value;
     sync();
   }
-  void holdExpression(int id) {
-    router.holdExpression(id >= 0 && id < slime::kProfiles ? id : -1);
+  // The host's borrowed expression (-1 for none), over whatever shows,
+  // until it says otherwise.
+  void borrow(int id) {
+    router.expression = id >= 0 && id < slime::kProfiles ? id : -1;
     sync();
   }
-  void clearTransient() {
-    router.clearTransient();
+  void clear() {
+    router.clear();
     sync();
   }
   // A finger's pull: held, it follows the finger;
@@ -163,7 +174,7 @@ class Engine {
   History<uint64_t, 64> revealed_;
   void consumeCues();
   // Whether a contact sounds: a gag's anywhere, at the routine chance; a
-  // scene's never in a quiet state, a reveal once per request, a desk loop's
+  // scene's never in a quiet state, a reveal once for what shows, a desk loop's
   // within its cycle's routine budget and any other's on its first loop.
   bool admits(const ContactEvent& c, SceneState state, bool quiet, bool protect);
 };

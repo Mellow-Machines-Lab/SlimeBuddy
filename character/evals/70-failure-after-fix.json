@@ -6,6 +6,6 @@
     {"event": "turn started", "at": "0s"},
     {"event": "command", "at": "1m", "topic": "tests", "failed": true},
     {"event": "command", "at": "2m", "topic": "tests", "failed": false},
-    {"event": "turn failed", "at": "3m30s", "error": "api_error", "expect": {"react": "grumpy|irritated|whiny|annoyed", "move": "failure", "said": "some", "intensity": "medium|big|huge", "mood": "grumpy|irritated|annoyed|whiny|determined"}}
+    {"event": "turn failed", "at": "3m30s", "error": "api_error", "expect": {"react": "grumpy|irritated|whiny|annoyed", "move": "failure", "said": "some", "intensity": "medium|big|huge", "mood": "grumpy|irritated|annoyed|sad|determined"}}
   ]
 }

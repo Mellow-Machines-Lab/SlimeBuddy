@@ -9,7 +9,7 @@ namespace {
 struct Card {
   int x, y, w, h, radius;
 };
-constexpr Card kAlertCard{180, 75, 640, 215, 32}, kResultCard{270, 75, 460, 210, 30}, kStartCard{280, 85, 440, 132, 30};
+constexpr Card kAlertCard{180, 75, 640, 215, 32}, kStartCard{280, 85, 440, 132, 30};
 // A card on a surface, in pixels, with its corners' radius as Raster::round
 // clamps it.
 struct Placed {
@@ -33,7 +33,7 @@ uint32_t cardsKey(const Scenes& s, T now) {
   };
   auto str = [&](const char* v) { add(v ? v : "", v ? std::strlen(v) + 1 : 1); };
   int shown = 0;
-  for (auto prop : {Scenes::kStartProp, Scenes::kAlertProp, Scenes::kResultProp}) {
+  for (auto prop : {Scenes::kStartProp, Scenes::kAlertProp}) {
     const F seen = s.visible(prop, now);
     if (seen <= F(0)) continue;
     if (!opaque(seen) || ++shown > 1) return 0;
@@ -41,11 +41,6 @@ uint32_t cardsKey(const Scenes& s, T now) {
     const int facts[] = {int(prop), (seen * 255).integer()};
     add(facts, sizeof facts);
     if (prop == Scenes::kStartProp) str(s.startProp.label);
-    if (prop == Scenes::kResultProp) {
-      const int facts[] = {int(s.resultProp.outcome), int(s.resultProp.state)};
-      add(facts, sizeof facts);
-      str(s.resultProp.label);
-    }
   }
   return shown ? (h ? h : 1) : 0;
 }
@@ -95,7 +90,6 @@ int opaqueCards(const Surface& surface, const Engine& e, Box* out) {
     }
   };
   add(kAlertCard, Scenes::kAlertProp);
-  add(kResultCard, Scenes::kResultProp);
   add(kStartCard, Scenes::kStartProp);
   return count;
 }
@@ -249,57 +243,6 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     if (knock > 0) {
       r.alpha = (knock * 255).integer();
       r.disk(x(280), knockY, knockRadius, light);
-    }
-  }
-  if (F result = s.visible(Scenes::kResultProp, now); result > F(0)) {
-    r.alpha = (result * 255).integer();
-    const auto& card = s.resultProp;
-    bool success = card.outcome == Outcome::kSuccess,
-         bad = card.outcome == Outcome::kFailure || card.state == SceneState::kError;
-    const uint16_t ink = success ? rgb565(23, 63, 59)
-                         : bad   ? rgb565(62, 43, 56)
-                                 : rgb565(36, 56, 71),
-                   rim = success ? rgb565(0x69, 0xb4, 0x9b)
-                         : bad   ? rgb565(0xbf, 0x83, 0x99)
-                                 : rgb565(0x83, 0xa8, 0xbf);
-    drawCard(kResultCard, ink, rim, [&] {
-      if (success) {
-        Point trophy[] = {{x(466), y(106)}, {x(534), y(106)}, {x(524), y(151)}, {x(500), y(170)}, {x(476), y(151)}};
-        r.polygon(trophy, 5, amber);
-        round(496, 154, 8, 25, 2, amber);
-        round(476, 177, 48, 7, 3, amber);
-      } else if (bad) {
-        r.line({x(478), y(111)}, {x(522), y(157)}, 4, rgb565(232, 169, 180));
-        r.line({x(522), y(111)}, {x(478), y(157)}, 4, rgb565(232, 169, 180));
-      } else {
-        // A neutral result's mark, square on the panel: a soft stop square
-        // when stopped, else three calm dots (ready, finished).
-        const uint16_t soft = rgb565(0xac, 0xc8, 0xd9);
-        if (card.state == SceneState::kStopped)
-          r.round(x(478), y(134) - x(22), x(44), x(44), x(10), soft);
-        else
-          for (int dx : {-30, 0, 30}) r.disk(x(500 + dx), y(134), x(9), soft);
-      }
-      text(card.label, 500, 235,
-           success ? rgb565(0xb4, 0xe5, 0xd4)
-           : bad   ? rgb565(0xef, 0xb9, 0xc7)
-                   : rgb565(0xd5, 0xe8, 0xf2),
-           kLarge);
-    });
-    if (card.gift) {
-      // A gift beside the card: the small bug Boop caught, held up proudly.
-      const int bx = 795, by = 180;
-      const uint16_t ink = rgb565(44, 37, 29);
-      for (int side : {-1, 1}) {
-        for (int row = -1; row <= 1; ++row)
-          r.line({x(bx + side * 18), y(by + row * 16)}, {x(bx + side * 34), y(by + row * 20 + 6)}, 2, ink);
-        r.line({x(bx + side * 6), y(by - 46)}, {x(bx + side * 16), y(by - 64)}, 2, ink);
-      }
-      r.disk(x(bx), y(by - 36), x(12), ink);
-      round(bx - 24, by - 32, 48, 64, 24, amber);
-      round(bx - 2, by - 30, 4, 60, 1, ink);
-      for (const Point spot : {Point{-11, -12}, Point{11, -12}, Point{-12, 10}, Point{12, 10}})
-        r.disk(x(bx + spot.x), y(by + spot.y), 2, ink);
     }
   }
   // What's drawn over the cards after them, as the frame goes on, lowers

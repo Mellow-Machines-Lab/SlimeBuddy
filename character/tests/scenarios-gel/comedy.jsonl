@@ -1,8 +1,9 @@
 // The gel's comedy (CONTINUITY.md, Comedy), each on a frozen clock after a
 // reset (the device wakes in its startup mood, then takes the state's).
-// Idle deals its gags from its bag's second round: calm yawns from 41.8 s
-// (stretched, eyes squeezed), winds up a sneeze at 52.6 s and dozes off
-// from 81.7 s (lids drooped, dome sunk); comfy's long yawn comes at 57 s
+// The yawn and the sneeze every mood shares are the face's pastimes: calm,
+// asked for each, yawns (a second in: stretched, eyes squeezed) and winds
+// up a sneeze. A mood's own gags its bag deals from its second round:
+// comfy's long yawn comes at 57 s
 // and excited's zoomies at 43.5 s, at the left edge, then the right. Asleep
 // snores from 19.3 s (a breath's swell). A happy finish's sixth take is its
 // fourth, the hiccups, at the first; proud's third is its lifted one, with
@@ -14,18 +15,15 @@
 {"t":"state","base":"idle","mood":"calm","vol":0}
 {"clock":40000}
 {"t":"state","base":"idle","mood":"calm","vol":0}
+{"clock":41800}
+{"t":"dbg.pastime","name":"yawn-and-settle"}
 {"clock":42800}
 {"expect":{"mood":"calm","base":"idle","moment":null}}
 {"shot":"yawn"}
+{"clock":51800}
+{"t":"dbg.pastime","name":"sneeze-and-shake"}
 {"clock":52640}
 {"shot":"sneeze"}
-{"clock":60000}
-{"t":"state","base":"idle","mood":"calm","vol":0}
-{"clock":78000}
-{"t":"state","base":"idle","mood":"calm","vol":0}
-{"clock":83200}
-{"expect":{"screen":"face","mood":"calm","moment":null}}
-{"shot":"doze"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"comfy","vol":0}
@@ -54,7 +52,7 @@
 {"clock":15000}
 {"t":"state","base":"asleep","mood":"calm","vol":0}
 {"clock":20528}
-{"expect":{"base":"asleep","look_variant":4}}
+{"expect":{"base":"asleep","look_variant":3}}
 {"shot":"snore"}
 {"t":"dbg.reset"}
 {"clock":0}
@@ -86,5 +84,5 @@
 {"clock":10200}
 {"t":"do","id":503,"name":"task_complete","args":{"outcome":"success"}}
 {"clock":11696}
-{"expect":{"mood":"proud","moment":{"anim":"task_complete","variant":2}}}
+{"expect":{"mood":"proud","moment":{"anim":"task_complete","variant":3}}}
 {"shot":"gift"}

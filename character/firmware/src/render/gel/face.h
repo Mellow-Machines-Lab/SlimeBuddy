@@ -1,10 +1,10 @@
 // The gel face: the slime engine (render/gel/engine.h), painted natively. This
 // adapter turns what Behaviour follows into the engine's facts, mood and
-// one-shots; Behaviour keeps timing every moment (the engine holds each
-// one until told), and the engine's contact cues become sounds. The staged
+// reactions; Behaviour times every reaction (the engine holds each one
+// until told), and the engine's contact cues become sounds. The staged
 // pack's rig (render/rig/) plays its clips on the gel through a mixer of
 // the face's own, whose channels the painter lays over the engine's pose
-// (applyRig): the look's occasions and the gel's pastimes
+// (applyRig): the gel's pastimes
 // (render/gel/pastimes.h), one at a time after a rest, and a reaction's
 // clip, a clip named as its state, as it starts. A clip's cues sound
 // through the engine's contacts. The engine keeps its expressions,
@@ -92,7 +92,7 @@ class GelFace final : public Face {
   // A pastime, from t, whoever's turn it would be (the face deals the rest
   // itself): for tests and pictures of each.
   void playPastime(Pastime p, uint32_t t);
-  bool playPastime(const char* clip, uint32_t t) override;
+  bool playPastime(const char* name, uint32_t t) override;
   // What it shows of the pastimes at t: the one playing, and the kit.
   PastimeShow pastimes(uint32_t t) const;
 
@@ -108,17 +108,16 @@ class GelFace final : public Face {
   // What it wears, the air and the Zs, as the engine's tags and state call
   // for them (layerContents), each fading in and out.
   rig::Layers layers_;
-  // The look's occasion or the pastime playing (kNone for an occasion's,
-  // which draws nothing of its own), from when until when, and the look
-  // it's for; the one stopped early, fading out from stoppedAt_; the clip
+  // The pastime playing, its clip on the mixer (none for a gag's or a
+  // take's, which the engine plays), from when until when, and the look
+  // it's for; the one stopped early, fading out from stoppedAt_; the one
   // dealt last, and when the next may be. They're dealt with dice of their
   // own (dice_), so the engine's randomness goes as it always has.
-  const rig::Clip* occasion_ = nullptr;
-  Pastime pastime_ = Pastime::kNone;
-  uint32_t occasionAt_ = 0, occasionEnds_ = 0, stoppedAt_ = 0, restUntil_ = 0, dice_ = kSeed;
-  SceneState occasionLook_ = SceneState::kNone, dealtLook_ = SceneState::kNone;
+  Pastime pastime_ = Pastime::kNone, lastPastime_ = Pastime::kNone;
+  const rig::Clip* clip_ = nullptr;
+  uint32_t pastimeAt_ = 0, pastimeEnds_ = 0, stoppedAt_ = 0, restUntil_ = 0, dice_ = kSeed;
+  SceneState pastimeLook_ = SceneState::kNone, dealtLook_ = SceneState::kNone;
   bool stopped_ = false;
-  const rig::Clip* lastClip_ = nullptr;
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
   // The kit, each easing in and out, as the tiers and the look call for
@@ -168,21 +167,22 @@ class GelFace final : public Face {
   // looks.json tiers), none otherwise, the old one fading out.
   void showBase();
   // While the engine shows the look itself, and nothing else holds the
-  // body: once the rest is over, a look's occasion or a pastime that fits;
-  // the one playing fades out when the look gives way.
-  void occasions(uint32_t t);
+  // body: once the rest is over, a pastime that fits; the one playing fades
+  // out when the look gives way.
+  void passTime(uint32_t t);
+  // A pastime playing, not one fading out after an early stop.
+  bool playing() const { return pastime_ != Pastime::kNone && !stopped_; }
   // Whether the engine shows the look itself, with nothing over it (no
-  // moment, listening or reaction, `anim` the one playing), and which look
+  // listening or reaction, `anim` the one playing), and which look
   // that is: needs you's screen, or the base's.
   bool showsLook(SceneState anim, SceneState& look) const;
-  // One of those that fit the look now, the newest tier's kNewestPct of the
-  // time; none dealt while none fits.
+  // One of those that fit the look now, the newest kNewestPct of the time;
+  // none dealt while none fits.
   void deal(SceneState look, uint32_t t);
-  // A clip starts as the one playing over `look`, the pastime's (kNone for
-  // an occasion's): dealt, asked for by a reply or by a test. It counts as
-  // the last dealt, so the deal doesn't play it again next, and the rest
-  // before the next starts as it ends.
-  void start(const rig::Clip& clip, Pastime p, SceneState look, uint32_t t);
+  // A pastime starts as the one playing over `look`: dealt, asked for by a
+  // reply or by a test. It counts as the last dealt, so the deal doesn't
+  // play it again next, and the rest before the next starts as it ends.
+  void start(const PastimeInfo& p, SceneState look, uint32_t t);
   // The engine's own idle gestures wait for the clip dealt or asked for.
   void holdGestures(const rig::Clip& clip);
   // A reply asked for at t: its pastime (kReplyPastimes) while the look is
@@ -190,7 +190,7 @@ class GelFace final : public Face {
   void reply(const char* name, SceneState anim, uint32_t t);
   // The playing one stops, fading out unless it ran its length; the rest
   // before the next starts now.
-  void endOccasion(uint32_t t, bool early);
+  void endPastime(uint32_t t, bool early);
   // The kit the tiers and the look call for now, from t.
   void showKit(uint32_t t);
   // A die from dice_: below `n`.

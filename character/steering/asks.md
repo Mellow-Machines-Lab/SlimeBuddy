@@ -1,0 +1,13 @@
+<!-- What Boop may ask you (ReactOutput's asks, offered as signs: the sign is the ask): a question it holds up with two answers in the lane, for you to tap, left or right. A line with parts (question | a | b) is a question: its first tag is its id, and the rest the tags it needs: its moment (idle, an idle check-in; lonely, a check-in after 10 minutes lonely; finished, a turn's finish), the calendar's (morning, night, friday…, characters/CHARACTER.md §9) and your kept answers, plus keeps (asked once, ever: the answer becomes a tag for good), touch (a stroke or a boop answers it too, as its first answer) and daily (it may come back the next day, whatever the answer). Only asks whose answer does something: it becomes part of Boop (keeps), it gets a touch, or it goes into memory; no quizzes. A line with no parts is a follow-up: what Boop may hold up after an answer, tagged with the question's id and the answer. The questions that shape Boop come first; the brain is offered them first. A question is at most 18 characters, each answer 7, a follow-up 18, printable ASCII only. Asked at most once an hour and three times a day (six chatty, none quiet); one answered stays off for 30 days, one ignored for a day. Read-only at runtime; the app bundles a copy. -->
+- [snack idle keeps] fav snack? | cookie | pizza
+- [hat idle keeps] hat or bow? | hat | bow
+- [pet lonely touch daily] pet me? | ok | later
+- [worked finished] did it work? | yes | no
+- [snack cookie] nom nom
+- [snack pizza] pizza party!
+- [hat hat] dapper!
+- [hat bow] so pretty
+- [pet ok] <3
+- [pet later] hmph
+- [worked yes] nailed it!
+- [worked no] hmph. again!

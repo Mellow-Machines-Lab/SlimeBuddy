@@ -1,0 +1,18 @@
+{
+  "name": "With no coming back, the first touch tells the dream, never a prompt",
+  "case": "The Mac stays awake overnight, so there is no coming back. In the morning the person's first prompt doesn't tell the dream (it has its own sign), and neither does what they say to Boop; their first stroke does, with a dream's sign and no wake-up.",
+  "why": "TranscriptView.told: with no coming back since the close, the first touch tells the dream; never a prompt or a word",
+  "start": "2026-10-20T15:00",
+  "steps": [
+    {"event": "session started", "at": "0s", "workspace": "api"},
+    {"event": "turn started", "at": "10s", "workspace": "api", "prompt": "add the export button"},
+    {"event": "turn finished", "at": "5m", "workspace": "api"},
+    {"event": "gesture", "at": "6m", "kind": "stroke"},
+    {"event": "gesture", "at": "7m", "kind": "stroke"},
+    {"event": "poke", "at": "8m"},
+    {"event": "turn started", "at": "18h", "workspace": "api", "prompt": "morning! now the import button", "expect": {"dream": "none"}},
+    {"event": "turn finished", "at": "18h5m", "workspace": "api", "expect": {"dream": "none"}},
+    {"event": "said", "at": "18h6m", "words": "morning boop", "expect": {"dream": "none"}},
+    {"event": "gesture", "at": "18h8m", "kind": "stroke", "expect": {"dream": "told", "move": "none", "sign": "dreamt of u|warm dreams|poke dreams|sweet dreams|zzz... hi!|had a dream"}}
+  ]
+}

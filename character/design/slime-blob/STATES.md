@@ -1,6 +1,6 @@
 # State coverage and event mapping
 
-Updated 2026-10-26. The board's 25 states (the firmware's `kStateNames`,
+Updated 2026-11-01. The board's 22 states (the firmware's `kStateNames`,
 `firmware/src/render/types.cpp`) fall into nine visual scene families, below.
 Each state's takes (three each; idle's six or seven and asleep's four,
 with their comedy, a successful finish's four and a gesture's ten) are
@@ -18,12 +18,12 @@ remaining matrix was implemented and exercised.
 | Listen | listening | Actual mic-on, not every input event |
 | Start | starting, wake_up, notice | ctx new_task/session/continuation/compacted selects truthful card; wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
 | Desk | planning, working, terminal, tool_use, searching, analyzing, testing, waiting | One computer, different activity rhythms/cues |
-| Helpers | delegating, helper_return | Dispatch/live helpers vs an observed returning helper |
+| Helpers | delegating | Dispatch/live helpers; one coming back lands in the work stream |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
-| Result | reply_ready, task_complete, error, stopped | Reply vs whole-task success/failure vs tool error vs interruption |
+| Result | reply_ready, task_complete | Reply vs whole-task success/failure; no card: a failed call hits it in the work stream, and a stop drops its words there |
 | Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face, or the mood's own in a low or cross mood) |
 
-`test_gel` plays every one of the 1,050 mood/state cells, each of its
+`test_gel` plays every one of the 924 mood/state cells, each of its
 takes, the two completion outcomes and four start contexts apart. Shared
 rest rows alias one quiet family; they still keep the mood. Active cells
 are compositions, not isolated exported assets.
@@ -46,9 +46,10 @@ trophy, then hiccups; failure keeps its three. Proud's lifted success
 shows a gift, a small bug beside its trophy. Each joins its bag's second
 round, so a fresh state opens as it always has.
 
-Occasions add takes too ([CONTINUITY.md](CONTINUITY.md), Occasions): idle,
-the typing desk modes and asleep deal one that needs the tags on or the
-wait the look has shown, two picks in three while one fits.
+Occasions add takes too ([CONTINUITY.md](CONTINUITY.md), Occasions):
+rows of the face's pastimes that need a tag, or asleep a long wait, which
+idle plays as gags and the typing desk and asleep as takes, the newest
+while they fit.
 ## Source events: account for everything, do not animate everything
 
 Rules own activity truth and urgent attention. Mood is independent.
@@ -64,12 +65,12 @@ than parsing raw private tool inputs in this renderer.
 | turn start | turn_start; core may show starting and working/planning, as appropriate; a prompt is not mic listening |
 | turn end done | turn_end; update base immediately; eligible authorized reaction selects task_complete success/failure or reply_ready using actual content, or no one-shot |
 | turn end failed | turn_end; update base; failed finish must use failure outcome if a finish is played; not a trophy |
-| turn end stopped | turn_end; stopped one-shot and updated base, not a task failure |
+| turn end stopped | turn_end; updated base, the work stream drops its words, not a task failure |
 | tool start | tool_start; specific activity classification below, generic fallback only last |
 | tool wait permission/input | tool_wait; authoritative needs_you after existing source/grace rules; alert survives mood shifts |
 | tool end success | tool_end; remove live call, recompute activity; test/tool success is not automatically whole-task completion |
-| tool end failure | tool_end with failed/error; core's error one-shot, preserve subsequent/other work; do not invent security danger or full-task failure |
-| subagent end | subagent_end; helper_return, with neutral report unless outcome is known; recompute remaining delegation |
+| tool end failure | tool_end with failed/error; the call hits it in the work stream, preserve subsequent/other work; do not invent security danger or full-task failure |
+| subagent end | subagent_end; the work stream shows it back; recompute remaining delegation |
 | poke | poke; local poked or tap_spam under existing rules; attention/finish tap can open thread, never approve anything |
 | heartbeat working/idle | heartbeat; retain truthful base/activity; may justify a later expressive response, never auto-escalation per tick |
 | action start/end or unphased | Current MellowHarness self did/ended, plus needs_you_start/end for attention; record lifecycle and retarget validated mood/react; never re-trigger the same action from its own log |

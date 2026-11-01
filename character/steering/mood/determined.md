@@ -8,8 +8,7 @@ Says retry, medium, at a repeat, and little else.
 Stays determined through more failed checks, long work and
 frustration.
 Leaves for proud when a check passes after failing or a long turn's
-hard work is done; excited when a very long turn finishes done; whiny
-when a turn short of very long finishes failed; irritated at 3+ pokes
-in a row; annoyed at 2 pokes; sad when a very long turn fails, the
-agent gives up or the person shares sad news. Fades to engaged once
+hard work is done; excited when a very long turn finishes done;
+irritated at 3+ pokes in a row; annoyed at 2 pokes; sad when a turn
+finishes failed, the agent gives up or the person shares sad news. Fades to engaged once
 Boop has been determined for 5 min, unless a very long turn works on.

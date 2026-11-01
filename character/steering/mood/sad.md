@@ -9,10 +9,10 @@ Stays sad through routine turns, failures, frustration, more sad news
 and being asked why it's sad.
 The person taking the sad news back (only kidding, it's fine) ends it
 at once, whatever else they say: calm, or happy when they laugh.
-So does the person cheering Boop up, even in its first minutes: kind
-words to Boop (praise, love, "cheer up", "be happy", "you're the
-best") lift it to happy; a stroke, to calm.
-Leaves for calm when a check passes after failing; happy when the
-person thanks the agent; wounded at rude words to Boop; grumpy at 3+
-pokes in a row.
+So does the person cheering Boop up or thanking the agent, even in its
+first minutes: kind words to Boop (praise, love, "cheer up", "be
+happy", "you're the best") or thanks lift it to happy; a stroke, to
+calm.
+Leaves for calm when a check passes after failing; wounded at rude
+words to Boop; grumpy at 3+ pokes in a row.
 Fades to calm once Boop has been sad for 10 min.

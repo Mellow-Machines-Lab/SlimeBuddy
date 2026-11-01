@@ -4,7 +4,9 @@
 #include <unity.h>
 
 #include <cstring>
+#include <map>
 #include <memory>
+#include <set>
 #include <vector>
 
 #include "app/behaviour.h"
@@ -61,26 +63,42 @@ uint32_t tiers(int n) { return n ? reached(tierBit(n)) : 0; }
 
 }  // namespace
 
-// Pins the catalog: each pastime's clip is in the pack's rig and plays
-// once, a few seconds (a move up to 11); working's and idle's each need a
-// tier, idle's at least three for every one of the five and working's at
-// least two for each of the first four and the stretch break at the
-// fifth, the three moves only at work, and needs you's and asleep's
-// wait: a wave from 30 s, a tap on the glass from 2 minutes, the watch
-// from 5 and nodding off from 10; asleep rolls over from a minute, dreams
-// of sheep from 2 and blows a snore bubble from 4.
+// Pins the table: every row's body is in the pack, a clip of its rig
+// that plays once, a few seconds (a move up to 11), a gag of its engine
+// (idle's only) or a take (at work or asleep); working's and idle's each
+// need a tier or a tag, never both, idle's clips at least two for every one of the five and
+// working's at least two for each of the first four and the stretch break
+// at the fifth, the three moves only at work, and needs you's and
+// asleep's a wait or a tag: a wave from 30 s, a tap on the glass from 2
+// minutes, the watch from 5 and nodding off from 10; asleep rolls over
+// from a minute, dreams of sheep from 2, blows a snore bubble from 4,
+// snores deeper at night and dreams after half an hour. Work stretches
+// from tier4; idle yawns and sneezes from tier1.
 void test_every_pastime_has_its_clip_and_its_turn() {
   int count[2][6] = {};
   for (int i = 0; i < kPastimeCount; ++i) {
     const PastimeInfo& p = kPastimes[i];
     TEST_ASSERT_EQUAL_INT(i + 1, int(p.id));
     TEST_ASSERT_EQUAL_PTR(&p, &info(p.id));
-    const rig::Clip* clip = rig::kRig.clip(p.clip);
-    TEST_ASSERT_NOT_NULL_MESSAGE(clip, p.clip);
+    TEST_ASSERT_TRUE(!p.move || p.look == SceneState::kWorking);
+    TEST_ASSERT_TRUE(!p.tag || (tagsOf(p) && p.tier == 0));
+    const bool tiered = p.look == SceneState::kWorking || p.look == SceneState::kIdle;
+    if (tiered && !p.tag) TEST_ASSERT_TRUE(p.tier >= 1 && p.tier <= 5);
+    if (p.body == Body::kGag) {
+      TEST_ASSERT_TRUE_MESSAGE(gagOf(p) >= 0, p.name);
+      TEST_ASSERT_TRUE(p.look == SceneState::kIdle);
+      continue;
+    }
+    if (p.body == Body::kTake) {
+      TEST_ASSERT_TRUE_MESSAGE(takeOf(p) >= 0, p.name);
+      TEST_ASSERT_TRUE(p.look == SceneState::kWorking || p.look == SceneState::kAsleep);
+      continue;
+    }
+    const rig::Clip* clip = clipOf(p);
+    TEST_ASSERT_NOT_NULL_MESSAGE(clip, p.name);
     TEST_ASSERT_FALSE(clip->loop);
     TEST_ASSERT_TRUE(clip->additive);
-    TEST_ASSERT_TRUE_MESSAGE(clip->ms >= 2000 && clip->ms <= (p.move ? 11000 : 6500), p.clip);
-    TEST_ASSERT_TRUE(!p.move || p.look == SceneState::kWorking);
+    TEST_ASSERT_TRUE_MESSAGE(clip->ms >= 2000 && clip->ms <= (p.move ? 11000 : 6500), p.name);
     if (p.look == SceneState::kWorking || p.look == SceneState::kIdle) {
       TEST_ASSERT_TRUE(p.tier >= 1 && p.tier <= 5);
       TEST_ASSERT_EQUAL_INT(0, p.afterS);
@@ -90,7 +108,7 @@ void test_every_pastime_has_its_clip_and_its_turn() {
       TEST_ASSERT_EQUAL_INT(0, p.tier);
     }
   }
-  for (int n = 1; n <= 5; ++n) TEST_ASSERT_TRUE((n == 5 || count[0][n] >= 2) && count[1][n] >= 3);
+  for (int n = 1; n <= 5; ++n) TEST_ASSERT_TRUE((n == 5 || count[0][n] >= 2) && count[1][n] >= 2);
   TEST_ASSERT_TRUE(info(Pastime::kReach).move && info(Pastime::kMelt).move && info(Pastime::kStretch).move);
   TEST_ASSERT_EQUAL_INT(5, info(Pastime::kStretch).tier);
   TEST_ASSERT_EQUAL_INT(30, info(Pastime::kWave).afterS);
@@ -100,6 +118,11 @@ void test_every_pastime_has_its_clip_and_its_turn() {
   TEST_ASSERT_EQUAL_INT(60, info(Pastime::kRollOver).afterS);
   TEST_ASSERT_EQUAL_INT(120, info(Pastime::kSheep).afterS);
   TEST_ASSERT_EQUAL_INT(240, info(Pastime::kSnoreBubble).afterS);
+  TEST_ASSERT_EQUAL_INT(1800, info(Pastime::kDream).afterS);
+  TEST_ASSERT_EQUAL_STRING("night", info(Pastime::kDeepSnore).tag);
+  TEST_ASSERT_EQUAL_INT(4, info(Pastime::kLimber).tier);
+  TEST_ASSERT_EQUAL_STRING("busy", info(Pastime::kBusyTyping).tag);
+  TEST_ASSERT_EQUAL_STRING("frantic", info(Pastime::kFranticTyping).tag);
   // The tiers: the Mac sends the last reached, and the board takes the
   // ones below it as on.
   for (int n = 1; n <= 5; ++n) {
@@ -113,13 +136,14 @@ void test_every_pastime_has_its_clip_and_its_turn() {
   TEST_ASSERT_EQUAL_INT(0, tierOf(tagBit("night")));
 }
 
-// Each pastime moves the body and draws in time with it, above the lane,
-// and is over at its clip's end: nothing of it shows after.
+// Each pastime with a clip moves the body and draws in time with it, above
+// the lane, and is over at its clip's end: nothing of it shows after.
 void test_each_pastime_draws_and_ends() {
   std::vector<uint16_t> before(502 * 410), during(before.size()), after(before.size());
   std::vector<uint8_t> canvas(size_t(kWidth) * kHeight);
   Canvas c{canvas.data()};
   for (const PastimeInfo& p : kPastimes) {
+    if (p.body != Body::kClip) continue;
     const bool tiered = p.look == SceneState::kWorking || p.look == SceneState::kIdle;
     Board board(p.look, tagBit("day") | (tiered ? tierBit(5) : 0));
     GelFace& face = board.face();
@@ -131,19 +155,19 @@ void test_each_pastime_draws_and_ends() {
     board.to(3008);
     draw(before);
     face.playPastime(p.id, board.t);
-    const uint32_t start = board.t, ms = rig::kRig.clip(p.clip)->ms;
+    const uint32_t start = board.t, ms = clipOf(p)->ms;
     board.to(start + ms / 2);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(int(p.id), int(face.pastimes(board.t).playing), p.clip);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(255, face.pastimes(board.t).fade, p.clip);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(int(p.id), int(face.pastimes(board.t).playing), p.name);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(255, face.pastimes(board.t).fade, p.name);
     draw(during);
     int changed = 0;
     for (size_t i = 0; i < before.size(); ++i) changed += before[i] != during[i];
-    TEST_ASSERT_TRUE_MESSAGE(changed > 500, p.clip);
+    TEST_ASSERT_TRUE_MESSAGE(changed > 500, p.name);
     // The lane, the bottom fifth, is the host's.
     for (size_t i = size_t(502) * (410 * 4 / 5); i < before.size(); ++i)
-      TEST_ASSERT_EQUAL_HEX16_MESSAGE(before[i], during[i], p.clip);
+      TEST_ASSERT_EQUAL_HEX16_MESSAGE(before[i], during[i], p.name);
     board.to(start + ms + 16);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(int(Pastime::kNone), int(face.pastimes(board.t).playing), p.clip);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(int(Pastime::kNone), int(face.pastimes(board.t).playing), p.name);
   }
 }
 
@@ -192,6 +216,75 @@ void test_pastimes_are_dealt_by_tier_after_a_rest() {
     const Pastime now = asking.face().pastimes(asking.t).playing;
     TEST_ASSERT_TRUE(now == Pastime::kNone || (now == Pastime::kWave && asking.t >= 30000));
   });
+}
+
+// The rows that need a tag play only while it's on, and while they fit
+// they're the newest: never twice running, then kNewestPct of the deals
+// after another, so about 60 in 160 of all: idle drowses at
+// night, stretches in the morning and bounces on a party day and at New
+// Year's (the party's bounce), each its gag; with no tag on, only the yawn
+// and the sneeze of the engine's, and with no tier nor tag, none. Work types busier
+// while busy and frantically while frantic, as the scene's take; asleep
+// snores deeper at night and dreams after half an hour.
+void test_a_tagged_pastime_plays_only_while_its_tag_is_on() {
+  // How often each row with a body of the engine's was dealt, over `ms`,
+  // and how many were dealt in all.
+  struct Dealt {
+    std::map<Pastime, int> rows;
+    int all = 0;
+    bool has(Pastime p) const { return rows.count(p) > 0; }
+  };
+  auto deal = [](SceneState look, uint32_t when, int busy, uint32_t ms) {
+    // The board's own tags from state.busy, as Device adds them.
+    Board board(look, when | busyTags(busy));
+    board.m.busy = busy;
+    board.b.onState(board.m, 0);
+    Dealt dealt;
+    Pastime last = Pastime::kNone;
+    board.to(ms, [&] {
+      const Pastime now = board.face().pastimes(board.t).playing;
+      if (now != last && now != Pastime::kNone) {
+        ++dealt.all;
+        const PastimeInfo& p = info(now);
+        const Engine& e = board.face().engine();
+        if (p.body == Body::kGag) {
+          ++dealt.rows[now];
+          TEST_ASSERT_EQUAL_INT(gagOf(p), e.acting.playing);
+        } else if (p.body == Body::kTake) {
+          ++dealt.rows[now];
+          const Route& r = e.scenes.route;
+          TEST_ASSERT_EQUAL_INT(takes(recipeState(r.state, r.outcome, r.ctx)) + takeOf(p), e.scenes.variant);
+        }
+      }
+      last = now;
+    });
+    return dealt;
+  };
+  const uint32_t day = tagBit("day"), five = 5 * 60 * 1000;
+  const Dealt plain = deal(SceneState::kIdle, day | tierBit(1), 0, five);
+  TEST_ASSERT_TRUE(plain.has(Pastime::kYawn) && plain.has(Pastime::kSneeze) && plain.rows.size() == 2);
+  const Dealt night = deal(SceneState::kIdle, tagBit("night") | tierBit(1), 0, five);
+  TEST_ASSERT_TRUE(night.has(Pastime::kNightDrowse) && night.rows.size() <= 3);
+  TEST_ASSERT_INT_WITHIN(12, 100 * kNewestPct / (100 + kNewestPct), night.rows.at(Pastime::kNightDrowse) * 100 / night.all);
+  TEST_ASSERT_TRUE(deal(SceneState::kIdle, tagBit("morning") | tierBit(1), 0, five).has(Pastime::kMorningStretch));
+  TEST_ASSERT_TRUE(deal(SceneState::kIdle, day | tagBit("party") | tierBit(1), 0, five).has(Pastime::kPartyBounce));
+  TEST_ASSERT_TRUE(deal(SceneState::kIdle, day | tagBit("newyear") | tierBit(1), 0, five).has(Pastime::kPartyBounce));
+  TEST_ASSERT_EQUAL_UINT32(tagBit("party") | tagBit("newyear") | tagBit("lunar") | tagBit("programmers"),
+                           tagsOf(info(Pastime::kPartyBounce)));
+  TEST_ASSERT_EQUAL_INT(0, deal(SceneState::kIdle, day, 0, 120000).all);
+  const Dealt early = deal(SceneState::kIdle, tagBit("night"), 0, 25000);
+  TEST_ASSERT_TRUE(early.has(Pastime::kNightDrowse) && early.rows.size() == 1);
+  // Work: the take while busy or frantic, and none without.
+  const Dealt busy = deal(SceneState::kWorking, day | tierBit(1), 2, five);
+  TEST_ASSERT_TRUE(busy.has(Pastime::kBusyTyping) && busy.rows.size() == 1);
+  const Dealt frantic = deal(SceneState::kWorking, day | tierBit(1), 5, five);
+  TEST_ASSERT_TRUE(frantic.has(Pastime::kFranticTyping) && frantic.rows.size() == 1);
+  TEST_ASSERT_TRUE(deal(SceneState::kWorking, day | tierBit(1), 0, five).rows.empty());
+  // Asleep: deeper at night, a dream after half an hour.
+  const Dealt deep = deal(SceneState::kAsleep, tagBit("night"), 0, 120000);
+  TEST_ASSERT_TRUE(deep.has(Pastime::kDeepSnore) && deep.rows.size() == 1);
+  TEST_ASSERT_TRUE(deal(SceneState::kAsleep, day, 0, 120000).rows.empty());
+  TEST_ASSERT_TRUE(deal(SceneState::kAsleep, day, 0, 31 * 60 * 1000).has(Pastime::kDream));
 }
 
 // Pins kTuneEveryMs, kTuneGapMs and kTuneNoteMs: with the headphones on, a

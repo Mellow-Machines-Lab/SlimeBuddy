@@ -1,0 +1,12 @@
+{
+  "name": "A quiet Mac lets Boop sleep, never lonely",
+  "case": "The person comes back to the Mac, opens claude and leaves it idle, prompting nothing and never touching Boop, for two and a half hours. Boop is never lonely: with nothing going on it dozes off, and the idle check-ins stop.",
+  "why": "Core.dozeOffMs: Boop dozes an hour after every agent comes to rest; TranscriptView.idleWindowMs: idle check-ins stop 2 h after the last activity; lonely is for being ignored while you work, not for a quiet Mac",
+  "steps": [
+    {"event": "away", "at": "0s"},
+    {"event": "back", "at": "40m"},
+    {"event": "session started", "at": "41m"},
+    {"event": "wait", "at": "70m", "expect": {"mood": "!lonely"}},
+    {"event": "wait", "at": "190m", "expect": {"mood": "!lonely"}}
+  ]
+}

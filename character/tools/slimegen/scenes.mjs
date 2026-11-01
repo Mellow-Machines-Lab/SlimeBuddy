@@ -1,8 +1,8 @@
 // The slime's scenes as authored: for each state, mood and take, the recipe
 // slimegen bakes into slime.h (its length, lean and contacts, timed in ms),
-// and the gestures', notices' and occasions' gags. The board plays them: it
+// and the gestures', notices' and pastimes' gags. The board plays them: it
 // jitters a desk's contacts, deals the takes and owns every spring.
-export const states=['idle','working','needs_you','task_complete','asleep','no_app','listening','starting','planning','terminal','tool_use','searching','analyzing','testing','delegating','helper_return','waiting','reply_ready','error','stopped','poked','tap_spam','wake_up','gesture','notice'];
+export const states=['idle','working','needs_you','task_complete','asleep','no_app','listening','starting','planning','terminal','tool_use','searching','analyzing','testing','delegating','waiting','reply_ready','poked','tap_spam','wake_up','gesture','notice'];
 // A take's length: the first take's, the second's, the third's.
 const cycleMs=[3200,3700,4200];
 
@@ -98,8 +98,7 @@ function resultRecipe(outcome,variant,profile) {
 }
 function statusResultRecipe(state,variant,profile) {
   const result=resultRecipe(null,variant,profile);
-  const labels={reply_ready:'READY',error:'TOOL ERROR',stopped:'STOPPED'};
-  return {...result,label:labels[state],intent:state==='reply_ready'?'present a neutral ready card':state==='error'?'recover and show a tool warning':'gently brake and settle',
+  return {...result,intent:'show a neutral reply',
     contacts:result.contacts.map(contact=>({...contact,kind:state+'_reveal'}))};
 }
 
@@ -122,7 +121,7 @@ function wakeRecipe(variant,profile) {
 }
 
 function helpersRecipe(state,variant,profile) {
-  const traits=profileTraits(profile),returning=state==='helper_return';
+  const traits=profileTraits(profile),returning=false;
   const times=returning?[[680],[960],[1240]][variant]:[[660,1040],[540,880,1220],[820,1640]][variant];
   return {duration:cycleMs[variant],
     intent:returning?['welcome a neutral report','settle beside a returning helper','receive and inspect a report'][variant]:['send two small helpers','dispatch three helpers','nod and relay to helpers'][variant],
@@ -186,27 +185,19 @@ export function gestureGag(gesture) {
   return {label:gesture.label,duration:gesture.duration,keys:gesture.keys,cues:gesture.cues,contacts:[]};
 }
 
-// Occasions: a look's takes that need tags (`when`, every one on: the part of
-// the day, a holiday, party, busy, frantic) or a wait (`after`, seconds the
-// look has shown). While one fits, a pick goes to one this often; otherwise,
-// and while none fits, the look deals as it always has.
-export const occasionShare=.67;
-const occasionGagName=occasion=>'occasion:'+(typeof occasion.gag==='string'?occasion.gag:occasion.id);
-// Idle's: gags acting plays in place of its next gesture, in catalogue order.
-export function idleOccasions(occasions) {
-  return occasions.filter(o=>o.looks.includes('idle')).map(o=>({id:o.id,when:o.when,after:o.after,gag:occasionGagName(o)}));
-}
-// The other looks': a recipe each (and a gag, if it has one) for each look
-// it names, flattened in catalogue order.
-export function lookOccasions(occasions) {
-  return occasions.filter(o=>o.recipe).flatMap(o=>o.looks.map(state=>({id:o.id,state,when:o.when,after:o.after,
+// The pastimes' bodies (`pastimes`): a gag the engine's acting plays in
+// place of its next gesture, or a take its scene plays as the look's next
+// (with a gag, if it has one). The face's table (render/gel/pastimes.cpp)
+// names each and says when it's dealt.
+const pastimeGagName=pastime=>'pastime:'+pastime.id;
+export function pastimeTakes(pastimes) {
+  return pastimes.filter(o=>o.recipe).map(o=>({id:o.id,
     recipe:{duration:Math.round(o.recipe.duration*1000),intent:o.label,lean:o.recipe.lean,jitter:o.recipe.jitter,
       contacts:o.recipe.contacts.map(([at,kind,strength,side])=>({at:Math.round(at*1000),kind,side,strength})),
-      gag:o.gag?occasionGagName(o):null}})));
+      gag:o.gag?pastimeGagName(o):null}}));
 }
-// The gags occasions carry, each once: those named by another occasion are its.
-export function occasionGags(occasions) {
-  return occasions.filter(o=>o.gag&&typeof o.gag==='object').map(o=>[occasionGagName(o),{label:o.label,...o.gag}]);
+export function pastimeGags(pastimes) {
+  return pastimes.filter(o=>o.gag).map(o=>[pastimeGagName(o),{label:o.label,...o.gag}]);
 }
 
 // A row's takes: three, and a fourth for asleep (its snore) and a successful
@@ -223,10 +214,10 @@ export function recipe(p,{state,outcome,ctx},v,design){
  else if(['working','planning','terminal','tool_use','searching','analyzing','testing','waiting'].includes(state)){r=deskRecipe(state,v,p);jitter=true;}
  else if(state==='needs_you')r=alertRecipe(v,p);
  else if(state==='task_complete')r=resultRecipe(outcome||null,v,p);
- else if(['reply_ready','error','stopped'].includes(state))r=statusResultRecipe(state,v,p);
+ else if(state==='reply_ready')r=statusResultRecipe(state,v,p);
  else if(state==='starting')r=startRecipe(ctx||null,v,p);
  else if(state==='wake_up')r=wakeRecipe(v,p);
- else if(['delegating','helper_return'].includes(state))r=helpersRecipe(state,v,p);
+ else if(state==='delegating')r=helpersRecipe(state,v,p);
  else if(['poked','tap_spam'].includes(state))r=touchRecipe(state,v);
  else if(state==='listening')r=listenRecipe(v);
  else if(state==='asleep')r=restRecipe(v);else if(state==='no_app')r=restRecipe();else r=idleRecipe();

@@ -5,6 +5,6 @@ nobody expected.
 Its faces lean surprised and curious.
 Says upset or tickled, small: a gasp.
 It's brief: the next NOW decides.
-Leaves for curious at anything new; happy or amused when it turns out
-fine; confused when it makes no sense; stunned at a second shock.
+Leaves for curious at anything new or when it makes no sense; happy
+when it turns out fine; annoyed when it's bad news.
 Fades to curious once Boop has been surprised for 1 min.

@@ -1,4 +1,4 @@
-<!-- Boop's signs: what it may hold up on a sign when it reacts to your prompt (Signs, the react.sign question). A line may start with tags in brackets, every one of which the prompt's reading must have: its kind (fix, feature, cleanup, refactor, tests, deploy, docs, question, carry_on, other), its tone (calm, frustrated, rushed, polite, playful, shouting, careful), its length (words, sentence, paragraph, essay), named (you said its name, the one you gave it), words (it kept a phrase of yours), and the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9). {words} is one of your phrases as you wrote it, {WORDS} the same in capitals: such a line is offered once for each. Your words come first, at most three, then tagged captions, then the rest; at most six, each at most 18 characters, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
+<!-- Boop's signs: what it may hold up on a sign when it reacts to your prompt (Signs, the react.sign question), and, tagged [idle], its idle musings: held up now and then at an idle check-in, at most once an hour, never on Quiet, asking nothing; {turns} is today's turns and {thread} the busiest thread, and a line may need a kept answer's tag ([cookie]). A line may start with tags in brackets, every one of which the prompt's reading must have: its kind (fix, feature, cleanup, refactor, tests, deploy, docs, question, carry_on, other), its tone (calm, frustrated, rushed, polite, playful, shouting, careful), its length (words, sentence, paragraph, essay), named (you said its name, the one you gave it), and the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9). {words} is one of your phrases as you wrote it, {WORDS} the same in capitals: such a line is offered once for each. Your words come first, at most three, then tagged captions, then the rest; at most six, each at most 18 characters, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
 - [frustrated] {words} :(
 - [frustrated] {words}?!
 - [frustrated] {words}. again.
@@ -28,4 +28,10 @@
 - [question] good q
 - [carry_on] onward!
 - [essay] reading...
-- [words] {words}
+- {words}
+- [idle] quiet day...
+- [idle] {turns} turns today!
+- [idle] {thread} again?
+- [idle] still here, u?
+- [idle cookie] snack time?
+- [idle pizza] pizza later?

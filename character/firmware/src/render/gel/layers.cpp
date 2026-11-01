@@ -532,7 +532,7 @@ Look lookFor(const Engine& e) {
   const Outfit hat = outfitFor(when);
   const int colors = hasTag(when, "lunar") ? 1 : hasTag(when, "programmers") && !hasTag(when, "party") ? 2 : 0;
   const bool nightcap = hat == Outfit::kNightcap;
-  const bool feeling = e.router.hasMoment || (e.router.hasOverlay && e.router.overlayExpression >= 0) ||
+  const bool feeling = e.router.reacting || e.router.expression >= 0 ||
                        state == SceneState::kNeedsYou || state == SceneState::kListening;
   const Eyewear worn = state == SceneState::kAsleep ? Eyewear::kNone : eyewearFor(when);
   const Eyewear eyes = worn == Eyewear::kShades && feeling ? Eyewear::kNone : worn;

@@ -1,12 +1,13 @@
 {
   "name": "A turn of a few minutes gets a face but leaves the mood alone",
-  "case": "Two turns of a few minutes each finish well, one with passing tests. Each finish gets a pleased face, held once or twice, played as a success, but nothing bigger, since neither stands out. Boop stays calm, or follows the work (engaged) while it goes on.",
-  "why": "character/steering/mood/calm.md: calm stays through routine finishes, even a few minutes long, since only a very long turn (5 minutes or more) finishing done lifts it; it may follow a long turn, engaged, at a check-in; PERSONALITY's Examples: a turn of a minute or more finishing done gets a happy face and its success, small or medium, and the 2nd quick win of a streak a pleased one",
+  "case": "Two turns of a few minutes each finish well, one with passing tests, the second Codex's, which Boop treats as it would Claude's. Each finish gets a pleased face, held once or twice, played as a success, but nothing bigger, since neither stands out. Boop stays calm, follows the work (engaged) while it goes on, or is a little glad (happy) at a long turn's hard work done, never more.",
+  "gap": "Jev sometimes plays a few minutes' turn done, its tests passing, as a big moment, held three times (1 or 2 of 3 runs, 2026-11-01), where PERSONALITY's Example says small or medium. A firmer Example, or a size the turn's band sets in code, would fix it.",
+  "why": "character/steering/mood/calm.md: calm stays through routine finishes, even a few minutes long, since only a very long turn (5 minutes or more) finishing done lifts it; it may follow a long turn, engaged, at a check-in; PERSONALITY's Examples: a turn of a minute or more finishing done gets a happy face and its success, small or medium, and the 2nd quick win of a streak a pleased one; mood/calm.md: calm leaves for happy at a long turn's hard work done. The view lines Codex's hooks as Claude's (agent-hooks' Mapping.codex), and Codex never says a turn failed",
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "command", "at": "30s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "3m", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success", "intensity": "small|medium", "mood": "calm|engaged"}},
-    {"event": "turn started", "at": "4m"},
-    {"event": "turn finished", "at": "6m30s", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success", "intensity": "small|medium", "mood": "calm|engaged"}}
+    {"event": "turn finished", "at": "3m", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success", "intensity": "small|medium", "mood": "calm|engaged|happy"}},
+    {"event": "turn started", "at": "4m", "agent": "codex"},
+    {"event": "turn finished", "at": "6m30s", "agent": "codex", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success|reply", "intensity": "small|medium", "mood": "calm|engaged|happy"}}
   ]
 }

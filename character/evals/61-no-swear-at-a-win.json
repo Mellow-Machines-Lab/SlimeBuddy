@@ -6,8 +6,8 @@
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "command", "at": "2m", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "6m", "expect": {"move": "success", "say": "none|upset|glad|tickled|start|helpers|helper back|retry|work|tests|command|tool|looking|planning|done|answer|stopped|waiting|quiet|hello"}},
-    {"event": "poke", "at": "7m", "expect": {"say": "none|upset|glad|tickled|start|helpers|helper back|retry|work|tests|command|tool|looking|planning|done|answer|stopped|waiting|quiet|hello"}},
-    {"event": "said", "at": "8m", "words": "you're useless", "expect": {"say": "none|upset|glad|tickled|start|helpers|helper back|retry|work|tests|command|tool|looking|planning|done|answer|stopped|waiting|quiet|hello"}}
+    {"event": "turn finished", "at": "6m", "expect": {"move": "success", "say": "!swear"}},
+    {"event": "poke", "at": "7m", "expect": {"say": "!swear"}},
+    {"event": "said", "at": "8m", "words": "you're useless", "expect": {"say": "!swear"}}
   ]
 }

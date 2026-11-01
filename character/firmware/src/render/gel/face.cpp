@@ -51,12 +51,12 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   revision_ = cueRevision_ = 0;
   mixer_.reset(0, 0, nullptr);
   layers_ = {};
-  occasion_ = cueing_ = lastClip_ = base_ = nullptr;
-  pastime_ = Pastime::kNone;
-  occasionAt_ = occasionEnds_ = stoppedAt_ = restUntil_ = zoneSince_ = 0;
+  clip_ = cueing_ = base_ = nullptr;
+  pastime_ = lastPastime_ = Pastime::kNone;
+  pastimeAt_ = pastimeEnds_ = stoppedAt_ = restUntil_ = zoneSince_ = 0;
   inZone_ = phonesWanted_ = phonesOn_ = moved_ = false;
   movedAt_ = 0;
-  occasionLook_ = dealtLook_ = SceneState::kNone;
+  pastimeLook_ = dealtLook_ = SceneState::kNone;
   stopped_ = false;
   dice_ = kSeed;
   mug_ = headphones_ = zone_ = plant_ = rig::Ramp{};
@@ -102,7 +102,7 @@ void GelFace::advanceTo(uint32_t t) {
   engine_->step(engineMs_);
   mixer_.advance(t - lastTick_);
   lastTick_ = t;
-  occasions(t);
+  passTime(t);
   showBase();
   showLayers(t);
   showKit(t);
@@ -122,7 +122,7 @@ void GelFace::advanceTo(uint32_t t) {
     e.clip = uint8_t(clip);
     e.gain = uint8_t(clamp(cue.gain * 255, 0, 255).integer());
     e.pitch = uint16_t((cue.pitch * 1000).integer());
-    e.duck = !cue.protectedCue;  // needs you's, a finish's and an error's stay up under a line
+    e.duck = !cue.protectedCue;  // needs you's and a finish's stay up under a line
   }
 }
 
@@ -140,12 +140,14 @@ uint32_t GelFace::roll(uint32_t n) {
   return n ? dice_ % n : 0;
 }
 
-void GelFace::endOccasion(uint32_t t, bool early) {
-  if (early && occasion_) mixer_.stop(*occasion_);
-  stopped_ = early && pastime_ != Pastime::kNone;
+void GelFace::endPastime(uint32_t t, bool early) {
+  if (early && clip_) mixer_.stop(*clip_);
+  // One stopped early fades out what it draws; a gag's or a take's draws
+  // nothing, and the engine stops it itself as the look gives way.
+  stopped_ = early && clip_;
   stoppedAt_ = t;
   if (!stopped_) pastime_ = Pastime::kNone;
-  occasion_ = nullptr;
+  clip_ = nullptr;
   restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
 }
 
@@ -154,7 +156,7 @@ bool GelFace::showsLook(SceneState anim, SceneState& look) const {
   const bool needsYou = e.router.facts.attention.on;
   look = needsYou ? SceneState::kNeedsYou : e.router.facts.base;
   const Route& route = e.scenes.route;
-  return anim == SceneState::kNone && !route.moment &&
+  return anim == SceneState::kNone && !route.reaction &&
          route.state == (needsYou ? SceneState::kNeedsYou : e.router.facts.look());
 }
 
@@ -166,16 +168,16 @@ void GelFace::showBase() {
   if (clip != base_) mixer_.setLook(base_ = clip);
 }
 
-void GelFace::occasions(uint32_t t) {
+void GelFace::passTime(uint32_t t) {
   if (stopped_ && !within(t, stoppedAt_, rig::kFadeMs)) stopped_ = false, pastime_ = Pastime::kNone;
-  if (occasion_ && !after(occasionEnds_, t)) endOccasion(t, false);
+  if (playing() && !after(pastimeEnds_, t)) endPastime(t, false);
   SceneState look;
   const bool shows = showsLook(source_.anim, look);
-  if (occasion_ && (!shows || look != occasionLook_)) endOccasion(t, true);
+  if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
   const bool busy = finger_ || (stream_ && stream_->drawn(t) && stream_->call.live);
-  if (!shows || occasion_ || stopped_ || busy || after(restUntil_, t)) return;
+  if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
 
@@ -183,38 +185,38 @@ void GelFace::deal(SceneState look, uint32_t t) {
   const Engine& e = *engine_;
   const uint32_t when = e.scenes.when, lookMs = e.scenes.lookMs;
   struct Option {
-    const rig::Clip* clip;
-    Pastime pastime;
-    int rank;  // its tier, then its wait: the newest is the highest
-  } options[kPastimeCount + 8];
+    const PastimeInfo* row;
+    int rank;  // the newest is the highest
+  } options[kPastimeCount];
   int n = 0;
-  auto add = [&](const rig::Clip* clip, Pastime p, int tier, int afterS) {
-    if (clip && n < int(std::size(options))) options[n++] = {clip, p, tier * 100000 + afterS};
-  };
-  if (const rig::Look* l = rig::kRig.look(look))
-    for (const auto& o : l->occasions)
-      if (fits(o.when, o.afterS, when, lookMs)) add(o.clip, Pastime::kNone, tierOf(o.when), o.afterS);
   // In the morning its coffee is in its hand (render/gel/layers.h): no mug
   // on the desk, so no sip, reach or refill from one. A move waits its gap.
   const bool morning = hasTag(when, "morning"), moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
   // Nor a melt in a hat, which has no head to sit on then.
   const bool hatted = outfitFor(when) != Outfit::kNone;
-  for (const auto& p : kPastimes)
-    if (p.look == look && fits(tierBit(p.tier), p.afterS, when, lookMs) && !(p.move && moveWaits) &&
-        !(morning && (p.id == Pastime::kSip || p.id == Pastime::kReach || p.id == Pastime::kRefill)) &&
-        !(hatted && p.id == Pastime::kMelt))
-      add(rig::kRig.clip(p.clip), p.id, p.tier, p.afterS);
+  // A take at work only while it types.
+  const SceneState desk = e.scenes.route.state;
+  const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
+  for (const auto& p : kPastimes) {
+    if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
+    if (morning && (p.id == Pastime::kSip || p.id == Pastime::kReach || p.id == Pastime::kRefill)) continue;
+    if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
+      continue;
+    // The highest tier, then the longest wait, is the newest; one that
+    // needs a tag is newer than any while it fits.
+    options[n++] = {&p, (p.tag ? 1000000 : p.tier * 100000) + p.afterS};
+  }
   // The headphones wanted and not yet on: they go on first, and only then.
   if (look == SceneState::kWorking && phonesWanted_ && !phonesOn_) {
     playPastime(Pastime::kPhonesOn, t);
     return;
   }
   for (int i = 0; i < n; ++i)
-    if (options[i].pastime == Pastime::kPhonesOn) options[i--] = options[--n];
+    if (options[i].row->id == Pastime::kPhonesOn) options[i--] = options[--n];
   // Never the one dealt last, while there's another.
   if (n > 1)
     for (int i = 0; i < n; ++i)
-      if (options[i].clip == lastClip_) {
+      if (options[i].row->id == lastPastime_) {
         options[i] = options[--n];
         break;
       }
@@ -222,26 +224,38 @@ void GelFace::deal(SceneState look, uint32_t t) {
   int top = 0, newest = 0;
   for (int i = 0; i < n; ++i) top = std::max(top, options[i].rank);
   for (int i = 0; i < n; ++i) newest += options[i].rank == top;
-  // The newest tier's kNewestPct of the time, an older one's the rest.
+  // The newest kNewestPct of the time, an older one the rest.
   const bool fresh = newest == n || int(roll(100)) < kNewestPct;
   int pick = int(roll(uint32_t(fresh ? newest : n - newest)));
   const Option* chosen = nullptr;
   for (int i = 0; i < n && !chosen; ++i)
     if ((options[i].rank == top) == fresh && pick-- == 0) chosen = &options[i];
-  start(*chosen->clip, chosen->pastime, look, t);
-  holdGestures(*chosen->clip);
+  start(*chosen->row, look, t);
 }
 
-void GelFace::start(const rig::Clip& clip, Pastime p, SceneState look, uint32_t t) {
-  if (occasion_) endOccasion(t, true);
-  occasion_ = lastClip_ = &clip;
-  pastime_ = p;
-  if (p != Pastime::kNone && info(p).move) movedAt_ = t, moved_ = true;
+void GelFace::start(const PastimeInfo& p, SceneState look, uint32_t t) {
+  if (playing()) endPastime(t, true);
+  pastime_ = lastPastime_ = p.id;
+  clip_ = nullptr;
+  if (p.move) movedAt_ = t, moved_ = true;
   stopped_ = false;
-  occasionLook_ = dealtLook_ = look;
-  occasionAt_ = t;
-  occasionEnds_ = t + clip.ms;
-  play(clip);
+  pastimeLook_ = dealtLook_ = look;
+  pastimeAt_ = t;
+  uint32_t ms = 1;
+  if (const rig::Clip* clip = clipOf(p)) {
+    clip_ = clip;
+    ms = clip->ms;
+    play(*clip);
+    holdGestures(*clip);
+  } else if (const int gag = gagOf(p); gag >= 0) {
+    engine_->playGag(gag);
+    ms = uint32_t(F(slime::kGags[gag].gesture.duration * 1000).integer());
+  } else if (const int take = takeOf(p); take >= 0) {
+    engine_->playTake(take);
+    // The engine's time runs at the look's pace.
+    ms = uint32_t(F(slime::kPastimeTakes[take].recipe.duration).integer()) * 100 / uint32_t(pace_);
+  }
+  pastimeEnds_ = t + std::max<uint32_t>(1, ms);
 }
 
 void GelFace::holdGestures(const rig::Clip& clip) {
@@ -251,16 +265,15 @@ void GelFace::holdGestures(const rig::Clip& clip) {
 
 void GelFace::playPastime(Pastime p, uint32_t t) {
   const PastimeInfo& i = info(p);
-  if (const rig::Clip* clip = rig::kRig.clip(i.clip)) start(*clip, p, i.look, t);
+  if (hasBody(i)) start(i, i.look, t);
 }
 
 void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
   SceneState look;
   const Pastime p = pastimeFor(name);
-  const rig::Clip* trick = p != Pastime::kNone ? rig::kRig.clip(info(p).clip) : nullptr;
-  if (trick && showsLook(anim, look) && (look == SceneState::kIdle || look == SceneState::kAsleep)) {
-    start(*trick, p, look, t);
-    holdGestures(*trick);
+  if (p != Pastime::kNone && hasBody(info(p)) && showsLook(anim, look) &&
+      (look == SceneState::kIdle || look == SceneState::kAsleep)) {
+    start(info(p), look, t);
     return;
   }
   char clip[24];
@@ -268,9 +281,9 @@ void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
   if (const rig::Clip* c = rig::kRig.clip(clip)) play(*c);
 }
 
-bool GelFace::playPastime(const char* clip, uint32_t t) {
+bool GelFace::playPastime(const char* name, uint32_t t) {
   for (const PastimeInfo& p : kPastimes)
-    if (!std::strcmp(p.clip, clip)) {
+    if (!std::strcmp(p.name, name)) {
       advanceTo(t);
       playPastime(p.id, t);
       return true;
@@ -298,7 +311,7 @@ void GelFace::showKit(uint32_t t) {
   show(mug_, working && tier >= 1 && !hasTag(when, "morning"));  // the morning's is in its hand
   phonesWanted_ = working && tier >= 3 && head;
   if (!phonesWanted_) phonesOn_ = false;
-  if (pastime_ == Pastime::kPhonesOn && !stopped_ && t - occasionAt_ >= kPhonesOnMs) phonesOn_ = true;
+  if (pastime_ == Pastime::kPhonesOn && !stopped_ && t - pastimeAt_ >= kPhonesOnMs) phonesOn_ = true;
   show(headphones_, phonesWanted_ && phonesOn_);
   show(plant_, idle && tier >= 3);
   if (idle && tier >= 3) grown_ = std::min(3, tier - 2);
@@ -308,10 +321,9 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
   s.t = t, s.when = engine_->scenes.when;
   if (pastime_ != Pastime::kNone) {
-    const rig::Clip* clip = rig::kRig.clip(info(pastime_).clip);
     s.playing = pastime_;
-    s.age = t - occasionAt_;
-    s.ms = clip ? clip->ms : 1;
+    s.age = t - pastimeAt_;
+    s.ms = pastimeEnds_ - pastimeAt_;
     // In over 150 ms, out over its last 250; one stopped early, out over
     // the rig's fade from then.
     int fade = int(std::min<uint32_t>({255, s.age * 255 / 150, s.age < s.ms ? (s.ms - s.age) * 255 / 250 : 0}));
@@ -457,7 +469,6 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     e.setFacts(f);
   }
   e.setMood(expressionFromName(moodName(context.mood)));
-  e.scenes.cardless = source.named;
   bool timeout = source.look == SceneState::kNoApp;
   if (timeout != e.router.timedOut) e.linkTimedOut(timeout);
   e.setOccasion(context.when, context.lookMs);
@@ -470,29 +481,25 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     borrowed = slime::kGestureFaces[std::min<int>(source.animVariant, slime::kGestureCount - 1)];
   if (borrowed < 0 && source.anim == SceneState::kNotice)
     borrowed = slime::kNoticeFaces[std::min<int>(source.animVariant, slime::kNoticeCount - 1)];
-  bool nextMoment = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
-  if (nextMoment) {
-    // Behaviour times the moment (its loops, its line), so the engine
+  bool next = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
+  if (next) {
+    // Behaviour times the reaction (its loops, its line), so the engine
     // holds it until the source moves on.
     Request r;
     r.anim = source.anim;
-    r.hasId = true;
-    r.id = source.id ? std::to_string(source.id) : "local-" + std::to_string(source.at);
     r.loops = source.loops;
     r.outcome = source.outcome;
     r.ctx = source.ctx;
     r.variant = source.animVariant;
-    r.hold = true;
     r.expression = borrowed;
-    r.say = true;
-    e.oneShot(r);
+    e.play(r);
     restartCues();
     if (const rig::Clip* clip = rig::kRig.clip(stateName(source.anim))) play(*clip);
   } else if (source.anim == SceneState::kNone && source_.anim != SceneState::kNone && !timeout) {
-    e.clearTransient();
+    e.clear();
     restartCues();
   }
-  e.holdExpression(borrowed);
+  e.borrow(borrowed);
   // A reply to what you said: its clip over the face it came with, or the
   // pastime it asks for, once, as that face starts. A pack with none for
   // it plays the face alone.
@@ -508,13 +515,11 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   showLayers(t);
 }
 
-// The engine's shuffle bag for the moment, drawn from copies: a call
+// The engine's shuffle bag for the reaction, drawn from copies: a call
 // refused after its pick (Device::refuse) leaves the bag and the engine's
 // randomness as they were. started draws the same take for real.
 uint8_t GelFace::pick(SceneState a, Mood mood, int wanted, Outcome outcome, StartCtx ctx, linkkit::Rng&, int loops,
                       int turn) const {
-  // A gesture's take is the gesture asked for (from 1), never dealt.
-  if (a == SceneState::kGesture) return uint8_t(wanted > 0 && wanted <= slime::kGestureCount ? wanted - 1 : 0);
   // A successful finish by its size: small deals Little Win's takes from
   // the bag, as every other row does.
   if (a == SceneState::kTaskComplete && outcome == Outcome::kSuccess) {
@@ -556,7 +561,7 @@ uint32_t GelFace::loopMs(Mood mood, SceneState state, int variant) const {
   return uint32_t(F(recipe(mood, state, variant, Outcome::kNone, StartCtx::kNone).duration).integer());
 }
 
-// A line over a moment starts at its first result contact (the card or
+// A line over a reaction starts at its first result contact (the card or
 // the alert), less the speaker's lead.
 uint32_t GelFace::voiceMs(Mood mood, SceneState state, int variant) const {
   const auto& r = recipe(mood, state, variant, Outcome::kNone, StartCtx::kNone);

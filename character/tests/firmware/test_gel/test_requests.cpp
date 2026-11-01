@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "render/gel/engine.h"
+#include "render/gel/pastimes.h"
 
 using namespace render;
 using namespace render::gel;
@@ -31,11 +32,9 @@ Facts asking(const char* id, const char* agent = "codex", const char* project = 
   return f;
 }
 
-Request ask(SceneState anim, const char* id, Outcome outcome = Outcome::kNone, int loops = 1) {
+Request ask(SceneState anim, Outcome outcome = Outcome::kNone, int loops = 1) {
   Request r;
   r.anim = anim;
-  r.hasId = true;
-  r.id = id;
   r.outcome = outcome;
   r.loops = loops;
   return r;
@@ -50,7 +49,7 @@ std::unique_ptr<Engine> engine(const Facts& facts = Facts{}) {
 }
 
 SceneState state(const Engine& e) { return e.scenes.route.state; }
-const std::string& request(const Engine& e) { return *e.scenes.route.requestId; }
+uint64_t request(const Engine& e) { return e.scenes.route.key; }
 
 // Steps `ms` on the 16 ms grid from `t`, calling each() after every step.
 template <class Each>
@@ -86,15 +85,16 @@ int count(const std::vector<SoundCue>& cues, const char* recipe) {
 // Which request plays: a lost link over listening, listening over needs
 // you, needs you over a reaction, a reaction over the look; an act only
 // while working. Every one of the board's states is reachable from what
-// the engine is told. Listening holds through a repeat, ends only on a real
-// stop or a line, and refuses reactions meanwhile; a stop ends nothing
-// else. A reaction's own face plays over another's without replacing it;
-// loops are one to six, each a pass of the same take with one reveal; an
-// unheld reaction ends with its take, and one whose time ran out while the
-// link was lost doesn't come back; facts can't clear a lost link, and
-// getting the link back plays the latest. A take its state hasn't got is
-// dealt instead; a gesture asked for no take plays the first, and its gag
-// plays at work too; a notice asked for none is dealt one.
+// the engine is told. Listening asked again starts anew, has no time of
+// its own, and ends when it's cleared or a reaction comes, even one refused
+// because needs you shows. A borrowed face plays over a reaction without
+// replacing it; loops are one or more (the device holds them to its most),
+// each a pass of the same take with one reveal, and the last held until
+// it's cleared, onto the latest facts; held through a lost link, a reaction
+// comes back with its take; facts can't clear a lost link, and getting the
+// link back plays the latest. A take its state hasn't got is dealt instead;
+// a gesture asked for no take plays the first, and its gag plays at work
+// too; a notice asked for none is dealt one.
 void test_requests_route_by_priority() {
   std::set<SceneState> reached;
   auto e = engine();
@@ -115,13 +115,13 @@ void test_requests_route_by_priority() {
   expect(*e, SceneState::kIdle);
   e->setFacts(asking("1"));
   expect(*e, SceneState::kNeedsYou);
-  TEST_ASSERT_TRUE(e->oneShot(ask(SceneState::kListening, "2")));
+  TEST_ASSERT_TRUE(e->play(ask(SceneState::kListening)));
   expect(*e, SceneState::kListening);
-  const std::string listening = request(*e);
+  const uint64_t listening = request(*e);
   const int generation = e->scenes.generation;
-  TEST_ASSERT_TRUE(e->oneShot(ask(SceneState::kListening, "99")));
-  TEST_ASSERT_TRUE(request(*e) == listening && e->scenes.generation == generation);
-  TEST_ASSERT_FALSE(e->oneShot(ask(SceneState::kTaskComplete, "98", Outcome::kSuccess)));
+  TEST_ASSERT_TRUE(e->play(ask(SceneState::kListening)));
+  TEST_ASSERT_TRUE(request(*e) != listening && e->scenes.generation == generation + 1);
+  TEST_ASSERT_TRUE(state(*e) == SceneState::kListening);
   e->linkTimedOut(true);
   expect(*e, SceneState::kNoApp);
   e->linkTimedOut(false);
@@ -129,59 +129,42 @@ void test_requests_route_by_priority() {
   uint32_t t = 0;
   run(*e, t, 30000);  // listening has no time of its own
   TEST_ASSERT_TRUE(state(*e) == SceneState::kListening);
-  Request line;
-  line.say = true, line.hasId = true, line.id = "3";
-  e->oneShot(line);
+  TEST_ASSERT_FALSE(e->play(ask(SceneState::kTaskComplete, Outcome::kSuccess)));
   TEST_ASSERT_TRUE(state(*e) == SceneState::kNeedsYou);
   e->setFacts(look(SceneState::kWorking));
   TEST_ASSERT_TRUE(state(*e) == SceneState::kWorking);
-  Request stop;
-  stop.stop = true;
-  TEST_ASSERT_TRUE(e->oneShot(ask(SceneState::kListening, "4")));
-  TEST_ASSERT_TRUE(e->oneShot(stop));
+  TEST_ASSERT_TRUE(e->play(ask(SceneState::kListening)));
+  e->clear();
   TEST_ASSERT_TRUE(state(*e) == SceneState::kWorking);
-  int id = 10;
-  for (SceneState anim : {SceneState::kStarting, SceneState::kStopped, SceneState::kError, SceneState::kHelperReturn,
-                          SceneState::kReplyReady, SceneState::kTaskComplete, SceneState::kPoked, SceneState::kTapSpam,
+  for (SceneState anim : {SceneState::kStarting, SceneState::kReplyReady, SceneState::kTaskComplete, SceneState::kPoked, SceneState::kTapSpam,
                           SceneState::kWakeUp, SceneState::kGesture, SceneState::kNotice}) {
     auto single = engine(look(SceneState::kWorking));
-    TEST_ASSERT_TRUE(single->oneShot(ask(anim, std::to_string(id++).c_str(), Outcome::kFailure)));
+    TEST_ASSERT_TRUE(single->play(ask(anim, Outcome::kFailure)));
     expect(*single, anim);
   }
   TEST_ASSERT_EQUAL_INT(int(SceneState::kCount), int(reached.size()));
-  // A stop ends listening only.
+  // A borrowed face over a finish: the finish, its outcome and its pass
+  // stay; the lasting mood stays; a bare reaction has nothing to play.
   auto finish = engine(look(SceneState::kWorking));
-  finish->oneShot(ask(SceneState::kTaskComplete, "1", Outcome::kFailure));
-  TEST_ASSERT_FALSE(finish->oneShot(stop));
-  TEST_ASSERT_TRUE(state(*finish) == SceneState::kTaskComplete);
-  // A reaction's face over a finish: the finish, its outcome and its pass
-  // stay; the lasting mood stays; a line alone restarts nothing; a bare
-  // reaction has nothing to play.
-  const std::string finishing = request(*finish);
+  finish->play(ask(SceneState::kTaskComplete, Outcome::kFailure));
+  const uint64_t finishing = request(*finish);
   const int pass = finish->scenes.generation;
-  Request face;
-  face.hasId = true, face.id = "61", face.expression = slime::kSad;
-  TEST_ASSERT_TRUE(finish->oneShot(face));
+  finish->borrow(slime::kSad);
   TEST_ASSERT_TRUE(state(*finish) == SceneState::kTaskComplete && finish->scenes.route.outcome == Outcome::kFailure);
   TEST_ASSERT_EQUAL_INT(slime::kCalm, finish->emotion);
   TEST_ASSERT_EQUAL_INT(slime::kSad, finish->expression);
   TEST_ASSERT_TRUE(request(*finish) == finishing && finish->scenes.generation == pass);
-  line.id = "62";
-  finish->oneShot(line);
-  TEST_ASSERT_TRUE(state(*finish) == SceneState::kTaskComplete && finish->scenes.generation == pass);
-  Request bare;
-  bare.hasId = true, bare.id = "63";
-  TEST_ASSERT_FALSE(finish->oneShot(bare));
-  // Loops, one to six.
-  const int asked[] = {-2, 0, 1, 4, 100}, kept[] = {1, 1, 1, 4, 6};
+  TEST_ASSERT_FALSE(finish->play(Request{}));
+  // Loops, one or more.
+  const int asked[] = {-2, 0, 1, 4, 6}, kept[] = {1, 1, 1, 4, 6};
   for (int i = 0; i < 5; ++i) {
     auto single = engine();
-    single->oneShot(ask(SceneState::kTaskComplete, "64", Outcome::kFailure, asked[i]));
+    single->play(ask(SceneState::kTaskComplete, Outcome::kFailure, asked[i]));
     TEST_ASSERT_EQUAL_INT(kept[i], single->scenes.route.loops);
   }
   // Three loops: one take three times over, each pass revealing once.
   auto looped = engine(look(SceneState::kWorking));
-  looped->oneShot(ask(SceneState::kTaskComplete, "80", Outcome::kFailure, 3));
+  looped->play(ask(SceneState::kTaskComplete, Outcome::kFailure, 3));
   std::set<int> takes, passes;
   int failures = 0;
   t = 0;
@@ -193,16 +176,18 @@ void test_requests_route_by_priority() {
   TEST_ASSERT_EQUAL_INT(1, int(takes.size()));
   TEST_ASSERT_TRUE((passes == std::set<int>{0, 1, 2}));
   TEST_ASSERT_EQUAL_INT(3, failures);
-  TEST_ASSERT_TRUE(state(*looped) == SceneState::kWorking);
-  // An unheld start ends with its take, onto the latest facts.
+  TEST_ASSERT_TRUE(state(*looped) == SceneState::kTaskComplete && looped->scenes.iteration == 2);
+  // A start holds its last until it's cleared, then shows the latest facts.
   auto start = engine(look(SceneState::kWorking));
-  Request starting = ask(SceneState::kStarting, "70");
+  Request starting = ask(SceneState::kStarting);
   starting.ctx = StartCtx::kNewTask;
-  start->oneShot(starting);
+  start->play(starting);
   TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
   start->setFacts(look(SceneState::kWorking, SceneState::kTerminal));
   t = 0;
   run(*start, t, 16000);
+  TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
+  start->clear();
   TEST_ASSERT_TRUE(state(*start) == SceneState::kTerminal);
   // A lost link: facts don't clear it, the link coming back plays the latest.
   auto lost = engine(look(SceneState::kWorking));
@@ -212,39 +197,40 @@ void test_requests_route_by_priority() {
   run(*lost, t, 320, [&] { TEST_ASSERT_TRUE(state(*lost) == SceneState::kNoApp); });
   lost->linkTimedOut(false);
   TEST_ASSERT_TRUE(state(*lost) == SceneState::kTerminal);
-  // A reaction whose time ran out while the link was lost is over.
-  auto elapsed = engine(look(SceneState::kWorking));
-  elapsed->oneShot(ask(SceneState::kTaskComplete, "900", Outcome::kSuccess));
-  TEST_ASSERT_TRUE(state(*elapsed) == SceneState::kTaskComplete);
-  elapsed->linkTimedOut(true);
+  // A reaction held through a lost link comes back with its take.
+  auto held = engine(look(SceneState::kWorking));
+  held->play(ask(SceneState::kTaskComplete, Outcome::kSuccess));
+  TEST_ASSERT_TRUE(state(*held) == SceneState::kTaskComplete);
+  const int take = held->scenes.variant;
+  held->linkTimedOut(true);
   t = 0;
-  run(*elapsed, t, 6400);
-  elapsed->linkTimedOut(false);
-  TEST_ASSERT_TRUE(state(*elapsed) == SceneState::kWorking);
+  run(*held, t, 1600);
+  held->linkTimedOut(false);
+  TEST_ASSERT_TRUE(state(*held) == SceneState::kTaskComplete && held->scenes.variant == take);
   // A fourth take where the state has three: one of the three, dealt.
   auto fourth = engine(look(SceneState::kWorking));
-  Request reply = ask(SceneState::kReplyReady, "71");
-  reply.hold = true, reply.variant = 3;
-  fourth->oneShot(reply);
+  Request reply = ask(SceneState::kReplyReady);
+  reply.variant = 3;
+  fourth->play(reply);
   TEST_ASSERT_TRUE(state(*fourth) == SceneState::kReplyReady && fourth->scenes.variant < 3);
   // A gesture with no take is the first; at work its gag plays, and stops with
   // it.
   auto plain = engine();
-  plain->oneShot(ask(SceneState::kGesture, "72"));
+  plain->play(ask(SceneState::kGesture));
   TEST_ASSERT_TRUE(state(*plain) == SceneState::kGesture);
   TEST_ASSERT_EQUAL_INT(0, plain->scenes.variant);
   auto work = engine(look(SceneState::kWorking, SceneState::kTerminal));
-  Request dizzy = ask(SceneState::kGesture, "73");
-  dizzy.hold = true, dizzy.variant = 5;
-  work->oneShot(dizzy);
+  Request dizzy = ask(SceneState::kGesture);
+  dizzy.variant = 5;
+  work->play(dizzy);
   t = 0;
   run(*work, t, 1600, [&] { TEST_ASSERT_FALSE(work->acting.suppressed); });
   TEST_ASSERT_TRUE(work->acting.playing >= 0);
-  work->clearTransient();
+  work->clear();
   TEST_ASSERT_TRUE(state(*work) == SceneState::kTerminal && work->acting.suppressed);
   // A notice with no take asked is dealt one of its three.
   auto notice = engine();
-  notice->oneShot(ask(SceneState::kNotice, "74"));
+  notice->play(ask(SceneState::kNotice));
   TEST_ASSERT_TRUE(state(*notice) == SceneState::kNotice && notice->scenes.variant < 3);
 }
 
@@ -259,7 +245,7 @@ void test_a_request_keeps_its_identity() {
   run(*e, t, 2000);
   e->setFacts(asking("777"));
   TEST_ASSERT_TRUE(state(*e) == SceneState::kNeedsYou);
-  const std::string id = request(*e);
+  const uint64_t id = request(*e);
   run(*e, t, 4000, [&] {
     for (const auto& c : e->scenes.contacts) TEST_ASSERT_TRUE(c.kind != kKey);
   });
@@ -276,13 +262,13 @@ void test_a_request_keeps_its_identity() {
     });
   }
   e->setFacts(asking("778"));
-  const std::string next = request(*e);
+  const uint64_t next = request(*e);
   TEST_ASSERT_TRUE(next != id);
   e->setFacts(look(SceneState::kWorking));
   TEST_ASSERT_TRUE(state(*e) == SceneState::kWorking);
   e->setFacts(asking("778"));
   TEST_ASSERT_TRUE(request(*e) != next);
-  std::string previous = request(*e);
+  uint64_t previous = request(*e);
   for (const char* project : {"slime", "other"}) {
     e->setFacts(asking("778", "claude", project));
     TEST_ASSERT_TRUE(request(*e) != previous);
@@ -293,7 +279,8 @@ void test_a_request_keeps_its_identity() {
 // Sound stays sparse and quiet. At work, a pass of a loop sounds at most
 // four of its contacts, a loop shorter than 3.5 s sounds every other pass,
 // and fewer than two in five contacts sound in all; stepping to the same
-// time again sounds nothing. Idle sounds only its comedy's sneeze and sleep
+// time again sounds nothing. Idle sounds only its comedy's sneeze (the
+// face's to deal: here every 20 s) and sleep
 // only its snore's breaths, each fewer than half its contacts, ducked under
 // a line like any routine sound; waiting and listening sound nothing. A
 // finish's hiccups sound as three little squishes after its fanfare.
@@ -323,9 +310,10 @@ void test_cues_stay_sparse_and_quiet() {
                {SceneState::kListening, nullptr, 60000}};
   for (const auto& q : quiet) {
     auto s = engine(q.base == SceneState::kWaiting ? look(SceneState::kWorking, SceneState::kWaiting) : look(q.base));
-    if (q.base == SceneState::kListening) s->oneShot(ask(SceneState::kListening, "mic"));
+    if (q.base == SceneState::kListening) s->play(ask(SceneState::kListening));
     int comedyContacts = 0, sounded = 0;
     for (uint32_t at = 16; at <= q.ms; at += 16) {
+      if (q.base == SceneState::kIdle && at % 20000 == 0) s->playGag(gagOf(info(Pastime::kSneeze)));
       s->step(at);
       for (const auto& c : s->acting.contacts) comedyContacts += comedy(c.kind);
       for (const auto& c : s->scenes.contacts) comedyContacts += comedy(c.kind);
@@ -339,10 +327,10 @@ void test_cues_stay_sparse_and_quiet() {
     if (q.recipe) TEST_ASSERT_TRUE(comedyContacts > 0 && sounded > 0 && sounded * 2 < comedyContacts);
   }
   auto hiccups = engine();
-  Request success = ask(SceneState::kTaskComplete, "hic", Outcome::kSuccess);
-  success.hold = true, success.variant = 3;
+  Request success = ask(SceneState::kTaskComplete, Outcome::kSuccess);
+  success.variant = 3;
   hiccups->setMood(slime::kHappy);
-  hiccups->oneShot(success);
+  hiccups->play(success);
   std::vector<SoundCue> heard;
   uint32_t t = 0;
   run(*hiccups, t, 3700, [&] { heard.insert(heard.end(), hiccups->cues.begin(), hiccups->cues.end()); });
@@ -382,7 +370,7 @@ void test_a_request_sounds_once_whatever_changes() {
     TEST_ASSERT_TRUE(d.variant == 0 && d.seed == 53 && d.pitch == F(1) && d.gain == q(.45) && d.protectedCue);
   for (Outcome outcome : {Outcome::kSuccess, Outcome::kFailure}) {
     auto finish = engine();
-    finish->oneShot(ask(SceneState::kTaskComplete, "1", outcome, 6));
+    finish->play(ask(SceneState::kTaskComplete, outcome, 6));
     std::vector<SoundCue> heard;
     t = 0;
     run(*finish, t, 26000, [&] { heard.insert(heard.end(), finish->cues.begin(), finish->cues.end()); });
@@ -402,7 +390,7 @@ void test_sound_draws_change_nothing_drawn() {
       if (t == 0) e->setFacts(look(SceneState::kWorking, SceneState::kTerminal));
       if (t == 10000) e->setFacts(asking("1"));
       if (t == 16000) e->setFacts(look(SceneState::kIdle));
-      if (t == 40000) e->oneShot(ask(SceneState::kTaskComplete, "5", Outcome::kSuccess));
+      if (t == 40000) e->play(ask(SceneState::kTaskComplete, Outcome::kSuccess));
       if (t == 50000) e->setFacts(look(SceneState::kAsleep));
       e->step(t);
     }

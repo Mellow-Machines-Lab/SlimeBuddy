@@ -9,35 +9,22 @@ import {moodsDocument} from './moods.mjs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
-// The slime's pack, this script's own, and the Boop checkout it builds with:
-// the one the pack is in (characters/), or the one beside it (engine/).
+// The slime's pack, this script's own.
 const pack=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-const engine=(()=>{for(let d=pack;d!==path.dirname(d);d=path.dirname(d)){
-  for(const e of [d,path.join(d,'engine')])if(fs.existsSync(path.join(e,'characters/charactergen.py')))return e;}
-  throw Error('slimegen: no Boop checkout above '+pack);})();
 if(process.argv.includes('--help')) {console.log('node tools/slimegen/slimegen.mjs [--check] (from the pack)\nCheck the slime design, then generate the host graph and native gel catalogs from it.');process.exit(0);}
 const design=path.join(pack,'design/slime-blob');
 const read=name=>JSON.parse(fs.readFileSync(path.join(design,name)));
 const g=read('emotion-graph.json'),catalog=read('expressions.json');
-checkDesign({graph:g,design:catalog,sound:read('sound/sound-plan.json'),sfx:createRequire(import.meta.url)(path.join(design,'sound/sfx.js'))});
-// The host graph goes into Boop's character pack (characters/CHARACTER.md
-// §4-5): its `moods`' ids, meanings and families. Other keys, and keys a mood
-// has that the design doesn't set (`face`), are kept as they are. A mood's
-// `moves` are the pack's own: the design's edges are what the gel draws a
-// transition for, and they seed a mood the pack doesn't have yet. The
-// design's pixel `fallback` stays in the design: a pack has every mood. Its
-// `hostPolicy` and `brief` markers stay in the design too: the pack's pacing
-// is its steering's.
-const characterPath='character.json';
-const character=JSON.parse(fs.readFileSync(path.join(pack,characterPath)));
-const owned=['id','meaning','family'];
-const before=new Map((character.moods||[]).map(m=>[m.id,m]));
-character.moods=Object.entries(g.nodes).map(([id,n])=>({id,meaning:n.meaning,family:n.family,moves:{ordinary:n.ordinary,dramatic:n.dramatic},
-  ...Object.fromEntries(Object.entries(before.get(id)||{}).filter(([k])=>!owned.includes(k)))}));
-const outputs = new Map([[characterPath,JSON.stringify(character,null,2)+'\n'],['firmware/include/slime.h',firmwareCatalog(pack,engine)]]);
+checkDesign({character:JSON.parse(fs.readFileSync(path.join(pack,'character.json'))),graph:g,design:catalog,sound:read('sound/sound-plan.json'),sfx:createRequire(import.meta.url)(path.join(design,'sound/sfx.js'))});
+// The mood graph is the pack's (character.json, characters/CHARACTER.md §5):
+// its lasting moods' meanings and moves, and the lasting mood each face-only
+// one settles into. The board's edges, which pick each transition's bridge,
+// come from it; the design has the moods' faces, bodies and sounds.
+const character=JSON.parse(fs.readFileSync(path.join(pack,'character.json')));
+const outputs = new Map([['firmware/include/slime.h',firmwareCatalog(pack,character)]]);
 outputs.set('firmware/include/slime_art.h',artCatalog(catalog.expressions));
 outputs.set('firmware/include/slime_mesh.h',meshCatalog());
-outputs.set('design/slime-blob/MOODS.md',moodsDocument(g,catalog));
+outputs.set('design/slime-blob/MOODS.md',moodsDocument(g,catalog,character));
 for(const [name,content] of outputs) {
   const target=path.join(pack,name);
   if(process.argv.includes('--check')) {if(fs.readFileSync(target,'utf8')!==content)throw Error('Stale '+name);}

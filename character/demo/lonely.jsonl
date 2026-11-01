@@ -1,0 +1,31 @@
+// Boop's lonely demo (DemoScript, characters/CHARACTER.md §13): you come back after a day away, and Boop
+// missed you; then you work for two hours without a touch, and at a quiet moment it's lonely again,
+// saying why under its face, till a stroke makes it glad.
+{"demo": 1, "title": "Missed you"}
+{"agent": "prompt", "text": "Tidy up the README", "after": 2}
+{"brain": {"react.face": "curious", "say": "start"}}
+{"agent": "edit", "file": "README.md", "old": "a\nb\nc", "new": "a\nb", "after": 3}
+{"agent": "reply", "text": "Tidied the README.", "after": 4}
+{"brain": {"react.face": "happy", "react.move": "success", "say": "glad"}}
+{"you": "back", "minutes": 1560, "after": 4, "note": "A day and more later"}
+{"mood": "lonely", "after": 0}
+{"brain": {"react.face": "lonely", "react.move": "wake up", "say": "hello", "react.intensity": "small"}}
+{"agent": "prompt", "text": "Add a changelog", "after": 4}
+{"mood": "calm", "after": 0}
+{"brain": {"react.face": "curious", "say": "start"}}
+{"agent": "reply", "text": "Added CHANGELOG.md.", "after": 3}
+{"brain": {"react.face": "pleased", "react.move": "success", "say": "glad"}}
+{"you": "wait", "minutes": 40, "after": 3, "note": "Forty minutes later"}
+{"agent": "prompt", "text": "Link it from the README", "after": 1}
+{"agent": "reply", "text": "Linked.", "after": 2}
+{"brain": {"react.face": "pleased", "react.move": "success", "say": "glad"}}
+{"you": "wait", "minutes": 45, "after": 3, "note": "Forty-five minutes later"}
+{"agent": "prompt", "text": "Bump the version", "after": 1}
+{"agent": "reply", "text": "Bumped to 1.4.0.", "after": 2}
+{"brain": {"react.face": "calm", "react.move": "success"}}
+{"you": "wait", "minutes": 40, "after": 3, "note": "Two hours of work, and not a touch"}
+{"mood": "lonely", "after": 0}
+{"brain": {"react.face": "lonely", "say": "quiet"}}
+{"you": "gesture", "kind": "stroke", "after": 4}
+{"mood": "comfy", "after": 0}
+{"brain": {"react.face": "affectionate", "say": "glad", "react.intensity": "medium"}}

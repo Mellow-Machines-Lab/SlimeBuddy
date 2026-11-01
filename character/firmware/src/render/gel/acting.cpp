@@ -21,16 +21,9 @@ bool Acting::perform(T time, Random& random, int index) {
   if (suppressed) return false;
   const int n = takes(emotion);
   int selected;
-  if (index < 0 && chosen < 0) {
-    // While an idle occasion fits, its gag kOccasionShare of the time.
-    int fit[slime::kIdleOccasionCount], k = 0;
-    for (int i = 0; i < slime::kIdleOccasionCount; ++i)
-      if (fits(slime::kIdleOccasions[i].when, slime::kIdleOccasions[i].after, when, lookMs)) fit[k++] = i;
-    if (k && random.unit() < slime::kOccasionShare)
-      selected = n + fit[random.index(k)];
-    else
-      selected = bags[emotion].next(random, n);
-  } else
+  if (index < 0 && chosen < 0)
+    selected = bags[emotion].next(random, n);
+  else
     selected = std::max(0, std::min(n - 1, index < 0 ? chosen : index));
   performance = selected;
   playing = -1;
@@ -50,13 +43,22 @@ void Acting::hold(int g, int generation, int iteration, T time) {
   holding = true;
   heldGeneration = generation;
   heldIteration = iteration;
+  begin(g, time);
+  nextPerformance = max(nextPerformance, time + slime::kGags[g].gesture.duration + 3);
+}
+void Acting::play(int g, T time) {
+  if (g < 0 || g >= slime::kGagCount) return;
+  holding = false;
+  begin(g, time);
+  nextPerformance = time + slime::kGags[g].gesture.duration + 3;
+}
+void Acting::begin(int g, T time) {
   performance = -1;
   playing = g;
   expression = emotion;
   start = time;
   cursor = contactCursor = 0;
   ++count;
-  nextPerformance = max(nextPerformance, time + slime::kGags[g].gesture.duration + 3);
 }
 void Acting::advance(T dt, T time, bool grab, Random& random) {
   contacts.clear();
@@ -77,7 +79,7 @@ void Acting::advance(T dt, T time, bool grab, Random& random) {
       while (contactCursor < g->contactCount && age >= g->contacts[contactCursor].at) {
         const int index = contactCursor++;
         const auto& c = g->contacts[index];
-        contacts.push_back({"gag", count, 0, index, c.kind, 0, time * 1000, c.strength});
+        contacts.push_back({showKey(Shows::kGag, 0), count, 0, index, c.kind, 0, time * 1000, c.strength});
       }
     }
   }
@@ -94,8 +96,10 @@ T Bridge::retarget(int source, int target, T time, Random& random, int forced) {
   edge = -1;
   const auto& a = slime::kProfile[source];
   const auto& b = slime::kProfile[target];
+  // A face-only mood moves as the lasting mood it settles into.
+  const int moving = slime::kSettles[a.canonical], into = slime::kSettles[b.canonical];
   for (int i = 0; i < slime::kEdgeCount; ++i)
-    if (slime::kEdges[i].from == a.canonical && slime::kEdges[i].to == b.canonical) {
+    if (slime::kEdges[i].from == moving && slime::kEdges[i].to == into) {
       edge = i;
       break;
     }

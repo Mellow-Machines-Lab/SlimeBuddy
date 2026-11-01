@@ -41,9 +41,9 @@ std::unique_ptr<Engine> finishing(int variant, int mood = slime::kHappy) {
   e->step(0);
   for (int t = 16; t <= 2000; t += 16) e->step(uint32_t(t));
   Request done;
-  done.anim = SceneState::kTaskComplete, done.outcome = Outcome::kSuccess, done.hasId = true, done.id = "done";
-  done.hold = true, done.variant = variant;
-  TEST_ASSERT_TRUE(e->oneShot(done));
+  done.anim = SceneState::kTaskComplete, done.outcome = Outcome::kSuccess;
+  done.variant = variant;
+  TEST_ASSERT_TRUE(e->play(done));
   return e;
 }
 
@@ -181,7 +181,6 @@ void test_a_takeover_puts_the_desk_away() {
     for (int t = 2016; t <= 3200; t += 16) e->step(uint32_t(t));
     TEST_ASSERT_TRUE(e->scenes.finishShow().on && e->scenes.finishShow().finish == fin);
     TEST_ASSERT_TRUE(takesOver(fin) ? e->scenes.desk.x < q(.05) : e->scenes.desk.x > q(.9));
-    TEST_ASSERT_TRUE(e->scenes.visible(Scenes::kResultProp, e->timeMs()) == F(0));
   }
 }
 

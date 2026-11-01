@@ -26,7 +26,8 @@ Every take is one of the brain's answers to `say`: how Boop feels or
 what NOW is about,
 by the bank's intent (FEELING, ABOUT), or for a few entries by their
 words (ABOUT_OF_ENTRY): the greetings are the `hello` topic. Needs you's
-other takes (`attention`) are in the pack, but Boop never says them.
+other takes (`attention`) Boop never says, so they're left out of both
+files.
 
 A take may also be what Boop says replying to what you said on
 push-to-talk: an entry of intent `talk.<reply>` is that reply's own
@@ -313,7 +314,8 @@ def main() -> None:
 
     manifest = json.loads((BANK / "manifest.json").read_text())
     entries = {e["id"]: e for e in json.loads((BANK / "dictionary.json").read_text())["entries"]}
-    recs = manifest["recordings"]
+    # Needs you's other takes (`attention`) Boop never says: left out.
+    recs = [r for r in manifest["recordings"] if answer(entries[r["entryId"]])[0] != "attention"]
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as pool:
         out = list(pool.map(convert, [r["files"][TEXTURE]["path"] for r in recs], chunksize=16))
     takes, clips, mouths = [], [], []

@@ -9,8 +9,8 @@ move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big the
 moment is: an Example that gives no size is small.
 How to choose:
-- Judge by PERSONALITY and MOOD: who Boop is right now. TALK, when
-  there is one, says how much it says, over PERSONALITY's words.
+- Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
+  CONTEXT are background to NOW, never news of their own.
 - React to NOW, not older lines. How often is PERSONALITY's call.
 - Never repeat a reaction in progress, even when NOW matches an
   Example; but each new thing said to Boop gets a face of its own.

@@ -2,11 +2,7 @@
 namespace render::gel {
 namespace {
 int recipeState(const Route& r) { return gel::recipeState(r.state, r.outcome, r.ctx); }
-Scenes::Saved* find(History<Scenes::Saved, 64>& cache, const std::string& id) {
-  const uint64_t key = identityKey(id);
-  return cache.find([&](const Scenes::Saved& s) { return s.id == key; });
-}
-void save(History<Scenes::Saved, 64>& cache, const Scenes::Saved& s) { cache.add(s); }
+Scenes::Saved* find(Scenes::Saved& saved, uint64_t key) { return saved.key == key ? &saved : nullptr; }
 slime::Recipe realize(const slime::Recipe& source, Random& random) {
   auto recipe = source;
   if (recipe.jitter)
@@ -65,11 +61,6 @@ bool Scenes::wants(Prop prop) const {
   switch (prop) {
     case kAlertProp:
       return route.state == SceneState::kNeedsYou;
-    case kResultProp:
-      // A successful finish shows its trophy instead of a card, and one
-      // that names whose turn it was its ticket.
-      return route.group == Family::kResult && !cardless &&
-             !(route.state == SceneState::kTaskComplete && route.outcome == Outcome::kSuccess);
     case kStartProp:
       return route.state == SceneState::kStarting;
     case kListeningProp:
@@ -86,7 +77,6 @@ void Scenes::refresh(Prop prop) {
     case kAlertProp: {
       static const std::string none;
       const Attention* a = route.attention;
-      copy(alertProp.requestId, requestId);
       copy(alertProp.agent, a ? a->agent : none);
       copy(alertProp.project, a ? a->project : none);
       copy(alertProp.name, a ? a->name : none);
@@ -94,16 +84,6 @@ void Scenes::refresh(Prop prop) {
       alertProp.known = true;
       break;
     }
-    case kResultProp:
-      resultProp.state = route.state;
-      resultProp.known = true;
-      resultProp.gift = recipe.gift;
-      resultProp.outcome = route.outcome;
-      resultProp.label = recipe.label                         ? recipe.label
-                         : route.outcome == Outcome::kSuccess ? "COMPLETE"
-                         : route.outcome == Outcome::kFailure ? "FAILED"
-                                                              : "FINISHED";
-      break;
     case kStartProp:
       startProp.label = recipe.label;
       break;
@@ -139,10 +119,10 @@ void Scenes::updateProps(T time) {
     const Prop prop = Prop(p);
     auto& slot = slots[p];
     const bool want = wants(prop);
-    bool same = slot.on == want && (!want || prop == kAlertProp || slot.id == requestId);
+    bool same = slot.on == want && (!want || prop == kAlertProp || slot.key == key);
     if (!same && visible(prop, time).raw == 0) {
       slot.on = want;
-      if (want && slot.id != requestId) slot.id = requestId;
+      if (want) slot.key = key;
       slot.ramp.reset();
       slot.reveal.reset();
       same = true;
@@ -156,15 +136,18 @@ void Scenes::updateProps(T time) {
     }
   }
 }
-void Scenes::pickRecipe(T time, Random& random) {
+void Scenes::restartTake(T time) {
   started = time;
   ageMs = 0;
   cursor = 0;
   completed = false;
   hasLast = false;
   resultRevealed = false;
-  if (route.moment)
-    if (const auto* old = find(moments, requestId)) {
+}
+void Scenes::pickRecipe(T time, Random& random) {
+  restartTake(time);
+  if (route.reaction)
+    if (const auto* old = find(held, key)) {
       variant = old->variant;
       recipe = restore(*old);
       profileExpression = old->profile;
@@ -172,53 +155,51 @@ void Scenes::pickRecipe(T time, Random& random) {
       return;
     }
   // The host's take if its state has it; the first rest is always the still
-  // one, and asleep deals from its bag after that. A look deals an
-  // occasion's take instead, while one fits, kOccasionShare of the time
-  // (numbered after the row's own); a gesture's take is the board's, or
-  // the first.
-  const int row = recipeState(route), count = takes(row), asked = route.moment ? route.moment->value.variant : -1;
+  // one, and asleep deals from its bag after that; a gesture's take is the
+  // board's, or the first.
+  const int row = recipeState(route), count = takes(row), asked = route.reaction ? route.reaction->variant : -1;
   const bool ask = asked >= 0 && (asked < count || (row == kSuccessRow && isFinishVariant(asked)));
   const bool deal =
       !ask && route.state != SceneState::kGesture &&
       ((!route.quiet && route.state != SceneState::kIdle) || (route.state == SceneState::kAsleep && iteration));
-  int look = -1;
-  if (deal && !route.moment) {
-    int fit[slime::kLookOccasionCount], k = 0;
-    for (int i = 0; i < slime::kLookOccasionCount; ++i) {
-      const auto& o = slime::kLookOccasions[i];
-      if (o.row == row && fits(o.when, o.after, when, lookMs)) fit[k++] = i;
-    }
-    if (k && random.unit() < slime::kOccasionShare) look = fit[random.index(k)];
-  }
-  variant = ask ? asked : look >= 0 ? count + look : deal ? bags[mood][row].next(random, count) : 0;
+  variant = ask ? asked : deal ? bags[mood][row].next(random, count) : 0;
   profileExpression = expression;
-  const auto* base = look >= 0 ? &slime::kLookOccasions[look].recipe : &take(expression, row, variant);
+  const auto* base = &take(expression, row, variant);
   uint32_t seed = random.state;
   recipe = realize(*base, random);
-  Saved saved{identityKey(requestId), variant, profileExpression, base, seed};
-  if (route.state == SceneState::kNeedsYou) save(alerts, saved);
-  if (route.moment) save(moments, saved);
+  Saved saved{key, variant, profileExpression, base, seed};
+  if (route.state == SceneState::kNeedsYou) alert = saved;
+  if (route.reaction && shows(key) == Shows::kReaction) held = saved;
+  phase = "enter";
+}
+void Scenes::playTake(int index, T time, Random& random) {
+  if (index < 0 || index >= slime::kPastimeTakeCount || !generation || route.reaction) return;
+  ++iteration;
+  restartTake(time);
+  variant = takes(recipeState(route)) + index;
+  profileExpression = expression;
+  recipe = realize(slime::kPastimeTakes[index].recipe, random);
   phase = "enter";
 }
 void Scenes::setRoute(const Route& next, T time, int nextExpression, Random& random) {
   expression = nextExpression;
   mood = slime::kProfile[expression].canonical;
-  bool same = generation && route.state == next.state && requestId == *next.requestId;
+  bool same = generation && route.state == next.state && key == next.key;
   // An alert left before its knocks and ding finished keeps its place, so
   // each request signals exactly once however it is interrupted.
   if (!same && generation && route.state == SceneState::kNeedsYou)
-    if (auto* left = find(alerts, requestId)) {
+    if (auto* left = find(alert, key)) {
       left->ageMs = ageMs;
       left->cursor = cursor;
     }
   route = next;
   if (same) return;
-  requestId = *next.requestId;
+  key = next.key;
   ++generation;
   iteration = 0;
   contacts.clear();
   resultRevealed = false;
-  const Saved* old = route.state == SceneState::kNeedsYou ? find(alerts, requestId) : nullptr;
+  const Saved* old = route.state == SceneState::kNeedsYou ? find(alert, key) : nullptr;
   quietRestored = old;
   if (old) {
     variant = old->variant;
@@ -239,11 +220,11 @@ void Scenes::setRoute(const Route& next, T time, int nextExpression, Random& ran
       phase = phaseAt(ageMs);
     }
   } else {
-    bool returning = route.moment && find(moments, requestId);
+    bool returning = route.reaction && find(held, key);
     pickRecipe(time, random);
     if (returning) {
-      iteration = ((time - route.moment->startedAt) / recipe.duration).floor();
-      started = route.moment->startedAt + recipe.duration * iteration;
+      iteration = ((time - route.reactionAt) / recipe.duration).floor();
+      started = route.reactionAt + recipe.duration * iteration;
       ageMs = time - started;
       while (cursor < recipe.count && recipe.contacts[cursor].at <= ageMs) {
         if (reveals(recipe.contacts[cursor].kind)) {
@@ -274,14 +255,13 @@ F Scenes::envelope(T time, int kind) const {
   T age = time - last.timeMs;
   return age >= 0 && age < 120 ? square(cos(age / 120 * pi / 2)) : F(0);
 }
-std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
+void Scenes::advance(T dt, T time, bool grab, Random& random) {
   contacts.clear();
-  if (!generation) return {};
+  if (!generation) return;
   if (completed) {
-    if (route.moment) {
-      if (iteration + 1 >= route.loops) {
-        if (!route.moment->value.hold) return requestId;
-      } else {
+    // A reaction plays its loops, then holds its last until it's cleared.
+    if (route.reaction) {
+      if (iteration + 1 < route.loops) {
         ++iteration;
         pickRecipe(time, random);
       }
@@ -294,7 +274,7 @@ std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
   ageMs = max(0, time - started);
   if (route.quiet || route.state == SceneState::kIdle) {
     phase = ageMs < 240 ? "enter" : "sustain";
-    if ((route.moment || route.state == SceneState::kAsleep) && ageMs >= recipe.duration) completed = true;
+    if ((route.reaction || route.state == SceneState::kAsleep) && ageMs >= recipe.duration) completed = true;
   } else if (ageMs < 240)
     phase = "enter";
   else if (ageMs < recipe.duration - 480)
@@ -311,7 +291,7 @@ std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
     const auto& c = recipe.contacts[index];
     if ((route.quiet && c.kind != kBreath) || (grab && !reveals(c.kind))) continue;
     last = {
-        requestId,
+        key,
         generation,
         iteration,
         index,
@@ -331,7 +311,7 @@ std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
     contact = active ? max(max(envelope(time, kKey), envelope(time, kKnock)), envelope(time, kBody)) * strength : F(0);
   F reveal = active ? max(envelope(time, kSuccess), envelope(time, kFailure)) * strength : F(0), present = 0;
   if (active)
-    for (int kind : {kStart, kHelper, kReply, kError, kStopped}) present = max(present, envelope(time, kind));
+    for (int kind : {kStart, kReply}) present = max(present, envelope(time, kind));
   present *= strength;
   bool success = route.state == SceneState::kTaskComplete && route.outcome == Outcome::kSuccess,
        failure = route.state == SceneState::kTaskComplete && route.outcome == Outcome::kFailure;
@@ -367,7 +347,7 @@ std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
            : failure ? q(-.035)
                      : F(0)) *
               reveal +
-          present * (route.state == SceneState::kError ? q(-.025) : q(.018)) + recoveryPose[2]};
+          present * q(.018) + recoveryPose[2]};
   // A snore's breath swells the sleeping body a little, rising and falling.
   F swell = 0;
   if (route.quiet && hasLast && last.kind == kBreath && time - last.timeMs < T(slime::kSnoreSwellMs))
@@ -379,6 +359,5 @@ std::string Scenes::advance(T dt, T time, bool grab, Random& random) {
   prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party ? 1 : 0, 10, 14);
   prop(quietMix, dt, route.quiet ? 1 : 0, 12, 10);
   updateProps(time);
-  return {};
 }
 }  // namespace render::gel

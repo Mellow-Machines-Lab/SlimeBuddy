@@ -1,6 +1,6 @@
 # VideoG Slime Blob — the gel slime's design
 
-Updated 2026-10-25. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
+Updated 2026-11-01. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
 is the design of Boop's gel slime: its moods, faces, acting, scenes and
 sounds as data. The slime has one engine, the C++ one the AMOLED runs
 (`character/firmware/src/render/gel/`), which the simulator and the
@@ -64,7 +64,7 @@ in [VALIDATION.md](VALIDATION.md).
 | Acting | Three authored gesture recipes per expression; idle comedy: a yawn, a doze and a sneeze for every mood, a long yawn for the low moods, zoomies for excited | Owner review of the comedy on the board |
 | Drag | Bounded local surface pull, face follows body, release wobble | Real touchscreen QA |
 | Mood topology | Complete design graph and 295 directed bridges, three variants each | Host eligibility/pacing, Jev choices |
-| Activity/state | All 25 states in nine scene families, persistent desk/helpers/cards, the full mood matrix and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
+| Activity/state | All 22 states in nine scene families, persistent desk/helpers/cards, the full mood matrix and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
 | Sounds | Contact-synchronized cues, sparse and voice-first, cut from procedural sketches (a sneeze and a snore's breath among them) | Speaker review and physical audio latency; the snore's level |
 
 **Coverage is earned by execution.** `test_gel` plays every canonical mood
@@ -75,17 +75,20 @@ the initial 24-clip representative set before the matrix was filled out.
 
 ### Folder map
 
-- [emotion-graph.json](emotion-graph.json): canonical mood IDs, meanings,
-  edges, evidence and provisional pacing. Source of graph truth here; slimegen
-  writes the pack's moods and the bridges' edges from it.
+- [emotion-graph.json](emotion-graph.json): canonical mood IDs, the design's
+  meanings, families, bodies and evidence. The mood graph itself, the 16
+  lasting moods' meanings and moves, is the pack's `character.json`, from
+  which slimegen writes the bridges' edges.
 - [MOODS.md](MOODS.md): the moods to read (faces, bodies, gestures, comedy,
-  edges), which slimegen writes from the graph and the expressions.
+  moves), which slimegen writes from the graph, the expressions and
+  `character.json`.
 - [expressions.json](expressions.json): V3 art profiles, reference mapping,
   three gesture recipes per expression, the comedy gags idle plays
-  (`gags`, `idleGags`, an expression's own `gags`), the board's gestures
-  (`gestures`), the notice's takes (`notices`) and the looks' occasions
-  (`occasions`). Edit this, then run slimegen.
-- [STATES.md](STATES.md): the 25 states in their nine scene families, and
+  (`gags`, an expression's own `gags`), the board's gestures
+  (`gestures`), the notice's takes (`notices`) and the occasions' bodies,
+  a gag or a take each (`pastimes`: the face's table says when each
+  plays). Edit this, then run slimegen.
+- [STATES.md](STATES.md): the 22 states in their nine scene families, and
   how the host's events reach them.
 - [CONTINUITY.md](CONTINUITY.md): the persistent actor, layer ownership,
   the scenes, comedy, gestures, occasions, bridges and the rules of what is
@@ -120,7 +123,13 @@ alone neither resets it to calm nor escalates it.
 
 ## 2. The expanded mood system
 
-This branch's design target is the graph in [emotion-graph.json](emotion-graph.json):
+What shipped (2026-11-01): Boop settles into 16 lasting moods, whose
+moves are the pack's `character.json` (characters/CHARACTER.md §5); the
+other 26 are faces, each settling into one of them. The rest of this
+section is the design as it was drawn, kept for its reasoning: its edges
+are no longer in the design files.
+
+The design's target was a graph of
 42 moods, 12 presentation families and 295 directed edges. Ordinary edges
 alone make the graph strongly connected; every node can eventually reach
 every other. There are at most eight outgoing destinations plus staying.
@@ -273,9 +282,9 @@ but speech selection/recording is outside this package.
 
 This package is **nonshipping design data** under `character/design/`, in Boop's pack.
 CYD ships [boop-sound-bank-v4](https://github.com/Mellow-Machines-Lab/PixelBuddy/blob/main/character/design/boop-sound-bank-v4/README.md); AMOLED ships the generated native gel catalogs.
-The host graph, the one mood graph Boop runs, with its pacing, is
-generated into Boop's `character.json` by
-`character/tools/slimegen`. The design's `fallback`s stay design
+The host graph, the one mood graph Boop runs, is the pack's
+`character.json`, which `character/tools/slimegen` reads for the
+board's edges. The design's `fallback`s stay design
 data: the engine has none, and Pixel's art lends its 13 moods to the
 others by a temporary table of its own (`PixelBuddy's character/tools/borrowed.json`).
 The gel engine has been checked on the board for performance. Owner

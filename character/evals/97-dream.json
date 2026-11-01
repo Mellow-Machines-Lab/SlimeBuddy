@@ -1,0 +1,22 @@
+{
+  "name": "The dream: yesterday, told the first time you show up after Boop's day closes",
+  "case": "A day of work from 15:00: three turns, the tests failing on the way, the last turn failed, and the person strokes Boop twice and pokes it once. The person locks the Mac in the evening. Boop's day closes at 5:00 while nobody is there, and an agent's turn at 7:00 tells nothing: you aren't there. When the person comes back at 9:00, Boop tells its dream about yesterday, a wake-up holding up a sign about the day, one about the person first (they stroked it) or about the failures; it tells it once, not again at the next poke.",
+  "why": "MemoryReader: the day's tallies close at 5:00 (LocalTime.boopDay) into a dream; TranscriptView.told: your first coming back after the close tells it, or with none your first touch; never a prompt, a word, an agent's event or while away; ReactOutput: the telling offers dreams.md's signs for the day's tags",
+  "start": "2026-10-20T15:00",
+  "steps": [
+    {"event": "session started", "at": "0s", "workspace": "api"},
+    {"event": "turn started", "at": "10s", "workspace": "api"},
+    {"event": "turn finished", "at": "2m", "workspace": "api"},
+    {"event": "gesture", "at": "5m", "kind": "stroke"},
+    {"event": "turn started", "at": "10m", "workspace": "api"},
+    {"event": "command", "at": "12m", "workspace": "api", "topic": "tests", "failed": true},
+    {"event": "turn failed", "at": "40m", "workspace": "api"},
+    {"event": "gesture", "at": "45m", "kind": "stroke"},
+    {"event": "poke", "at": "50m"},
+    {"event": "away", "at": "3h"},
+    {"event": "turn started", "at": "16h", "workspace": "api", "expect": {"dream": "none"}},
+    {"event": "turn finished", "at": "16h5m", "workspace": "api", "expect": {"dream": "none"}},
+    {"event": "back", "at": "18h", "expect": {"dream": "told", "move": "wake up", "sign": "dreamt of u|warm dreams|poke dreams|long day, huh|bad dream|bug nightmares"}},
+    {"event": "poke", "at": "18h1m", "expect": {"dream": "none"}}
+  ]
+}

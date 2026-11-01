@@ -3,8 +3,7 @@
 // ticket on a string, dropped in from the top, naming its thread. Both come
 // as the reaction starts and go once it has lingered (app/behaviour.h): the
 // glow fading out over its last second, the ticket pulled back up. The
-// ticket hangs in the middle, where a result card would be (the face shows
-// none while it does, Scenes::cardless), or left of a success's trophy.
+// ticket hangs in the middle, or left of a success's trophy.
 // Integer, and a function of the DoneShow alone, so the board, the
 // simulator and the Mac's mirror draw the same frame.
 #pragma once

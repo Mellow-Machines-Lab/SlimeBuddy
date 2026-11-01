@@ -381,13 +381,13 @@ void test_a_quiet_or_alerting_body_holds_the_bridge() {
       }
       for (const uint32_t end = t + 320; t < end;) e->step(t += 16);
       e->setMood(edge.to, v);
-      const std::string identity = e->scenes.requestId;
+      const uint64_t identity = e->scenes.key;
       Spring was[3];
       copy(was, e->bridge.channels);
       for (const uint32_t end = t + 1280; t < end;) {
         e->step(t += 16);
         expectSettling(*e, was);
-        TEST_ASSERT_EQUAL_STRING(identity.c_str(), e->scenes.requestId.c_str());
+        TEST_ASSERT_TRUE(identity == e->scenes.key);
       }
       if (asleep) {
         TEST_ASSERT_TRUE(e->face.targetSleeping);
@@ -416,7 +416,7 @@ void test_a_quiet_or_alerting_body_holds_the_bridge() {
       for (uint32_t s = t + 16; s <= t + 96; s += 16) e->step(s);
     }
     t += 96;
-    const std::string identity = subject->scenes.requestId;
+    const uint64_t identity = subject->scenes.key;
     subject->setMood(edge.to, v);
     Spring was[3];
     copy(was, subject->bridge.channels);
@@ -426,12 +426,12 @@ void test_a_quiet_or_alerting_body_holds_the_bridge() {
       subject->step(t);
       baseline->step(t);
       expectSettling(*subject, was);
-      TEST_ASSERT_EQUAL_STRING(identity.c_str(), subject->scenes.requestId.c_str());
+      TEST_ASSERT_TRUE(identity == subject->scenes.key);
       const auto &a = subject->scenes.contacts, &b = baseline->scenes.contacts;
       TEST_ASSERT_EQUAL_INT(int(b.size()), int(a.size()));
       for (size_t k = 0; k < a.size(); ++k) {
         TEST_ASSERT_TRUE(a[k].kind == b[k].kind && a[k].index == b[k].index && a[k].timeMs == b[k].timeMs &&
-                         a[k].strength == b[k].strength && a[k].requestId == b[k].requestId);
+                         a[k].strength == b[k].strength && a[k].key == b[k].key);
         dings += a[k].kind == kAlert;
       }
     }

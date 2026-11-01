@@ -1,0 +1,30 @@
+{
+  "name": "In an idle stretch, Boop now and then asks you something",
+  "case": "claude finishes a turn and the person stays at the Mac, idle, for two hours. Boop doesn't ask at every check-in, but in that stretch it asks one of its questions that shape it, the snack or the hat, at least once, holding it up with its two answers.",
+  "why": "the sign is the ask: at an idle check-in the sign question offers asks.md's [idle] keeps questions, and Jev may pass (PERSONALITY: now and then); one an hour at most",
+  "talk": "chatty",
+  "runs": 3,
+  "checks": {
+    "signs_seen": "fav snack?|hat or bow?"
+  },
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "10s",
+      "prompt": "update the docs for the new flags"
+    },
+    {
+      "event": "turn finished",
+      "at": "2m",
+      "message": "Done: the docs are updated."
+    },
+    {
+      "event": "wait",
+      "at": "120m"
+    }
+  ]
+}

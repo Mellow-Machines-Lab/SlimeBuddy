@@ -1,8 +1,7 @@
 #pragma once
-#include <array>
+#include <cstdint>
 #include <string>
 #include "render/types.h"
-#include "render/gel/history.h"
 #include "render/gel/time.h"
 namespace render::gel {
 enum class Family { kRest, kIdle, kListen, kStart, kDesk, kHelpers, kAlert, kResult, kTouch };
@@ -10,7 +9,7 @@ Family family(SceneState state);
 bool isDesk(SceneState state);
 struct Attention {
   bool on = false;
-  std::string id = "0", agent, project, name;  // id is a JSON scalar, for stable identity
+  std::string id = "0", agent, project, name;
   int more = 0;
 };
 struct Facts {
@@ -18,69 +17,52 @@ struct Facts {
   Attention attention;
   SceneState look() const { return base == SceneState::kWorking ? act : base; }
 };
+// A reaction, or listening, as the board's Behaviour plays it: Behaviour
+// times it, and the engine holds it until it's cleared or another comes.
 struct Request {
-  std::string id;
-  bool hasId = false, stop = false, say = false;
-  SceneState anim = SceneState::kNone;  // the moment's animation (isReaction); kNone for a face alone
+  SceneState anim = SceneState::kNone;
   int expression = -1, loops = 1, variant = -1;
-  bool hold = false;  // the host times it: held until cleared
   Outcome outcome = Outcome::kNone;
   StartCtx ctx = StartCtx::kNone;
 };
-struct Moment {
-  Request value;
-  std::string requestId;
-  T startedAt, expiresAt;
-};
+// What a route shows, as one number: what it is, and which one (a look's
+// state, a needs-you's or a reaction's count). A scene keeps its take while
+// its key stays. A gag's contacts are keyed as a gag's (kGag).
+enum class Shows : uint8_t { kGag, kLook, kLostLink, kListening, kNeedsYou, kReaction };
+constexpr uint64_t showKey(Shows what, uint32_t n) { return uint64_t(what) << 32 | n; }
+constexpr Shows shows(uint64_t key) { return Shows(key >> 32); }
 struct Route {
   SceneState state = SceneState::kIdle, baseState = SceneState::kIdle;
   Family group = Family::kIdle;
-  bool quiet = false, linkTimedOut = false;
-  const std::string* requestId = nullptr;
+  bool quiet = false;
+  uint64_t key = showKey(Shows::kLook, uint32_t(SceneState::kIdle));
   const Attention* attention = nullptr;
-  const Moment* moment = nullptr;
+  // The reaction held, under whatever shows, and when it started.
+  const Request* reaction = nullptr;
+  T reactionAt;
   int expression = -1, loops = 1;
   Outcome outcome = Outcome::kNone;
   StartCtx ctx = StartCtx::kNone;
 };
-class Router {
- public:
+// What the engine shows: the look, needs you, listening, the reaction it
+// holds, the face it borrows, and whether the link is lost. Each needs-you
+// and each reaction is numbered as it comes.
+struct Router {
   Facts facts;
-  bool timedOut = false, listening = false, hasMoment = false, hasOverlay = false;
-  Moment moment;
-  int overlayExpression = -1;
-  T overlayUntil;
-  bool overlayHeld = false;  // the host's borrowed expression: no expiry
-  Router() = default;
+  bool timedOut = false, listening = false, reacting = false;
+  Request reaction;
+  T reactionAt;
+  // The borrowed face, over whatever shows, or -1.
+  int expression = -1;
+  uint32_t alerts = 0, reactions = 0;
   void setFacts(const Facts& value);
-  bool oneShot(const Request& value, T time, T overlayLoopMs = 3200);
-  void clearTransient() { listening = hasMoment = hasOverlay = false; }
-  // The host's borrowed expression (-1 for none), held until it says
-  // otherwise: on the moment playing, else over the look.
-  void holdExpression(int expression) {
-    if (hasMoment) moment.value.expression = expression;
-    hasOverlay = expression >= 0 && !hasMoment;
-    overlayHeld = true;
-    overlayExpression = expression;
-  }
-  void advance(T time) {
-    if (hasOverlay && !overlayHeld && time >= overlayUntil) hasOverlay = false;
-    if (hasMoment && !moment.value.hold && time >= moment.expiresAt) hasMoment = false;
-  }
-  void duration(const std::string& id, T ms) {
-    if (hasMoment && moment.requestId == id) moment.expiresAt = moment.startedAt + ms * moment.value.loops;
-  }
-  void finish(const std::string& id) {
-    if (hasMoment && moment.requestId == id) hasMoment = false;
+  // Listening, or a reaction, from `time`: each ends the one before. None
+  // while the link is lost, and no reaction while needs you shows.
+  bool play(const Request& value, T time);
+  void clear() {
+    listening = reacting = false;
+    expression = -1;
   }
   Route resolve() const;
-
- private:
-  // The protocol already deduplicates calls. This bounded extra history protects
-  // direct/local input without allowing long-running firmware memory growth.
-  static constexpr int kRecent = 64;
-  History<uint64_t, kRecent> recent_;
-  unsigned activation_ = 0, sequence_ = 0;
-  std::string attentionKey_, listeningKey_, baseKey_ = "base:idle", timeoutKey_ = "link-timeout";
 };
 }  // namespace render::gel

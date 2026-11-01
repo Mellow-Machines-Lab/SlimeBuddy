@@ -1,6 +1,6 @@
 # Slime asset generator
 
-Updated 2026-10-26.
+Updated 2026-11-01.
 
 Run `node character/tools/slimegen/slimegen.mjs` at the repo root; `--check`
 checks freshness without writing. No dependencies, device or network.
@@ -9,34 +9,30 @@ It reads the slime's design (`character/design/slime-blob/`:
 `emotion-graph.json`, `expressions.json` and `sound/`), checks it
 (`check.mjs`: what fails is in the design's
 [VALIDATION.md](../../design/slime-blob/VALIDATION.md)), and writes the gel
-engine's tables and the pack's moods. Its own modules hold what the design
+engine's tables. Its own modules hold what the design
 is as code, the one source of each:
 
 | Module | What it is | What it writes |
 | --- | --- | --- |
-| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, leans and labels), the gestures' and occasions' recipes and gags, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), and each expression's traits | `slime.h`'s recipes, gags and occasions (`recipes.mjs`, `catalog.mjs`) |
+| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, leans and labels), the gestures' recipes and gags and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), and each expression's traits | `slime.h`'s recipes, gags and pastime takes (`recipes.mjs`, `catalog.mjs`) |
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
 | `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
 | `moods.mjs` | The moods to read | the design's `MOODS.md` |
 
-The design's `emotion-graph.json` is the source for Boop's moods
-in its character pack, `character/character.json`
-([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §5): the `moods` key, each mood's
-id, meaning and family, in the design's order. It keeps every other key,
-and any key a mood has that the design doesn't set, such as `face`; a
-mood's `moves` are the pack's own, and the design's edges seed only a
-mood the pack doesn't have yet. The design's pixel `fallback`s, `brief`
-markers and `hostPolicy` aren't written: every pack has every mood, and
-pacing is the steering's.
+The mood graph is the pack's own, `character/character.json`
+([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §5):
+its lasting moods' meanings and moves, and the lasting mood each face-only
+one settles into. slimegen reads it and never writes it.
 
-`slime.h` holds the expression profiles, the idle gags and which
+`slime.h` holds the expression profiles, the gags and which
 expressions play them, the scene recipes with each row's takes and the two
 rows' fourth takes, the gesture state's ten takes, each with a gag of its
 own and the face it borrows, which moods keep their own face through a
 gesture, the notice state's three takes' faces, the
-contact kinds' names (a rig clip's cues name them), the looks' occasions
-with their tags as `firmware/src/render/tags.h` numbers them, the mood graph's edges (the bridges the gel draws), and the sound
+contact kinds' names (a rig clip's cues name them), the pastimes' takes
+by name, the pack's moves between its lasting moods (the bridges the gel draws)
+with the lasting mood each profile moves as (`kSettles`), and the sound
 effects, three takes of each sketch (`sound/sfx.js`) at 11,025 Hz.
 `slime_art.h` gives each art's groups (each eye, the mouth, the tears, the
 cheeks with the strain mark) a shape from their paths' point counts, fill

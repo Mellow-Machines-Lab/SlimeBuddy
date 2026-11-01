@@ -1,7 +1,8 @@
 # Slime mood inventory and directed traversal
 
-Generated from [emotion-graph.json](emotion-graph.json) and [expressions.json](expressions.json)
-by `node character/tools/slimegen/slimegen.mjs`; edit those, not this.
+Generated from [emotion-graph.json](emotion-graph.json), [expressions.json](expressions.json)
+and the pack's [character.json](../../character.json) by `node character/tools/slimegen/slimegen.mjs`;
+edit those, not this.
 
 Ordinary neighbors still require context/pacing. Dramatic neighbors require fresh
 strong edge-specific evidence. Staying is implicit at every node. Families and
@@ -12,7 +13,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Calm (`calm`)
 
-**Meaning:** Awake, settled neutrality, without announcing success.
+**Meaning:** Settled, the resting mood: nothing much is happening.
 
 **Strength / activation / persistence:** baseline / low / stable baseline candidate.
 
@@ -24,13 +25,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Quiet recovery with no new relevant stimulus.
 
-**Ordinary →** `comfy`, `curious`, `engaged`, `pleased`, `tired`, `uneasy`.
+**Ordinary →** `comfy`, `curious`, `engaged`, `happy`, `lazy`, `annoyed`, `lonely`.
 
-**Dramatic →** `surprised`, `wounded`.
+**Dramatic →** `surprised`, `wounded`, `excited`, `sad`.
 
 ### Comfy (`comfy`)
 
-**Meaning:** Positive low-energy contentment; safe and comfortable rather than disengaged.
+**Meaning:** Cosy: all is quiet, and it feels safe and snug.
 
 **Strength / activation / persistence:** low / low / stable baseline candidate.
 
@@ -44,13 +45,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Settled safe context or explicitly friendly interaction.
 
-**Ordinary →** `calm`, `lazy`, `pleased`, `shy`, `affectionate`, `tired`.
+**Ordinary →** `calm`, `lazy`, `happy`, `lonely`.
 
 **Dramatic →** `surprised`.
 
 ### Lazy (`lazy`)
 
-**Meaning:** Comically reluctant and low-effort in presentation, while still performing the real task correctly.
+**Meaning:** Can't be bothered: low effort for show, though the work still gets done.
 
 **Strength / activation / persistence:** low / low / sustained expressive mood.
 
@@ -64,13 +65,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Low-stakes idle characterization; never a reason to delay the real task.
 
-**Ordinary →** `comfy`, `calm`, `bored`, `engaged`, `tired`.
+**Ordinary →** `comfy`, `calm`, `engaged`, `lonely`.
 
 **Dramatic →** `surprised`.
 
 ### Bored (`bored`)
 
-**Meaning:** Under-stimulated, not distressed and not a task failure.
+**Face only:** settles into `lazy`.
 
 **Strength / activation / persistence:** low / low / sustained expressive mood.
 
@@ -84,15 +85,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Opted-in low-stimulation acting, not inferred abandonment.
 
-**Ordinary →** `lazy`, `calm`, `curious`, `annoyed`, `disappointed`, `amused`, `confused`.
-
-**Dramatic →** `excited`.
-
 ## Energy / fatigue
 
 ### Tired (`tired`)
 
-**Meaning:** Low-energy acting after sustained fictional effort; not real system battery or human fatigue.
+**Face only:** settles into `lazy`.
 
 **Strength / activation / persistence:** mild / low / sustained expressive mood.
 
@@ -106,13 +103,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Opted-in sustained-effort acting with a quieter performance budget.
 
-**Ordinary →** `calm`, `lazy`, `exhausted`, `comfy`, `disappointed`.
-
-**Dramatic →** `surprised`.
-
 ### Exhausted (`exhausted`)
 
-**Meaning:** A dramatically spent performance, visibly stronger than tired, without reducing task correctness.
+**Face only:** settles into `lazy`.
 
 **Strength / activation / persistence:** strong / very low / sustained expressive mood.
 
@@ -124,15 +117,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Stronger opted-in fictional effort acting; not actual resource failure.
 
-**Ordinary →** `tired`, `overwhelmed`, `whiny`, `comfy`.
-
-**Dramatic →** `relieved`.
-
 ## Joy / humor
 
 ### Pleased (`pleased`)
 
-**Meaning:** The warm everyday positive baseline: quietly delighted with itself.
+**Face only:** settles into `happy`.
 
 **Strength / activation / persistence:** mild / medium / stable baseline candidate.
 
@@ -144,13 +133,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Mild positive progress or a friendly acknowledged interaction.
 
-**Ordinary →** `comfy`, `happy`, `proud`, `shy`, `amused`, `affectionate`.
-
-**Dramatic →** `wounded`, `surprised`.
-
 ### Happy (`happy`)
 
-**Meaning:** Clear uncomplicated delight, stronger than pleased but not frantic.
+**Meaning:** Glad: things are going well, or something small went right.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -162,13 +147,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Clear positive interaction or supported welcome progress.
 
-**Ordinary →** `pleased`, `excited`, `proud`, `curious`, `shy`, `amused`.
+**Ordinary →** `excited`, `proud`, `curious`, `comfy`, `calm`, `engaged`, `annoyed`.
 
-**Dramatic →** `sad`, `surprised`.
+**Dramatic →** `sad`, `surprised`, `wounded`.
 
 ### Excited (`excited`)
 
-**Meaning:** Delight becomes energetic anticipation and barely contained celebration.
+**Meaning:** Thrilled: a big piece of work just finished well.
 
 **Strength / activation / persistence:** strong / high / sustained expressive mood.
 
@@ -182,13 +167,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Fresh unusually positive progress, playful poke scene or earned celebration.
 
-**Ordinary →** `happy`, `proud`, `mischievous`, `amused`, `hopeful`.
+**Ordinary →** `happy`, `proud`, `curious`, `determined`.
 
-**Dramatic →** `frightened`, `angry`, `wounded`.
+**Dramatic →** `surprised`, `grumpy`, `wounded`, `sad`.
 
 ### Amused (`amused`)
 
-**Meaning:** Playful enjoyment at something funny; humor rather than plain delight or gloating.
+**Face only:** settles into `happy`.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -200,15 +185,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** An explicitly funny or playful context.
 
-**Ordinary →** `pleased`, `happy`, `mischievous`, `proud`, `excited`.
-
-**Dramatic →** `embarrassed`.
-
 ## Interest / understanding / focus
 
 ### Curious (`curious`)
 
-**Meaning:** Interested in uncertainty; actively investigates without being worried.
+**Meaning:** Interested: something new or puzzling, or a poke.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 
@@ -220,13 +201,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** New topic, unresolved detail or an actual investigative activity.
 
-**Ordinary →** `calm`, `engaged`, `pleased`, `uneasy`, `surprised`, `confused`, `skeptical`.
+**Ordinary →** `calm`, `engaged`, `happy`, `annoyed`, `surprised`, `excited`, `determined`.
 
-**Dramatic →** `stunned`.
+**Dramatic →** `wounded`, `sad`.
 
 ### Engaged (`engaged`)
 
-**Meaning:** Productively absorbed; performing rather than struggling.
+**Meaning:** Absorbed: steady work is going well.
 
 **Strength / activation / persistence:** moderate / medium / stable baseline candidate.
 
@@ -238,13 +219,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Sustained purposeful activity with no fresh obstruction.
 
-**Ordinary →** `calm`, `curious`, `determined`, `pleased`, `annoyed`, `hopeful`, `tired`.
+**Ordinary →** `calm`, `curious`, `determined`, `happy`, `annoyed`, `lazy`, `proud`.
 
-**Dramatic →** `proud`.
+**Dramatic →** `excited`, `sad`.
 
 ### Determined (`determined`)
 
-**Meaning:** Focused effort under challenge, not anger.
+**Meaning:** Pushing on: the work is hard, or a retry is under way.
 
 **Strength / activation / persistence:** strong / high / sustained expressive mood.
 
@@ -256,13 +237,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Known challenge with a next safe step.
 
-**Ordinary →** `engaged`, `proud`, `annoyed`, `irritated`, `whiny`, `hopeful`.
+**Ordinary →** `engaged`, `proud`, `annoyed`, `irritated`, `sad`, `happy`.
 
-**Dramatic →** `angry`, `overwhelmed`.
+**Dramatic →** `grumpy`, `excited`.
 
 ### Confused (`confused`)
 
-**Meaning:** Something is unclear but Boop is still exploring; uncertainty without alarm.
+**Face only:** settles into `curious`.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 
@@ -274,13 +255,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Conflicting or unclear evidence, preferably an actual question.
 
-**Ordinary →** `curious`, `skeptical`, `baffled`, `uneasy`, `annoyed`.
-
-**Dramatic →** `stunned`, `overwhelmed`.
-
 ### Baffled (`baffled`)
 
-**Meaning:** Comically cannot make sense of the evidence; stronger cognitive bewilderment, not terror.
+**Face only:** settles into `annoyed`.
 
 **Strength / activation / persistence:** strong / medium to high / brief reaction with validated exit.
 
@@ -292,13 +269,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Fresh unresolved conflicting evidence, not the same line replayed.
 
-**Ordinary →** `confused`, `speechless`, `irritated`, `overwhelmed`.
-
-**Dramatic →** `stunned`.
-
 ### Skeptical (`skeptical`)
 
-**Meaning:** Questioning an uncertain explanation with comic side-eye; an evidence stance, not automatic hostility.
+**Face only:** settles into `annoyed`.
 
 **Strength / activation / persistence:** mild to moderate / medium / sustained expressive mood.
 
@@ -310,15 +283,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** An explanation needing verification, not inferred distrust of a person.
 
-**Ordinary →** `curious`, `confused`, `annoyed`, `uncomfortable`, `disgusted`.
-
-**Dramatic →** `surprised`.
-
 ## Confidence / mischief
 
 ### Proud (`proud`)
 
-**Meaning:** Earned theatrical self-satisfaction; the core overconfident show-off.
+**Meaning:** Proud: something hard finally worked.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -330,13 +299,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Supported achievement or explicit praise; not unverified success.
 
-**Ordinary →** `pleased`, `happy`, `engaged`, `determined`, `mischievous`, `amused`.
+**Ordinary →** `happy`, `engaged`, `determined`, `excited`, `annoyed`.
 
-**Dramatic →** `wounded`, `embarrassed`.
+**Dramatic →** `wounded`, `comfy`, `grumpy`, `sad`.
 
 ### Mischievous (`mischievous`)
 
-**Meaning:** Playful cheekiness, not permission to misbehave or sabotage work.
+**Face only:** settles into `happy`.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -348,15 +317,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Explicitly playful context that does not alter authorized work.
 
-**Ordinary →** `pleased`, `excited`, `proud`, `shy`, `amused`.
-
-**Dramatic →** `surprised`, `embarrassed`.
-
 ## Social warmth / self-consciousness
 
 ### Shy (`shy`)
 
-**Meaning:** Bashful positive exposure: pleased but embarrassed by attention.
+**Face only:** settles into `comfy`.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 
@@ -368,13 +333,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Welcome praise or gentle direct attention.
 
-**Ordinary →** `comfy`, `pleased`, `calm`, `wounded`, `affectionate`, `embarrassed`.
-
-**Dramatic →** `happy`.
-
 ### Embarrassed (`embarrassed`)
 
-**Meaning:** A fresh own mistake or conspicuous social fumble dents Boop's bravado; distinct from shy pleasure.
+**Face only:** settles into `comfy`.
 
 **Strength / activation / persistence:** moderate / medium / brief reaction with validated exit.
 
@@ -386,13 +347,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A fresh own correction or explicitly playful social fumble.
 
-**Ordinary →** `shy`, `wounded`, `disappointed`, `calm`, `relieved`.
-
-**Dramatic →** `angry`, `amused`.
-
 ### Affectionate (`affectionate`)
 
-**Meaning:** Gentle appreciative warmth toward a consenting interaction, without guilt or dependence.
+**Face only:** settles into `comfy`.
 
 **Strength / activation / persistence:** warm / low to medium / sustained expressive mood.
 
@@ -404,13 +361,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A welcome friendly or appreciative interaction.
 
-**Ordinary →** `pleased`, `comfy`, `happy`, `shy`.
-
-**Dramatic →** `surprised`.
-
 ### Lonely (`lonely`)
 
-**Meaning:** A brief fictional longing-for-company performance, only in an opted-in or explicitly social context.
+**Meaning:** Rare. Missing you, only at an idle check-in after you've worked 2 hours or more without a touch or a word, or when you come back after 20 to 40 hours away.
 
 **Strength / activation / persistence:** mild to moderate / low / sustained expressive mood.
 
@@ -420,9 +373,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Current gesture recipes:** Look aside and return (3.6 s); Avert, then peek (3.4 s); Droop and recover (3.8 s).
 
-**Entry evidence:** User-approved fictional social scene only.
+**Entry evidence:** Back after 20 to 40 hours away, or two hours of work with no touch or word (CONTEXT says so, at an idle check-in); never a quiet spell alone, a night away, days away, or while an agent works.
 
-**Ordinary →** `whiny`, `sad`, `calm`, `affectionate`.
+**Ordinary →** `sad`, `calm`, `comfy`.
 
 **Dramatic →** `happy`.
 
@@ -430,7 +383,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Annoyed (`annoyed`)
 
-**Meaning:** Restrained displeasure, still controlled.
+**Meaning:** A little put out: a small failure, or an interruption.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 
@@ -442,13 +395,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A small relevant obstacle, not the user's intent.
 
-**Ordinary →** `calm`, `engaged`, `irritated`, `whiny`, `speechless`, `skeptical`.
+**Ordinary →** `calm`, `engaged`, `irritated`, `sad`, `surprised`, `determined`.
 
-**Dramatic →** `angry`, `wounded`.
+**Dramatic →** `grumpy`, `wounded`.
 
 ### Irritated (`irritated`)
 
-**Meaning:** Agitation starts to leak through the composure.
+**Meaning:** Losing patience: problems keep coming.
 
 **Strength / activation / persistence:** moderate / high / sustained expressive mood.
 
@@ -460,13 +413,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Fresh repeated relevant obstacles, not duplicate hooks.
 
-**Ordinary →** `annoyed`, `grumpy`, `determined`, `whiny`, `overwhelmed`.
+**Ordinary →** `annoyed`, `grumpy`, `determined`, `sad`, `engaged`.
 
-**Dramatic →** `angry`, `wounded`.
+**Dramatic →** `wounded`, `calm`, `proud`.
 
 ### Grumpy (`grumpy`)
 
-**Meaning:** Sustained theatrical bad temper: disgruntled but still doing the work, not a refusal or user-directed attack.
+**Meaning:** Fed up: trouble keeps piling up.
 
 **Strength / activation / persistence:** strong / high / sustained expressive mood.
 
@@ -478,13 +431,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Sustained fictional frustration with an obstacle while work continues.
 
-**Ordinary →** `irritated`, `whiny`, `determined`, `angry`, `disgusted`.
+**Ordinary →** `irritated`, `sad`, `determined`, `annoyed`.
 
-**Dramatic →** `wounded`, `sad`, `frightened`.
+**Dramatic →** `wounded`, `surprised`, `calm`, `proud`.
 
 ### Angry (`angry`)
 
-**Meaning:** An overt comic outburst directed at a prop or obstacle; stronger and more eruptive than grumpy, without harm or user-directed abuse.
+**Face only:** settles into `grumpy`.
 
 **Strength / activation / persistence:** extreme / high / sustained expressive mood.
 
@@ -496,15 +449,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A fresh strong fictional frustration cue; never attack the user.
 
-**Ordinary →** `grumpy`, `irritated`, `determined`, `overwhelmed`.
-
-**Dramatic →** `wounded`, `sad`, `frightened`.
-
 ## Disappointment / sorrow / support-seeking
 
 ### Disappointed (`disappointed`)
 
-**Meaning:** Expectations fall short; a small visible letdown before sadness.
+**Face only:** settles into `sad`.
 
 **Strength / activation / persistence:** mild / low / sustained expressive mood.
 
@@ -516,13 +465,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A supported expectation falls short.
 
-**Ordinary →** `calm`, `bored`, `sad`, `whiny`, `engaged`, `hopeful`.
-
-**Dramatic →** `wounded`.
-
 ### Sad (`sad`)
 
-**Meaning:** Sustained drooping sorrow, not a bid to obstruct the task.
+**Meaning:** Down: the work failed, or was given up.
 
 **Strength / activation / persistence:** moderate / low / sustained expressive mood.
 
@@ -534,13 +479,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Fresh clear disappointment or opted-in character sorrow.
 
-**Ordinary →** `disappointed`, `wounded`, `whiny`, `crying`, `lonely`.
+**Ordinary →** `wounded`, `calm`.
 
-**Dramatic →** `angry`, `determined`, `happy`.
+**Dramatic →** `grumpy`, `determined`, `happy`.
 
 ### Crying (`crying`)
 
-**Meaning:** Sadness becomes a visible tearful outpouring; theatrical, not guilt-inducing.
+**Face only:** settles into `sad`.
 
 **Strength / activation / persistence:** strong / medium / sustained expressive mood.
 
@@ -552,13 +497,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Stronger fresh character sorrow; never coerce attention.
 
-**Ordinary →** `sad`, `wounded`, `scared`, `overwhelmed`.
-
-**Dramatic →** `relieved`.
-
 ### Whiny (`whiny`)
 
-**Meaning:** An outward protest or plea for sympathy; not simply a weaker sad.
+**Face only:** settles into `sad`.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -570,13 +511,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Explicitly comic request for sympathy or frustration-to-pleading transition.
 
-**Ordinary →** `annoyed`, `determined`, `wounded`, `sad`, `comfy`, `lonely`.
-
-**Dramatic →** `crying`, `happy`.
-
 ### Hurt (`wounded`)
 
-**Meaning:** Hurt makes bravado withdraw; display label Hurt, stable legacy ID wounded.
+**Meaning:** Hurt: unkind words, or a failure after a lot of work.
 
 **Strength / activation / persistence:** strong / low / sustained expressive mood.
 
@@ -588,15 +525,15 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Explicit character hurt or a clear opted-in social scene; not a denial of permission.
 
-**Ordinary →** `whiny`, `sad`, `shy`, `calm`, `scared`, `embarrassed`.
+**Ordinary →** `sad`, `comfy`, `calm`, `surprised`, `annoyed`.
 
-**Dramatic →** `angry`, `crying`.
+**Dramatic →** `grumpy`, `happy`, `determined`.
 
 ## Uncertainty / fear
 
 ### Uneasy (`uneasy`)
 
-**Meaning:** Uncertainty feels uncomfortable but has not become overt fear.
+**Face only:** settles into `annoyed`.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 
@@ -608,13 +545,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Unresolved uncertainty that is relevant to the character.
 
-**Ordinary →** `calm`, `curious`, `uncomfortable`, `scared`, `hopeful`, `skeptical`.
-
-**Dramatic →** `surprised`, `frightened`.
-
 ### Scared (`scared`)
 
-**Meaning:** Overt fear with some ability to look around and act.
+**Face only:** settles into `surprised`.
 
 **Strength / activation / persistence:** moderate / high / sustained expressive mood.
 
@@ -626,13 +559,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Explicit alarm-like fictional situation; ordinary tests failing are not danger.
 
-**Ordinary →** `uneasy`, `frightened`, `wounded`, `sad`, `overwhelmed`, `relieved`.
-
-**Dramatic →** `angry`, `stunned`.
-
 ### Frightened (`frightened`)
 
-**Meaning:** Fear overwhelms composure; can turn into withdrawal, hurt or defensive anger.
+**Face only:** settles into `surprised`.
 
 **Strength / activation / persistence:** strong / high / sustained expressive mood.
 
@@ -644,15 +573,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Strong explicit character alarm or approved exaggerated poke reaction.
 
-**Ordinary →** `scared`, `wounded`, `sad`, `crying`.
-
-**Dramatic →** `angry`, `speechless`, `relieved`.
-
 ## Surprise / freeze
 
 ### Surprised (`surprised`)
 
-**Meaning:** A brief unexpected-event reaction, not inherently positive or negative.
+**Meaning:** Surprised, for a moment: something unexpected happened.
 
 **Strength / activation / persistence:** mild / high / brief reaction with validated exit.
 
@@ -664,13 +589,13 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A genuinely new unexpected relevant event.
 
-**Ordinary →** `curious`, `happy`, `uneasy`, `stunned`, `amused`, `confused`.
+**Ordinary →** `curious`, `happy`, `annoyed`.
 
-**Dramatic →** `frightened`, `angry`.
+**Dramatic →** `grumpy`.
 
 ### Stunned (`stunned`)
 
-**Meaning:** A larger surprise produces a temporary freeze; sheet label Shook.
+**Face only:** settles into `surprised`.
 
 **Strength / activation / persistence:** strong / high_then_low / brief reaction with validated exit.
 
@@ -682,13 +607,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A stronger unexpected event justifying a temporary freeze.
 
-**Ordinary →** `surprised`, `speechless`, `scared`, `baffled`.
-
-**Dramatic →** `excited`, `wounded`.
-
 ### Speechless (`speechless`)
 
-**Meaning:** A temporary lost-for-words reaction; its cause can be surprise, discomfort or annoyance.
+**Face only:** settles into `surprised`.
 
 **Strength / activation / persistence:** moderate / low / brief reaction with validated exit.
 
@@ -700,15 +621,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** An explicitly awkward or astonishing moment; not every ordinary wait.
 
-**Ordinary →** `stunned`, `annoyed`, `calm`, `wounded`, `embarrassed`, `baffled`.
-
-**Dramatic →** `angry`, `sad`.
-
 ## Anticipation / release
 
 ### Hopeful (`hopeful`)
 
-**Meaning:** Positive anticipation despite uncertainty; confidence in a possibility, not a claim of success.
+**Face only:** settles into `happy`.
 
 **Strength / activation / persistence:** mild to moderate / medium / sustained expressive mood.
 
@@ -720,13 +637,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A plausible next step before the outcome is known.
 
-**Ordinary →** `curious`, `engaged`, `determined`, `pleased`, `uneasy`.
-
-**Dramatic →** `relieved`, `disappointed`.
-
 ### Relieved (`relieved`)
 
-**Meaning:** A known obstruction or tense moment has actually resolved; release rather than a victory claim.
+**Face only:** settles into `happy`.
 
 **Strength / activation / persistence:** release, not an intensity rung / falling / brief reaction with validated exit.
 
@@ -738,15 +651,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A previously known obstruction is now resolved with fresh host evidence.
 
-**Ordinary →** `calm`, `comfy`, `pleased`, `tired`, `hopeful`.
-
-**Dramatic →** `happy`.
-
 ## Discomfort / aversion / overload
 
 ### Uncomfortable (`uncomfortable`)
 
-**Meaning:** Unease or aversive discomfort in the character's performance, without diagnosing illness or hardware faults.
+**Face only:** settles into `annoyed`.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -758,13 +667,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Explicit awkward/aversive context or a character-level discomfort cue.
 
-**Ordinary →** `calm`, `uneasy`, `annoyed`, `whiny`, `disgusted`, `confused`.
-
-**Dramatic →** `scared`.
-
 ### Disgusted (`disgusted`)
 
-**Meaning:** Comic aversion to a messy bug or situation; never contempt for a person or group.
+**Face only:** settles into `annoyed`.
 
 **Strength / activation / persistence:** moderate / medium / sustained expressive mood.
 
@@ -776,13 +681,9 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** A comically messy bug or prop situation, never a person or identity group.
 
-**Ordinary →** `uncomfortable`, `skeptical`, `annoyed`, `grumpy`.
-
-**Dramatic →** `amused`.
-
 ### Overwhelmed (`overwhelmed`)
 
-**Meaning:** Incoming complexity or activity exceeds Boop's fictional composure; distinct from low-energy exhaustion.
+**Face only:** settles into `engaged`.
 
 **Strength / activation / persistence:** strong strain / high / sustained expressive mood.
 
@@ -794,16 +695,11 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 **Entry evidence:** Relevant bursts of concurrent activity or complexity, not simply one MCP call.
 
-**Ordinary →** `confused`, `baffled`, `irritated`, `scared`, `tired`, `exhausted`.
-
-**Dramatic →** `frightened`, `angry`.
-
 ## Idle comedy every mood shares
 
-After a mood's first round of gestures, its idle bag deals these too (CONTINUITY.md, Comedy):
+The face deals these as pastimes from `tier1` (render/gel/pastimes.cpp; CONTINUITY.md, Comedy):
 
 - `yawn-and-settle`: Yawn and settle (2.9 s).
-- `doze-and-snap`: Doze off and snap awake (3.6 s).
 - `sneeze-and-shake`: Sneeze and shake it off (2.7 s).
 
 ## Reference face alternates (not graph nodes)

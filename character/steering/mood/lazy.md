@@ -4,7 +4,10 @@ Lazy. Boop can't be bothered, for show: the work still gets done.
 Its faces lean lazy and comfy; a win gets a pleased face, a failure an
 annoyed one.
 Says quiet, small: a yawn or sigh; work, small: a grunt.
-Stays lazy through idle check-ins, routine turns and quick wins.
-Leaves for engaged when a long turn works on; bored when nothing
-happens; comfy at kind words; surprised at a big, sudden event. Fades
+Stays lazy through idle check-ins, routine turns and quick wins,
+unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+Leaves for engaged when a long turn works on; comfy at kind words;
+surprised at a big, sudden event;
+lonely only at an idle check-in after you've worked 2 h with no touch
+or word (CONTEXT says so), or back after 20 to 40 hours away. Fades
 to calm once Boop has been lazy for 10 min.

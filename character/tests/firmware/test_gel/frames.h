@@ -157,7 +157,7 @@ struct Jolts {
     kProps = 10,
     kDesk = kProps + Scenes::kProps,
     kReveal,
-    kWeight = kReveal + 2,
+    kWeight = kReveal + 1,
     kFamilies
   };
   double event[kFamilies]{}, steady[kFamilies]{};
@@ -177,25 +177,25 @@ struct Track {
   // changes is an event's.
   struct Said {
     SceneState base, act;
-    bool attention, moment, timedOut, listening, overlay, grab;
-    std::string attentionId, requestId;
-    int overlayExpression, emotion;
+    bool attention, reacting, timedOut, listening, grab;
+    std::string attentionId;
+    uint32_t reactions;
+    int expression, emotion;
     bool operator==(const Said& o) const {
-      return base == o.base && act == o.act && attention == o.attention && moment == o.moment &&
-             timedOut == o.timedOut && listening == o.listening && overlay == o.overlay && grab == o.grab &&
-             attentionId == o.attentionId && requestId == o.requestId && overlayExpression == o.overlayExpression &&
-             emotion == o.emotion;
+      return base == o.base && act == o.act && attention == o.attention && reacting == o.reacting &&
+             timedOut == o.timedOut && listening == o.listening && grab == o.grab && attentionId == o.attentionId &&
+             reactions == o.reactions && expression == o.expression && emotion == o.emotion;
     }
   };
   static Said said(const Engine& e) {
     const auto& r = e.router;
-    return {r.facts.base, r.facts.act, r.facts.attention.on, r.hasMoment,        r.timedOut,          r.listening,
-            r.hasOverlay, e.grab,      r.facts.attention.id, r.moment.requestId, r.overlayExpression, e.emotion};
+    return {r.facts.base, r.facts.act, r.facts.attention.on, r.reacting,    r.timedOut, r.listening,
+            e.grab,       r.facts.attention.id, r.reactions,  r.expression, e.emotion};
   }
   Said last{};
   Frame frames[2];
-  F posture[2][2], reveal[2][2];
-  bool shown[2][2]{};
+  F posture[2][2], reveal[2];  // the start card's
+  bool shown[2]{};
   int seen = 0;
   // Before a step: whether the host has said something since the last.
   bool heard(const Engine& e) const { return seen && !(said(e) == last); }
@@ -205,9 +205,8 @@ struct Track {
     const auto p = e.posture();
     const T t = e.timeMs();
     const F nowPosture[2] = {p[0], p[1]};
-    const F nowReveal[2] = {e.scenes.slots[Scenes::kResultProp].reveal.value(t),
-                            e.scenes.slots[Scenes::kStartProp].reveal.value(t)};
-    const bool nowShown[2] = {now.props[Scenes::kResultProp] > F(0), now.props[Scenes::kStartProp] > F(0)};
+    const F nowReveal = e.scenes.slots[Scenes::kStartProp].reveal.value(t);
+    const bool nowShown = now.props[Scenes::kStartProp] > F(0);
     if (seen >= 2) {
       auto& out = isEvent ? jolts->event : jolts->steady;
       auto d2 = [&](int family, F a, F b, F c) {
@@ -219,8 +218,7 @@ struct Track {
       for (int k = 0; k < Scenes::kProps; ++k)
         d2(Jolts::kProps + k, frames[0].props[k], frames[1].props[k], now.props[k]);
       d2(Jolts::kDesk, frames[0].desk, frames[1].desk, now.desk);
-      for (int k = 0; k < 2; ++k)
-        if (shown[0][k] && shown[1][k] && nowShown[k]) d2(Jolts::kReveal + k, reveal[0][k], reveal[1][k], nowReveal[k]);
+      if (shown[0] && shown[1] && nowShown) d2(Jolts::kReveal, reveal[0], reveal[1], nowReveal);
       // Each art by its identity through the three frames: its weight, and
       // its drawn sizes in their controls' families.
       const int sized[] = {2, 4, 5};
@@ -241,11 +239,9 @@ struct Track {
       }
     }
     frames[0] = frames[1], frames[1] = now;
-    for (int k = 0; k < 2; ++k) {
-      posture[0][k] = posture[1][k], posture[1][k] = nowPosture[k];
-      reveal[0][k] = reveal[1][k], reveal[1][k] = nowReveal[k];
-      shown[0][k] = shown[1][k], shown[1][k] = nowShown[k];
-    }
+    for (int k = 0; k < 2; ++k) posture[0][k] = posture[1][k], posture[1][k] = nowPosture[k];
+    reveal[0] = reveal[1], reveal[1] = nowReveal;
+    shown[0] = shown[1], shown[1] = nowShown;
     last = said(e);
     ++seen;
   }
