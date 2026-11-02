@@ -1,14 +1,11 @@
-// Boop's asks demo (DemoScript, characters/CHARACTER.md §13): at a finish Boop asks whether it worked, its two
-// answers in the lane, and you tap one; in a quiet hour it asks your favourite snack and keeps the answer, and a
-// day later, idle, it muses about a snack.
-{"demo": 1, "title": "Did it work?"}
+// Boop's asks demo (DemoScript, characters/CHARACTER.md §13): in a quiet hour it asks your favourite snack, its two
+// answers in the lane, you tap one and it keeps the answer, and a day later, idle, it muses about a snack.
+{"demo": 1, "title": "Fav snack?"}
 {"agent": "prompt", "text": "Fix the login bug", "after": 2}
 {"brain": {"react.face": "curious", "say": "start"}}
 {"agent": "run", "cmd": "npm test", "about": "Run the tests", "after": 3}
 {"agent": "reply", "text": "Fixed the login bug; the tests pass.", "after": 4}
-{"brain": {"react.face": "happy", "react.move": "success", "say": "glad", "react.sign": "did it work?"}}
-{"you": "answer", "pick": "a", "after": 4}
-{"brain": {"react.face": "proud", "react.sign": "nailed it!", "say": "glad"}}
+{"brain": {"react.face": "happy", "react.move": "success", "say": "glad"}}
 {"you": "wait", "minutes": 70, "after": 4, "note": "A quiet hour later"}
 {"brain": {"react.face": "curious", "react.sign": "fav snack?"}}
 {"you": "answer", "pick": "a", "after": 4}

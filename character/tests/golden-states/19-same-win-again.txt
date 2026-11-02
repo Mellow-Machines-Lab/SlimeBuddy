@@ -431,7 +431,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 just now: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 Boop has been curious for under a minute.
 
 NOW (14:01)
@@ -449,7 +449,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 just now: claude started turn 2 on "landing".
 Boop has been curious for 1 min.
 
@@ -667,7 +667,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 1 min ago: claude started turn 2 on "landing".
 just now: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -689,7 +689,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 1 min ago: claude started turn 2 on "landing".
 1 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -907,7 +907,7 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 2 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 2 min ago: claude started turn 2 on "landing".
 1 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -933,7 +933,7 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 2 min ago: claude started turn 2 on "landing".
 2 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -1159,7 +1159,7 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 3 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 3 min ago: claude started turn 2 on "landing".
 2 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -1189,7 +1189,7 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Phew...".
 3 min ago: claude started turn 2 on "landing".
 3 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.

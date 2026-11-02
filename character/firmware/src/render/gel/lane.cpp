@@ -480,15 +480,20 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintDrawer(surface, *drawer, s, at, spinStep(now));
     return;
   }
+  // The sign takes the lane from the strip and the words; a newer
+  // reaction's words take it back, as they take the sign down.
+  LowSign low = finishSign(done);
+  if (low.shows() && low.leftMs >= 0 && (line || note)) low = LowSign{};
+  if (low.shows()) line = note = nullptr;
+  // At rest it covers what's under it, so the strip's changes change nothing.
+  const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
   // A lane that shows what this surface's already shows is kept, not
   // erased and drawn again (Surface::clear): the glow over it too.
   const int glow = doneGlow(done);
   const int spin = spinStep(now);
-  uint32_t key = laneKey(line, s, spin, note);
+  uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note);
+  if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome))) * 16777619u) | 1;
-  // The ticket swings over where a card may be, so a card is drawn whole
-  // while it hangs, not kept.
-  if (done.shows()) surface.cardKey = 0;
   paint(surface, e, mouthOpen, dy, key, &at, rig, layers, t, pastimes);
   if (pastimes) {
     Measure measure(profile.props);
@@ -506,10 +511,17 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   if (wish) paintWish(surface, *wish, at);
   if (sign.text) paintSign(surface, sign, at);
-  paintTicket(surface, done);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
-  if (lane) paintLane(surface, line, s, spin, note), surface.laneKey = key;
+  if (lane) {
+    if (laneAtRest) {
+      surface.laneKeyFrom = surface.height * kLaneTop / kHeight;
+    } else {
+      paintLane(surface, line, s, spin, note);
+    }
+    paintLowSign(surface, low);
+    surface.laneKey = key;
+  }
   // A kept lane keeps its glow.
   paintGlow(surface, done, 0, lane ? surface.height : surface.laneKeyFrom);
 }

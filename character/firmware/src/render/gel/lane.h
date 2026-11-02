@@ -68,9 +68,9 @@ struct PastimeShow;
 // playing in front), the work stream at `now`, the device's time
 // (render/gel/stream.h: its words behind the body, the desk's to-do bar,
 // clock and thought cloud, and the word forward), the sign it holds up
-// (render/gel/layers.h), the finished turn's ticket, then the lane, unless
-// this surface already shows it, and over all of it the finished turn's
-// glow (render/gel/done.h). While the agents' drawer shows (render/gel/drawer.h) it takes the
+// (render/gel/layers.h), then the lane, unless this surface already shows
+// it, with the finished turn's low sign (render/gel/done.h) in the strip's
+// place, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
 // lane's place, the body pressed flat above it, and the pastimes, the
 // stream, the sign, the sky and the finished turn wait for it to shut.
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,

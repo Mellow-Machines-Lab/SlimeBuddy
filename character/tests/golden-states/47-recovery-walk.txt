@@ -444,7 +444,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 2 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls, saying it's done.
   Boop's mood changed: grumpy → sad.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 2 on "landing".
 Boop has been sad for 2 min.
 
@@ -465,7 +465,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls, saying it's done.
   Boop's mood changed: grumpy → sad.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 2 min ago: claude started turn 2 on "landing".
 2 min ago: You asked claude on "landing" for something new, in a sentence.
   Boop had an engaged moment (small), and said "Krr...".
@@ -688,7 +688,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 7 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls, saying it's done.
   Boop's mood changed: grumpy → sad.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 5 min ago: claude started turn 2 on "landing".
 5 min ago: You asked claude on "landing" for something new, in a sentence.
   Boop had an engaged moment (small), and said "Krr...".
@@ -714,7 +714,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 8 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls, saying it's done.
   Boop's mood changed: grumpy → sad.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 6 min ago: claude started turn 2 on "landing".
 6 min ago: You asked claude on "landing" for something new, in a sentence.
   Boop had an engaged moment (small), and said "Krr...".

@@ -869,7 +869,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a happy moment (small), and said "Eep!".
 7 min ago: claude finished turn 1 on "landing": done, a long turn, 2 tool calls, after a failed check, saying it's done.
   Boop's mood changed: lazy → calm.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Heh...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 
 NOW (14:10)
 claude started turn 2 on "landing".

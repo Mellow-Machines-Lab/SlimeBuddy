@@ -1092,7 +1092,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a happy moment (small), and said "Ha!".
 1 min ago: claude finished turn 1 on "landing": done, a long turn, 3 tool calls, after 2 failed checks.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 Boop has been engaged for 1 min.
 
 NOW (14:05)
@@ -1119,7 +1119,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a happy moment (small), and said "Ha!".
 2 min ago: claude finished turn 1 on "landing": done, a long turn, 3 tool calls, after 2 failed checks.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 1 min ago: claude started turn 2 on "landing".
 Boop has been engaged for 2 min.
 

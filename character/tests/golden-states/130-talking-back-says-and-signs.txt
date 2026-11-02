@@ -554,7 +554,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 just now: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 Boop has been curious for under a minute.
 
 NOW (14:04)
@@ -584,7 +584,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 1 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 just now: You said to Boop: "nice work, thanks"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 Boop has been curious for 1 min.
@@ -616,7 +616,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 1 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 1 min ago: You said to Boop: "nice work, thanks"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 just now: You said to Boop: "love you"
@@ -650,7 +650,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 1 min ago: You said to Boop: "nice work, thanks"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 1 min ago: You said to Boop: "love you"

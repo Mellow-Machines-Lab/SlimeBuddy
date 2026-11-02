@@ -442,7 +442,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), holding up a sign: "dark mode", and said "Tch".
 just now: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 2 on "landing".
 Boop has been curious for under a minute.
 
@@ -465,7 +465,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), holding up a sign: "dark mode", and said "Tch".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 2 on "landing".
 just now: You asked claude on "landing" about tests, in a sentence.
   Boop had an engaged moment (small), holding up a sign: "tests! tests!", and said "Testing".

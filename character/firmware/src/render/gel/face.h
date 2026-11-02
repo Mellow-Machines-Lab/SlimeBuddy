@@ -52,6 +52,7 @@ class GelFace final : public Face {
   void watch(const Stream* stream) override { stream_ = stream; }
   // A swipe flings the dome on, and plays nothing else.
   bool playsSwipe() const override { return false; }
+  bool holdsUpFinish() const override { return true; }
   // The agents' drawer, up from the strip (render/gel/drawer.h).
   bool hasDrawer() const override { return true; }
   void drawer(const Drawer* drawer) override { drawer_ = drawer; }

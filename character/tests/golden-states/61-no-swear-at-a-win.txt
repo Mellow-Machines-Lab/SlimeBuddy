@@ -448,7 +448,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Measure".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 Boop has been curious for 1 min.
 
 NOW (14:07)
@@ -668,7 +668,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Measure".
 2 min ago: claude finished turn 1 on "landing": done, a very long turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 1 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: curious → calm.

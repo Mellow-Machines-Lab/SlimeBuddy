@@ -285,13 +285,9 @@ static void test_a_card_revealed_late_rises_then_falls() {
 // kGlowInMs to kGlowPeak at the panel's edge (a reply's to kGlowPeakFaint),
 // holds while its reaction plays, and fades over the last kGlowOutMs; it
 // reaches kGlowPx in, and nothing shows past the panel's rounded corners.
-// The ticket drops in from above the top over kTicketDropMs and hangs in
-// the middle, or left of a success's trophy, and goes back up over the last
-// kTicketRiseMs.
-static void test_a_finished_turn_glows_and_hangs_a_ticket() {
+static void test_a_finished_turn_glows() {
   static_assert(kGlowInMs == 300 && kGlowOutMs == 1000 && kGlowPx == 26, "the glow's timing and reach");
   static_assert(kGlowPeak == 200 && kGlowPeakFaint == 110, "the glow's strength at the edge");
-  static_assert(kTicketDropMs == 700 && kTicketRiseMs == 400, "the ticket's drop and rise");
   DoneShow d;
   d.agent = "claude", d.thread = "fix-nav", d.outcome = Outcome::kFailure;
   TEST_ASSERT_EQUAL_INT(0, doneGlow(d));  // just come
@@ -334,30 +330,6 @@ static void test_a_finished_turn_glows_and_hangs_a_ticket() {
   fresh();
   paintGlow(s, d, 0, 300);
   TEST_ASSERT_EQUAL_INT(0, lit(0, 300, kW, kH));
-
-  // The ticket: above the top as it comes, then in, in the middle.
-  d.ms = 0, d.leftMs = -1;
-  fresh();
-  paintTicket(s, d);
-  TEST_ASSERT_EQUAL_INT(0, lit(0, 1, kW, kH));
-  d.ms = kTicketDropMs + 3000;
-  fresh();
-  paintTicket(s, d);
-  const int left = lit(0, 20, kW / 2, 70), right = lit(kW / 2, 20, kW, 70);
-  TEST_ASSERT_TRUE(left > 300 && right > 300);
-  TEST_ASSERT_INT_WITHIN((left + right) / 5, left, right);
-  TEST_ASSERT_EQUAL_INT(0, lit(0, 80, kW, kH));
-  // A success's hangs left of its trophy.
-  d.outcome = Outcome::kSuccess;
-  fresh();
-  paintTicket(s, d);
-  TEST_ASSERT_TRUE(lit(0, 20, kW * 420 / 1000, 70) > 300);
-  TEST_ASSERT_EQUAL_INT(0, lit(kW * 420 / 1000 + 8, 0, kW, kH));
-  // Gone back up.
-  d.leftMs = 0;
-  fresh();
-  paintTicket(s, d);
-  TEST_ASSERT_EQUAL_INT(0, lit(0, 1, kW, kH));
 }
 // An alert interrupted before
 // its knocks and ding resumes where it stopped, so each plays exactly once;
@@ -2583,6 +2555,91 @@ static void test_the_lane_cuts_and_marks_as_the_canvas_does() {
     TEST_ASSERT_TRUE(lit > 10);
   }
 }
+// plan/finish-sign.md: the low sign takes the lane's rows and no others, so a
+// lane kept keeps it (Surface::laneKeyFrom); a short name in the sign's size;
+// names to about 50 characters on two lines, whole, on the AMOLED's rounded
+// panel; a longer one cut; and rising, it moves from the panel's foot.
+static void test_the_low_sign_stays_in_the_lane_and_holds_a_long_name() {
+  static_assert(kLowSignMostGlyphs == 50 && kLowSignRiseMs == 280 && kLowSignFallMs == 400, "the low sign's room and pace");
+  constexpr int kW = 502, kH = 410, kCorner = 110, kLane = kH * kLaneTop / kHeight;
+  std::vector<uint16_t> px(kW * kH);
+  Surface s{kW, kH, px.data()};
+  s.corner = kCorner;
+  LowSign sign;
+  sign.mark = LowSign::Mark::kTick, sign.ink = rgb565(kSageRgb), sign.ms = 1000;
+  auto draw = [&] {
+    std::fill(px.begin(), px.end(), 0), s.invalidate(), s.clear();
+    paintLowSign(s, sign);
+    int above = 0;
+    for (int y = 0; y < kLane; ++y)
+      for (int x = 0; x < kW; ++x) above += px[size_t(y) * kW + x] != 0;
+    return above;
+  };
+  auto layout = [&](const char* text) { return lowSignLayout(kW, kH, kCorner, text, true); };
+  const LowSignLayout one = layout("fix-nav");
+  TEST_ASSERT_TRUE(one.large);
+  TEST_ASSERT_EQUAL_INT(1, one.lines);
+  const char* const names[] = {"Rework the onboarding tour for the AMOLED board",  // 47
+                               "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx",  // 50 with nowhere to break
+                               "aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjj k"};  // 50 of short words
+  for (const char* name : names) {
+    const LowSignLayout two = layout(name);
+    TEST_ASSERT_FALSE(two.large);
+    TEST_ASSERT_EQUAL_INT(2, two.lines);
+    // All of it shown: no cut, however it wrapped.
+    TEST_ASSERT_EQUAL_INT(int(std::strlen(name)) - (std::strchr(name, ' ') ? 1 : 0),
+                          glyphCount(two.line[0]) + glyphCount(two.line[1]));
+    // Clear of the panel's corners, down to its last row.
+    TEST_ASSERT_TRUE(two.x >= s.inset(two.y, two.y + two.h, 16));
+    TEST_ASSERT_TRUE(two.y + two.h < kH);
+    sign.text = name;
+    TEST_ASSERT_EQUAL_INT(0, draw());
+  }
+  // Past what it holds, cut as everything is, with "..".
+  const LowSignLayout cut = layout("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghij");
+  TEST_ASSERT_TRUE(std::strstr(cut.line[1], "..") != nullptr);
+  sign.text = "fix-nav";
+  TEST_ASSERT_EQUAL_INT(0, draw());
+  // Risen, it doesn't move, so its key doesn't change; moving, it does.
+  const uint32_t rest = lowSignKey(sign);
+  TEST_ASSERT_EQUAL_INT(0, lowSignDrop(sign, kH));
+  sign.ms = 9000;
+  TEST_ASSERT_EQUAL_UINT32(rest, lowSignKey(sign));
+  sign.ms = 100;
+  TEST_ASSERT_TRUE(lowSignDrop(sign, kH) > 0);
+  TEST_ASSERT_TRUE(lowSignKey(sign) != rest);
+  sign.ms = 0;
+  TEST_ASSERT_EQUAL_INT(0, draw());
+  sign.ms = 1000, sign.leftMs = 5;
+  TEST_ASSERT_TRUE(lowSignDrop(sign, kH) > 0);
+  sign.leftMs = kLowSignFallMs;
+  TEST_ASSERT_EQUAL_INT(0, lowSignDrop(sign, kH));
+}
+
+// On the gel the strip names a finished turn only until its sign is up, and
+// the sign takes the lane: not over a newer reaction's words.
+static void test_the_strip_gives_way_to_the_finishs_sign() {
+  linkkit::Rng rng;
+  app::Behaviour b{std::make_unique<GelFace>()};
+  b.reset(0, rng);
+  b.onState(app::Model{}, 0);
+  app::ReactionIn in;
+  in.anim = SceneState::kTaskComplete;
+  in.whoAgent = "claude", in.whoThread = "fix-nav";
+  in.key = 7;
+  TEST_ASSERT_NULL(b.admit(in, 100));
+  b.play(in, 100);
+  b.advance(100, rng);
+  TEST_ASSERT_TRUE(b.done(100).signMs == 0);  // no words: at once
+  TEST_ASSERT_NULL(b.strip(100).doneAgent);
+  TEST_ASSERT_EQUAL_STRING("fix-nav", finishSign(b.done(100)).text);
+  DoneShow agentOnly;
+  agentOnly.agent = "codex", agentOnly.signMs = 10;
+  TEST_ASSERT_EQUAL_STRING("codex", finishSign(agentOnly).text);
+  agentOnly.signMs = -1;
+  TEST_ASSERT_NULL(finishSign(agentOnly).text);
+}
+
 // The working count's spinner turns clockwise a spoke every kSpinStepMs,
 // kSpinSteps spokes, a turn a second, the one it's on lit and the one it
 // left a step dimmer. The lane's key follows the step only while sessions
@@ -2619,7 +2676,7 @@ static void test_the_working_spinner_turns_once_a_second() {
 // drawing afresh leaves. Two surfaces taking turns, as the board's do,
 // through needs you rising and holding with its strip, a finish's card,
 // the start card, a bubble coming and going, the strip's count changing
-// and a finished turn's ticket and glow coming, holding and going (render/
+// and a finished turn's low sign and glow coming, holding and going (render/
 // gel/done.h), on the AMOLED's rounded panel, equal a third cleared whole
 // before every frame; and the keeps happened.
 static void test_kept_cards_and_lanes_match_a_fresh_frame() {
@@ -2663,6 +2720,7 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
       done.agent = "claude", done.thread = "fix-nav", done.outcome = Outcome::kFailure;
       done.ms = uint32_t(i - 150) * 33;
       if (i >= 230) done.leftMs = (330 - i) * 33;
+      if (i >= 190) done.signMs = (i - 190) * 33;
       doneFrames += doneGlow(done) > 0;
     }
     Surface& s = turns[i % 2];
@@ -3207,7 +3265,9 @@ int main() {
   RUN_TEST(test_histories_stay_off_the_heap);
   RUN_TEST(test_kept_cards_and_lanes_match_a_fresh_frame);
   RUN_TEST(test_what_falls_over_a_kept_card_doesnt_stay_in_it);
-  RUN_TEST(test_a_finished_turn_glows_and_hangs_a_ticket);
+  RUN_TEST(test_a_finished_turn_glows);
+  RUN_TEST(test_the_low_sign_stays_in_the_lane_and_holds_a_long_name);
+  RUN_TEST(test_the_strip_gives_way_to_the_finishs_sign);
   RUN_TEST(test_a_still_card_is_drawn_once_into_each_surface);
   RUN_TEST(test_steady_frames_allocate_nothing);
   RUN_TEST(test_the_lane_is_native_and_tracked);

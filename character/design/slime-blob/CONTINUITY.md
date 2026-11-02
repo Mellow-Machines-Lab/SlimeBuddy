@@ -500,7 +500,7 @@ small, twice medium, three times big, four times or more biggest. A
 success in a sad mood (disappointed, sad, crying, whiny, wounded) is
 small whatever else: tearful but valid. A failure never plays one: its
 row keeps its card and its three takes, unless the finish names whose
-turn it was, when its ticket takes the card's place (A finished turn,
+turn it was, when its low sign takes the card's place (A finished turn,
 below).
 
 | Size | Finish | What it does |
@@ -569,19 +569,22 @@ for as long as the Moment plays and 3 s after (`Behaviour::done`,
   a face with no finish of its own. It comes over 0.3 s, holds, and fades
   over the last second; strongest at the panel's edge, it reaches 26 px
   in, following the rounded corners, over everything, the lane too.
-- **A ticket drops in** from the top on a string, with the strip's mark
-  and the thread's name (else the agent's) in the bubble's font, cut to
-  fit. It falls past its place and back over 0.7 s, swings, dying away,
-  and keeps a little sway, then goes back up over the last 0.4 s. It hangs
-  in the middle, where a failure's or a reply's card would be, which the
-  face leaves out while it does (`Scenes::cardless`), or left of a
-  success's trophy, a quarter of the way across.
+- **Boop holds up the low sign** (`gel/low_sign.h`) once the Moment's words
+  have ended, at once with none, and 3 s in at the latest. It's the thread's
+  name (else the agent's), with the strip's mark, in the outcome's colour,
+  in the lane's rows, in the strip's place, the whole face clear above it:
+  a name that fits in the sign's font, else in the bubble's, on one line or
+  two, up to 50 characters. It rises from the panel's foot over 0.28 s,
+  stays through the Moment and 5 s after, and falls away over the last
+  0.4 s. A failure's or a reply's card stays out while it does
+  (`Scenes::cardless`); the trophy stays. Under it, the lane's words give
+  way: past the 3 s, the bubble doesn't show, though the voice goes on; a
+  newer Moment's words take the lane back as the sign falls.
 
 Another Moment that names no turn takes them down: they leave in 0.4 s,
 and the strip and a tap stop naming the turn at once. A needs-you takes
-them at once. While the ticket hangs, a card is drawn whole rather than
-kept (it may swing over one), and a lane under a steady glow is kept,
-glow and all; while the glow changes, the lane is drawn again.
+them at once. A lane under a steady glow, and a sign at rest, is kept, glow
+and all; while the glow changes or the sign moves, the lane is drawn again.
 
 ## Gestures
 

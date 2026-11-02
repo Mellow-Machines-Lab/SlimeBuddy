@@ -489,7 +489,7 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude finished turn 1 on "api" (landing): failed, a very long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, asking "did it work?": yes or no, and said "Pfft Drat".
+  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Drat".
 just now: claude started turn 2 on "api" (landing).
 Boop has been comfy for 10 min.
 

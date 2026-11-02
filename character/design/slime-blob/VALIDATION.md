@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-01. What checks the gel slime, and which rule each check
+Updated 2026-11-02. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -98,10 +98,12 @@ ramps and springs can, and no jolt at an event. By file:
   sleeping face crossing in once it's 0.9 shut, waking quick, sleep's
   spring kept through a mood change), the night's lids, a finger moving the dome its own
   way, a finished turn's
-  glow and ticket (`test_a_finished_turn_glows_and_hangs_a_ticket`: the
-  glow's timing, strength and reach, nothing past the panel's corners,
-  the ticket above the top as it comes, in the middle or left of a
-  success's trophy, and gone back up), comedy, the ten gestures (a low or cross mood keeping its own face
+  glow (`test_a_finished_turn_glows`: its timing, strength and reach,
+  nothing past the panel's corners) and low sign
+  (`test_the_low_sign_stays_in_the_lane_and_holds_a_long_name`: a short
+  name large, 50 characters whole on two lines, cut past that, nothing
+  above the lane's rows, and its key steady at rest;
+  `test_the_strip_gives_way_to_the_finishs_sign`), comedy, the ten gestures (a low or cross mood keeping its own face
   through one: `test_a_low_or_cross_mood_keeps_its_face_through_a_gesture`), the notice
   playing the rig's clip (`test_a_notice_plays_its_rig_clip`: perking up
   tall, off the ground and landing flat, its eyes and mouth, a sound at
@@ -157,7 +159,7 @@ ramps and springs can, and no jolt at an event. By file:
   `test_text_glides_between_pixels`, the outfit half a pixel down while
   the body moves), tracked
   clearing and kept cards and lanes matching a fresh frame, a finished
-  turn's ticket and glow coming and going over them, a word falling over
+  turn's low sign and glow coming and going over them, a word falling over
   a kept card not staying in it
   (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
   allocating nothing, and the work stream
@@ -205,8 +207,8 @@ ramps and springs can, and no jolt at an event. By file:
   layers (`layers.jsonl`: each outfit and air by its tags, Zs asleep at
   night, the morning's coffee at its side, at a sip and on the desk, a
   sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
-turn's glow and ticket as a face for it talks, lingers, fades, goes up
-and is taken down (`done.jsonl`), the
+turn's glow and low sign as a face for it talks, lingers, fades, falls
+and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
   work stream (`stream.jsonl`: two lanes' words falling, the to-do bar and
   the clock, a thought cloud, and every style as it lands: arrive, bonk and
   its dizzy eyes, helmet, shrug, shatter, pass, hail's umbrella, look,
