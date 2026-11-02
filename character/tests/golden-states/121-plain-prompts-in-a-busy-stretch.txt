@@ -82,11 +82,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -186,7 +187,7 @@ Boop has been happy for 10 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "exporter" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -201,7 +202,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -220,7 +221,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude idle on "exporter" for 1 min.
 Today: 1 turn.
 
@@ -323,11 +324,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -428,7 +430,7 @@ sad news; wounded at rude words to Boop.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude working on "onboarding" for 1 min; claude idle on "exporter" for 1 min.
 Today: 1 turn.
 
@@ -456,7 +458,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min; claude working on "onboarding" for 1 min.
 Today: 1 turn.
 
@@ -488,7 +490,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 2 turns.
 
@@ -602,11 +604,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -709,7 +712,7 @@ going on.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "buddy-touch" for 2 min; claude idle on "exporter" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 3 turns.
 
@@ -826,11 +829,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -929,7 +933,7 @@ Boop has been curious for 2 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude idle on "exporter" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 3 turns.
 
@@ -971,7 +975,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "exporter" for 1 min; claude idle on "buddy-touch" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 4 turns.
 
@@ -1095,11 +1099,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -1202,7 +1207,7 @@ going on.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "onboarding" for 1 min; claude idle on "exporter" for 6 min; claude idle on "buddy-touch" for 5 min.
 Today: 4 turns.
 

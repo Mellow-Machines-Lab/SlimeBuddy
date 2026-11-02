@@ -82,11 +82,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -191,7 +192,7 @@ CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -205,7 +206,7 @@ CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
 
@@ -301,11 +302,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -414,4 +416,34 @@ Boop has been curious for 12 min.
 
 NOW (14:14)
 Nothing has happened for 12 min; claude sits idle on "landing".
+Boop did nothing on its own.
+=== pass 4
+CONTEXT (how things stand. Background, not news: react to NOW.)
+When: 14:27, Wednesday, day.
+Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
+Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
+Agents: claude idle on "landing" for 25 min.
+Today: 1 turn.
+
+HISTORY (oldest first; indented lines add to the line above)
+Boop has been curious for 25 min.
+
+NOW (14:27)
+Nothing has happened for 25 min; claude sits idle on "landing".
+Boop did nothing on its own.
+=== pass 5
+CONTEXT (how things stand. Background, not news: react to NOW.)
+When: 14:41, Wednesday, day.
+Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
+Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
+Agents: claude idle on "landing" for 39 min.
+Today: 1 turn.
+
+HISTORY (oldest first; indented lines add to the line above)
+Boop has been curious for 39 min.
+
+NOW (14:41)
+Nothing has happened for 39 min; claude sits idle on "landing".
 Boop did nothing on its own.

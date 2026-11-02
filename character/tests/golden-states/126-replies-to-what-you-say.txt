@@ -82,11 +82,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
@@ -190,7 +191,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop once.
 
@@ -203,7 +204,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop twice.
 
@@ -218,7 +219,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 3 times.
 
@@ -235,7 +236,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 4 times.
 
@@ -254,7 +255,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 5 times.
 
@@ -274,7 +275,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: you talked to Boop 6 times.
 
@@ -296,7 +297,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: you talked to Boop 7 times.
 
@@ -320,7 +321,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 3 min.
 Today: you talked to Boop 8 times.
 
@@ -346,7 +347,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 3 min.
 Today: you talked to Boop 9 times.
 
@@ -374,7 +375,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:04, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 4 min.
 Today: you talked to Boop 10 times.
 
@@ -404,7 +405,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:04, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 4 min.
 Today: you talked to Boop 11 times.
 
@@ -436,7 +437,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 5 min.
 Today: you talked to Boop 12 times.
 
@@ -470,7 +471,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 5 min.
 Today: you talked to Boop 13 times.
 
@@ -506,7 +507,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 6 min.
 Today: you talked to Boop 14 times.
 
@@ -544,7 +545,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 6 min.
 Today: you talked to Boop 15 times.
 
@@ -584,7 +585,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:07, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 7 min.
 Today: you talked to Boop 16 times.
 
@@ -626,7 +627,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:07, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 7 min.
 Today: you talked to Boop 17 times.
 
@@ -670,7 +671,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 8 min.
 Today: you talked to Boop 18 times.
 
@@ -716,7 +717,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 8 min.
 Today: you talked to Boop 19 times.
 
@@ -764,7 +765,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 9 min.
 Today: you talked to Boop 20 times.
 
@@ -814,7 +815,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 9 min.
 Today: you talked to Boop 21 times.
 
@@ -866,7 +867,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:10, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 10 min.
 Today: you talked to Boop 22 times.
 
@@ -920,7 +921,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:10, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 10 min.
 Today: you talked to Boop 23 times.
 
@@ -973,7 +974,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:11, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 11 min.
 Today: you talked to Boop 24 times.
 
@@ -1026,7 +1027,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:11, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 11 min.
 Today: you talked to Boop 25 times.
 
@@ -1079,7 +1080,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 12 min.
 Today: you talked to Boop 26 times.
 
@@ -1132,7 +1133,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 12 min.
 Today: you talked to Boop 27 times.
 
@@ -1185,7 +1186,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:13, Wednesday, day.
 Boop: a Hatchling.
-You: no wish yet today, and the day's half gone.
+You: no wish yet today.
 Agents: claude idle on "landing" for 13 min.
 Today: you talked to Boop 28 times.
 

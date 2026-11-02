@@ -24,11 +24,12 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. Now and then, too, it wants
-something: a wish, about one a day, when it's content and the moment
-feels right, not at the first quiet minute and not while it's cross. A
-wish left waiting an hour or so with you here gets to it, and its mood
-sinks.
+Idle, it now and then muses or asks. And about once a day it wants
+something from you, a wish, once things have been quiet a good while,
+you're around and it's settled: a pet if it's gone a while untouched, a
+chat if it's been quiet between you, some work if it's bored. Not
+sooner, not while it's cross, and not again soon after one. A wish left
+waiting an hour or so with you here gets to it, and its mood moves.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
