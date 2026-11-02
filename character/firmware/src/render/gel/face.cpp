@@ -352,6 +352,13 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
   return s;
 }
 
+void GelFace::wish(const WishShow& show) {
+  // A wish left: a silent sigh and slump as its bubble fades.
+  if (show.pop == WishShow::kGone && wish_.pop != WishShow::kGone)
+    if (const rig::Clip* c = rig::kRig.clip("wish-gone")) play(*c);
+  wish_ = show;
+}
+
 void GelFace::play(const rig::Clip& clip) {
   mixer_.play(clip);
   cueing_ = &clip;
