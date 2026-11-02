@@ -356,7 +356,7 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
   for (int i = 0; i < 3; ++i) integrate(activity[i], dt, active ? target[i] : i == 1 ? swell : F(0), 12, 10, limits[i], q(1.2));
   const FinishShow finish = finishShow();
   const bool party = finish.on && takesOver(finish.finish);
-  prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party ? 1 : 0, 10, 14);
+  prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party && !clearStage ? 1 : 0, 10, 14);
   prop(quietMix, dt, route.quiet ? 1 : 0, 12, 10);
   updateProps(time);
 }

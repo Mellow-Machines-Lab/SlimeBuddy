@@ -898,6 +898,25 @@ art's mouth comes back the frame the tag goes (`paintArt`, which leaves
 the art's mouth out while `hushed` is on, and `paintZip`, which draws
 the zip). The eyes, the body and every layer play as ever.
 
+### The work acts (the board's)
+
+A command Boop plays out for as long as it runs (`gel/act.h`, on `state`'s
+`wact`): the whole frame, as a finish holds it, its body moved and scaled the
+same way, the desk gone (`Scenes::clearStage`), no pastime, no sign of a
+Moment's. The low sign says what's running, then how it ended, in its place.
+
+**The push.** 0.8 s: the rocket comes up from below and Boop shrinks onto it,
+in front of its hull. To 1.7 s: it lights, smoke along the ground, a rumble.
+To 3.2 s: it lifts, stretching, the flame long, and leaves by the top. Then
+only the stars, the smoke's trail and the sign; from 20 s on, every 26 s, a
+tiny Boop on a tiny rocket drifts by in orbit. A result that comes before
+3.4 s waits for it. Pass, 2.5 s: down on a parachute, swaying, happy; it lets
+go at the thump, dust either side, and Boop grows to its own size, proud.
+Fail, 0.5 s: down fast, stunned, with the rocket; a burst, clods, the rocket
+nose down in a heap of ground, smoking, Boop flat with soot spots and stars
+that goes on to disappointed. A cross or low mood keeps its own face.
+The small version is the low sign alone over Doing.
+
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's

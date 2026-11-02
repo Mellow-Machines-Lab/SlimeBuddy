@@ -22,6 +22,7 @@
 #include "render/gel/lane.h"
 #include "render/gel/layers.h"
 #include "render/gel/raster.h"
+#include "render/gel/act.h"
 #include "render/gel/stream.h"
 #include "render/tags.h"
 #include "fonts_gel.h"
@@ -3119,6 +3120,67 @@ static void test_rgb565_opacity_rounds_to_nearest() {
 // only where it doesn't cover them; a word forward is drawn over it; the
 // body answers a hit as it lands, knocked and its lids shut, opening again
 // after the daze; and drawing it all takes nothing from the heap.
+// A work act (render/gel/act.h): it runs on its state and its opening plays
+// whatever the command does; a result that comes early waits for the opening;
+// the rocket takes the body off the screen and the sign says what's running;
+// it ends by its own clock; a needs-you leaves it to come back where it got to;
+// and no frame of it takes from the heap.
+static void test_a_work_act_plays_by_its_state() {
+  Stream stream;
+  Stream::ActIn in;
+  in.kind = ActKind::kPush, in.full = true;
+  std::strcpy(in.text, "git push");
+  stream.setAct(in, false, 1000);
+  Stream::ActNow now = stream.actNow(1500);
+  TEST_ASSERT_TRUE(now.shows());
+  TEST_ASSERT_EQUAL_INT(500, now.ageMs);
+  TEST_ASSERT_EQUAL_STRING("git push", actSign(now).text);
+  std::vector<uint16_t> px(502 * 410);
+  Surface s{502, 410, px.data()};
+  TEST_ASSERT_FALSE(actPose(s, stream.actNow(1500)).away);
+  TEST_ASSERT_TRUE(actPose(s, stream.actNow(1000 + kPushGoneMs)).away);
+  // Held away, it runs on unseen; back, where it got to.
+  Stream::ActIn none;
+  stream.setAct(none, true, 2000);
+  TEST_ASSERT_FALSE(stream.actNow(2000).shows());
+  stream.setAct(in, false, 3000);
+  TEST_ASSERT_EQUAL_INT(2000, stream.actNow(3000).ageMs);
+  // The command ends early: its result waits for the opening's end.
+  in.result = ActResult::kPass;
+  std::strcpy(in.text, "shipped!");
+  stream.setAct(in, false, 3100);
+  TEST_ASSERT_EQUAL_INT(int(ActResult::kRunning), int(stream.actNow(3100).result));
+  TEST_ASSERT_EQUAL_STRING("git push", stream.actNow(3100).text);
+  const uint32_t begins = 1000 + actLeadMs(ActKind::kPush, true);
+  TEST_ASSERT_EQUAL_INT(int(ActResult::kPass), int(stream.actNow(begins).result));
+  TEST_ASSERT_EQUAL_STRING("shipped!", stream.actNow(begins).text);
+  TEST_ASSERT_EQUAL_INT(int(actResultMs(true)), stream.actNow(begins).leftMs);
+  TEST_ASSERT_FALSE(stream.actNow(begins + actResultMs(true)).shows());
+  // The state gone and nothing else holding the screen: it's over.
+  stream.setAct(none, false, begins + 100);
+  TEST_ASSERT_FALSE(stream.actNow(begins + 100).shows());
+
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 960; t += 16) e->step(t);
+  const SignShow sign;
+  const Strip strip;
+  // Every beat of every result, off the heap.
+  allocCount = 0;
+  allocCounting = true;
+  for (const ActResult result : {ActResult::kRunning, ActResult::kPass, ActResult::kFail}) {
+    Stream run;
+    Stream::ActIn start;
+    start.kind = ActKind::kPush, start.full = true;
+    std::strcpy(start.text, "git push");
+    run.setAct(start, false, 0);
+    start.result = result;
+    if (result != ActResult::kRunning) run.setAct(start, false, 4000);
+    for (uint32_t t = 0; t < 30000; t += 137)
+      paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &run, t);
+  }
+  allocCounting = false;
+  TEST_ASSERT_EQUAL_INT(0, allocCount);
+}
 static void test_the_work_stream_falls_behind_and_hits_in_front() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -3212,6 +3274,7 @@ int main() {
   UNITY_BEGIN();
   RUN_TEST(test_fixed_math_and_motion);
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
+  RUN_TEST(test_a_work_act_plays_by_its_state);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
   RUN_TEST(test_the_desk_clock_shows_hours_from_the_hour);
   RUN_TEST(test_software_clock_matches_binary64);

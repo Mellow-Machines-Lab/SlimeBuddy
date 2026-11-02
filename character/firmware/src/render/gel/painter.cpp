@@ -2,6 +2,7 @@
 #include "render/gel/painter.h"
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
+#include "render/gel/act.h"
 #include "render/gel/finish.h"
 #include "render/gel/geometry.h"
 #include "render/gel/layers.h"
@@ -568,7 +569,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
-           const DrawerPose* squeeze) {
+           const DrawerPose* squeeze, const Stream::ActNow* act) {
   auto pose = e.pose();
   auto life = e.life();
   PaintControls c;
@@ -602,6 +603,17 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     c.lean = std::clamp(c.lean + move.lean, -5120, 5120);
     c.eyes = !move.starEyes;
   }
+  // A work act moves it the same way, unless a finish holds it.
+  const bool acting = act && actTakesOver(*act) && !finish.on && !squeeze;
+  ActPose actMove;
+  if (acting) {
+    actMove = actPose(surface, *act);
+    const Point anchor = actAnchor(surface);
+    c.anchorX = anchor.x, c.anchorY = anchor.y;
+    c.offsetX = actMove.dx16, c.offsetY = actMove.dy16, c.scale = actMove.scale;
+    c.squash = std::clamp(c.squash + actMove.squash, -5407, 5407);
+    c.lean = std::clamp(c.lean + actMove.lean, -5120, 5120);
+  }
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -617,7 +629,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       erasing = surface.beginClear(cards, kept, keepLane);
     }
     const bool scenery = pastimes && !bodyAlone && showsScenery(*pastimes);
-    const bool behind = scenery || (finish.on && drawsBehind(finish.finish)) || move.minis;
+    const bool behind = scenery || (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
     if (behind) {
       // Rows a finish covers whole aren't erased first.
       const int covered = finish.on ? finishCovers(surface, finish.finish, finish.ageMs) : 0;
@@ -629,7 +641,8 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       paintScenery(surface, *pastimes);
     }
     if (finish.on) paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs);
-    if (!move.minis) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
+    if (acting) paintActBehind(surface, *act);
+    if (!move.minis && !actMove.away) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
   if (move.minis) {
@@ -644,17 +657,18 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       paintBody(surface, m);
       paintArt(surface, e, m, mouth);
     }
-  } else {
+  } else if (!actMove.away) {
     Measure measure(profile.art);
     paintArt(surface, e, c, mouth, anchors);
   }
-  if (!move.minis) {
+  if (!move.minis && !actMove.away) {
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
     if (pastimes) paintWorn(surface, *pastimes, *anchors);
   }
   if (finish.on)
     paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
+  if (acting) paintActFront(surface, *act, *anchors);
   {
     Measure measure(profile.props);
     const Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};

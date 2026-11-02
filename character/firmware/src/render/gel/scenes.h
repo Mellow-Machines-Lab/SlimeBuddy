@@ -82,6 +82,8 @@ struct Ramp {
 };
 struct Scenes {
   Spring activity[3], desk, quietMix;
+  // A work act holds the screen (render/gel/act.h): the desk goes.
+  bool clearStage = false;
   Route route;
   uint64_t key = 0;  // what shows (Route::key)
   int mood = slime::kCalm, expression = slime::kCalm, profileExpression = slime::kCalm;

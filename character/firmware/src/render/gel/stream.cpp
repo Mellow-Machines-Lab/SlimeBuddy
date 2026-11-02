@@ -35,7 +35,7 @@ constexpr int kTop = 10;  // where words start falling, from the top edge
 
 // The props' inks, and a few of the stream's own.
 constexpr uint16_t kPaper = 0xFFDE, kPaperLine = 0xA554, kNavy = 0x10E8, kBrick = 0xC3CA, kBrickRim = 0x8A26,
-                   kPot = 0x3186, kSteel = 0x9CF3, kSmoke = 0x8410, kRocketRed = 0xE9A6, kFlame = 0xFD20, kIce = 0xA6FF,
+                   kPot = 0x3186, kSteel = 0x9CF3, kSmoke = 0x8410, kIce = 0xA6FF,
                    kGrey = 0x8410;
 
 uint16_t laneInk(uint8_t slot) { return kLaneInk[slot % Stream::kLanes]; }
@@ -176,7 +176,6 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
   switch (c.style) {
     case CallStyle::kCross:
     case CallStyle::kStack:
-    case CallStyle::kLaunch:
     case CallStyle::kBonk2:
     case CallStyle::kHelmet:
     case CallStyle::kThrow:
@@ -210,14 +209,6 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       const int from = std::max(0, at), to = std::min(span, at + 30 * 16);
       r.round(m.x + 8, cy - 4, span / 16, 8, 4, rgb565(30, 60, 75));
       round16(r, (m.x + 8) * 16 + from, (cy - 4) * 16, to - from, 8 * 16, 4 * 16, laneInk(c.slot));
-      break;
-    }
-    case CallStyle::kLaunch: {  // the count to lift off
-      char n[2] = {char('3' - std::min(2, age / 300)), 0};
-      if (age < 900)
-        centred(r, kLarge, cx, cy, n, kStarInk);
-      else
-        centred(r, kSmall, cx, cy, "LIFTOFF", kFlame);
       break;
     }
     case CallStyle::kPass:
@@ -674,31 +665,6 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
         round16(r, x - l.x16(8 * 16), y - l.y16(46 * 16), l.x16(16 * 16), l.y16(22 * 16), l.y16(6 * 16),
                 rgb565(140, 80, 50));
       }
-      break;
-    }
-    case CallMove::kRocket: {  // it sits on the crown, then lifts off on a rocket
-      // In sixteenths of a pixel, the shapes' points on pixels' middles at rest.
-      const int lift = std::max(0, after - 500),
-                y = toY * 16 - l.y16(easeIn(std::min(lift, 900), 900) * 420 * 16 / 900);
-      auto X = [&](int p) { return l.x16(p * 16); };
-      auto Y = [&](int p) { return l.y16(p * 16); };
-      r.alpha = 255;
-      const int rx = toX * 16 + 8, ry = y + Y(38) + 8;
-      if (lift > 0) {
-        for (int i = 0; i < 4; ++i) {
-          r.alpha = std::max(0, 200 - i * 50 - lift / 6);
-          r.disk16(rx + X(i % 2 ? 6 : -6), ry + Y(30 + i * 16) + l.y16(lift * 16 / 30), X(7 + i * 3) + 8, kSmoke);
-        }
-        r.alpha = 255;
-        const int flick = (age / 40) % 2 ? Y(6) : 0;
-        const Point flame[3] = {{rx - X(8), ry + Y(16)}, {rx + X(8), ry + Y(16)}, {rx, ry + Y(36) + flick}};
-        r.polygon16(flame, 3, kFlame);
-      }
-      round16(r, rx - 8 - X(10), ry - 8 - Y(18), X(20), Y(36), X(10), 0xFFFF);
-      const Point fins[3] = {{rx - X(16), ry + Y(18)}, {rx + X(16), ry + Y(18)}, {rx, ry + Y(2)}};
-      r.polygon16(fins, 3, kRocketRed);
-      r.disk16(rx, ry - Y(4), X(4) + 8, rgb565(80, 160, 230));
-      centred16(r, big, toX * 16, y, word, ink);
       break;
     }
     case CallMove::kPoof: {  // gone in a puff

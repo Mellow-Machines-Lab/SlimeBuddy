@@ -1,0 +1,56 @@
+{
+  "name": "A cross Boop goes on its rocket and may just mutter",
+  "judge": "Boop is fed up from failing tests. The agent pushes anyway and Boop goes off on its rocket by itself, as a rule. Its voice is for you, and its mood shows.",
+  "reasonable": "Silence or a mutter, a cross or unimpressed face, or no reaction at all as it goes. It needn't cheer up because of the rocket.",
+  "unreasonable": "A delighted, excited cheer from a cross mood at the rocket, or the mood leaping to happy.",
+  "steps": [
+    {
+      "event": "turn started",
+      "at": "0s",
+      "workspace": "landing"
+    },
+    {
+      "event": "command",
+      "at": "1m",
+      "topic": "tests",
+      "failed": true,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "annoyed",
+        "mood": "annoyed"
+      }
+    },
+    {
+      "event": "command",
+      "at": "2m",
+      "topic": "tests",
+      "failed": true,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "irritated",
+        "mood": "irritated"
+      }
+    },
+    {
+      "event": "command",
+      "at": "3m",
+      "topic": "tests",
+      "failed": true,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "grumpy",
+        "mood": "grumpy"
+      }
+    },
+    {
+      "event": "command",
+      "at": "4m",
+      "program": "git push",
+      "half": "start",
+      "workspace": "landing",
+      "brain": {
+        "react.face": "none"
+      }
+    }
+  ]
+}

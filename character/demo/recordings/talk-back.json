@@ -11,73 +11,73 @@
     },
     {
       "at": 0.001,
-      "line": "{\"t\":\"do\",\"id\":1813926773,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "line": "{\"t\":\"do\",\"id\":711009158,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
-      "at": 1.007,
+      "at": 1.01,
       "cause": {
         "kind": "talk",
         "text": "You say “hi boop”"
       }
     },
     {
-      "at": 1.008,
+      "at": 1.01,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926774,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009159,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 2.608,
-      "line": "{\"t\":\"do\",\"id\":1813926775,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 2.611,
+      "line": "{\"t\":\"do\",\"id\":711009160,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 3.358,
+      "at": 3.351,
       "effect": "Boop makes a happy face and says “Heyy Hullo”",
-      "line": "{\"t\":\"do\",\"id\":1813926776,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"oh, hi!\",\"reply\":\"hello\",\"say\":{\"take\":\"placeholder.nonverbal.talk-hello.heyy__happy__contained\",\"then\":\"phase1.word.idle.hullo__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009161,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"oh, hi!\",\"reply\":\"hello\",\"say\":{\"take\":\"placeholder.nonverbal.talk-hello.heyy__happy__contained\",\"then\":\"phase1.word.idle.hullo__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
     },
     {
-      "at": 5.489,
+      "at": 5.482,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 5.492,
+      "at": 5.484,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Make the signup form remember what you typed”"
       }
     },
     {
-      "at": 5.816,
+      "at": 5.802,
       "effect": "Boop makes a curious face and says “Launch”",
-      "line": "{\"t\":\"do\",\"id\":1813926777,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.launch__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009162,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.launch__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
     },
     {
-      "at": 6.882,
+      "at": 6.865,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 6.882,
-      "line": "{\"t\":\"do\",\"id\":1813926778,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"edit +1 -1\",\"as\":\"arrive\"}}"
+      "at": 6.865,
+      "line": "{\"t\":\"do\",\"id\":711009163,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"edit +1 -1\",\"as\":\"arrive\"}}"
     },
     {
-      "at": 9.995,
+      "at": 9.993,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/signup/form.js"
       }
     },
     {
-      "at": 10.999,
+      "at": 10.997,
       "cause": {
         "kind": "wait",
         "text": "Four minutes in"
       }
     },
     {
-      "at": 10.999,
+      "at": 10.997,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 12.006,
+      "at": 12.007,
       "cause": {
         "kind": "talk",
         "text": "You say “is claude done yet?”"
@@ -86,111 +86,111 @@
     {
       "at": 12.007,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926779,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009164,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 13.607,
-      "line": "{\"t\":\"do\",\"id\":1813926780,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 13.605,
+      "line": "{\"t\":\"do\",\"id\":711009165,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
       "at": 14.355,
       "effect": "Boop makes an engaged face",
-      "line": "{\"t\":\"do\",\"id\":1813926781,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"claude: 4 min in\",\"reply\":\"status\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009166,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"claude: 4 min in\",\"reply\":\"status\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}"
     },
     {
-      "at": 15.421,
+      "at": 15.422,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,2,\"npm test\"]]}"
     },
     {
-      "at": 15.421,
-      "line": "{\"t\":\"do\",\"id\":1813926782,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
+      "at": 15.422,
+      "line": "{\"t\":\"do\",\"id\":711009167,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
     },
     {
-      "at": 18.614,
-      "line": "{\"t\":\"do\",\"id\":1813926783,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"FAIL\",\"as\":\"hail\"}}"
+      "at": 18.619,
+      "line": "{\"t\":\"do\",\"id\":711009168,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"FAIL\",\"as\":\"hail\"}}"
     },
     {
-      "at": 18.614,
+      "at": 18.619,
       "cause": {
         "kind": "tool_failed",
         "text": "Claude: run the signup tests, and it fails"
       }
     },
     {
-      "at": 18.93,
+      "at": 18.94,
       "effect": "Boop makes an annoyed face and says “Uuuh...”",
-      "line": "{\"t\":\"do\",\"id\":1813926784,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.nonverbal.deflate.uuuh__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009169,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.nonverbal.deflate.uuuh__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
     },
     {
-      "at": 20.998,
+      "at": 20.997,
       "cause": {
         "kind": "talk",
         "text": "You say “did the tests pass?”"
       }
     },
     {
-      "at": 20.998,
+      "at": 20.997,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,2,\"npm test\"]]}"
     },
     {
-      "at": 20.998,
+      "at": 20.997,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926785,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009170,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 22.599,
-      "line": "{\"t\":\"do\",\"id\":1813926786,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 22.598,
+      "line": "{\"t\":\"do\",\"id\":711009171,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 23.349,
+      "at": 23.346,
       "effect": "Boop makes an uneasy face",
-      "line": "{\"t\":\"do\",\"id\":1813926787,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"tests failed\",\"reply\":\"status\",\"say\":{},\"mood\":\"uneasy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009172,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"tests failed\",\"reply\":\"status\",\"say\":{},\"mood\":\"uneasy\",\"loops\":1}}"
     },
     {
-      "at": 24.416,
+      "at": 24.41,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,3,\"edit +1 -1\"]]}"
     },
     {
-      "at": 26.545,
+      "at": 26.543,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/signup/form.js"
       }
     },
     {
-      "at": 27.612,
+      "at": 27.61,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,4,\"npm test\"]]}"
     },
     {
-      "at": 27.612,
-      "line": "{\"t\":\"do\",\"id\":1813926788,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
+      "at": 27.61,
+      "line": "{\"t\":\"do\",\"id\":711009173,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
     },
     {
-      "at": 30.812,
-      "line": "{\"t\":\"do\",\"id\":1813926789,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
+      "at": 30.81,
+      "line": "{\"t\":\"do\",\"id\":711009174,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
     },
     {
-      "at": 30.812,
+      "at": 30.81,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the signup tests"
       }
     },
     {
-      "at": 31.133,
+      "at": 31.132,
       "effect": "Boop makes a relieved face and says “Hehehe...”",
-      "line": "{\"t\":\"do\",\"id\":1813926790,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass again\",\"say\":{\"take\":\"phase1.nonverbal.delight.hehehe__calm__contained\"},\"mood\":\"relieved\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009175,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass again\",\"say\":{\"take\":\"phase1.nonverbal.delight.hehehe__calm__contained\"},\"mood\":\"relieved\",\"loops\":1}}"
     },
     {
-      "at": 32.839,
+      "at": 32.838,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 32.839,
-      "line": "{\"t\":\"do\",\"id\":1813926791,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 32.838,
+      "line": "{\"t\":\"do\",\"id\":711009176,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 32.84,
+      "at": 32.839,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
@@ -199,7 +199,7 @@
     {
       "at": 33.163,
       "effect": "Boop celebrates and says “Whee! Yay”",
-      "line": "{\"t\":\"do\",\"id\":1813926792,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"talking-back\"},\"say\":{\"take\":\"phase1.nonverbal.delight.whee__happy__contained\",\"then\":\"previous.yay\"},\"mood\":\"happy\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009177,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"talking-back\"},\"say\":{\"take\":\"phase1.nonverbal.delight.whee__happy__contained\",\"then\":\"previous.yay\"},\"mood\":\"happy\",\"loops\":2}}"
     },
     {
       "at": 33.164,
@@ -207,152 +207,152 @@
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 35.298,
+      "at": 35.295,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 35.298,
-      "line": "{\"t\":\"do\",\"id\":1813926793,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 35.295,
+      "line": "{\"t\":\"do\",\"id\":711009178,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
-      "at": 35.299,
+      "at": 35.297,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"]}"
     },
     {
-      "at": 35.299,
+      "at": 35.298,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Write up the draft form in the README”"
       }
     },
     {
-      "at": 35.621,
+      "at": 35.619,
       "effect": "Boop makes a curious face and says “Ready”",
-      "line": "{\"t\":\"do\",\"id\":1813926794,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.ready__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009179,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.ready__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
     },
     {
-      "at": 37.751,
+      "at": 37.748,
       "cause": {
         "kind": "talk",
         "text": "You say “how many agents are running?”"
       }
     },
     {
-      "at": 37.751,
+      "at": 37.749,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926795,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009180,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 39.346,
-      "line": "{\"t\":\"do\",\"id\":1813926796,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 39.344,
+      "line": "{\"t\":\"do\",\"id\":711009181,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 40.095,
+      "at": 40.094,
       "effect": "Boop makes an engaged face",
-      "line": "{\"t\":\"do\",\"id\":1813926797,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"1 working, 1 idle\",\"reply\":\"status\",\"show\":\"drawer\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009182,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"1 working, 1 idle\",\"reply\":\"status\",\"show\":\"drawer\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}"
     },
     {
-      "at": 41.598,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"list\":[[253200747,\"w\",-1,\"claude\",\"talking-back-docs\",\"\"],[253200746,\"i\",-1,\"claude\",\"talking-back\",\"\"]]}"
+      "at": 41.595,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"list\":[[211096611,\"w\",-1,\"claude\",\"talking-back-docs\",\"\"],[211096610,\"i\",-1,\"claude\",\"talking-back\",\"\"]]}"
     },
     {
-      "at": 48.628,
+      "at": 48.626,
       "cause": {
         "kind": "talk",
         "text": "You say “nice work, little guy”"
       }
     },
     {
-      "at": 48.629,
+      "at": 48.627,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926798,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009183,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 48.629,
+      "at": 48.628,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"]}"
     },
     {
-      "at": 50.229,
-      "line": "{\"t\":\"do\",\"id\":1813926799,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 50.227,
+      "line": "{\"t\":\"do\",\"id\":711009184,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 50.981,
+      "at": 50.976,
       "effect": "Boop makes a proud face and says “Hehe Thanks”",
-      "line": "{\"t\":\"do\",\"id\":1813926800,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"i know ;)\",\"reply\":\"thanks\",\"say\":{\"take\":\"placeholder.nonverbal.talk-thanks.hehe__proud__contained\",\"then\":\"placeholder.word.talk-thanks.thanks__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009185,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"i know ;)\",\"reply\":\"thanks\",\"say\":{\"take\":\"placeholder.nonverbal.talk-thanks.hehe__proud__contained\",\"then\":\"placeholder.word.talk-thanks.thanks__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
     },
     {
-      "at": 50.982,
+      "at": 50.977,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"proud\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"]}"
     },
     {
-      "at": 54.999,
+      "at": 54.997,
       "cause": {
         "kind": "talk",
         "text": "You say “go to sleep, buddy”"
       }
     },
     {
-      "at": 54.999,
+      "at": 54.997,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926801,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009186,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 56.599,
-      "line": "{\"t\":\"do\",\"id\":1813926802,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 56.598,
+      "line": "{\"t\":\"do\",\"id\":711009187,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 57.349,
+      "at": 57.347,
       "effect": "Boop makes a tired face",
-      "line": "{\"t\":\"do\",\"id\":1813926803,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"not now, busy\",\"reply\":\"nap\",\"say\":{},\"mood\":\"tired\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009188,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"not now, busy\",\"reply\":\"nap\",\"say\":{},\"mood\":\"tired\",\"loops\":1}}"
     },
     {
       "at": 60,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"proud\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"]}"
     },
     {
-      "at": 61.614,
+      "at": 61.609,
       "cause": {
         "kind": "talk",
         "text": "You say “just tell claude yes for me”"
       }
     },
     {
-      "at": 61.614,
+      "at": 61.61,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926804,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009189,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 63.212,
-      "line": "{\"t\":\"do\",\"id\":1813926805,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 63.21,
+      "line": "{\"t\":\"do\",\"id\":711009190,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 63.959,
+      "at": 63.961,
       "effect": "Boop makes a skeptical face",
-      "line": "{\"t\":\"do\",\"id\":1813926806,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"ask them!\",\"reply\":\"notme\",\"say\":{},\"mood\":\"skeptical\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009191,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"ask them!\",\"reply\":\"notme\",\"say\":{},\"mood\":\"skeptical\",\"loops\":1}}"
     },
     {
       "at": 66,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"proud\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier4\"]}"
     },
     {
-      "at": 66.63,
+      "at": 66.629,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 66.631,
+      "at": 66.63,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 66.947,
+      "at": 66.945,
       "effect": "Boop celebrates and says “Whew”",
-      "line": "{\"t\":\"do\",\"id\":1813926807,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"talking-back-docs\"},\"say\":{\"take\":\"phase1.nonverbal.relief.whew__happy__contained\"},\"mood\":\"pleased\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009192,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"talking-back-docs\"},\"say\":{\"take\":\"phase1.nonverbal.relief.whew__happy__contained\"},\"mood\":\"pleased\",\"loops\":1}}"
     },
     {
-      "at": 69.999,
+      "at": 69.998,
       "cause": {
         "kind": "talk",
         "text": "You say “we shipped it!”"
@@ -361,90 +361,90 @@
     {
       "at": 69.999,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926808,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009193,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 71.595,
-      "line": "{\"t\":\"do\",\"id\":1813926809,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 71.594,
+      "line": "{\"t\":\"do\",\"id\":711009194,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 72.345,
+      "at": 72.342,
       "effect": "Boop makes an excited face and says “Anytime”",
-      "line": "{\"t\":\"do\",\"id\":1813926810,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"woo!\",\"reply\":\"thanks\",\"say\":{\"take\":\"placeholder.phrase.talk-thanks.anytime__excited__contained\"},\"mood\":\"excited\",\"loops\":3}}"
+      "line": "{\"t\":\"do\",\"id\":711009195,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"woo!\",\"reply\":\"thanks\",\"say\":{\"take\":\"placeholder.phrase.talk-thanks.anytime__excited__contained\"},\"mood\":\"excited\",\"loops\":3}}"
     },
     {
-      "at": 76.611,
+      "at": 76.61,
       "cause": {
         "kind": "talk",
         "text": "You say “dance for me!”"
       }
     },
     {
-      "at": 76.612,
+      "at": 76.61,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926811,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009196,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 77.003,
+      "at": 77.009,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 78.212,
-      "line": "{\"t\":\"do\",\"id\":1813926812,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 78.211,
+      "line": "{\"t\":\"do\",\"id\":711009197,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 78.964,
+      "at": 78.962,
       "effect": "Boop makes an excited face and says “Dance!”",
-      "line": "{\"t\":\"do\",\"id\":1813926813,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"wheee\",\"reply\":\"dance\",\"say\":{\"take\":\"placeholder.word.talk-dance.dance__excited__contained\"},\"mood\":\"excited\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":711009198,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"wheee\",\"reply\":\"dance\",\"say\":{\"take\":\"placeholder.word.talk-dance.dance__excited__contained\"},\"mood\":\"excited\",\"loops\":2}}"
     },
     {
-      "at": 86.998,
+      "at": 86.997,
       "cause": {
         "kind": "talk",
         "text": "You say “what should I have for dinner?”"
       }
     },
     {
-      "at": 86.999,
+      "at": 86.998,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926814,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009199,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 88.006,
+      "at": 88.009,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
       "at": 88.598,
-      "line": "{\"t\":\"do\",\"id\":1813926815,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "line": "{\"t\":\"do\",\"id\":711009200,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 89.348,
+      "at": 89.347,
       "effect": "Boop makes a curious face and says “Pff”",
-      "line": "{\"t\":\"do\",\"id\":1813926816,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"beats me\",\"reply\":\"dunno\",\"say\":{\"take\":\"placeholder.nonverbal.talk-dunno.pff__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009201,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"beats me\",\"reply\":\"dunno\",\"say\":{\"take\":\"placeholder.nonverbal.talk-dunno.pff__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
-      "at": 93.615,
+      "at": 93.61,
       "cause": {
         "kind": "talk",
         "text": "You say “okay, good night boop”"
       }
     },
     {
-      "at": 93.616,
+      "at": 93.61,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":1813926817,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":711009202,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 95.212,
-      "line": "{\"t\":\"do\",\"id\":1813926818,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 95.21,
+      "line": "{\"t\":\"do\",\"id\":711009203,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 95.96,
+      "at": 95.958,
       "effect": "Boop makes a comfy face and says “Bye-ee”",
-      "line": "{\"t\":\"do\",\"id\":1813926819,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"see ya!\",\"reply\":\"bye\",\"say\":{\"take\":\"placeholder.nonverbal.talk-bye.bye-ee__calm__contained\"},\"mood\":\"comfy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":711009204,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"see ya!\",\"reply\":\"bye\",\"say\":{\"take\":\"placeholder.nonverbal.talk-bye.bye-ee__calm__contained\"},\"mood\":\"comfy\",\"loops\":1}}"
     },
     {
-      "at": 97.01,
+      "at": 97.009,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"]}"
     }
   ],

@@ -68,11 +68,6 @@
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "git commit", "as": "stamp"}}
 {"clock": 29400}
 {"shot": "stamp"}
-// A push, off on a rocket.
-{"clock": 31500}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "git push", "as": "launch"}}
-{"clock": 32700}
-{"shot": "launch"}
 // A deletion of files: gone in a puff.
 {"clock": 34500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "rm", "as": "poof"}}

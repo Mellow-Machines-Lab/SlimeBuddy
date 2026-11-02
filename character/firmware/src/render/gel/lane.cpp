@@ -13,6 +13,7 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
 #include "render/gel/raster.h"
+#include "render/gel/act.h"
 #include "render/gel/stream.h"
 #include "render/palette.h"
 
@@ -482,7 +483,10 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   // The sign takes the lane from the strip and the words; a newer
   // reaction's words take it back, as they take the sign down.
+  const Stream::ActNow act = stream ? stream->actNow(now) : Stream::ActNow{};
   LowSign low = finishSign(done);
+  // A finished turn's name outranks a work act's words.
+  if (!low.shows()) low = actSign(act);
   if (low.shows() && low.leftMs >= 0 && (line || note)) low = LowSign{};
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing.
@@ -494,7 +498,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome))) * 16777619u) | 1;
-  paint(surface, e, mouthOpen, dy, key, &at, rig, layers, t, pastimes);
+  paint(surface, e, mouthOpen, dy, key, &at, rig, layers, t, pastimes, nullptr, &act);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at, e);
@@ -506,11 +510,14 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   if (stream) {
     Measure measure(profile.stream);
     paintStreamBehind(surface, *stream, now);
-    paintStreamDesk(surface, *stream, e, s, now);
-    paintStreamFront(surface, *stream, at, e, now);
+    // A full act holds the screen: no desk, no thought cloud, no word forward.
+    if (!actTakesOver(act)) {
+      paintStreamDesk(surface, *stream, e, s, now);
+      paintStreamFront(surface, *stream, at, e, now);
+    }
   }
   if (wish) paintWish(surface, *wish, at);
-  if (sign.text) paintSign(surface, sign, at);
+  if (sign.text && !actTakesOver(act)) paintSign(surface, sign, at);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {

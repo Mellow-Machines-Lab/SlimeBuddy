@@ -209,6 +209,8 @@ ramps and springs can, and no jolt at an event. By file:
   sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
+  work acts (`acts.jsonl`: each act's opening, its middle, its pass, its
+  fail and its small version; a needs-you and back), the
   work stream (`stream.jsonl`: two lanes' words falling, the to-do bar and
   the clock, a thought cloud, and every style as it lands: arrive, bonk and
   its dizzy eyes, helmet, shrug, shatter, pass, hail's umbrella, look,

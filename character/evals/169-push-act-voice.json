@@ -1,0 +1,36 @@
+{
+  "name": "Boop's rocket gets a voice from a good mood",
+  "judge": "The agent pushes and Boop blasts off on its rocket by itself; then the push goes through and it parachutes down. What it says over that is for you.",
+  "reasonable": "A short excited word as it goes off, or nothing; something glad or proud as it lands, or nothing. A small moment at most.",
+  "unreasonable": "A big or upset moment, moving the mood down, or a swear over a push going fine.",
+  "steps": [
+    {
+      "event": "turn started",
+      "at": "0s",
+      "workspace": "landing"
+    },
+    {
+      "event": "command",
+      "at": "1m",
+      "program": "git push",
+      "half": "start",
+      "workspace": "landing",
+      "brain": {
+        "react.face": "excited",
+        "say": "start"
+      }
+    },
+    {
+      "event": "command",
+      "at": "1m20s",
+      "program": "git push",
+      "half": "end",
+      "failed": false,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "proud",
+        "say": "glad"
+      }
+    }
+  ]
+}

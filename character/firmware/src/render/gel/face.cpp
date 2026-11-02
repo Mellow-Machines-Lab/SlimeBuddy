@@ -1,4 +1,5 @@
 #include "render/gel/face.h"
+#include "render/gel/act.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -176,7 +177,11 @@ void GelFace::passTime(uint32_t t) {
   if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
-  const bool busy = finger_ || (stream_ && stream_->drawn(t) && stream_->call.live);
+  // A work act holds the screen, as a finger does: what's playing goes.
+  const bool acting = stream_ && actTakesOver(stream_->actNow(t));
+  engine_->scenes.clearStage = acting;
+  if (acting && playing()) endPastime(t, true);
+  const bool busy = finger_ || acting || (stream_ && stream_->drawn(t) && stream_->call.live);
   if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
@@ -431,7 +436,6 @@ void GelFace::land(CallStyle style) {
     case CallMove::kHail: e.jolt(q(.4), q(1.2), 0); break;
     case CallMove::kShrug:
     case CallMove::kPoof: e.jolt(0, q(-1.6), 0); break;
-    case CallMove::kRocket:
     case CallMove::kCombo: e.jolt(0, q(-1.8), 0); break;
     case CallMove::kCheer: e.jolt(0, q(-2.6), 0); break;
     case CallMove::kDesk: e.jolt(q(-.6), 0, q(1)); break;
@@ -488,6 +492,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     borrowed = slime::kGestureFaces[std::min<int>(source.animVariant, slime::kGestureCount - 1)];
   if (borrowed < 0 && source.anim == SceneState::kNotice)
     borrowed = slime::kNoticeFaces[std::min<int>(source.animVariant, slime::kNoticeCount - 1)];
+  if (borrowed < 0 && stream_) borrowed = actFace(stream_->actNow(t), e.emotion);
   bool next = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
   if (next) {
     // Behaviour times the reaction (its loops, its line), so the engine
@@ -597,7 +602,7 @@ int GelFace::cues(uint32_t, bool, voice::FxEvent* out, bool& changed) {
 bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, const char* bubble,
                    const char* caption, const SignShow& sign, const DoneShow& done, const Strip& strip, bool) {
   if (!native || !native->pixels) return false;
-  const PastimeShow kit = pastimes(lastTick_);
+  const PastimeShow kit = stream_ && actTakesOver(stream_->actNow(t)) ? PastimeShow{} : pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
              lastTick_, stream_, t, &kit, drawer_, caption, &wish_);
