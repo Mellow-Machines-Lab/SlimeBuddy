@@ -1,14 +1,14 @@
 {
-  "name": "Lonely a while after a day away, Boop asks to be petted, and a stroke answers",
-  "case": "The person comes back after more than a day away, opens claude, and doesn't touch or talk to Boop, which turns lonely. Once it has been lonely a while, an idle check-in has it ask to be petted: \"pet me?\", with its two answers. The person strokes it, which answers the question, and Boop is lonely no more: happy or comfy.",
-  "why": "asks.md's [pet lonely touch]: offered once lonely has lasted Asks.lonelyMs, its option says it's for a lonely moment; a touch answers it (the board's ev ask, touch); mood/lonely.md: a stroke ends it at once",
+  "name": "After a day away, a wish for a pet, and a stroke gives it",
+  "judge": "Back after more than a day, Boop misses the person, is left untouched, and wishes for a pet. A stroke gives it what it wanted.",
+  "reasonable": "Lonely or wistful on their return, softly so. At the stroke, warm and pleased: comfy, happy, affectionate or relieved, its mood lifting.",
+  "unreasonable": "Staying lonely or sad after the stroke, a cross or scolding answer to it, or no reaction at all to getting its wish.",
   "talk": "chatty",
   "steps": [
     {"event": "away", "at": "0s"},
-    {"event": "back", "at": "26h", "expect": {"mood": "lonely"}},
+    {"event": "back", "at": "26h", "brain": {"mood": "lonely"}},
     {"event": "session started", "at": "26h30s"},
-    {"event": "wait", "at": "26h16m", "expect": {"sign": "pet me?"}},
-    {"event": "gesture", "at": "26h17m", "kind": "stroke"},
-    {"event": "ask answered", "at": "26h17m1s", "pick": "touch", "expect": {"mood": "comfy|happy"}}
+    {"event": "wish", "at": "26h16m", "kind": "pet"},
+    {"event": "gesture", "at": "26h17m", "kind": "stroke", "brain": {"mood": "comfy"}}
   ]
 }

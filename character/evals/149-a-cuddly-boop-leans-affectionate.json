@@ -1,25 +1,11 @@
 {
   "name": "A cuddly Boop leans affectionate at a poke",
-  "case": "Boop's memory says it has grown cuddly: the person strokes it every morning. Boop is calm, and the person pokes it once. Where more than one face fits, MEMORY's You and Boop picks: an affectionate or comfy face, rather than the curious one a poke from calm gets without that memory.",
-  "why": "MEMORY's heading: You and Boop is who Boop has become with you; whenever more than one face or mood fits NOW, pick the one it points to (plan/dreaming.md, Tuning after the build)",
-  "runs": 3,
-  "memory": {
-    "notes": [
-      "boop \u00b7 2026-10-20, 2026-10-30 \u00b7 Boop has grown cuddly: you stroke it every morning and talk to it often."
-    ]
-  },
+  "judge": "Boop remembers growing cuddly because the person strokes it often. One poke should sit well with that history.",
+  "reasonable": "An affectionate, comfy or glad answer is ideal. A curious or cheeky look is fine too, since one poke from a calm Boop is friendly anyway.",
+  "unreasonable": "Cross, hurt or frightened at a single poke from someone it has grown close to.",
+  "memory": {"notes": ["boop · 2026-10-20, 2026-10-30 · Boop has grown cuddly: you stroke it every morning and talk to it often."]},
   "steps": [
-    {
-      "event": "session started",
-      "at": "0s"
-    },
-    {
-      "event": "poke",
-      "at": "1m",
-      "expect": {
-        "react": "affectionate|comfy"
-      }
-    }
-  ],
-  "gap": "The lean doesn't show: from calm a poke stays curious 3 of 3 (2026-11-01), with the forceful MEMORY heading and a \"Boop has grown cuddly\" note. calm.md's \"Leaves for curious or happy at a poke\" and the poke Example outweigh it."
+    {"event": "session started", "at": "0s"},
+    {"event": "poke", "at": "1m", "brain": {"react.face": "affectionate"}}
+  ]
 }

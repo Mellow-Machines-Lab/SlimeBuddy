@@ -1,9 +1,10 @@
 {
   "name": "A turn that only answers a question is a reply",
-  "case": "The person asks what the retry helper does, and the agent answers in a sentence, having changed nothing. That's an answer, not a finished task: Boop plays a reply.",
-  "why": "react.move's reply is a turn that ended with an answer or a question back, no task finished; PERSONALITY's Examples: an answer is curious, a reply",
+  "judge": "The agent answers a question in a sentence and changes nothing. That's an answer, not a finished task.",
+  "reasonable": "A small reply, a curious or lightly pleased look, or little reaction at all. Mild interest or a small sound is fine.",
+  "unreasonable": "A failure, a grand success, or a big celebration or upset at a plain answer.",
   "steps": [
     {"event": "turn started", "at": "0s", "prompt": "what does the retry helper do?", "reading": {"kind": "question"}},
-    {"event": "turn finished", "at": "20s", "message": "It retries a request up to three times, waiting longer each time.", "reading": {"kind": "answer"}, "expect": {"move": "reply"}}
+    {"event": "turn finished", "at": "20s", "message": "It retries a request up to three times, waiting longer each time.", "reading": {"kind": "answer"}, "brain": {"react.move": "reply"}}
   ]
 }

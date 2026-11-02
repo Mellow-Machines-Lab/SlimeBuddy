@@ -73,7 +73,7 @@ inline bool within(F value, F bound) { return abs(value) <= bound; }
 // it may have moved since.
 inline void check(const Engine& e, const Frame* before = nullptr) {
   static const F kDeskStep = q(deskStep() + .0001);
-  // The body's four modes (motion.cpp), the gestures' springs, a gag's slide
+  // The body's four modes (motion.cpp), the gestures' springs, a bit's slide
   // and lids (acting.cpp), the bridge's (acting.cpp), a finger's pull
   // (engine.h) and a scene's activity (scenes.cpp).
   for (const auto& m : e.motion.modes) TEST_ASSERT_TRUE(within(m.x, q(.72)) && within(m.v, 9));
@@ -95,7 +95,7 @@ inline void check(const Engine& e, const Frame* before = nullptr) {
   for (int i = 0; i < 4; ++i) TEST_ASSERT_TRUE(within(pose[i], poseBounds[i]));
   const auto life = e.life();
   TEST_ASSERT_TRUE(life[0] >= F(0) && life[0] <= q(.24) && within(life[1], q(.12)) && within(life[2], q(.23)));
-  // The eyes: a blink, a gag's lids or both, never past shut; the gaze a
+  // The eyes: a blink, a bit's lids or both, never past shut; the gaze a
   // glance either way.
   TEST_ASSERT_TRUE(e.blink() >= F(0) && e.blink() <= F(1) && within(e.motion.gaze, q(.014)));
   // The face: the cheeks' and tears' strengths in [0, 1]; at most four

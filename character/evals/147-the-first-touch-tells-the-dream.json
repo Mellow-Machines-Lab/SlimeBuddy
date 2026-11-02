@@ -1,7 +1,8 @@
 {
   "name": "With no coming back, the first touch tells the dream, never a prompt",
-  "case": "The Mac stays awake overnight, so there is no coming back. In the morning the person's first prompt doesn't tell the dream (it has its own sign), and neither does what they say to Boop; their first stroke does, with a dream's sign and no wake-up.",
-  "why": "TranscriptView.told: with no coming back since the close, the first touch tells the dream; never a prompt or a word",
+  "judge": "The Mac stayed awake overnight. Boop tells its dream at the person's first touch in the morning, and not at a prompt or at words said to it.",
+  "reasonable": "Prompt and words handled as usual, perhaps a morning greeting. The first stroke brings a dreamy sign, warm or plain, likely about their care, with no wake-up needed.",
+  "unreasonable": "Telling the dream at the prompt or the words, or the stroke telling nothing at all.",
   "start": "2026-10-20T15:00",
   "steps": [
     {"event": "session started", "at": "0s", "workspace": "api"},
@@ -13,6 +14,6 @@
     {"event": "turn started", "at": "18h", "workspace": "api", "prompt": "morning! now the import button", "expect": {"dream": "none"}},
     {"event": "turn finished", "at": "18h5m", "workspace": "api", "expect": {"dream": "none"}},
     {"event": "said", "at": "18h6m", "words": "morning boop", "expect": {"dream": "none"}},
-    {"event": "gesture", "at": "18h8m", "kind": "stroke", "expect": {"dream": "told", "move": "none", "sign": "dreamt of u|warm dreams|poke dreams|sweet dreams|zzz... hi!|had a dream"}}
+    {"event": "gesture", "at": "18h8m", "kind": "stroke", "expect": {"dream": "told"}, "brain": {"react.move": "none", "react.sign": "dreamt of u"}}
   ]
 }

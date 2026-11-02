@@ -7,6 +7,23 @@
   "faces": {
     "amoled206": "gel"
   },
+  "acts": {
+    "build": {
+      "start": "{name} has put on a hard hat, by itself, and is hammering at a little house.",
+      "pass": "{name}'s little house is done, a flag on it, by itself.",
+      "fail": "{name}'s little house has fallen apart, by itself."
+    },
+    "tests": {
+      "start": "{name} has strapped itself to a sled facing a wall, by itself, and is holding its breath.",
+      "pass": "{name}'s sled has stopped just short of the wall, by itself.",
+      "fail": "{name} has hit the wall and slid down it, by itself."
+    },
+    "push": {
+      "start": "{name} has climbed on a rocket for it, by itself, and is blasting off.",
+      "pass": "{name} is parachuting back down, by itself.",
+      "fail": "{name} has crash-landed, by itself, its rocket in the ground."
+    }
+  },
   "moods": [
     {
       "id": "calm",

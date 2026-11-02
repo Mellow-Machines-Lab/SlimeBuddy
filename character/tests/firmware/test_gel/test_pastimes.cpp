@@ -64,7 +64,7 @@ uint32_t tiers(int n) { return n ? reached(tierBit(n)) : 0; }
 }  // namespace
 
 // Pins the table: every row's body is in the pack, a clip of its rig
-// that plays once, a few seconds (a move up to 11), a gag of its engine
+// that plays once, a few seconds (a move up to 11), a bit of its engine
 // (idle's only) or a take (at work or asleep); working's and idle's each
 // need a tier or a tag, never both, idle's clips at least two for every one of the five and
 // working's at least two for each of the first four and the stretch break
@@ -84,8 +84,8 @@ void test_every_pastime_has_its_clip_and_its_turn() {
     TEST_ASSERT_TRUE(!p.tag || (tagsOf(p) && p.tier == 0));
     const bool tiered = p.look == SceneState::kWorking || p.look == SceneState::kIdle;
     if (tiered && !p.tag) TEST_ASSERT_TRUE(p.tier >= 1 && p.tier <= 5);
-    if (p.body == Body::kGag) {
-      TEST_ASSERT_TRUE_MESSAGE(gagOf(p) >= 0, p.name);
+    if (p.body == Body::kBit) {
+      TEST_ASSERT_TRUE_MESSAGE(bitOf(p) >= 0, p.name);
       TEST_ASSERT_TRUE(p.look == SceneState::kIdle);
       continue;
     }
@@ -150,7 +150,7 @@ void test_each_pastime_draws_and_ends() {
     auto draw = [&](std::vector<uint16_t>& px) {
       Surface s{502, 410, px.data()};
       std::fill(px.begin(), px.end(), 0);
-      face.draw(c, &s, face.show(board.t, false, 0), board.t, nullptr, SignShow{}, DoneShow{}, Strip{}, false);
+      face.draw(c, &s, face.show(board.t, false, 0), board.t, nullptr, nullptr, SignShow{}, DoneShow{}, Strip{}, false);
     };
     board.to(3008);
     draw(before);
@@ -222,7 +222,7 @@ void test_pastimes_are_dealt_by_tier_after_a_rest() {
 // they're the newest: never twice running, then kNewestPct of the deals
 // after another, so about 60 in 160 of all: idle drowses at
 // night, stretches in the morning and bounces on a party day and at New
-// Year's (the party's bounce), each its gag; with no tag on, only the yawn
+// Year's (the party's bounce), each its bit; with no tag on, only the yawn
 // and the sneeze of the engine's, and with no tier nor tag, none. Work types busier
 // while busy and frantically while frantic, as the scene's take; asleep
 // snores deeper at night and dreams after half an hour.
@@ -247,9 +247,9 @@ void test_a_tagged_pastime_plays_only_while_its_tag_is_on() {
         ++dealt.all;
         const PastimeInfo& p = info(now);
         const Engine& e = board.face().engine();
-        if (p.body == Body::kGag) {
+        if (p.body == Body::kBit) {
           ++dealt.rows[now];
-          TEST_ASSERT_EQUAL_INT(gagOf(p), e.acting.playing);
+          TEST_ASSERT_EQUAL_INT(bitOf(p), e.acting.playing);
         } else if (p.body == Body::kTake) {
           ++dealt.rows[now];
           const Route& r = e.scenes.route;

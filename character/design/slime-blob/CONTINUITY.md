@@ -1,14 +1,14 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-01. The slime's one engine is the C++ in
+Updated 2026-11-02. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
 scene family is implemented; idle, sleep and a finish have their comedy
 (Comedy, below), a successful finish comes in four sizes (Finishes), the
-board's gestures have a take each (Gestures), the
-face deals its pastimes and occasions from one table (Pastimes,
-Occasions), and one face flows into the next
+board's touches have a take each (Gestures), the
+face deals its pastimes, tagged ones too, from one table (Pastimes,
+Tagged pastimes), and one face flows into the next
 (Directed edge bridges: its arts morph or cross-fade, never closing). Q1
 representative art review was approved on 2026-10-02. Each rule below
 names the code that keeps it; [VALIDATION.md](VALIDATION.md) names the
@@ -79,7 +79,7 @@ timeout is the board's input; elapsed time alone never invents `no_app`.
 The board's `GelFace` (`gel/face.cpp`) turns what Behaviour follows into
 these calls, and steps the engine on a 16 ms grid from its last reset: a
 frame advances at most 45 ms, and a repeated time doesn't advance it. The
-board times every reaction itself: the engine holds each one (below),
+board times every Moment itself: the engine holds each one (below),
 and the board clears it when it ends.
 
 ## Phase 1 channel bounds
@@ -137,9 +137,9 @@ and failure separately), 24 cases in 20 mood/state cells, the Studio's
 shared alias, not three newly authored sleep animations; its one addition
 is a snore (Comedy, below).
 
-Priority is explicit no-app, listening, needs-you, the reaction held,
-then the latest base/activity (`gel/router.cpp`). An activity applies only
-to working; unknown activity falls back to working and unknown base to
+Priority is explicit no-app, listening, needs-you, the Moment held,
+then the latest Doing and activity (`gel/router.cpp`). An activity applies only
+to working; unknown activity falls back to working and an unknown Doing to
 idle. Attention identity follows the device: a new activation or changed
 id, agent or project; changing mood, display name or more leaves the
 request's reveal consumed. Attention cuts future decorative contacts
@@ -149,27 +149,27 @@ explicit link timeout) saves how far it got: its age and its next contact.
 Returning to one that had already confirmed restores its silent hold;
 returning to one that had not resumes at that age, so only the knocks and
 confirmation not yet reached follow. Each request's knocks and ding play
-exactly once, never twice and never not at all. Returning from a reaction
+exactly once, never twice and never not at all. Returning from a Moment
 resolves the latest snapshot. Only an explicit successful outcome permits a
 trophy; failure, missing outcome and unknown outcome never do.
 
-A reaction (`play`) mirrors visual lifecycle, not LinkKit's queue, TTL,
+A Moment (`play`) mirrors visual lifecycle, not LinkKit's queue, TTL,
 acknowledgments or audio playback. The router is a plain struct: the
-facts, listening, the reaction held, the borrowed face and the lost link.
-Behaviour times every reaction, so the engine never expires or finishes
+facts, listening, the Moment held, the borrowed face and the lost link.
+Behaviour times every Moment, so the engine never expires or finishes
 one on its own: it rests after its loops until `clear()`. Its `variant`
 names the take the board has already timed, and `borrow` holds a borrowed
-expression over whatever shows, with no expiry. Each reaction, and each
+expression over whatever shows, with no expiry. Each Moment, and each
 needs-you, is numbered as it comes, and the scenes key their takes by that
 number (`Route::key`), not by a string. `loops` uses the protocol's range,
 1 to 6, defaults to one, and repeats the same selected recipe; only a new
-reaction chooses the next variation. A borrowed face plays over the
-reaction without changing its outcome, its number or the lasting mood; a
-bare reaction has nothing to play. Any reaction ends listening, even one
+Moment chooses the next variation. A borrowed face plays over the
+Moment without changing its outcome, its number or the lasting mood; a
+bare Moment has nothing to play. Any Moment ends listening, even one
 refused because needs you shows; listening asked again starts anew; the
 board's `stop_listening` clears it.
 
-Every reaction has a finite authored recipe, then holds its last until
+Every Moment has a finite authored recipe, then holds its last until
 it's cleared, and returns to current facts. Listening has its own recipe and waits for an explicit stop or
 reply: the engine has no microphone deadline of its own. Explicit no-app
 masks current activity and suppresses contacts; presentation time
@@ -319,7 +319,7 @@ breaths. The two face alternates are outside this canonical matrix.
 
 The scene selects a shuffle bag keyed by mood, state and factual
 outcome/context. Desk modes, delegating and listening select again only
-after recovery. A one-shot selects once per request and keeps that recipe
+after recovery. A Moment selects once per request and keeps that recipe
 across explicit loops; an attention entry selects once and then holds.
 Idle uses its expression's three gesture recipes, then its comedy, with a
 separate automatic shuffle bag per expression and the quiet interval
@@ -392,12 +392,12 @@ timings above:
 | Delegating | [660, 1040], [540, 880, 1220], [820, 1640] ms | It sends [2, 3, 2] helpers off, a contact each, on its own: none is drawn beside it |
 | Reply ready | Reveal at [680, 960, 1240] ms | A neutral reveal, with no card and no trophy |
 | Poked | [160], [200, 480], [160, 520] ms | Bounded local dent/wobble/bounce |
-| Tap spam | [160, 400], [160, 340, 520], [220, 620] ms | Bounded wobble/squash/dodge complaint |
+| A run of pokes | [160, 400], [160, 340, 520], [220, 620] ms | Bounded wobble/squash/dodge complaint |
 
 Start, wake-up, helper and reply contacts receive the mood/profile
 delay; their reveals take its strength. Helper contact sides alternate,
 and variant 2 reverses them. Touch contacts have strength 0.6 for poked
-and 0.9 for tap spam, alternating sides and lean targets [0.008, −0.018,
+and 0.9 for a run, alternating sides and lean targets [0.008, −0.018,
 0.012]; they have no timing jitter or mood-derived delay. Their mood face
 stays the current expression, with the bounded recovery profile where it
 applies. An admitted `poked` moment also applies the V1 poke and an
@@ -408,7 +408,7 @@ impulse.
 The start and reply reveal envelope adds squash 0.018 and forward
 0.018. The start card reveals while dragging; body contacts are consumed silently during the
 grab. A reply stays neutral, and only explicit task success permits the
-trophy, which a successful finish shows (Finishes). No reaction but a
+trophy, which a successful finish shows (Finishes). No Moment but a
 start shows a card. A state change cancels pending contacts at once
 and resolves the latest facts.
 
@@ -426,18 +426,18 @@ a stretch, a tilt, a slide or a rebound.
 | Hiccups: Little Win's hop and trophy, then three small hiccups | A small successful finish | Its fourth take | The fanfare, then three squishes |
 | A gift: a small bug beside the trophy | Proud's small successful finish | Its second take, lifted | As that take |
 
-**Idle's comedy is gags, beside the gestures.** Idle's variations are an
+**Idle's comedy is bits, beside the gestures.** Idle's variations are an
 expression's performances, so its comedy is more of them: acting's bag
 (`gel/acting.cpp`) deals an expression's three gestures and its own
 `gags` (expressions.json); the comedy every expression shares, the yawn
 and the sneeze, is the face's to deal, rows of its pastimes (Pastimes,
-below), which acting plays in place of its next gesture. A gag is in
+below), which acting plays in place of its next gesture. A bit is in
 `gags` once, shared. It is a performance (its `cues`, impulses on the gesture
 springs) with `keys`, which set a channel's target (from (0, 0) at its
 start, a smoothstep to each of the channel's keys in turn, then its last
 value), and `contacts`, which sound and move nothing. Every channel's keys
 lie inside its bound and come back to rest. The six gesture springs follow
-their keys under-damped, as gel does; a gag has two springs of its own,
+their keys under-damped, as gel does; a bit has two springs of its own,
 its `slide` (frequency 10, damping 9, at most 0.7) and its `lids`
 (critically damped, frequency 24). The lids close the eyes as a blink
 does: the drawn blink is the larger of the natural one and the lids'. The
@@ -461,8 +461,8 @@ state has always had; every later round deals all of them, never opening on
 the take just dealt. A fresh mood, a reset and every first round play as
 they always did, and the joke comes once the straight takes have been seen.
 Acting's bags hold at most four (`kMaxGestures`: three gestures and an
-own gag), the scenes' four (`kMaxTakes`). In idle, with a gesture every 10
-to 20 seconds, a mood's own gag plays after about 40 seconds, then about
+own bit), the scenes' four (`kMaxTakes`). In idle, with a gesture every 10
+to 20 seconds, a mood's own bit plays after about 40 seconds, then about
 once a round.
 
 **Asleep picks again after each take**, as routine work does. Its first
@@ -500,7 +500,7 @@ small, twice medium, three times big, four times or more biggest. A
 success in a sad mood (disappointed, sad, crying, whiny, wounded) is
 small whatever else: tearful but valid. A failure never plays one: its
 row keeps its card and its three takes, unless the finish names whose
-turn it was, when its ticket takes the card's place (A finished turn,
+turn it was, when its low sign takes the card's place (A finished turn,
 below).
 
 | Size | Finish | What it does |
@@ -518,7 +518,7 @@ below).
 Fireworks then Gold Rush, happy and pleased Gold Rush then the parade,
 amused the parade then Fireworks, proud the spotlight then Gold Rush,
 every other mood Gold Rush then Fireworks. A proud board takes the
-spotlight whatever the reaction's face. The Mac may ask for one of a
+spotlight whatever the Moment's emotion. The Mac may ask for one of a
 mood's two (`variant` 1 or 2), as onboarding's finale does.
 
 **Variations.** A success's variations are Little Win's four takes, then
@@ -558,9 +558,9 @@ lands, once each, never ducked.
 
 ## A finished turn
 
-The brain's reaction to a finished turn, a finish or only a face, names
+The brain's Moment to a finished turn, a finish or only a face, names
 whose turn it was (the `do`'s `who`), and the board marks it on screen
-for as long as the reaction plays and 3 s after (`Behaviour::done`,
+for as long as the Moment plays and 3 s after (`Behaviour::done`,
 `kFinishLingerMs`), so a face or a word reads as being about that turn
 (`gel/done.h`):
 
@@ -569,39 +569,42 @@ for as long as the reaction plays and 3 s after (`Behaviour::done`,
   a face with no finish of its own. It comes over 0.3 s, holds, and fades
   over the last second; strongest at the panel's edge, it reaches 26 px
   in, following the rounded corners, over everything, the lane too.
-- **A ticket drops in** from the top on a string, with the strip's mark
-  and the thread's name (else the agent's) in the bubble's font, cut to
-  fit. It falls past its place and back over 0.7 s, swings, dying away,
-  and keeps a little sway, then goes back up over the last 0.4 s. It hangs
-  in the middle, where a failure's or a reply's card would be, which the
-  face leaves out while it does (`Scenes::cardless`), or left of a
-  success's trophy, a quarter of the way across.
+- **Boop holds up the low sign** (`gel/low_sign.h`) once the Moment's words
+  have ended, at once with none, and 3 s in at the latest. It's the thread's
+  name (else the agent's), with the strip's mark, in the outcome's colour,
+  in the lane's rows, in the strip's place, the whole face clear above it:
+  a name that fits in the sign's font, else in the bubble's, on one line or
+  two, up to 50 characters. It rises from the panel's foot over 0.28 s,
+  stays through the Moment and 5 s after, and falls away over the last
+  0.4 s. A failure's or a reply's card stays out while it does
+  (`Scenes::cardless`); the trophy stays. Under it, the lane's words give
+  way: past the 3 s, the bubble doesn't show, though the voice goes on; a
+  newer Moment's words take the lane back as the sign falls.
 
-Another reaction that names no turn takes them down: they leave in 0.4 s,
+Another Moment that names no turn takes them down: they leave in 0.4 s,
 and the strip and a tap stop naming the turn at once. A needs-you takes
-them at once. While the ticket hangs, a card is drawn whole rather than
-kept (it may swing over one), and a lane under a steady glow is kept,
-glow and all; while the glow changes, the lane is drawn again.
+them at once. A lane under a steady glow, and a sign at rest, is kept, glow
+and all; while the glow changes or the sign moves, the lane is drawn again.
 
 ## Gestures
 
-`gesture` is the board's own reaction to what you do to it, a one-shot
-in the touch family. Its takes are the board's gestures, in its order
+`gesture` is the board's own Moment to what you do to it, a Moment
+in the touch family. Its takes are the board's touches, in its order
 (`render::Gesture`, slimegen's `scenes.mjs` `gestureNames`): the board
 names one (its variant, 0 to 9), no bag deals them, and a gesture asked
 for without one plays the first. Each is the same in every mood: a scene
 recipe whose body contacts dent the dome, pulse the touch mark and sound a
-squish on its first loop, and a gag of its own (`expressions.json`
+squish on its first loop, and a bit of its own (`expressions.json`
 `gestures`, keyed as Comedy's are) that acting plays with it. The board
 borrows a face for each while it plays, as a react's expression is
 borrowed, and the mood stays. A low or cross mood keeps its own face
 through a gesture instead, so a touch never cheers it on the screen
 alone: a mood whose family is one of `expressions.json`'s
 `gestureFaceGivesWayTo` (frustration, sadness, alarm and strain; slime.h's
-`kKeepsFaceThroughGestures`). The brain's reaction after it follows the
+`kKeepsFaceThroughGestures`). The brain's Moment after it follows the
 mood too.
 
-| Gesture | What the body does | Face it borrows | Gag |
+| Gesture | What the body does | Face it borrows | Bit |
 | --- | --- | --- | --- |
 | handoff (BOOT hands you an agent) | Lifts and leans in, offering | pleased | 2.4 s |
 | stroke (a slow one; a quick swipe is none: A finger on the body) | Melts under the hand, eyes shut | affectionate | 3 s |
@@ -614,12 +617,12 @@ mood too.
 | startle (a thump on the desk) | Flinches, jumps, lands | stunned | 1.9 s |
 | peekaboo (turned face up again) | Squashed low with eyes shut, then rises | happy | 2.6 s |
 
-A scene lasts its gag and 200 ms more. **A recipe may carry a gag.**
+A scene lasts its bit and 200 ms more. **A recipe may carry a bit.**
 The scene names it (`gag`), and acting plays it once for each pass of the
 recipe (its generation and iteration), in any state, then waits: its own
-next gesture comes three seconds after the gag ends, and none is dealt
+next gesture comes three seconds after the bit ends, and none is dealt
 while one is held. Acting is suppressed outside idle only while the
-recipe has no gag. A recipe with a gag recovers with the gag, not with the
+recipe has no bit. A recipe with a bit recovers with the bit, not with the
 expression's recovery gesture.
 
 ## A finger on the body
@@ -643,7 +646,7 @@ unit at the dome (128 of the panel's, which draws the canvas half as large
 again), its middle at (160, 129), y flipped. It tells a touch that travels
 40 px or more by its speed (`app/touch_gesture.h`): faster than 600 px a
 second on average, from going down to its last reading, it's a swipe, the
-face's alone, with no tap or gesture and nothing to the Mac; slower, a
+face's alone, with no poke or other touch and nothing to the Mac; slower, a
 stroke (upward, a ruffle), and the gesture above plays as it lets go. The
 finger's velocity as it lets go is over its last 80 ms. The board's
 `tests/scenarios-gel/swipes.jsonl` and
@@ -663,7 +666,7 @@ back up as it was. `tests/scenarios-gel/drawer.jsonl` pulls it.
 
 ## Notice
 
-The brain's reaction when you name it in your prompt: it heard its name and
+The brain's Moment when you name it in your prompt: it heard its name and
 looks up at you. It plays the pack's rig clip for it,
 `character/rig/clips/notice.json`, from the notice-perk reference
 (CHARACTER.md §16): its eyes snap open wide and up and it perks up tall,
@@ -673,7 +676,7 @@ mixer as the moment starts, the painter lays its channels over the
 engine's pose (CHARACTER.md §15, The gel on the rig), and its cues sound
 a body contact at the take-off and the landing through the engine's
 contacts. Its scene is the start
-family's with no card, timed to the clip and a little more, with no gag or
+family's with no card, timed to the clip and a little more, with no bit or
 contact of its own. Its three takes, `notices` in `expressions.json`, are
 the one clip under a face each, dealt from its bag as any state's takes
 are: `notice-surprised`, `notice-happy` and `notice-pleased`. The board
@@ -699,7 +702,12 @@ lips pressed together, its eyes squeezed shut, sinking a little in a
 small nod, and for unhush a perk-up, lifting tall with its eyes wide and
 up at you, then a little bounce. The clips move only the body,
 eyes and mouth: there's no new drawing, and the face and its sign are
-the reaction's. A reply the pack has no clip for plays the face alone.
+the Moment's. A reply the pack has no clip for plays the face alone.
+
+The Mac's reply at your lock or unlock of the Mac (not to what you said)
+is the same move: `bye` or `hello` for a bigger moment, and for a small
+one `reply-wave`, a sway at about a third of `bye`'s lean with the eyes
+barely softening, over in a second, so it reads as a nod to you going by.
 
 A nap and a dance are tricks the gel already knows, its pastimes (below,
 Pastimes): the pack's table `kReplyPastimes` (`render/gel/pastimes.h`)
@@ -718,20 +726,20 @@ out of work. While something needs you the face doesn't play, so
 neither does its reply. `tests/scenarios-gel/replies.jsonl` catches each
 partway through, and a nap and a dance idle, asleep and at work.
 
-## Occasions
+## Tagged pastimes
 
-An occasion is a pastime that needs a tag (`render/tags.h`: the part of
+A tagged pastime is one that needs a tag (`render/tags.h`: the part of
 the day, the holidays, `party`, `busy` and `frantic`), or asleep a long
 wait: a row of the face's one table (Pastimes, below), dealt by its one
 dealer like any other. A row that needs a tag needs no tier: it fits
 whenever its tag is on, and while it fits it's the newest, dealt 60% of
 the deals after another (never twice running), about three in eight of
-them. The board says the tags and how long the look has shown with
+them. The board says the tags and how long the Doing has shown with
 `setOccasion(when, lookMs)` on every sync. `expressions.json` `pastimes`
-holds their bodies, a gag or a take; the table (`gel/pastimes.cpp`) names
+holds their bodies, a bit or a take; the table (`gel/pastimes.cpp`) names
 each and says when it fits:
 
-| Look | Pastime | Needs | What plays |
+| Doing | Pastime | Needs | What plays |
 | --- | --- | --- | --- |
 | idle | morning-stretch | morning | A big stretch up, eyes squeezed, a lean each way |
 | idle | night-drowse | night | Heavy lids, sunk a little, a slow sway |
@@ -743,30 +751,30 @@ each and says when it fits:
 | working, while it types | busy-typing | busy | Two quick three-key bursts, leaning in |
 | working, while it types | frantic-typing | frantic | Six keys in 0.6 s, leaning in harder |
 | asleep | deep-snore | night | Three deeper breaths |
-| asleep | dream | 1,800 s asleep | Two soft breaths and a twitch-and-wriggle gag |
+| asleep | dream | 1,800 s asleep | Two soft breaths and a twitch-and-wriggle bit |
 
-Idle's are gags acting plays in place of its next gesture; the others are
-takes the scene plays at once as the look's next (numbered after the
+Idle's are bits acting plays in place of its next gesture; the others are
+takes the scene plays at once as the Doing's next (numbered after the
 row's takes), the same in every mood, and a jittered one takes the desk's
 jitter. A take at work plays only while it types (working, terminal or
-tool use). A gesture or a host's reaction never takes one. An occasion
+tool use). A gesture or a host's Moment never takes one. A tagged pastime
 whose tags go off simply isn't dealt again. The engine has no colour
-channel, so no occasion tints the gel. The working looks' quicker pace
-while the agents are busy is the board's (`render::workPace`), not an
-occasion.
+channel, so no pastime tints the gel. The working looks' quicker pace
+while the agents are busy is the board's (`render::workPace`), not a
+tagged pastime.
 
 ### Calm work (the board's)
 
-Work is the look on screen most of the day, so it works calmly and
+Work is the Doing on screen most of the day, so it works calmly and
 settles deeper the longer the agents work: effort shows as the eyes
-settling, never as strain. While working shows (no moment over it) the
+settling, never as strain. While working shows (no Moment over it) the
 gel loops the rig's base for the last tier reached (`looks.json`'s
 `tiers`): at `tier1` an easy sway with its eyes open on the keys
 (`work-easy`), leaning in toward the monitor with its lids a little
 lower at `tier2`, focused at `tier3`, settled with a slower sway at
 `tier4`, and at `tier5`, in the zone, low calm lids, a slow wide sway
 and a deep breath, with a few motes drifting up beside it. Under a
-reaction, or while something needs you, the base fades out over the
+Moment, or while something needs you, the base fades out over the
 mixer's 150 ms, and back after. The desk's paws type: before each key
 contact of the recipe (its keyboard click) a paw lifts and lands on it
 (`kTapMs`, `kTapLift`), and between them they tap softly by turns,
@@ -779,8 +787,8 @@ Something new at every glance, however long the agents work or you're
 away (`render/gel/pastimes.h`): the pastimes are one table, a row each.
 A row's body is a clip of the pack's rig (`rig/clips/`, the body: a sip,
 a hop, a lean to look, the eyes following something round) and what the
-board draws with it, in time with it; or a gag or a take of the engine's
-(the comedy every mood shares, and the occasions, above). The kit the
+board draws with it, in time with it; or a bit or a take of the engine's
+(the comedy every mood shares, and the tagged ones, above). The kit the
 tiers put out stays while they last, apart from the table, as the
 outfits do. The tiers
 are the Mac's (`tier1` from 30 seconds, `tier2` from a minute, `tier3`
@@ -789,11 +797,11 @@ at work, of their rest idle. The face (`GelFace`) deals one at a time,
 while the engine shows the look itself and nothing holds the body (a
 finger, a word of the work stream in flight), after a rest of 4 to 10 s,
 the newest 60% of the time (the highest tier, then the longest wait, and
-an occasion above any) and an older one's the rest, never the same twice
+a tagged one above any) and an older one's the rest, never the same twice
 running; and holds the engine's own idle gestures off while a clip plays.
 Work's stretch from `tier4` (eyes squeezed, up tall, a lean each way) is
 the rig's `stretch`, a row like the rest (`kLimber`), over whatever desk
-take plays; the gel's `looks.json` has no occasions. The one playing
+take plays; the gel's `looks.json` has no `occasions`. The one playing
 fades out when the look gives way. A reply may ask for the snuggle or the
 dance outside the deal (Replies, above). Three of work's are **moves**,
 the whole body going somewhere on the rig's `x`, `reach` or `melt`, and
@@ -835,12 +843,11 @@ the same tags, after the face art and before the props
 (`gel/layers.h`): a hat by the first tag that has one (Halloween's witch
 hat; a party hat for party, New Year's, Lunar New Year and Programmers'
 Day; a striped nightcap at night, flopping down its left side to a
-tassel by its cheek, with pyjamas to match but while it wears reading
-glasses; a bobble hat in winter), shades on a Friday from noon to
-night, off while it shows a feeling (a reaction, a face the Mac lends
+tassel by its cheek, with pyjamas to match; a bobble hat in winter), shades on a Friday from noon to
+night, off while it shows a feeling (a Moment, a face the Mac lends
 it, needs you, listening) so its eyes are seen, and the air
 (snow, confetti, hearts, Zs asleep at night), and last the sign a
-reaction holds up. In the morning, while it's idle or at work, it
+Moment holds up. In the morning, while it's idle or at work, it
 holds a mug of coffee at its side in a little gel hand, steam curling up
 off it, and now and then lifts it to its mouth for a sip
 (`OutfitLayer::kSipMs`). At night a
@@ -891,6 +898,49 @@ art's mouth comes back the frame the tag goes (`paintArt`, which leaves
 the art's mouth out while `hushed` is on, and `paintZip`, which draws
 the zip). The eyes, the body and every layer play as ever.
 
+### The work acts (the board's)
+
+A command Boop plays out for as long as it runs (`gel/act.h`, on `state`'s
+`wact`): the whole frame, as a finish holds it, its body moved and scaled the
+same way, the desk gone (`Scenes::clearStage`), no pastime, no sign of a
+Moment's. The low sign says what's running, then how it ended, in its place. What Boop says takes the
+lane from it while it runs, and the whole scene hides the falling words, the
+wish's bubble and a reaction's sign.
+
+**The push.** 0.8 s: the rocket comes up from below and Boop shrinks onto it,
+in front of its hull. To 1.7 s: it lights, smoke along the ground, a rumble.
+To 3.2 s: it lifts, stretching, the flame long, and leaves by the top. Then
+only the stars, the smoke's trail and the sign; from 20 s on, every 26 s, a
+tiny Boop on a tiny rocket drifts by in orbit. A result that comes before
+3.4 s waits for it. Pass, 2.5 s: down on a parachute, swaying, happy; it lets
+go at the thump, dust either side, and Boop grows to its own size, proud.
+Fail, 0.5 s: down fast, stunned, with the rocket; a burst, clods, the rocket
+nose down in a heap of ground, smoking, Boop flat with soot smears and stars
+that goes on to disappointed. A cross or low mood keeps its own face.
+The small version is the low sign alone over Doing.
+
+**The tests.** 0.9 s: a yellow helmet with a target comes down on it, it
+shrinks onto a sled that rolls in from a start line, belted, targets on its
+sides, and a hazard wall comes in on the right. Then it puffs up and shakes,
+cheeks pink, sweat running, holding its breath, and the sled inches on for as
+long as the tests take, slowing, never reaching the wall. Pass: the sled rushes
+to just short of it and stops; it lurches, lets it all out, "phew" goes up in a
+bubble, a thumb comes up, and it goes from relieved to proud. Fail: the sled
+rushes on, it flies against the wall, thin and tall, a burst, the wall cracks
+and keeps a splat of gel, and it slides down into a flat heap, stars round its
+askew helmet. The small version is the helmet and the sign over Doing; a
+failure after a minute gets the full ending.
+
+**The build.** 0.7 s: a hard hat comes down, Boop shrinks to the right, and a
+course of bricks lies on the floor to the left. Then it hammers in a loop, a
+blow every 0.76 s with sparks, in a gel hand, its aim rising with the wall, and
+the house goes up course by course, the door and windows at last, then the
+roof, over about 75 s. Pass: what's left goes up at once, a flag rises, and it
+holds the hammer up, proud. Fail: the courses slide and break into rubble, the
+roof comes down on them, its hat tilts and its hammer drops. The small version
+is the hard hat and the sign over Doing; a failure after a minute gets the
+full ending.
+
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's
@@ -919,29 +969,17 @@ screen linger 1.5 s (`Stream::kEndMs`), falling where they dropped, and a
 word may still come forward in that time, as a turn's end does to gather
 them; something needing you clears everything at once.
 
-In front, after the props and before the sign: the word a `call` brings
-forward flies from its lane's name (a paper plane from the edge) and
-does what its move does (`render::CallMove`),
+Almost every call is only that, its word falling. In front, after the props
+and before the sign, the few a `call` brings forward fly from their lane's
+name and do what their move does (`render::CallMove`),
 everything gone by 2.5 s:
 
-| Move | Gags | What plays |
+| Move | Styles | What plays |
 | --- | --- | --- |
-| Sink, arrive | land, arrive, helper, back | Onto the crown, sinking in under a spreading ring (a subagent's going and its coming back too); a turn's first twinkles; an edit's lines grow as green and red bars on the monitor |
-| Look | look | Beside the head, a magnifier sweeping it; the monitor's page scrolls |
-| Stir | stir | Into a pot at the desk's right end, bubbling and steaming |
-| Stamp | stamp | Onto a card beside it, and a stamp comes down: OK |
-| Rocket | launch | Onto the crown, then up and away on a rocket; the monitor counts 3, 2, 1, LIFTOFF |
-| Poof | poof | Beside it, gone in a puff |
-| Plane | plane | A paper plane swooping in from the edge, caught at its hands; a globe turns on the monitor |
-| Phone | phone | An old phone ringing beside it, the word its call |
-| Page | page | A page beside it, its corner turning |
-| Hit | bonk, bonk2, helmet, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder, a helmet on the third; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
+| Sink | land, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too); an edit's lines grow as green and red bars on the monitor |
+| Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
 | Shrug | shrug | Beside the head, an empty bubble over it |
 | Shatter | shatter | Bursting into its glyphs, swallowed, and a burp |
-| Hail | hail | More FAILs raining and bouncing off; an umbrella opens 0.4 s too late; a cross on the monitor |
-| Cheer, combo | pass, built, combo | Over its head with confetti, a tick on the monitor; built raises a flag on the tower; a combo's count twinkles |
-| Desk | cross, stack | The monitor's spinner; a build's bricks stacking up at the desk's right end |
-| Topple | topple | The tower wobbles a second and falls on its head: dizzy eyes, a cross on the monitor |
 | Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
 | Compact | compact | Its context compacted: the words squashed together over its head into a cube that thuds onto the desk |
 | Drop | drop | Stopped, or failed: the words fall away grey, switched off |
@@ -950,9 +988,7 @@ everything gone by 2.5 s:
 
 As it lands the body answers through the engine (`Engine::jolt`): a push
 on the finger's pull springs, as a fling let go (knocked back and
-squashed by a hit or the tower, squashed by a word sinking in or a
-stamp, leaning to look, read, phone or catch, stretched up by a shrug, a
-rocket or a cheer), your no's flinch with its lids squeezed (0.6 for
+squashed by a hit, squashed by a word sinking in, stretched up by a shrug), your no's flinch with its lids squeezed (0.6 for
 450 ms) and a timeout's nod (0.9 for 700 ms), opening over their last
 300 ms; nothing while a finger holds it. The stream moves on the device's
 clock, not the engine's paced one, so a word falls as fast however busy
@@ -980,7 +1016,7 @@ the continuing physical body need not return to a frozen identical frame.
 
 Never reset face/mood when terminal becomes searching. Never destroy the
 desk between work variations. A completion reveal may raise a card in
-front of the same hero; after the one-shot, return toward the **latest**
+front of the same hero; after the Moment, return toward the **latest**
 host snapshot, not a stale state saved before the animation.
 
 ## Directed edge bridges
@@ -1060,7 +1096,7 @@ among them: going out fast into a longer window, a weight dips below zero,
 and is flat there); a fifth art drops the faintest of the
 four, the others' shares growing to fill what it leaves: the one step there
 is, and only when more than four arts change within one window. When the
-window ends, only the current art is left. Natural blinks and a gag's lids
+window ends, only the current art is left. Natural blinks and a bit's lids
 close the eyes; nothing else does.
 
 **Morph or cross-fade, feature by feature, by one rule.** The board
@@ -1174,10 +1210,10 @@ a random source of its own, so what sounds never changes what's drawn.
 The full activity matrix uses the shuffle bags described above, keeping
 recovery-boundary changes and no immediate repeats. Ten minutes of work
 can vary silently without ten minutes of sound. Whole-state completion and
-alerts are event-gated one-shots, not periodic random surprises. No
+alerts are event-gated Moments, not periodic random surprises. No
 per-frame LLM/API call is required.
 
-## Alerts, taps and interruption
+## Alerts, pokes and interruption
 
 Use the repo's LinkKit turn/attention semantics, not an invented priority
 scheduler that delays needs_you. A new request starts the upper alert

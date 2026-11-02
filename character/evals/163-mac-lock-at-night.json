@@ -1,0 +1,17 @@
+{
+  "name": "A lock at night: good night, and Boop goes to sleep",
+  "judge": "It's 23:00 and the person locks the Mac after a quiet stretch, no agent working. Boop should say good night and sleep.",
+  "reasonable": "A calm, sleepy or content face, the nap, a good-night sign, a sound or a word.",
+  "unreasonable": "A big moment, a finish, a sad or lonely face, or staying up with a plain wave and no good night.",
+  "start": "2026-10-28T23:00",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "lock",
+      "at": "20m"
+    }
+  ]
+}

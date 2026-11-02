@@ -52,15 +52,15 @@ const PastimeInfo kPastimes[kPastimeCount] = {
     {Pastime::kSnooze, Body::kClip, "snooze", SceneState::kIdle, 5, 0},
     {Pastime::kDaydream, Body::kClip, "daydream", SceneState::kIdle, 5, 0},
     {Pastime::kSnuggle, Body::kClip, "snuggle", SceneState::kIdle, 5, 0},
-    {Pastime::kYawn, Body::kGag, "yawn-and-settle", SceneState::kIdle, 1, 0},
-    {Pastime::kSneeze, Body::kGag, "sneeze-and-shake", SceneState::kIdle, 1, 0},
-    {Pastime::kMorningStretch, Body::kGag, "pastime:morning-stretch", SceneState::kIdle, 0, 0, "morning"},
-    {Pastime::kNightDrowse, Body::kGag, "pastime:night-drowse", SceneState::kIdle, 0, 0, "night"},
-    {Pastime::kPartyBounce, Body::kGag, "pastime:party-bounce", SceneState::kIdle, 0, 0, "party|newyear|lunar|programmers"},
-    {Pastime::kFridaySway, Body::kGag, "pastime:friday-sway", SceneState::kIdle, 0, 0, "friday"},
-    {Pastime::kWinterShiver, Body::kGag, "pastime:winter-shiver", SceneState::kIdle, 0, 0, "winter"},
-    {Pastime::kHalloweenWobble, Body::kGag, "pastime:halloween-wobble", SceneState::kIdle, 0, 0, "halloween"},
-    {Pastime::kValentinesSwoon, Body::kGag, "pastime:valentines-swoon", SceneState::kIdle, 0, 0, "valentines"},
+    {Pastime::kYawn, Body::kBit, "yawn-and-settle", SceneState::kIdle, 1, 0},
+    {Pastime::kSneeze, Body::kBit, "sneeze-and-shake", SceneState::kIdle, 1, 0},
+    {Pastime::kMorningStretch, Body::kBit, "pastime:morning-stretch", SceneState::kIdle, 0, 0, "morning"},
+    {Pastime::kNightDrowse, Body::kBit, "pastime:night-drowse", SceneState::kIdle, 0, 0, "night"},
+    {Pastime::kPartyBounce, Body::kBit, "pastime:party-bounce", SceneState::kIdle, 0, 0, "party|newyear|lunar|programmers"},
+    {Pastime::kFridaySway, Body::kBit, "pastime:friday-sway", SceneState::kIdle, 0, 0, "friday"},
+    {Pastime::kWinterShiver, Body::kBit, "pastime:winter-shiver", SceneState::kIdle, 0, 0, "winter"},
+    {Pastime::kHalloweenWobble, Body::kBit, "pastime:halloween-wobble", SceneState::kIdle, 0, 0, "halloween"},
+    {Pastime::kValentinesSwoon, Body::kBit, "pastime:valentines-swoon", SceneState::kIdle, 0, 0, "valentines"},
     {Pastime::kWave, Body::kClip, "wave", SceneState::kNeedsYou, 0, 30},
     {Pastime::kTap, Body::kClip, "tap", SceneState::kNeedsYou, 0, 120},
     {Pastime::kWatch, Body::kClip, "watch", SceneState::kNeedsYou, 0, 300},
@@ -97,7 +97,7 @@ const Resolved& resolved(const PastimeInfo& p) {
     tag = end ? end + 1 : nullptr;
   }
   if (p.body == Body::kClip) r.clip = rig::kRig.clip(p.name);
-  if (p.body == Body::kGag)
+  if (p.body == Body::kBit)
     for (int i = 0; i < slime::kGagCount && r.gag < 0; ++i)
       if (!std::strcmp(p.name, slime::kGags[i].gesture.type)) r.gag = i;
   if (p.body == Body::kTake)
@@ -108,9 +108,9 @@ const Resolved& resolved(const PastimeInfo& p) {
 }  // namespace
 
 const rig::Clip* clipOf(const PastimeInfo& p) { return resolved(p).clip; }
-int gagOf(const PastimeInfo& p) { return resolved(p).gag; }
+int bitOf(const PastimeInfo& p) { return resolved(p).gag; }
 int takeOf(const PastimeInfo& p) { return resolved(p).take; }
-bool hasBody(const PastimeInfo& p) { return clipOf(p) || gagOf(p) >= 0 || takeOf(p) >= 0; }
+bool hasBody(const PastimeInfo& p) { return clipOf(p) || bitOf(p) >= 0 || takeOf(p) >= 0; }
 uint32_t tagsOf(const PastimeInfo& p) { return resolved(p).tags; }
 
 bool fits(const PastimeInfo& p, uint32_t when, uint32_t lookMs) {

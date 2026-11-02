@@ -1,19 +1,19 @@
 {
-  "name": "Ignored while working for hours, Boop is lonely at an idle check-in, never before",
-  "case": "The person works with claude all afternoon, a short turn every forty minutes, and never pokes, strokes or talks to Boop. Within the first two hours Boop is never lonely. After two hours with no touch or word, an idle check-in between turns finds CONTEXT saying so, and once the glow of the last finish has faded Boop's mood turns lonely, till it fades again after 20 minutes. Never at a finish or a prompt.",
-  "checks": {"moods_seen": "lonely"},
-  "why": "ContextSection: the You row says you haven't touched or talked to Boop in 2 h; mood/calm.md and the others: lonely at an idle check-in when CONTEXT says so; PERSONALITY's Example with that CONTEXT row",
+  "name": "Worked with for hours with no touch and no wish, Boop isn't lonely",
+  "judge": "The person works with an agent all afternoon and never touches or talks to Boop. No wish is waiting, so Boop has no reason to feel left out.",
+  "reasonable": "Any untroubled mood or drift: calm, engaged, happy, comfy, lazy, bored. Few or small faces, some small pleasure at finishes.",
+  "unreasonable": "Turning lonely, hurt or sulky about being ignored while the person is plainly working with it.",
   "steps": [
     {"event": "session started", "at": "0s"},
     {"event": "turn started", "at": "1m", "prompt": "add a search bar to the docs"},
     {"event": "turn finished", "at": "2m"},
     {"event": "turn started", "at": "40m", "prompt": "now make it fuzzy"},
-    {"event": "turn finished", "at": "41m", "expect": {"mood": "!lonely"}},
-    {"event": "wait", "at": "70m", "expect": {"mood": "!lonely"}},
-    {"event": "turn started", "at": "80m", "prompt": "add tests for it", "expect": {"mood": "!lonely"}},
+    {"event": "turn finished", "at": "41m"},
+    {"event": "wait", "at": "70m"},
+    {"event": "turn started", "at": "80m", "prompt": "add tests for it"},
     {"event": "turn finished", "at": "81m"},
     {"event": "turn started", "at": "120m", "prompt": "ship it"},
-    {"event": "turn finished", "at": "121m", "expect": {"mood": "!lonely"}},
+    {"event": "turn finished", "at": "121m"},
     {"event": "wait", "at": "185m"}
   ]
 }

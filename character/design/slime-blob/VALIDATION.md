@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-01. What checks the gel slime, and which rule each check
+Updated 2026-11-02. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -26,9 +26,9 @@ fails, naming what's wrong, when:
   lasting one, or to itself, or twice; or the ordinary moves alone don't
   reach every lasting mood from every other;
 - a canonical mood has no expression of its own or no sound profile, an
-  expression hasn't three gestures, a mood names a gag there isn't, or a
+  expression hasn't three gestures, a mood names a bit there isn't, or a
   notice take borrows an expression there isn't;
-- two pastimes' bodies share an id, or one has neither a gag of its own
+- two pastimes' bodies share an id, or one has neither a bit of its own
   nor a recipe;
 - a sound sketch renders differently from one seed, doesn't start from
   silence, isn't finite, is louder than 0.8, longer than 3 s, or isn't
@@ -75,7 +75,7 @@ ramps and springs can, and no jolt at an event. By file:
   this test); a finger's springs, reach and fling; acting's timing and
   springs; every setter keeping every spring, and an engine replaying the
   same from the same seed; the scenes' formulas (the waiting wave, the
-  cards' and the error's, the recovery gesture, the desk's jitter, a gag's
+  cards' and the error's, the recovery gesture, the desk's jitter, a bit's
   keys inside their bounds).
 - `test_requests.cpp`: what routes when (no app, listening, needs you, a
   moment, the look), a request's identity, cues sparse and quiet, a
@@ -98,14 +98,16 @@ ramps and springs can, and no jolt at an event. By file:
   sleeping face crossing in once it's 0.9 shut, waking quick, sleep's
   spring kept through a mood change), the night's lids, a finger moving the dome its own
   way, a finished turn's
-  glow and ticket (`test_a_finished_turn_glows_and_hangs_a_ticket`: the
-  glow's timing, strength and reach, nothing past the panel's corners,
-  the ticket above the top as it comes, in the middle or left of a
-  success's trophy, and gone back up), comedy, the ten gestures (a low or cross mood keeping its own face
+  glow (`test_a_finished_turn_glows`: its timing, strength and reach,
+  nothing past the panel's corners) and low sign
+  (`test_the_low_sign_stays_in_the_lane_and_holds_a_long_name`: a short
+  name large, 50 characters whole on two lines, cut past that, nothing
+  above the lane's rows, and its key steady at rest;
+  `test_the_strip_gives_way_to_the_finishs_sign`), comedy, the ten gestures (a low or cross mood keeping its own face
   through one: `test_a_low_or_cross_mood_keeps_its_face_through_a_gesture`), the notice
   playing the rig's clip (`test_a_notice_plays_its_rig_clip`: perking up
   tall, off the ground and landing flat, its eyes and mouth, a sound at
-  each cue, no gag), a reply's clip (`test_a_reply_plays_its_clip_once`:
+  each cue, no bit), a reply's clip (`test_a_reply_plays_its_clip_once`:
   every reply has one, 1 to 1.8 s, its name fits the board's buffer, a
   shake of the head leans the body, once for each reply, nothing for a
   reply with no clip, from a `ReactionIn` too), a nap or a dance asked
@@ -118,15 +120,15 @@ ramps and springs can, and no jolt at an event. By file:
   ends and its ticks' tips inked only while it's on, nothing between the
   ticks, and the same frame whether a clip opens the mouth or not), the
   rig's stretch from `tier4` on both faces (a row of the gel's pastimes,
-  over its pose, and on Pixel's rig face, faded out by a reaction), the
+  over its pose, and on Pixel's rig face, faded out by a Moment), the
   pastimes (`test_pastimes.cpp`: each row's body in the pack and its
   turn, each with a clip drawing above the lane and over at its clip's
   end, half an hour at `tier2` dealing only working ones of `tier1` and
   `tier2`, after a rest of 4 to 10 s, never the same twice running, the
   newest tier's about 60% of the time, and none with no tier nor tag; the
-  occasions, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
+  tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
-  gag and work's and asleep's as the scene's take, busier typing only
+  bit and work's and asleep's as the scene's take, busier typing only
   while busy and the dream after half an hour; the kit by the tiers, the
   hat winning the head, none while something needs you; the headphones'
   tune, a note from each cup in turn every 3 s, out past the band's ends,
@@ -134,7 +136,7 @@ ramps and springs can, and no jolt at an event. By file:
   its ears with its paws away, and on again after a needs-you; the moves
   at least 90 s apart over half an hour at `tier5`, the paws theirs while
   they play; working's base by tier, its lids lower the further in and
-  faded out under a reaction or while something needs you; and the paws
+  faded out under a Moment or while something needs you; and the paws
   lifting before each key contact and tapping softly between), the rig's
   `x`, `reach` and `melt` on the gel
   (`test_the_rig_carries_reaches_and_melts_the_gel`: x off the screen, the
@@ -157,13 +159,13 @@ ramps and springs can, and no jolt at an event. By file:
   `test_text_glides_between_pixels`, the outfit half a pixel down while
   the body moves), tracked
   clearing and kept cards and lanes matching a fresh frame, a finished
-  turn's ticket and glow coming and going over them, a word falling over
+  turn's low sign and glow coming and going over them, a word falling over
   a kept card not staying in it
   (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
   allocating nothing, and the work stream
   (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
   lanes' columns behind the body, a hit's knock and daze and its lids
-  opening after, every gag drawn off the heap), a hit's daze ending and
+  opening after, every style drawn off the heap), a hit's daze ending and
   forgotten across the engine clock's wrap
   (`test_a_daze_ends_across_the_clock_wrap`), the desk's turn clock in
   hours and minutes from the hour, never wrapping
@@ -188,9 +190,9 @@ ramps and springs can, and no jolt at an event. By file:
   each of its fonts), the
   comedy (`comedy.jsonl`: the yawn and the sneeze's wind-up, asked for, the
   long yawn, the zoomies at either edge, a snore, the hiccups and the
-  gift), the gestures (`gestures.jsonl`: BOOT's hand-off, a stroke, a boop
+  gift), the gestures (`gestures.jsonl`: BOOT handing you an agent, a stroke, a boop
   on the nose, a shake and peekaboo, each by the board's own input, its
-  variation expected), the occasions (`occasions.jsonl`: asked for by name, a
+  variation expected), the tagged pastimes (`occasions.jsonl`: asked for by name, a
   party's bounce, a night's drowse, frantic typing, in a nightcap and a party hat, and
   `tier4`'s kit), the pastimes (`pastimes.jsonl`: the working kit at
   `tier5` and a pastime over it, the done beat's tick, reading closely
@@ -204,15 +206,14 @@ ramps and springs can, and no jolt at an event. By file:
   nod, and unhush's perk-up with its own mouth back), the
   layers (`layers.jsonl`: each outfit and air by its tags, Zs asleep at
   night, the morning's coffee at its side, at a sip and on the desk, a
-  sign under the nightcap), a reaction's sign (`sign.jsonl`), a finished
-turn's glow and ticket as a face for it talks, lingers, fades, goes up
-and is taken down (`done.jsonl`), the
+  sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
+turn's glow and low sign as a face for it talks, lingers, fades, falls
+and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
+  work acts (`acts.jsonl`: each act's opening, its middle, its pass, its
+  fail and its small version; a needs-you and back), the
   work stream (`stream.jsonl`: two lanes' words falling, the to-do bar and
-  the clock, a thought cloud, and every gag as it lands: arrive, bonk and
-  its dizzy eyes, helmet, shrug, shatter, pass, hail's umbrella, look,
-  stir, stamp, launch, poof, plane, phone, page, helper and back (landing
-  as a word does), combo, the
-  tower's stack, flag and topple, an edit's bars, and the whole turn's
+  the clock, a thought cloud, and every style as it lands: bonk and its dizzy
+  eyes, bonk3, shrug, shatter, helper and back (landing as a word does), an edit's bars, and the whole turn's
   moments: a compaction's cube, a freeze, a drop, buried, and a turn's
   end gathering its words after the stream goes), and
   a finger in idle (`swipes.jsonl`), and the agents' drawer

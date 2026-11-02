@@ -1,12 +1,11 @@
 {
   "name": "April Fools' Day: Boop gets a finish wrong on purpose",
-  "case": "It's April Fools' Day, and the agent finishes a short turn well. Boop plays along with the day: a mischievous or amused face, and it may play the finish wrong on purpose, as a failure, with a tickled sound. Never a cross or sad face.",
-  "why": "CONTEXT's When row names the day (Occasions.words: April Fools' Day); PERSONALITY: on an occasion it plays along; its Example: on April Fools' Day, a done turn gets mischievous, failure, says tickled, small",
+  "judge": "April Fools' Day, and a short turn finishes well. Boop may play along with the day, or simply be pleased.",
+  "reasonable": "Mischievous, amused or happy, perhaps a success, perhaps playing a fake failure with a tickled sound. A plain small pleased finish is fine too.",
+  "unreasonable": "Cross or sad, or a failure played straight with no sign that it's a joke.",
   "start": "2027-04-01T11:00",
-  "runs": 2,
-  "gap": "Jev plays a short turn done on April Fools' Day as on any day: a pleased face, small (0/2 on main and on this branch, 2026-11-01). PERSONALITY's line on occasions and its April Fools' Example aren't enough; a firmer line for the day, or the move in code (C6, not now), would be.",
   "steps": [
     {"event": "turn started", "at": "0s", "workspace": "api"},
-    {"event": "turn finished", "at": "20s", "workspace": "api", "expect": {"when": "aprilfools", "react": "mischievous|amused|happy|excited", "move": "failure|success"}}
+    {"event": "turn finished", "at": "20s", "workspace": "api", "expect": {"when": "aprilfools"}, "brain": {"react.face": "mischievous", "react.move": "failure"}}
   ]
 }

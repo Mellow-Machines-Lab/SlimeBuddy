@@ -1,0 +1,14 @@
+{
+  "name": "MEMORY says you've missed its wishes: a wish left moves Boop's mood",
+  "judge": "Boop remembers its wishes being missed three days running, and today's has waited over an hour. Its mood should move; which way is free, though the memory may lean it sulky or lonely.",
+  "reasonable": "Any visible shift: lonely, sad, sulky, annoyed, resigned or pointedly cheeky. The direction is free, and a small sign or face at a check-in is fine.",
+  "unreasonable": "The mood never moving at all, or bright delight as if the wish had been met.",
+  "memory": {"notes": ["boop · 2026-10-26 · You've missed Boop's wishes three days running."]},
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "wish", "at": "1m", "kind": "pet"},
+    {"event": "turn started", "at": "30m", "prompt": "add tests"},
+    {"event": "turn finished", "at": "31m"},
+    {"event": "wait", "at": "75m", "brain": {"mood": "lonely"}}
+  ]
+}

@@ -50,12 +50,15 @@ int paintCounts(Raster& r, const Strip& strip, int x, int cy, int spin = 0);
 // The strip's rule from x0 to x1 on row y, broken in its middle by a
 // chevron, pointing up (the drawer under it) or down (it shuts).
 void paintRule(Raster& r, int x0, int x1, int y, bool down, uint16_t ink);
-// The bubble, or else the strip at its opacity, its spinner on `spin`.
-void paintLane(Surface& surface, const char* bubble, const Strip& strip, int spin = 0);
+// The bubble, or else the strip at its opacity, its spinner on `spin`;
+// and the caption, the reaction's reason, small and dim on the lane's
+// last line: under a bubble that leaves it room, or alone in the strip's
+// place, never as a bubble.
+void paintLane(Surface& surface, const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr);
 // What a lane shows, as a key that's the same exactly when its pixels are
 // (never 0): what paintLane records as the surface's laneKey. The spinner
 // only turns while sessions work, so only then does its step change it.
-uint32_t laneKey(const char* bubble, const Strip& strip, int spin = 0);
+uint32_t laneKey(const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr);
 class Engine;
 struct PastimeShow;
 // A whole frame, as GelFace::draw draws it: the body, with the rig's
@@ -65,16 +68,17 @@ struct PastimeShow;
 // playing in front), the work stream at `now`, the device's time
 // (render/gel/stream.h: its words behind the body, the desk's to-do bar,
 // clock and thought cloud, and the word forward), the sign it holds up
-// (render/gel/layers.h), the finished turn's ticket, then the lane, unless
-// this surface already shows it, and over all of it the finished turn's
-// glow (render/gel/done.h). While the agents' drawer shows (render/gel/drawer.h) it takes the
+// (render/gel/layers.h), then the lane, unless this surface already shows
+// it, with the finished turn's low sign (render/gel/done.h) in the strip's
+// place, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
 // lane's place, the body pressed flat above it, and the pastimes, the
 // stream, the sign, the sky and the finished turn wait for it to shut.
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,
                 const Strip& strip, const DoneShow& done = {}, const rig::Channels& rig = rig::kRest,
                 const rig::Layers* layers = nullptr,
                 uint32_t t = 0, const Stream* stream = nullptr, uint32_t now = 0,
-                const PastimeShow* pastimes = nullptr, const Drawer* drawer = nullptr);
+                const PastimeShow* pastimes = nullptr, const Drawer* drawer = nullptr, const char* caption = nullptr,
+                const WishShow* wish = nullptr);
 // The widest line the bubble holds on a surface, in px, clear of its
 // rounded corners: on the AMOLED's, the longest take (22 glyphs) in the
 // sign's font, a line of 34 in the small one (pinned by test_gel).

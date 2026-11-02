@@ -1,0 +1,13 @@
+{
+  "name": "After a quiet while, chatty, Boop may make its wish for the day",
+  "judge": "Forty-odd idle minutes with Boop calm, chatty, with no wish yet today. It should want something once things have been quiet a good while, not at the first quiet minute.",
+  "reasonable": "One wish by the later check-ins is the likeliest, such as wanting a pet or a chat. A question or a musing instead is fine, and so is nothing once in a while. Small faces.",
+  "unreasonable": "A wish at the very first idle check-in, a finish animation, a big dramatic moment at an empty check-in, or a sign that reproaches the person.",
+  "talk": "chatty",
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "turn started", "at": "1m", "prompt": "add a search bar"},
+    {"event": "turn finished", "at": "2m"},
+    {"event": "wait", "at": "47m", "brain": {"react.sign": "stroke my face?"}}
+  ]
+}

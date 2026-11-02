@@ -1,8 +1,9 @@
 {
   "name": "Thanks warm Boop, and it says so",
-  "case": "The person thanks the agent. Boop is touched: happy, affectionate or pleased, and may hold up their words with a heart: \"thank you <3\".",
-  "why": "signs.md's [polite] caption with your words; PERSONALITY: manners warm it",
+  "judge": "The person thanks the agent. Boop should be warmed by the manners.",
+  "reasonable": "Touched, glad or shy, such as happy, affectionate or pleased, or a cheeky grin. A sign with their words or a heart is lovely; none is fine.",
+  "unreasonable": "A cross, sad or bored face, a sign that sneers at the thanks, or a finish animation at the start of the turn.",
   "steps": [
-    {"event": "turn started", "at": "0s", "prompt": "perfect, thank you!", "reading": {"kind": "carry_on", "tone": "polite", "phrases": ["perfect", "thank you"]}, "expect": {"react": "happy|affectionate|pleased|excited", "sign": "thank you|perfect|none"}}
+    {"event": "turn started", "at": "0s", "prompt": "perfect, thank you!", "reading": {"kind": "carry_on", "tone": "polite", "phrases": ["perfect", "thank you"]}, "brain": {"react.face": "happy", "react.sign": "thank you"}}
   ]
 }

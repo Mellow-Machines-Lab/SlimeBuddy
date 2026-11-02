@@ -1,7 +1,8 @@
 {
   "name": "A day of failures with no care is dreamed as a bad dream, plainly",
-  "case": "Yesterday the agents' turns failed and the person never touched or talked to Boop. When they come back in the morning, Boop tells the dream with a sign about the failures, never a sign about the person's care (there was none), and never a reproach.",
-  "why": "MemoryReader.tags: no touch or talk is distant, failed turns failed; dreams.md's [failed] lines; plan/dreaming.md §3: a day with no care is told by the agents' day alone, plainly",
+  "judge": "Yesterday the agents failed and the person never touched Boop. Coming back, Boop tells its dream, plainly, and shouldn't pretend there was care or blame anyone.",
+  "reasonable": "Wakes up and holds up a dream sign about a rough day or bugs, or a drowsy, neutral hello. The mood is free as long as the telling stays gentle.",
+  "unreasonable": "A sign thanking them for care they never gave, a sign scolding them, or no dream told at all.",
   "start": "2026-10-20T15:00",
   "steps": [
     {"event": "session started", "at": "0s", "workspace": "api"},
@@ -10,6 +11,6 @@
     {"event": "turn started", "at": "30m", "workspace": "api", "prompt": "try again"},
     {"event": "turn failed", "at": "60m", "workspace": "api"},
     {"event": "away", "at": "3h"},
-    {"event": "back", "at": "18h", "expect": {"dream": "told", "move": "wake up", "sign": "bad dream|bug nightmares|where were u?|zzz... hi!|had a dream"}}
+    {"event": "back", "at": "18h", "expect": {"dream": "told"}, "brain": {"react.move": "wake up", "react.sign": "bad dream"}}
   ]
 }

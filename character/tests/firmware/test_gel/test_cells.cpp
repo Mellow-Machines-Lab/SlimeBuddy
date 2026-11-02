@@ -76,7 +76,7 @@ struct Run {
       TEST_ASSERT_TRUE(ids.insert({c.key, c.generation, c.iteration, c.index}).second);
       reveals += gel::reveals(c.kind), keys += c.kind == kKey, ++contacts;
     }
-    // A gag's contacts come only while its gag plays.
+    // A bit's contacts come only while its bit plays.
     if (!e->acting.contacts.empty()) TEST_ASSERT_NOT_NULL(e->acting.current());
     for (const auto& c : e->acting.contacts)
       TEST_ASSERT_TRUE(ids.insert({c.key, c.generation, c.iteration, c.index}).second);
@@ -233,7 +233,7 @@ void test_every_cell_plays_truthfully() {
                                                    : Outcome::kNone;
       const StartCtx ctx = row >= kStates + 2 ? StartCtx(row - kStates - 1) : StartCtx::kNone;
       ++cells;
-      if (isReaction(state) && state != SceneState::kListening) {
+      if (isMoment(state) && state != SceneState::kListening) {
         std::vector<std::vector<F>> played;
         for (int v = 0; v < takes(row); ++v) played.push_back(play(mood, row, state, outcome, ctx, v, ++id));
         // Each take moves the body its own way, but notice's, its one clip's.

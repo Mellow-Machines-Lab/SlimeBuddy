@@ -1,0 +1,41 @@
+{
+  "name": "The nap at a night's lock sleeps at once, until you unlock",
+  "case": "At night, the person locks the Mac with an agent's thread sitting idle, and Boop takes its nap. It's asleep at once, as Doing says, not after the usual doze. A short unlock wakes it.",
+  "why": "Boop sleeps at once, and the dream follows by itself. Core.nap holds it, so no Jev is needed",
+  "scripted": true,
+  "start": "2026-10-28T23:00",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s",
+      "expect": {
+        "doing": "idle"
+      }
+    },
+    {
+      "event": "lock",
+      "at": "1m",
+      "brain": {
+        "react.face": "calm",
+        "react.move": "nap",
+        "react.intensity": "small"
+      },
+      "expect": {
+        "doing": "asleep",
+        "move": "nap"
+      }
+    },
+    {
+      "event": "unlock",
+      "at": "2m",
+      "brain": {
+        "react.face": "calm",
+        "react.move": "none",
+        "react.intensity": "small"
+      },
+      "expect": {
+        "doing": "idle"
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 #include <cstddef>
 #include "render/rig/layers.h"
 #include "render/rig/rig.h"
+#include "render/stream.h"
 #include "render/surface.h"
 namespace render::gel {
 // Q12 raster controls, fed by the deterministic engine.
@@ -77,9 +78,12 @@ class Engine;
 // Pressed under the agents' drawer (`squeeze`, render/gel/drawer.h), it
 // draws flattened, and with its eyes squeezed shut it draws the body alone.
 struct DrawerPose;
+// A work act (render/gel/act.h) moves the body as a finish does, and draws
+// behind it and over it.
 void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t keepLane = 0,
            rig::Anchors* anchors = nullptr, const rig::Channels& rig = rig::kRest, const rig::Layers* layers = nullptr,
-           uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr);
+           uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
+           const Stream::ActNow* act = nullptr);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
 // Hushed (the `hushed` tag, render/tags.h), its lips are zipped: in the
 // mouth's place, in its ink and following the face as it does, whatever

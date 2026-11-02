@@ -31,7 +31,7 @@ void Engine::sync(int forced) {
   }
   face.setSleeping(route.quiet);
   scenes.setRoute(route, timeMs(), expression, random);
-  // Acting plays in idle, and wherever the scene's recipe carries a gag.
+  // Acting plays in idle, and wherever the scene's recipe carries a bit.
   const int gag = scenes.gag();
   acting.setSuppressed((route.state != SceneState::kIdle && gag < 0) || grab, motion.time);
   acting.hold(gag, scenes.generation, scenes.iteration, motion.time);
@@ -151,7 +151,7 @@ void Engine::consumeCues() {
   static const char* recipes[] = {"keyboard", "knock",  "squish", "ding",   "complete", "failed",
                                   nullptr,    "squish", "squish", "sneeze", "breath",   "bounce"};
   static_assert(std::size(recipes) == slime::kContactKinds, "a recipe, or none, for every contact kind");
-  // The scene's contacts, then a gag's, then a rig clip's cues'.
+  // The scene's contacts, then a bit's, then a rig clip's cues'.
   for (const auto* list : {&scenes.contacts, &acting.contacts, &clipContacts_})
     for (const auto& c : *list) {
       const char* recipe = recipes[c.kind];

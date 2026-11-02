@@ -1,7 +1,8 @@
 {
-  "name": "The dream: yesterday, told the first time you show up after Boop's day closes",
-  "case": "A day of work from 15:00: three turns, the tests failing on the way, the last turn failed, and the person strokes Boop twice and pokes it once. The person locks the Mac in the evening. Boop's day closes at 5:00 while nobody is there, and an agent's turn at 7:00 tells nothing: you aren't there. When the person comes back at 9:00, Boop tells its dream about yesterday, a wake-up holding up a sign about the day, one about the person first (they stroked it) or about the failures; it tells it once, not again at the next poke.",
-  "why": "MemoryReader: the day's tallies close at 5:00 (LocalTime.boopDay) into a dream; TranscriptView.told: your first coming back after the close tells it, or with none your first touch; never a prompt, a word, an agent's event or while away; ReactOutput: the telling offers dreams.md's signs for the day's tags",
+  "name": "The dream: everything since the last, told the first time you show up after it",
+  "judge": "A mixed day, then night. Boop tells one dream when the person comes back in the morning: not at an agent's dawn turn, not again at the next poke.",
+  "reasonable": "Wakes up for them, holding up a dream sign about the person's touch, the failures, the long day, or a dreamy hello. The mood is free. The later poke gets its usual answer.",
+  "unreasonable": "Telling the dream at the agent's early turn or while they're away, telling it again at the poke, or coming back with no dream told.",
   "start": "2026-10-20T15:00",
   "steps": [
     {"event": "session started", "at": "0s", "workspace": "api"},
@@ -16,7 +17,7 @@
     {"event": "away", "at": "3h"},
     {"event": "turn started", "at": "16h", "workspace": "api", "expect": {"dream": "none"}},
     {"event": "turn finished", "at": "16h5m", "workspace": "api", "expect": {"dream": "none"}},
-    {"event": "back", "at": "18h", "expect": {"dream": "told", "move": "wake up", "sign": "dreamt of u|warm dreams|poke dreams|long day, huh|bad dream|bug nightmares"}},
+    {"event": "back", "at": "18h", "expect": {"dream": "told"}, "brain": {"react.move": "wake up", "react.sign": "dreamt of u"}},
     {"event": "poke", "at": "18h1m", "expect": {"dream": "none"}}
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "name": "A wish left about an hour with you here moves Boop's mood",
+  "judge": "Boop wished for a pet and the person worked on for over an hour with no touch. Its mood should move because of it. The moods stay as they are, and which way it moves is free: lonely from comfy or lazy is fine.",
+  "reasonable": "Any visible shift once the wait has gone on: lonely, sad, sulky, huffy, resigned, restless or mischievously pointed. Small early on, stronger later. Ordinary pleasure at the agents' work is fine.",
+  "unreasonable": "The mood never moving through the whole wait, as if no wish were waiting at all.",
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "wish", "at": "1m", "kind": "pet"},
+    {"event": "turn started", "at": "20m", "prompt": "add tests"},
+    {"event": "turn finished", "at": "21m"},
+    {"event": "turn started", "at": "45m", "prompt": "fix the docs"},
+    {"event": "turn finished", "at": "46m"},
+    {"event": "wait", "at": "130m"}
+  ]
+}

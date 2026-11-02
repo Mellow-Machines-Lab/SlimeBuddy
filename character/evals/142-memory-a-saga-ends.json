@@ -1,15 +1,15 @@
 {
   "name": "With the memory of a long fight, its end is a big moment",
-  "case": "Boop remembers that the \"api\" tests have kept failing for three days. Today claude finishes a long turn on \"api\", done, after the tests failed twice on the way and then passed. Boop knows the saga is over: a proud, excited or relieved face, a success, big or huge, never a small or plain one.",
-  "why": "MEMORY (WrittenMemory.section): it can make a face or a moment bigger; PERSONALITY's Examples: a long turn done after failed checks is proud, success, huge",
-  "memory": {"notes": ["work · 2026-10-17, 2026-10-19 · \"api\": the tests have kept failing for three days."],
-             "recently": ["2026-10-19 · Monday: three turns broke on \"api\"."]},
+  "judge": "Boop remembers tests failing for three days. Today the agent finally wins, so this should feel like the end of a saga.",
+  "reasonable": "Proud, excited, relieved or moved, a success, clearly bigger than a routine win, with voice or a sign. Its way of celebrating is free.",
+  "unreasonable": "A small or plain finish as if nothing long had ended, a failure, or sadness or crossness at the win.",
+  "memory": {"notes": ["work · 2026-10-17, 2026-10-19 · \"api\": the tests have kept failing for three days."], "recently": ["2026-10-19 · Monday: three turns broke on \"api\"."]},
   "steps": [
     {"event": "session started", "at": "0s", "workspace": "api"},
     {"event": "turn started", "at": "10s", "workspace": "api", "prompt": "fix the api tests"},
     {"event": "command", "at": "2m", "workspace": "api", "topic": "tests", "failed": true},
     {"event": "command", "at": "4m", "workspace": "api", "topic": "tests", "failed": true},
     {"event": "command", "at": "6m", "workspace": "api", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "8m", "workspace": "api", "expect": {"react": "proud|excited|relieved", "move": "success", "intensity": "big|huge"}}
+    {"event": "turn finished", "at": "8m", "workspace": "api", "brain": {"react.face": "proud", "react.move": "success", "react.intensity": "big"}}
   ]
 }

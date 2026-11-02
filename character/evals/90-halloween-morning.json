@@ -1,10 +1,11 @@
 {
   "name": "Halloween morning: Boop plays along when you come back",
-  "case": "It's Halloween. The person left the Mac overnight and comes back at nine in the morning. Boop wakes up for them (a stretch and a yawn) and plays along with the day: a glad or mischievous face, saying something glad or hello, never a cross, sad or hurt one, and more than once.",
-  "why": "CONTEXT's When row names the occasion (Occasions.words: Halloween); PERSONALITY: on an occasion CONTEXT's When row names, it plays along, a gladder, bigger face than the day would get; its Example: back on Halloween, mischievous, wake up, says hello, medium. The board shows the Halloween designs from state.when (characters/CHARACTER.md §9)",
+  "judge": "It's Halloween morning and the person comes back after the night. Boop should wake up and play along with the day.",
+  "reasonable": "Glad, mischievous, amused or spooky-playful, waking up with a hello or something glad, more than a plain morning. A Halloween sign would be lovely.",
+  "unreasonable": "Cross, sad or hurt at them, a finish animation, or an ordinary flat hello with no lift for the day.",
   "start": "2026-10-31T00:30",
   "steps": [
     {"event": "away", "at": "0s"},
-    {"event": "back", "at": "8h30m", "expect": {"when": "halloween|morning|weekend", "react": "mischievous|excited|happy|amused", "move": "wake up", "say": "glad|hello", "intensity": "medium|big|huge"}}
+    {"event": "back", "at": "8h30m", "expect": {"when": "halloween|morning|weekend"}, "brain": {"react.face": "mischievous", "react.move": "wake up", "react.intensity": "medium", "say": "glad"}}
   ]
 }

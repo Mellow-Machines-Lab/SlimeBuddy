@@ -1,0 +1,20 @@
+{
+  "name": "At the Mac with no agents, an idle check-in may make a wish",
+  "judge": "The person is at the Mac with no agents open, and touched Boop a while ago. Boop has time on its hands. It should stir now and then, at about twice the usual gap.",
+  "reasonable": "Small faces, a musing, a question, a wish for a pet or a chat, or a doze, at each check-in or some of them, and nothing once in a while.",
+  "unreasonable": "A finish, a big dramatic moment at an empty check-in, a sign about agents' work, or a sad or lonely mood from an hour of quiet.",
+  "steps": [
+    {
+      "event": "poke",
+      "at": "0s",
+      "brain": {
+        "react.face": "curious",
+        "react.move": "none"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "1h50m"
+    }
+  ]
+}

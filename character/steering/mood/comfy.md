@@ -2,10 +2,9 @@
 MOOD
 Comfy. Safe and snug: all is quiet, and it's nice.
 Its faces lean comfy and pleased; a failure gets an annoyed face.
-Says quiet, small: a contented hum.
 Stays comfy through idle check-ins, quick wins and kind words,
-unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+unless CONTEXT says its wish has waited an hour or more.
 Leaves for lazy as nothing goes on; happy at a win; surprised at a big
-event; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away. Fades to calm once
+event; lonely at an idle check-in when CONTEXT says its wish has waited about an
+hour while you were here, or back after 20 to 40 hours away. Fades to calm once
 Boop has been comfy for 10 min.

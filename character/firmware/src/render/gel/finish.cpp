@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <utility>
+#include "render/gel/frame.h"
 #include "render/gel/lane.h"
 #include "render/gel/raster.h"
 #include "render/gel/scenes.h"
@@ -20,14 +21,6 @@ constexpr uint16_t kConfettiInk[] = {rgb565(255, 213, 74),  rgb565(255, 122, 182
                                      rgb565(140, 242, 122), rgb565(255, 255, 255), rgb565(181, 140, 255)};
 constexpr int kInks = int(std::size(kConfettiInk));
 
-// Q12 easing: the smoothstep of where t is between a and b.
-int ease(int t, int a, int b) {
-  if (t <= a) return 0;
-  if (t >= b) return 4096;
-  const int64_t p = int64_t(t - a) * 4096 / (b - a);
-  return int(p * p * (3 * 4096 - 2 * p) / (4096 * 4096));
-}
-int lerp(int a, int b, int e12) { return a + int(int64_t(b - a) * e12 / 4096); }
 // Keyframes, eased between: (time, value) pairs in order.
 struct Key {
   int t, v;
@@ -85,16 +78,6 @@ Hop hops(const Hop (&h)[N]) {
 // When a hop that squats at `at` lands.
 constexpr int landing(int at, int airMs) { return at + kSquatMs + airMs; }
 
-// A point `u` units (px at scale 1, y down) from a centre in sixteenths,
-// turned by `c12`/`s12` (Q12 cosine and sine) and scaled (Q12).
-struct Frame {
-  int x16, y16, scale, c12 = 4096, s12 = 0;
-  Point at(int ux, int uy) const {
-    const int64_t rx = int64_t(ux) * c12 - int64_t(uy) * s12, ry = int64_t(ux) * s12 + int64_t(uy) * c12;
-    return {x16 + int(rx * scale * 16 / (int64_t(4096) * 4096)), y16 + int(ry * scale * 16 / (int64_t(4096) * 4096))};
-  }
-  int size16(int u) const { return std::max(8, u * scale * 16 / 4096); }
-};
 Frame turned(int x16, int y16, int scale, F angle) { return {x16, y16, scale, sin12(angle + pi / 2), sin12(angle)}; }
 
 // A sparkle: a four-pointed star, `r` px from its middle.
@@ -366,7 +349,6 @@ void firework(Raster& r, const Surface& s, int age, int at, int x, int y, uint16
 }
 
 // Where the body stands and its face sits on the board's canvas, at rest.
-int floorY(const Surface& s) { return s.height * 783 / 1000; }
 int faceY(const Surface& s) { return s.height * 560 / 1000; }
 
 // The fireworks' bursts: when each rocket goes up, where it bursts (in

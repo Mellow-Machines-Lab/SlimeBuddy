@@ -1,0 +1,17 @@
+{
+  "name": "Cross with you, Boop snubs your lock",
+  "judge": "Boop is grumpy after the person kept poking it, and now they lock the Mac. It should snub them, not wave.",
+  "reasonable": "A grumpy, irritated or annoyed face, a huff or nothing said, no wave and no sign.",
+  "unreasonable": "A wave, a glad face, a goodbye sign, or a swear at the person.",
+  "mood": "grumpy",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "lock",
+      "at": "1m"
+    }
+  ]
+}

@@ -8,7 +8,7 @@
 // (render/gel/pastimes.h), one at a time after a rest, and a reaction's
 // clip, a clip named as its state, as it starts. A clip's cues sound
 // through the engine's contacts. The engine keeps its expressions,
-// recipes, gags and springs. What it wears and the air around it come and
+// recipes, bits and springs. What it wears and the air around it come and
 // go through the rig's layer stack, the face's own too, and so does the
 // pastimes' kit.
 #pragma once
@@ -52,6 +52,7 @@ class GelFace final : public Face {
   void watch(const Stream* stream) override { stream_ = stream; }
   // A swipe flings the dome on, and plays nothing else.
   bool playsSwipe() const override { return false; }
+  bool holdsUpFinish() const override { return true; }
   // The agents' drawer, up from the strip (render/gel/drawer.h).
   bool hasDrawer() const override { return true; }
   void drawer(const Drawer* drawer) override { drawer_ = drawer; }
@@ -82,8 +83,9 @@ class GelFace final : public Face {
   }
   // Its engine keeps its own clock: it ignores draw's t and dirty, and
   // cues' t and shown (its contact cues play under the pattern too).
-  bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const SignShow&, const DoneShow&, const Strip&,
-            bool) override;
+  bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const char*, const SignShow&, const DoneShow&,
+            const Strip&, bool) override;
+  void wish(const WishShow& show) override;
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
   int profile(char* out, size_t n, uint32_t frames) override;
   const Engine& engine() const { return *engine_; }
@@ -108,7 +110,7 @@ class GelFace final : public Face {
   // What it wears, the air and the Zs, as the engine's tags and state call
   // for them (layerContents), each fading in and out.
   rig::Layers layers_;
-  // The pastime playing, its clip on the mixer (none for a gag's or a
+  // The pastime playing, its clip on the mixer (none for a bit's or a
   // take's, which the engine plays), from when until when, and the look
   // it's for; the one stopped early, fading out from stoppedAt_; the one
   // dealt last, and when the next may be. They're dealt with dice of their
@@ -200,7 +202,9 @@ class GelFace final : public Face {
   // A clip played on the mixer, its cues to sound from now.
   void play(const rig::Clip& clip);
   // The body answers a word of the work stream as it lands.
-  void land(CallGag gag);
+  void land(CallStyle style);
+  // The wish to show, the device's, set before each frame.
+  WishShow wish_;
   // A new revision: the sounds already queued belong to what came before.
   void restartCues();
   bool factsChanged(const FaceContext& context) const;

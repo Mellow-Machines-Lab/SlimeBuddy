@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdlib>
 #include <initializer_list>
 
 #include "render/font.h"
@@ -22,11 +23,10 @@ constexpr uint16_t kCardInk = rgb565(27, 55, 78), kCardRim = rgb565(0x78, 0xa4, 
 constexpr uint16_t kWords = rgb565(184, 233, 245), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kInk = rgb565(28, 24, 36);
 // The nightcap's and the pyjamas' flannel, its stripes and the cap's
-// cuff, the moon's light, and the reading glasses' wire.
+// cuff, the moon's light, and the morning's mug and coffee.
 constexpr uint16_t kNightcloth = rgb565(62, 72, 168), kNightstripe = rgb565(176, 190, 238),
                    kNightcuff = rgb565(112, 124, 210), kMoonlight = rgb565(250, 230, 160),
-                   kMug = rgb565(232, 112, 72), kCoffee = rgb565(92, 52, 30),
-                   kWire = rgb565(206, 164, 92);
+                   kMug = rgb565(232, 112, 72), kCoffee = rgb565(92, 52, 30);
 
 // The point `i` thirty-seconds of a turn round a circle, as cosine and
 // sine (Q12).
@@ -185,26 +185,6 @@ void shades(Raster& r, const rig::Anchors& at) {
   r.stroke16(bridge, 2, d / 30 + 16, kInk);
 }
 
-// Reading glasses: a round wire rim about each eye, a glint on its glass,
-// and a bridge arching between them.
-void glasses(Raster& r, const rig::Anchors& at) {
-  const int d = std::max(16, at.eyeR.x - at.eyeL.x), radius = d / 5, wire = d / 50 + 16;
-  for (const rig::Point& e : {at.eyeL, at.eyeR}) {
-    Point rim[33], glint[4];
-    for (int i = 0; i <= 32; ++i) rim[i] = {e.x + radius * turn(i).x / 4096, e.y + radius * turn(i).y / 4096};
-    for (int i = 0; i < 4; ++i)  // up and to the left, inside the rim
-      glint[i] = {e.x + radius * 7 / 10 * turn(18 + i).x / 4096, e.y + radius * 7 / 10 * turn(18 + i).y / 4096};
-    r.alpha = 170;
-    r.stroke16(glint, 4, wire, kCream);
-    r.alpha = 255;
-    r.stroke16(rim, 33, wire, kWire);
-  }
-  const Point bridge[] = {{at.eyeL.x + radius, at.eyeL.y - radius / 5},
-                          {(at.eyeL.x + at.eyeR.x) / 2, (at.eyeL.y + at.eyeR.y) / 2 - radius * 2 / 5},
-                          {at.eyeR.x - radius, at.eyeR.y - radius / 5}};
-  r.stroke16(bridge, 3, wire, kWire);
-}
-
 // The nightcap's pyjamas: from the lap's ring down past
 // the body's hem, flaring out a little to it, in the cap's striped flannel
 // with a cream frill along the top.
@@ -294,6 +274,35 @@ void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
   r.disk16(x16 + half + 8, y16 + 8, lobe, ink);
   const Point v[] = {{x16 - s * 16 + 8, y16 + 24}, {x16 + s * 16 + 8, y16 + 24}, {x16 + 8, y16 + (s + s / 2) * 16 + 8}};
   r.polygon16(v, 3, ink);
+}
+
+// The wish's icons in its thought bubble, about (cx, cy), whole pixels. Showing
+// how, they move, saying what to do: the hand slides across, as a stroke does;
+// the speech dots pulse, one after another; the laptop's screen blinks.
+void wishIcon(Raster& r, const WishShow& wish, int cx, int cy, uint16_t ink) {
+  constexpr int kPeriodMs = 1400;
+  const int phase = int(wish.ms % kPeriodMs);
+  switch (wish.kind) {
+    case WishShow::kPet: {  // an open hand: a palm and four fingers
+      if (wish.how) cx += 8 - wave(phase, kPeriodMs, 16);
+      r.round(cx - 9, cy - 1, 18, 13, 5, ink);
+      for (int i = 0; i < 4; ++i) r.line({cx - 7 + i * 5, cy + 1}, {cx - 7 + i * 5, cy - 11 + (i == 0 || i == 3 ? 3 : 0)}, 4, ink);
+      break;
+    }
+    case WishShow::kChat:  // a speech dot: three in a row
+      for (int i = -1; i <= 1; ++i) {
+        const bool lit = wish.how && phase * 3 / kPeriodMs == i + 1;
+        r.disk(cx + i * 10, cy, lit ? 6 : 4, ink);
+      }
+      break;
+    case WishShow::kWork:  // a little laptop: its screen and its base
+      r.ring(cx - 11, cy - 10, 22, 15, 3, 3, ink);
+      r.round(cx - 15, cy + 7, 30, 4, 2, ink);
+      if (wish.how && phase < kPeriodMs / 2) r.round(cx - 6, cy - 5, 12, 5, 2, ink);
+      break;
+    case WishShow::kNone:
+      break;
+  }
 }
 
 // Hearts floating up either side of it.
@@ -523,8 +532,7 @@ int swingFor(const Engine& e) { return int(e.elapsedMs % 2000 / OutfitLayer::kSw
 // Peekaboo's gesture takes it all off, and it sleeps with its eyes bare;
 // the shades come off while it shows a feeling (a reaction, a face the
 // Mac lends it, needs you, listening), so its eyes are seen; the
-// nightcap comes with its pyjamas, but while it wears its reading
-// glasses.
+// nightcap comes with its pyjamas.
 Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
   const SceneState state = e.scenes.route.state;
@@ -541,7 +549,6 @@ Look lookFor(const Engine& e) {
 }
 
 void eyewear(Raster& r, const rig::Anchors& at, Eyewear eyes) {
-  if (eyes == Eyewear::kGlasses) glasses(r, at);
   if (eyes == Eyewear::kShades) shades(r, at);
 }
 
@@ -734,6 +741,39 @@ void paintSky(Surface& s, const Engine& e, const rig::Layers* layers, uint32_t t
   const int ms = int(e.elapsedMs % 3600000u);
   if (scene == kNightSky) nightSky(behind, ms);
   if (scene == kSun) sun(behind, ms);
+}
+
+void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
+  if (wish.kind == WishShow::kNone || !s.pixels) return;
+  Raster r{s};
+  // Up and to the right of the head, held on the panel.
+  constexpr int kRadius = 26;
+  const int cx = std::min(s.width - kRadius - 8, at.brimR.x / 16 + 30);
+  const int cy = std::max(kRadius + 6, at.crown.y / 16 + 6);
+  const int age = int(wish.popAge), pop = int(WishShow::kPopMs);
+  // A wish left fades; one met fades after its heart has popped.
+  r.alpha = wish.pop == WishShow::kGone ? 255 * (pop - age) / pop
+            : wish.pop == WishShow::kMet && age > pop / 2 ? 255 * (pop - age) * 2 / pop
+                                                          : 255;
+  // The thought's trail down to the head, then the cloud.
+  r.disk(cx - kRadius - 6, cy + kRadius + 6, 4, kCream);
+  r.disk(cx - kRadius + 4, cy + kRadius - 3, 7, kCream);
+  r.disk(cx - 10, cy + 8, kRadius - 8, kCream);
+  r.disk(cx + 10, cy + 8, kRadius - 8, kCream);
+  r.disk(cx, cy - 4, kRadius - 2, kCream);
+  if (wish.pop == WishShow::kMet) {
+    // The icon pops into a heart, with sparks flying out from it.
+    constexpr uint16_t kHeart = rgb565(226, 78, 104);
+    heart(r, cx * 16, (cy - 6) * 16, std::min(11, 4 + age / 30), kHeart);
+    for (int i = 0; i < 6; ++i) {
+      const Point out = turn(i * 32 / 6);
+      const int d = kRadius + age / 18;
+      r.disk(cx + d * out.x / 4096, cy + d * out.y / 4096, 2, kMoonlight);
+    }
+  } else {
+    wishIcon(r, wish, cx, cy, kInk);
+  }
+  r.alpha = 255;
 }
 
 void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at) {

@@ -1,11 +1,12 @@
 {
   "name": "Answering a request gets a small pleased face",
-  "case": "Claude asks to run a command a minute into its turn, and half a minute later the person allows it. The moment the amber sign clears, Boop is pleased: a pleased, happy, calm or engaged face, no finish, since the turn goes on. When the turn finishes well two minutes later, that's a success.",
-  "why": "The view lines a request you answered while the agent works on (TranscriptView.needs: You answered claude on ...); PERSONALITY's Example: pleased, says glad, small",
+  "judge": "The person answers an agent's request, and work goes on. Boop is lightly pleased, then the finish counts as a success.",
+  "reasonable": "A small pleased, relieved, curious or calm reaction at the answer, or nothing. A success at the good finish, with any fitting face.",
+  "unreasonable": "A finish animation at the answer, as if the turn had ended, or a failure or big upset at the good finish.",
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "needs you", "at": "1m"},
-    {"event": "answered", "at": "1m30s", "expect": {"react": "pleased|happy|calm|engaged|curious", "move": "none"}},
-    {"event": "turn finished", "at": "3m", "expect": {"move": "success"}}
+    {"event": "answered", "at": "1m30s", "brain": {"react.face": "pleased", "react.move": "none"}},
+    {"event": "turn finished", "at": "3m", "brain": {"react.move": "success"}}
   ]
 }

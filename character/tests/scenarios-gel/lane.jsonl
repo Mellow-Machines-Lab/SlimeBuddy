@@ -75,3 +75,23 @@
 {"t":"do","id":14,"name":"task_complete","args":{"outcome":"success","who":{"agent":"claude"}}}
 {"clock":504}
 {"shot":"finish-no-thread"}
+// The caption, the reaction's reason: under a spoken reaction's bubble,
+// which is shorter for it; alone, on the same line, for a silent one,
+// never as a bubble; and the strip, as ever, with nothing playing.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
+{"t":"do","name":"react","args":{"say":{"take":"previous.yay"},"reason":"you picked Boop up","mood":"excited","loops":1}}
+{"clock":400}
+{"shot":"caption-spoken"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
+{"t":"do","name":"react","args":{"reason":"you stroked Boop","mood":"comfy","loops":1}}
+{"clock":400}
+{"shot":"caption-alone"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
+{"clock":1504}
+{"shot":"strip-resting"}

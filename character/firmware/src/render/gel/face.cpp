@@ -1,4 +1,5 @@
 #include "render/gel/face.h"
+#include "render/gel/act.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -142,7 +143,7 @@ uint32_t GelFace::roll(uint32_t n) {
 
 void GelFace::endPastime(uint32_t t, bool early) {
   if (early && clip_) mixer_.stop(*clip_);
-  // One stopped early fades out what it draws; a gag's or a take's draws
+  // One stopped early fades out what it draws; a bit's or a take's draws
   // nothing, and the engine stops it itself as the look gives way.
   stopped_ = early && clip_;
   stoppedAt_ = t;
@@ -176,7 +177,11 @@ void GelFace::passTime(uint32_t t) {
   if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
-  const bool busy = finger_ || (stream_ && stream_->drawn(t) && stream_->call.live);
+  // A work act holds the screen, as a finger does: what's playing goes.
+  const bool acting = stream_ && actTakesOver(stream_->actNow(t));
+  engine_->scenes.clearStage = acting;
+  if (acting && playing()) endPastime(t, true);
+  const bool busy = finger_ || acting || (stream_ && stream_->drawn(t) && stream_->call.live);
   if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
@@ -247,8 +252,8 @@ void GelFace::start(const PastimeInfo& p, SceneState look, uint32_t t) {
     ms = clip->ms;
     play(*clip);
     holdGestures(*clip);
-  } else if (const int gag = gagOf(p); gag >= 0) {
-    engine_->playGag(gag);
+  } else if (const int gag = bitOf(p); gag >= 0) {
+    engine_->playBit(gag);
     ms = uint32_t(F(slime::kGags[gag].gesture.duration * 1000).integer());
   } else if (const int take = takeOf(p); take >= 0) {
     engine_->playTake(take);
@@ -352,6 +357,13 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
   return s;
 }
 
+void GelFace::wish(const WishShow& show) {
+  // A wish left: a silent sigh and slump as its bubble fades.
+  if (show.pop == WishShow::kGone && wish_.pop != WishShow::kGone)
+    if (const rig::Clip* c = rig::kRig.clip("wish-gone")) play(*c);
+  wish_ = show;
+}
+
 void GelFace::play(const rig::Clip& clip) {
   mixer_.play(clip);
   cueing_ = &clip;
@@ -388,46 +400,32 @@ void GelFace::step(uint32_t t, linkkit::Rng&) {
   if (!stream_ || !stream_->drawn(t) || !stream_->call.live) return;
   const auto& c = stream_->call;
   if (c.at != landedAt_) landed_ = false, landedAt_ = c.at;
-  if (!landed_ && int32_t(t - c.at) >= int32_t(callFlightMs(c.gag))) {
+  if (!landed_ && int32_t(t - c.at) >= int32_t(callFlightMs(c.style))) {
     landed_ = true;
-    land(c.gag);
+    land(c.style);
   }
 }
 
 // What the body does as a word lands, in the pull's body units a second:
 // knocked back and dazed by a failure, longer up the ladder; a squash as a
 // word sinks in or a bit of hail lands; stretched up by a shrug or a cheer.
-void GelFace::land(CallGag gag) {
+void GelFace::land(CallStyle style) {
   auto& e = *engine_;
   // Toward the word's side: its lane's half of the screen.
   const int column = stream_ ? stream_->column(stream_->call.slot) : 0;
   const F side = stream_ && 2 * column + 1 >= stream_->laneCount ? F(1) : F(-1);
-  switch (callMove(gag)) {
+  switch (callMove(style)) {
     case CallMove::kHit:
       // A failure's knock; its dizzy eyes are the stream's to draw. Your
       // no makes it flinch and squeeze its eyes; a timeout lands on it
       // half asleep.
-      if (gag == CallGag::kNo) e.jolt(q(-1.5), q(2.4), q(-2), q(.6), 450);
-      else if (gag == CallGag::kTimeout) e.jolt(q(.6), q(2.8), q(-2), q(.9), 700);
+      if (style == CallStyle::kNo) e.jolt(q(-1.5), q(2.4), q(-2), q(.6), 450);
+      else if (style == CallStyle::kTimeout) e.jolt(q(.6), q(2.8), q(-2), q(.9), 700);
       else e.jolt(q(1.2), q(3.2), q(-3));
       break;
-    case CallMove::kTopple: e.jolt(q(-1.4), q(3.4), q(-2.6)); break;
-    case CallMove::kSink:
-    case CallMove::kArrive: e.jolt(0, q(1.8), 0); break;
-    case CallMove::kStamp: e.jolt(side * q(.4), q(1.2), 0); break;
-    case CallMove::kPlane: e.jolt(side * q(.9), q(1.2), 0); break;
-    case CallMove::kLook:
-    case CallMove::kPhone:
-    case CallMove::kPage: e.jolt(side * q(.8), q(-.4), q(.6)); break;
-    case CallMove::kStir: e.jolt(q(.9), 0, q(.6)); break;
+    case CallMove::kSink: e.jolt(0, q(1.8), 0); break;
     case CallMove::kShatter: e.jolt(0, q(1.4), 0); break;
-    case CallMove::kHail: e.jolt(q(.4), q(1.2), 0); break;
-    case CallMove::kShrug:
-    case CallMove::kPoof: e.jolt(0, q(-1.6), 0); break;
-    case CallMove::kRocket:
-    case CallMove::kCombo: e.jolt(0, q(-1.8), 0); break;
-    case CallMove::kCheer: e.jolt(0, q(-2.6), 0); break;
-    case CallMove::kDesk: e.jolt(q(-.6), 0, q(1)); break;
+    case CallMove::kShrug: e.jolt(0, q(-1.6), 0); break;
     // The whole turn's: a gulp at its end; the cube's thud; buried, its
     // lids heavy; leaning in to poke a frozen word; a blink as all goes off.
     case CallMove::kGather: e.jolt(0, q(1.6), q(.6)); break;
@@ -481,6 +479,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     borrowed = slime::kGestureFaces[std::min<int>(source.animVariant, slime::kGestureCount - 1)];
   if (borrowed < 0 && source.anim == SceneState::kNotice)
     borrowed = slime::kNoticeFaces[std::min<int>(source.animVariant, slime::kNoticeCount - 1)];
+  if (borrowed < 0 && stream_) borrowed = actFace(stream_->actNow(t), e.emotion);
   bool next = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
   if (next) {
     // Behaviour times the reaction (its loops, its line), so the engine
@@ -588,12 +587,12 @@ int GelFace::cues(uint32_t, bool, voice::FxEvent* out, bool& changed) {
 // The lane is drawn at the panel's size too (render/gel/lane.h), so the
 // canvas is left to the test pattern.
 bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, const char* bubble,
-                   const SignShow& sign, const DoneShow& done, const Strip& strip, bool) {
+                   const char* caption, const SignShow& sign, const DoneShow& done, const Strip& strip, bool) {
   if (!native || !native->pixels) return false;
-  const PastimeShow kit = pastimes(lastTick_);
+  const PastimeShow kit = stream_ && actTakesOver(stream_->actNow(t)) ? PastimeShow{} : pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &kit, drawer_);
+             lastTick_, stream_, t, &kit, drawer_, caption, &wish_);
   return true;
 }
 

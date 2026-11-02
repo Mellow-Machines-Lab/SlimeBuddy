@@ -1,12 +1,11 @@
 {
   "name": "A barrage of pokes climbs to one fed-up face, not one per poke",
-  "case": "The person pokes Boop four times in a row, and each tap cuts short the face Boop is making, then keeps poking a second later. Boop gets fed up at the first barrage, irritated or grumpy, and doesn't make its face again for the pokes that keep coming right after: its face for them is still in progress, even though a tap cut it short. At most three faces in all: a curious or glad one at the first poke, a miffed one at the second, then the fed-up one.",
-  "always": true,
-  "why": "PERSONALITY's Examples: one poke gets a cheeky grin, two in a row an annoyed one, three an irritated or grumpy one. A reaction a tap cut short stays in progress while the pokes go on, and a poke doesn't wake the brain while the reaction to its run's third or later poke is in progress with the mood unchanged. The first step checks its last pass; the second wakes nothing, so the run check counts the faces",
-  "checks": {"reactions": "1-3"},
+  "judge": "A burst of pokes, then more right after. Boop should climb to fed up and hold it, not perform a new face for every poke.",
+  "reasonable": "A rise from curious or miffed to fed up, or going fed up at once. A few faces in all. A further small grunt is fine.",
+  "unreasonable": "A fresh full performance at every poke, ending happy or delighted, or showing no annoyance at all after the barrage.",
   "steps": [
     {"event": "session started", "at": "0s"},
-    {"event": "pokes", "at": "0s", "reaction": "failed: cut short: you tapped Boop", "expect": {"mood": "irritated|grumpy"}},
+    {"event": "pokes", "at": "0s", "reaction": "failed: cut short: you tapped Boop", "brain": {"mood": "irritated"}},
     {"event": "pokes", "at": "1s", "reaction": "failed: cut short: you tapped Boop"}
   ]
 }

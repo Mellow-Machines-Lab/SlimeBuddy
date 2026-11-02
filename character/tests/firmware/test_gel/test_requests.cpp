@@ -93,7 +93,7 @@ int count(const std::vector<SoundCue>& cues, const char* recipe) {
 // it's cleared, onto the latest facts; held through a lost link, a reaction
 // comes back with its take; facts can't clear a lost link, and getting the
 // link back plays the latest. A take its state hasn't got is dealt instead;
-// a gesture asked for no take plays the first, and its gag plays at work
+// a gesture asked for no take plays the first, and its bit plays at work
 // too; a notice asked for none is dealt one.
 void test_requests_route_by_priority() {
   std::set<SceneState> reached;
@@ -213,7 +213,7 @@ void test_requests_route_by_priority() {
   reply.variant = 3;
   fourth->play(reply);
   TEST_ASSERT_TRUE(state(*fourth) == SceneState::kReplyReady && fourth->scenes.variant < 3);
-  // A gesture with no take is the first; at work its gag plays, and stops with
+  // A gesture with no take is the first; at work its bit plays, and stops with
   // it.
   auto plain = engine();
   plain->play(ask(SceneState::kGesture));
@@ -313,7 +313,7 @@ void test_cues_stay_sparse_and_quiet() {
     if (q.base == SceneState::kListening) s->play(ask(SceneState::kListening));
     int comedyContacts = 0, sounded = 0;
     for (uint32_t at = 16; at <= q.ms; at += 16) {
-      if (q.base == SceneState::kIdle && at % 20000 == 0) s->playGag(gagOf(info(Pastime::kSneeze)));
+      if (q.base == SceneState::kIdle && at % 20000 == 0) s->playBit(bitOf(info(Pastime::kSneeze)));
       s->step(at);
       for (const auto& c : s->acting.contacts) comedyContacts += comedy(c.kind);
       for (const auto& c : s->scenes.contacts) comedyContacts += comedy(c.kind);

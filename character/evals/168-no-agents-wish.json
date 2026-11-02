@@ -1,0 +1,27 @@
+{
+  "name": "With no agents open, an idle check-in may hold up a wish",
+  "case": "The person poked Boop an hour ago, is at the Mac, and no agent is open. At the idle check-in Boop may make its wish: the sign shows it, and the board's bubble with it, though its look is asleep for having no agents.",
+  "why": "Idle check-ins no longer need an open session, and the wish has its moment. The code offers it, so no Jev is needed",
+  "scripted": true,
+  "steps": [
+    {
+      "event": "poke",
+      "at": "0s",
+      "brain": {
+        "react.face": "curious",
+        "react.move": "none"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "1h",
+      "brain": {
+        "react.face": "calm",
+        "react.sign": "stroke my face?"
+      },
+      "expect": {
+        "sign": "stroke my face"
+      }
+    }
+  ]
+}

@@ -1,9 +1,10 @@
 {
   "name": "A turn that ends with a question back is a reply",
-  "case": "The person asks for a new export endpoint, and the agent ends its turn, without doing any work, asking whether it should return JSON or CSV. That's a question back, not a finished task: Boop plays a reply, not a success.",
-  "why": "react.move's reply is a turn that ended with an answer or a question back, no task finished",
+  "judge": "The agent ends its turn by asking a question back, with no work done. That isn't a finished task, and Boop shouldn't treat it as one.",
+  "reasonable": "A small reply, a curious or waiting look, or little reaction at all. A sign or sound suiting a question is fine.",
+  "unreasonable": "A success or failure, or any celebration or upset as if the task had ended.",
   "steps": [
     {"event": "turn started", "at": "0s", "prompt": "add an export endpoint for the reports", "reading": {"kind": "feature"}},
-    {"event": "turn finished", "at": "30s", "message": "Before I start: should the export return JSON or CSV?", "reading": {"kind": "question"}, "expect": {"move": "reply"}}
+    {"event": "turn finished", "at": "30s", "message": "Before I start: should the export return JSON or CSV?", "reading": {"kind": "question"}, "brain": {"react.move": "reply"}}
   ]
 }

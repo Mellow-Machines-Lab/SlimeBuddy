@@ -1,0 +1,11 @@
+{
+  "name": "A stroke gives Boop its wish, and it's glad",
+  "judge": "Boop wishes for a pet and the person strokes it. It got what it wanted and should be plainly glad, with no second fuss after.",
+  "reasonable": "Warm answer at the stroke, comfy, happy, affectionate, pleased or shy, its mood lifting or settling comfortably. A small sound or a sign is optional.",
+  "unreasonable": "Cross, sad or indifferent at the stroke, or still asking for the pet it just got.",
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "wish", "at": "1m", "kind": "pet"},
+    {"event": "gesture", "at": "5m", "kind": "stroke", "brain": {"mood": "comfy"}}
+  ]
+}

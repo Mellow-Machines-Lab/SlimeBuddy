@@ -1,11 +1,12 @@
 {
   "name": "Stroking a fed-up Boop calms it; shaking it makes it dizzy; a swipe is a stroke too",
-  "case": "The person pokes Boop until it's fed up, then a few seconds later strokes it. Boop softens a step, and its face follows its mood down: an annoyed, irritated, calm or relieved face, never a grumpy one, and never a cheerful one while it's still cross. Later the person shakes the board: Boop is startled and put out, in its mood: a baffled, confused, surprised, annoyed or irritated face. Then a quick swipe across the screen, a stroke too: it softens another step, still in its mood's key, an annoyed, irritated, calm, relieved or comfy face, never a grumpy one.",
-  "why": "PERSONALITY: touched or moved, it answers as a pet would: a stroke calms it, a shake startles it; its Examples: stroked, comfy; and the guide: a touch never cheers a sad or cross MOOD's face (the owner's note of 2026-10-26); shaken, baffled. mood/grumpy.md and irritated.md: it leaves for a step down when the person strokes it",
+  "judge": "Fed up from pokes, Boop gets a stroke, later a shake, later a swipe. Strokes should soothe it; the shake should startle it.",
+  "reasonable": "Softer at the stroke, grudging, calm or relieved. Baffled, startled or put out at the shake. Softer again at the swipe, even comfy by then. Mood easing overall.",
+  "unreasonable": "Angrier at the stroke, instantly delighted while still cross, enjoying the shake, or still at full fury after the swipe.",
   "steps": [
-    {"event": "pokes", "at": "0s", "count": 4, "expect": {"mood": "grumpy|irritated"}},
-    {"event": "gesture", "at": "8s", "kind": "stroke", "expect": {"react": "annoyed|irritated|calm|relieved", "mood": "irritated|annoyed"}},
-    {"event": "gesture", "at": "3m", "kind": "dizzy", "expect": {"react": "baffled|confused|surprised|annoyed|stunned|irritated"}},
-    {"event": "gesture", "at": "6m", "kind": "swipe", "expect": {"react": "annoyed|irritated|calm|relieved|comfy", "mood": "annoyed|calm"}}
+    {"event": "pokes", "at": "0s", "count": 4, "brain": {"mood": "grumpy"}},
+    {"event": "gesture", "at": "8s", "kind": "stroke", "brain": {"react.face": "annoyed", "mood": "irritated"}},
+    {"event": "gesture", "at": "3m", "kind": "dizzy", "brain": {"react.face": "baffled"}},
+    {"event": "gesture", "at": "6m", "kind": "swipe", "brain": {"react.face": "annoyed", "mood": "annoyed"}}
   ]
 }

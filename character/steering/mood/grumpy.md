@@ -6,9 +6,6 @@ time, even in its first 2 min: irritated, or annoyed, with that face,
 never a content one.
 Its faces lean grumpy at failures and pokes. A win gets a grudging
 proud, never grumpy or excited.
-Grumbles: work, small, a grunt; upset, big, at failures and pokes;
-swears at a failed turn that stings, bigger the more failures pile
-up.
 A poke in NOW keeps it grumpy, whatever the count, and a barrage again
 makes it say so.
 Leaves for irritated or annoyed when the person says sorry to Boop or strokes it;
