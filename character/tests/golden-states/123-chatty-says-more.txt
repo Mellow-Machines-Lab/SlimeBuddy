@@ -85,7 +85,8 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. And about once a day it wants
+Idle, it now and then muses or asks. With no agents open it has time on
+its hands: it may muse, ask for something or doze. And about once a day it wants
 something from you, a wish, once things have been quiet a good while,
 you're around and it's settled: a pet if it's gone a while untouched, a
 chat if it's been quiet between you, some work if it's bored. Not
@@ -317,7 +318,8 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. And about once a day it wants
+Idle, it now and then muses or asks. With no agents open it has time on
+its hands: it may muse, ask for something or doze. And about once a day it wants
 something from you, a wish, once things have been quiet a good while,
 you're around and it's settled: a pet if it's gone a while untouched, a
 chat if it's been quiet between you, some work if it's bored. Not

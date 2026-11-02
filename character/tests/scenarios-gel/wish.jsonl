@@ -49,3 +49,10 @@
 {"shot":"how-work-on"}
 {"clock":5000}
 {"shot":"how-work-off"}
+// A wish with no agents open: the bubble beside its asleep look, which is
+// only that it has no agents to watch.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"asleep","mood":"calm","vol":0,"wish":"pet"}
+{"clock":1500}
+{"shot":"pet-no-agents"}

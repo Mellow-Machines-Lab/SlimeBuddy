@@ -85,7 +85,8 @@ Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
 never does anything for an agent. Hushed, it sulks a step down.
-Idle, it now and then muses or asks. And about once a day it wants
+Idle, it now and then muses or asks. With no agents open it has time on
+its hands: it may muse, ask for something or doze. And about once a day it wants
 something from you, a wish, once things have been quiet a good while,
 you're around and it's settled: a pet if it's gone a while untouched, a
 chat if it's been quiet between you, some work if it's bored. Not
@@ -222,49 +223,49 @@ Nothing has happened for 23 min; claude sits idle on "landing".
 Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
-When: 15:27, Wednesday, day.
+When: 15:28, Wednesday, day.
 Boop: a Hatchling.
 You: no wish yet today, and the day's half gone.
-Agents: claude idle on "landing" for 46 min.
+Agents: claude idle on "landing" for 47 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 
-NOW (15:27)
-Nothing has happened for 46 min; claude sits idle on "landing".
+NOW (15:28)
+Nothing has happened for 47 min; claude sits idle on "landing".
 Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
-When: 15:51, Wednesday, day.
+When: 15:46, Wednesday, day.
 Boop: a Hatchling.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 
-NOW (15:51)
-Nothing has happened for 70 min; claude sits idle on "landing".
+NOW (15:46)
+Nothing has happened for 65 min; claude sits idle on "landing".
 Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
-When: 16:09, Wednesday, day.
+When: 16:12, Wednesday, day.
 Boop: a Hatchling.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 
-NOW (16:09)
-Nothing has happened for 88 min; claude sits idle on "landing".
+NOW (16:12)
+Nothing has happened for 91 min; claude sits idle on "landing".
 Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
-When: 16:35, Wednesday, day.
+When: 16:40, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 
-NOW (16:35)
-Nothing has happened for 114 min; claude sits idle on "landing".
+NOW (16:40)
+Nothing has happened for 119 min; claude sits idle on "landing".
 Boop did nothing on its own.
