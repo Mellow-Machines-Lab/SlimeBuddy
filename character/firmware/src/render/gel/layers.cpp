@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdlib>
 #include <initializer_list>
 
 #include "render/font.h"
@@ -275,19 +276,29 @@ void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
   r.polygon16(v, 3, ink);
 }
 
-// The wish's icons in its thought bubble, about (cx, cy), whole pixels.
-void wishIcon(Raster& r, WishShow::Kind kind, int cx, int cy, uint16_t ink) {
-  switch (kind) {
-    case WishShow::kPet:  // an open hand: a palm and four fingers
+// The wish's icons in its thought bubble, about (cx, cy), whole pixels. Showing
+// how, they move, saying what to do: the hand slides across, as a stroke does;
+// the speech dots pulse, one after another; the laptop's screen blinks.
+void wishIcon(Raster& r, const WishShow& wish, int cx, int cy, uint16_t ink) {
+  constexpr int kPeriodMs = 1400;
+  const int phase = int(wish.ms % kPeriodMs);
+  switch (wish.kind) {
+    case WishShow::kPet: {  // an open hand: a palm and four fingers
+      if (wish.how) cx += 8 * (std::abs(phase * 4 - kPeriodMs * 2) - kPeriodMs) / kPeriodMs;
       r.round(cx - 9, cy - 1, 18, 13, 5, ink);
       for (int i = 0; i < 4; ++i) r.line({cx - 7 + i * 5, cy + 1}, {cx - 7 + i * 5, cy - 11 + (i == 0 || i == 3 ? 3 : 0)}, 4, ink);
       break;
+    }
     case WishShow::kChat:  // a speech dot: three in a row
-      for (int i = -1; i <= 1; ++i) r.disk(cx + i * 10, cy, 4, ink);
+      for (int i = -1; i <= 1; ++i) {
+        const bool lit = wish.how && phase * 3 / kPeriodMs == i + 1;
+        r.disk(cx + i * 10, cy, lit ? 6 : 4, ink);
+      }
       break;
     case WishShow::kWork:  // a little laptop: its screen and its base
       r.ring(cx - 11, cy - 10, 22, 15, 3, 3, ink);
       r.round(cx - 15, cy + 7, 30, 4, 2, ink);
+      if (wish.how && phase < kPeriodMs / 2) r.round(cx - 6, cy - 5, 12, 5, 2, ink);
       break;
     case WishShow::kNone:
       break;
@@ -760,7 +771,7 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
       r.disk(cx + d * out.x / 4096, cy + d * out.y / 4096, 2, kMoonlight);
     }
   } else {
-    wishIcon(r, wish.kind, cx, cy, kInk);
+    wishIcon(r, wish, cx, cy, kInk);
   }
   r.alpha = 255;
 }

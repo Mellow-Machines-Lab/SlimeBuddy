@@ -8,6 +8,6 @@
     {"event": "session started", "at": "0s"},
     {"event": "turn started", "at": "1m", "prompt": "add a search bar"},
     {"event": "turn finished", "at": "2m"},
-    {"event": "wait", "at": "47m", "brain": {"react.sign": "pet me?"}}
+    {"event": "wait", "at": "47m", "brain": {"react.sign": "stroke my face?"}}
   ]
 }

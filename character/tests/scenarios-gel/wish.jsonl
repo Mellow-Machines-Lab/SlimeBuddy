@@ -1,6 +1,8 @@
 // The wish: a thought bubble beside the head with its icon while it waits
 // (a hand, a speech dot, a laptop); met, the icon pops into a heart with
-// sparks; left, it fades, with a silent sigh and slump.
+// sparks; left, it fades, with a silent sigh and slump. Until you've met a
+// kind once it shows how: the hand slides across, the dots pulse, the screen
+// blinks.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"pet"}
@@ -30,3 +32,20 @@
 {"shot":"gone"}
 {"clock":2050}
 {"shot":"slump"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"pet","wish_how":true}
+{"clock":1400}
+{"shot":"how-pet-right"}
+{"clock":2100}
+{"shot":"how-pet-left"}
+{"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"chat","wish_how":true}
+{"clock":2900}
+{"shot":"how-chat-first"}
+{"clock":3400}
+{"shot":"how-chat-second"}
+{"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"work","wish_how":true}
+{"clock":4300}
+{"shot":"how-work-on"}
+{"clock":5000}
+{"shot":"how-work-off"}
