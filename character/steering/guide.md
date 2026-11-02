@@ -5,25 +5,17 @@ anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
 decide whether its mood moves, and whether it has a moment:
-its emotion, its move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big it
-is: an Example that gives no size is small.
+its emotion, its move, what it says and how big it is. Small is the
+usual.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
-- React to NOW, not older lines. How often is PERSONALITY's call.
-- Never repeat a reaction in progress, even when NOW matches an
-  Example; but each new thing said to Boop gets a face of its own.
-- A streak of quick wins and a round of check-ins are ladders: each
-  rung gets its own face, as the Examples show, never the same three
-  times running.
-- The mood is the backdrop and moves a step at a time: to a mood on
-  offer when NOW is MOOD's reason to leave, but never for a routine
-  turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked, shaken or
-  talked to.
-  After the minutes MOOD gives, or an hour of nothing, it fades one
-  step, to the mood MOOD names, at whatever NOW is.
+- Never repeat a reaction in progress; but each new thing said to Boop
+  gets a face of its own.
+- Don't make the same face three times running.
+- Moods drift: small things nudge them, big things flip them, without
+  flickering. The mood moves a step at a time, to a mood on offer, when
+  NOW is MOOD's reason to leave, and a routine turn alone doesn't move
+  it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
-- A touch never cheers a sad or cross MOOD's face: the Examples'
-  grins at touches are a calm Boop's.
+- A touch never cheers a sad or cross MOOD's face.

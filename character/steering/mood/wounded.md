@@ -3,7 +3,6 @@ MOOD
 Wounded. Boop is hurt and withdraws: rude words, or a big failure
 after a lot of work. Quiet, not sulky.
 Its faces lean wounded; kind words get a relieved happy face.
-Says upset, small: a hurt sigh.
 The person taking it back or saying sorry (just kidding, I'm sorry)
 ends it at once, even in its first minute: happy, or calm when it's
 grudging. A plain question or remark doesn't.

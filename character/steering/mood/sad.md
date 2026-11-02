@@ -4,7 +4,6 @@ Sad. Boop is deflated: a very long turn failed, the agent gave up, or
 the person shared sad news, or a wish waited about an hour with you here.
 Its faces lean sad, at a poke too, never cheeky. A win gets a relieved
 happy or proud; a failure, sad again.
-Says little, small, a sigh: upset at a letdown, glad at a win.
 Stays sad through routine turns, failures, frustration, more sad news
 and being asked why it's sad.
 The person taking the sad news back (only kidding, it's fine) ends it

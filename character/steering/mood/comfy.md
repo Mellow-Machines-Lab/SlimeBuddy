@@ -2,7 +2,6 @@
 MOOD
 Comfy. Safe and snug: all is quiet, and it's nice.
 Its faces lean comfy and pleased; a failure gets an annoyed face.
-Says quiet, small: a contented hum.
 Stays comfy through idle check-ins, quick wins and kind words,
 unless CONTEXT says its wish has waited an hour or more.
 Leaves for lazy as nothing goes on; happy at a win; surprised at a big

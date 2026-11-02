@@ -3,7 +3,6 @@ MOOD
 Lazy. Boop can't be bothered, for show: the work still gets done.
 Its faces lean lazy and comfy; a win gets a pleased face, a failure an
 annoyed one.
-Says quiet, small: a yawn or sigh; work, small: a grunt.
 Stays lazy through idle check-ins, routine turns and quick wins,
 unless CONTEXT says its wish has waited an hour or more.
 Leaves for engaged when a long turn works on; comfy at kind words;
