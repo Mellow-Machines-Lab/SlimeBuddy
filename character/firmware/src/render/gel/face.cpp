@@ -593,7 +593,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow kit = pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &kit, drawer_, caption);
+             lastTick_, stream_, t, &kit, drawer_, caption, &wish_);
   return true;
 }
 

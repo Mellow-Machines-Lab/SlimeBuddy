@@ -1,0 +1,38 @@
+{
+  "name": "MEMORY says you've missed its wishes: Boop leans sulky at a wish left",
+  "case": "MEMORY says the person has missed Boop's wishes three days running. Today's has waited an hour and more: an idle check-in finds Boop sad or lonely, not cheerful.",
+  "why": "Wish events are the journal's notable lines; the written memory carries the pattern, which Jev reads as MEMORY",
+  "memory": {
+    "notes": [
+      "boop · 2026-10-26 · You've missed Boop's wishes three days running."
+    ]
+  },
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "wish",
+      "at": "1m",
+      "kind": "pet"
+    },
+    {
+      "event": "turn started",
+      "at": "30m",
+      "prompt": "add tests"
+    },
+    {
+      "event": "turn finished",
+      "at": "31m"
+    },
+    {
+      "event": "wait",
+      "at": "75m",
+      "expect": {
+        "mood": "lonely|sad|annoyed|calm",
+        "react": "!happy"
+      }
+    }
+  ]
+}

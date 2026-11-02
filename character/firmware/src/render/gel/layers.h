@@ -104,5 +104,9 @@ int signOffset(uint32_t ms);
 // The sign, at the body's front (its hands' ring), over everything but
 // the lane.
 void paintSign(Surface& surface, const SignShow& sign, const rig::Anchors& at);
+// The wish: a small thought bubble beside the head with its icon (a hand,
+// a speech dot, a laptop); met, the icon pops into a heart with sparks; left,
+// the bubble fades.
+void paintWish(Surface& surface, const WishShow& wish, const rig::Anchors& at);
 
 }  // namespace render::gel

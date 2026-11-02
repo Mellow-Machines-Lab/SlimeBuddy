@@ -87,8 +87,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -207,7 +207,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -314,12 +314,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -332,6 +333,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -431,8 +433,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -551,7 +553,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -649,15 +651,16 @@ Comfy. Safe and snug: all is quiet, and it's nice.
 Its faces lean comfy and pleased; a failure gets an annoyed face.
 Says quiet, small: a contented hum.
 Stays comfy through idle check-ins, quick wins and kind words,
-unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+unless CONTEXT says its wish has waited an hour or more.
 Leaves for lazy as nothing goes on; happy at a win; surprised at a big
-event; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away. Fades to calm once
+event; lonely at an idle check-in when CONTEXT says its wish has waited about an
+hour while you were here, or back after 20 to 40 hours away. Fades to calm once
 Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -761,8 +764,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -881,7 +884,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -988,12 +991,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 3 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1099,8 +1103,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -1219,7 +1223,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -1328,6 +1332,7 @@ Boop has been curious for 2 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
 
@@ -1438,8 +1443,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -1558,7 +1563,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -1670,6 +1675,7 @@ going on.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn; you touched Boop once.
 
@@ -1783,8 +1789,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -1903,7 +1909,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -2010,12 +2016,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn; you touched Boop twice.
 
@@ -2132,8 +2139,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -2252,7 +2259,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -2350,15 +2357,16 @@ Comfy. Safe and snug: all is quiet, and it's nice.
 Its faces lean comfy and pleased; a failure gets an annoyed face.
 Says quiet, small: a contented hum.
 Stays comfy through idle check-ins, quick wins and kind words,
-unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+unless CONTEXT says its wish has waited an hour or more.
 Leaves for lazy as nothing goes on; happy at a win; surprised at a big
-event; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away. Fades to calm once
+event; lonely at an idle check-in when CONTEXT says its wish has waited about an
+hour while you were here, or back after 20 to 40 hours away. Fades to calm once
 Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn; you touched Boop 3 times.
 
@@ -2480,8 +2488,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -2600,7 +2608,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -2707,12 +2715,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 2 min.
 Today: 1 turn; you touched Boop 3 times and talked to it once.
 
@@ -2752,6 +2761,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 Today: 1 turn; you touched Boop 3 times and talked to it once.
 
@@ -2795,6 +2805,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 2 turns; you touched Boop 3 times and talked to it once.
 
@@ -2925,8 +2936,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -3045,7 +3056,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -3154,6 +3165,7 @@ Boop has been curious for 2 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:10, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 Today: 2 turns; you touched Boop 3 times and talked to it once.
 
@@ -3205,6 +3217,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 min.
 Today: 2 turns; you touched Boop 3 times and talked to it once.
 
@@ -3337,8 +3350,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -3457,7 +3470,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -3564,12 +3577,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:16, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 3 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -3683,8 +3697,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -3803,7 +3817,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -3901,15 +3915,16 @@ Comfy. Safe and snug: all is quiet, and it's nice.
 Its faces lean comfy and pleased; a failure gets an annoyed face.
 Says quiet, small: a contented hum.
 Stays comfy through idle check-ins, quick wins and kind words,
-unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+unless CONTEXT says its wish has waited an hour or more.
 Leaves for lazy as nothing goes on; happy at a win; surprised at a big
-event; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away. Fades to calm once
+event; lonely at an idle check-in when CONTEXT says its wish has waited about an
+hour while you were here, or back after 20 to 40 hours away. Fades to calm once
 Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:18, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 Today: 3 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -3942,6 +3957,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:20, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 min.
 Today: 3 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4054,8 +4070,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -4174,7 +4190,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -4273,16 +4289,17 @@ Its faces lean lazy and comfy; a win gets a pleased face, a failure an
 annoyed one.
 Says quiet, small: a yawn or sigh; work, small: a grunt.
 Stays lazy through idle check-ins, routine turns and quick wins,
-unless CONTEXT says you haven't touched or talked to Boop in 2 h.
+unless CONTEXT says its wish has waited an hour or more.
 Leaves for engaged when a long turn works on; comfy at kind words;
 surprised at a big, sudden event;
-lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away. Fades
+lonely at an idle check-in when CONTEXT says its wish has waited about an
+hour while you were here, or back after 20 to 40 hours away. Fades
 to calm once Boop has been lazy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:25, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 7 min.
 Today: 3 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4306,6 +4323,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:29, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 11 min.
 Today: 3 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4329,6 +4347,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:34, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 4 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4432,8 +4451,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -4552,7 +4571,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -4659,12 +4678,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:36, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 Today: 4 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4685,6 +4705,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:36, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 5 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -4792,8 +4813,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -4912,7 +4933,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -5021,6 +5042,7 @@ Boop has been curious for 2 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:54, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 17 min.
 Today: 5 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -5034,7 +5056,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:14, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 37 min.
 Today: 5 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
@@ -5048,7 +5070,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:34, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 57 min.
 Today: 5 turns, 1 failed; you touched Boop 3 times and talked to it once.
 

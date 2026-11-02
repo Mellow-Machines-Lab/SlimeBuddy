@@ -1,0 +1,24 @@
+{
+  "name": "A stroke gives Boop its wish, and it's glad",
+  "case": "Boop wishes for a pet. The person strokes it: the wish is met at once, by the rule's fulfilment, and the stroke gets its face: its mood goes comfy or happy. The wish's own line then gets nothing more, as Boop has just answered.",
+  "why": "Pipeline.gesture meets it (Core.meetWish); EventLine.wishEnded's line wakes the brain",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "wish",
+      "at": "1m",
+      "kind": "pet"
+    },
+    {
+      "event": "gesture",
+      "at": "5m",
+      "kind": "stroke",
+      "expect": {
+        "mood": "comfy|happy"
+      }
+    }
+  ]
+}

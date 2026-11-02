@@ -1,0 +1,28 @@
+{
+  "name": "At an idle check-in, chatty, Boop may make its wish for the day",
+  "case": "With nothing going on and Boop calm, an idle check-in offers its wishes beside its musings. Chatty, it makes one: pet me?, talk to me? or work with me?.",
+  "why": "MomentOutput: the wish options in the sign question, within Core.wishable; asks.md's [wish \u2026]",
+  "talk": "chatty",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "add a search bar"
+    },
+    {
+      "event": "turn finished",
+      "at": "2m"
+    },
+    {
+      "event": "wait",
+      "at": "17m",
+      "expect": {
+        "sign": "pet me?|talk to me?|work with me?|none"
+      }
+    }
+  ]
+}

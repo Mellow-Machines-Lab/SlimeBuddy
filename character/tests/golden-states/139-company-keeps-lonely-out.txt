@@ -87,8 +87,8 @@ A very short turn done is back-and-forth: its finish, small, in
 silence.
 Work still going gets a face at every check-in, never none. An idle
 check-in gets a small face or nothing, never a finish, and moves the
-mood only to fade it, or to lonely when CONTEXT says you
-haven't touched or talked to Boop in 2 h.
+mood only to fade it, or to sad or lonely when CONTEXT says its wish
+has waited about an hour.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a
@@ -207,7 +207,7 @@ Examples:
   → happy, says hello
 - NOW: You came back to the Mac after 11 hours away.
   → happy, wake up, says hello
-- CONTEXT: You: at the Mac for 3 h; you haven't touched or talked to Boop in 2 h.
+- CONTEXT: You: at the Mac for 3 h; Boop's wish: a pet, waiting 70 min while you were here.
   NOW: Nothing has happened for 20 min; claude sits idle on "api".
   → lonely, says quiet
 - NOW: You came back to the Mac after 26 hours away.
@@ -314,12 +314,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely only at an idle check-in after you've worked 2 h with no touch
-or word (CONTEXT says so), or back after 20 to 40 hours away.
+at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
+an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -332,6 +333,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 5 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -346,6 +348,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 11 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -363,6 +366,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:17, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 16 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -383,6 +387,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:22, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 21 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -406,6 +411,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:26, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 25 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -431,6 +437,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:31, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 30 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -459,6 +466,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:35, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 34 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -490,6 +498,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:40, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 39 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -524,6 +533,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:44, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 43 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -560,6 +570,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:50, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 49 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -599,6 +610,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:55, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 54 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -641,6 +653,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:00, Wednesday, day.
 Boop: a Hatchling.
+You: no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 59 min.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -686,7 +699,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:05, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -734,7 +747,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:09, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -785,7 +798,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:14, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -839,7 +852,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:19, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -896,7 +909,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:24, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -955,7 +968,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:29, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1017,7 +1030,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:34, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1082,7 +1095,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:40, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1150,7 +1163,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:45, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1220,7 +1233,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:49, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1293,7 +1306,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:55, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1369,7 +1382,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:00, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h.
+You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1448,7 +1461,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:05, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1529,7 +1542,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:11, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1613,7 +1626,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:15, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1700,7 +1713,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:20, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1790,7 +1803,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:25, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -1882,7 +1895,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:30, Wednesday, day.
 Boop: a Hatchling.
-You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h.
+You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
 

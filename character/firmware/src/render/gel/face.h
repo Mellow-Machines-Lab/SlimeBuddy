@@ -84,6 +84,7 @@ class GelFace final : public Face {
   // cues' t and shown (its contact cues play under the pattern too).
   bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const char*, const SignShow&, const DoneShow&,
             const Strip&, bool) override;
+  void wish(const WishShow& show) override { wish_ = show; }
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
   int profile(char* out, size_t n, uint32_t frames) override;
   const Engine& engine() const { return *engine_; }
@@ -201,6 +202,8 @@ class GelFace final : public Face {
   void play(const rig::Clip& clip);
   // The body answers a word of the work stream as it lands.
   void land(CallStyle style);
+  // The wish to show, the device's, set before each frame.
+  WishShow wish_;
   // A new revision: the sounds already queued belong to what came before.
   void restartCues();
   bool factsChanged(const FaceContext& context) const;

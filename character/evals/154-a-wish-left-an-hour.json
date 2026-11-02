@@ -1,0 +1,44 @@
+{
+  "name": "A wish left about an hour with you here makes Boop sad or lonely",
+  "case": "Boop wishes for a pet, and the person works on at the Mac, a short turn now and then, without a touch. Past about an hour, an idle check-in finds it waiting in CONTEXT: Boop turns lonely (sad would do as well, but it reads a pet left as lonely).",
+  "why": "CONTEXT's You row gives the wish's wait; mood/calm.md and sad.md judge it",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "wish",
+      "at": "1m",
+      "kind": "pet"
+    },
+    {
+      "event": "turn started",
+      "at": "20m",
+      "prompt": "add tests"
+    },
+    {
+      "event": "turn finished",
+      "at": "21m",
+      "expect": {
+        "mood": "!lonely"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "45m",
+      "prompt": "fix the docs"
+    },
+    {
+      "event": "turn finished",
+      "at": "46m"
+    },
+    {
+      "event": "wait",
+      "at": "130m"
+    }
+  ],
+  "checks": {
+    "moods_seen": "lonely"
+  }
+}

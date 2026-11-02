@@ -469,7 +469,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
-                const char* note) {
+                const char* note, const WishShow* wish) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -504,6 +504,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintStreamDesk(surface, *stream, e, s, now);
     paintStreamFront(surface, *stream, at, e, now);
   }
+  if (wish) paintWish(surface, *wish, at);
   if (sign.text) paintSign(surface, sign, at);
   paintTicket(surface, done);
   Measure measure(profile.lane);

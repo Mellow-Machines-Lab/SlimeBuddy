@@ -275,6 +275,25 @@ void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
   r.polygon16(v, 3, ink);
 }
 
+// The wish's icons in its thought bubble, about (cx, cy), whole pixels.
+void wishIcon(Raster& r, WishShow::Kind kind, int cx, int cy, uint16_t ink) {
+  switch (kind) {
+    case WishShow::kPet:  // an open hand: a palm and four fingers
+      r.round(cx - 9, cy - 1, 18, 13, 5, ink);
+      for (int i = 0; i < 4; ++i) r.line({cx - 7 + i * 5, cy + 1}, {cx - 7 + i * 5, cy - 11 + (i == 0 || i == 3 ? 3 : 0)}, 4, ink);
+      break;
+    case WishShow::kChat:  // a speech dot: three in a row
+      for (int i = -1; i <= 1; ++i) r.disk(cx + i * 10, cy, 4, ink);
+      break;
+    case WishShow::kWork:  // a little laptop: its screen and its base
+      r.ring(cx - 11, cy - 10, 22, 15, 3, 3, ink);
+      r.round(cx - 15, cy + 7, 30, 4, 2, ink);
+      break;
+    case WishShow::kNone:
+      break;
+  }
+}
+
 // Hearts floating up either side of it.
 void hearts(Raster& r, int w, int bottom, int ms) {
   for (int i = 0; i < 6; ++i) {
@@ -711,6 +730,39 @@ void paintSky(Surface& s, const Engine& e, const rig::Layers* layers, uint32_t t
   const int ms = int(e.elapsedMs % 3600000u);
   if (scene == kNightSky) nightSky(behind, ms);
   if (scene == kSun) sun(behind, ms);
+}
+
+void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
+  if (wish.kind == WishShow::kNone || !s.pixels) return;
+  Raster r{s};
+  // Up and to the right of the head, held on the panel.
+  constexpr int kRadius = 26;
+  const int cx = std::min(s.width - kRadius - 8, at.brimR.x / 16 + 30);
+  const int cy = std::max(kRadius + 6, at.crown.y / 16 + 6);
+  const int age = int(wish.popAge), pop = int(WishShow::kPopMs);
+  // A wish left fades; one met fades after its heart has popped.
+  r.alpha = wish.pop == WishShow::kGone ? 255 * (pop - age) / pop
+            : wish.pop == WishShow::kMet && age > pop / 2 ? 255 * (pop - age) * 2 / pop
+                                                          : 255;
+  // The thought's trail down to the head, then the cloud.
+  r.disk(cx - kRadius - 6, cy + kRadius + 6, 4, kCream);
+  r.disk(cx - kRadius + 4, cy + kRadius - 3, 7, kCream);
+  r.disk(cx - 10, cy + 8, kRadius - 8, kCream);
+  r.disk(cx + 10, cy + 8, kRadius - 8, kCream);
+  r.disk(cx, cy - 4, kRadius - 2, kCream);
+  if (wish.pop == WishShow::kMet) {
+    // The icon pops into a heart, with sparks flying out from it.
+    constexpr uint16_t kHeart = rgb565(226, 78, 104);
+    heart(r, cx * 16, (cy - 6) * 16, std::min(11, 4 + age / 30), kHeart);
+    for (int i = 0; i < 6; ++i) {
+      const Point out = turn(i * 32 / 6);
+      const int d = kRadius + age / 18;
+      r.disk(cx + d * out.x / 4096, cy + d * out.y / 4096, 2, kMoonlight);
+    }
+  } else {
+    wishIcon(r, wish.kind, cx, cy, kInk);
+  }
+  r.alpha = 255;
 }
 
 void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at) {
