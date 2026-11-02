@@ -1861,10 +1861,7 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"night", "party"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"day", "programmers"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(outfitFor(tags({"night", "halloween", "party"}))));
-  // Reading glasses while `reading` is on, over a Friday's shades; shades
-  // only by day.
-  TEST_ASSERT_EQUAL(int(Eyewear::kGlasses), int(eyewearFor(tags({"night", "reading"}))));
-  TEST_ASSERT_EQUAL(int(Eyewear::kGlasses), int(eyewearFor(tags({"day", "friday", "reading"}))));
+  // Shades on a Friday, only by day.
   TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"day", "friday"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"night", "friday"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"morning", "friday"}))));  // from noon
@@ -2034,15 +2031,12 @@ static void test_the_layers_come_and_go_through_the_stack() {
       TEST_ASSERT_EQUAL_HEX16(px[size_t(y) * s.width + x], moved[size_t(y) * s.width + x + 20]);
 }
 
-// The pyjamas come with the nightcap, and with no other hat, but while it
-// wears its reading glasses; the glasses are on its eyes but while it
-// sleeps.
 // Hushed (the `hushed` tag), its lips are zipped: a short line across the
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(21, tagIndex("hushed"));  // last, after reading: the Mac's list (Occasions.board) agrees
-  TEST_ASSERT_EQUAL_INT(22, kTagCount);
+  TEST_ASSERT_EQUAL_INT(20, tagIndex("hushed"));  // last, after sprout: the Mac's list (Occasions.board) agrees
+  TEST_ASSERT_EQUAL_INT(21, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -2092,7 +2086,8 @@ static void test_hushed_its_lips_are_zipped() {
   TEST_ASSERT_FALSE(hushed(*e));
 }
 
-static void test_it_wears_pyjamas_at_night_and_reads_in_glasses() {
+// The pyjamas come with the nightcap, and with no other hat.
+static void test_it_wears_pyjamas_at_night() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -2107,10 +2102,8 @@ static void test_it_wears_pyjamas_at_night_and_reads_in_glasses() {
     std::fill(px.begin(), px.end(), 0);
     paintLayers(s, *e, at);
   };
-  // Inside the pyjamas, between the lap's front and the hem's; on the
-  // glasses' left rim.
+  // Inside the pyjamas, between the lap's front and the hem's.
   const size_t pyjamas = size_t((at.lap[8].y + at.hem[8].y) / 32) * 502 + size_t(at.hem[8].x / 16);
-  const size_t rim = size_t(at.eyeL.y / 16) * 502 + size_t((at.eyeL.x - (at.eyeR.x - at.eyeL.x) / 5) / 16);
   layers({"evening"}, SceneState::kIdle);
   TEST_ASSERT_EQUAL_HEX16(0, px[pyjamas]);
   layers({"night"}, SceneState::kIdle);
@@ -2122,14 +2115,6 @@ static void test_it_wears_pyjamas_at_night_and_reads_in_glasses() {
   layers({"night", "halloween"}, SceneState::kAsleep);  // Halloween's hat wins, and has no pyjamas
   TEST_ASSERT_EQUAL_HEX16(0, px[pyjamas]);
   layers({"day"}, SceneState::kAsleep);
-  TEST_ASSERT_EQUAL_HEX16(0, px[pyjamas]);
-  layers({"day", "reading"}, SceneState::kWorking);
-  TEST_ASSERT_NOT_EQUAL(0, px[rim]);
-  layers({"night", "reading"}, SceneState::kAsleep);  // the pyjamas, its eyes bare
-  TEST_ASSERT_EQUAL_HEX16(0, px[rim]);
-  TEST_ASSERT_NOT_EQUAL(0, px[pyjamas]);
-  layers({"night", "reading"}, SceneState::kWorking);  // awake: the glasses, and no pyjamas
-  TEST_ASSERT_NOT_EQUAL(0, px[rim]);
   TEST_ASSERT_EQUAL_HEX16(0, px[pyjamas]);
 }
 
@@ -3242,7 +3227,7 @@ int main() {
   RUN_TEST(test_the_outline_holds_still_as_the_mesh_turns);
   RUN_TEST(test_the_materials_copy_draws_the_same_body);
   RUN_TEST(test_layers_follow_the_bodys_anchors);
-  RUN_TEST(test_it_wears_pyjamas_at_night_and_reads_in_glasses);
+  RUN_TEST(test_it_wears_pyjamas_at_night);
   RUN_TEST(test_the_sky_is_behind_the_body);
   RUN_TEST(test_it_has_its_coffee_in_the_morning);
   RUN_TEST(test_a_recording_replays_as_drawn);

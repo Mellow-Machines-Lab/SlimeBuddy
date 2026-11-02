@@ -22,11 +22,10 @@ constexpr uint16_t kCardInk = rgb565(27, 55, 78), kCardRim = rgb565(0x78, 0xa4, 
 constexpr uint16_t kWords = rgb565(184, 233, 245), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kInk = rgb565(28, 24, 36);
 // The nightcap's and the pyjamas' flannel, its stripes and the cap's
-// cuff, the moon's light, and the reading glasses' wire.
+// cuff, the moon's light, and the morning's mug and coffee.
 constexpr uint16_t kNightcloth = rgb565(62, 72, 168), kNightstripe = rgb565(176, 190, 238),
                    kNightcuff = rgb565(112, 124, 210), kMoonlight = rgb565(250, 230, 160),
-                   kMug = rgb565(232, 112, 72), kCoffee = rgb565(92, 52, 30),
-                   kWire = rgb565(206, 164, 92);
+                   kMug = rgb565(232, 112, 72), kCoffee = rgb565(92, 52, 30);
 
 // The point `i` thirty-seconds of a turn round a circle, as cosine and
 // sine (Q12).
@@ -183,26 +182,6 @@ void shades(Raster& r, const rig::Anchors& at) {
   }
   const Point bridge[] = {{at.eyeL.x + lw, at.eyeL.y - lh / 2}, {at.eyeR.x - lw, at.eyeR.y - lh / 2}};
   r.stroke16(bridge, 2, d / 30 + 16, kInk);
-}
-
-// Reading glasses: a round wire rim about each eye, a glint on its glass,
-// and a bridge arching between them.
-void glasses(Raster& r, const rig::Anchors& at) {
-  const int d = std::max(16, at.eyeR.x - at.eyeL.x), radius = d / 5, wire = d / 50 + 16;
-  for (const rig::Point& e : {at.eyeL, at.eyeR}) {
-    Point rim[33], glint[4];
-    for (int i = 0; i <= 32; ++i) rim[i] = {e.x + radius * turn(i).x / 4096, e.y + radius * turn(i).y / 4096};
-    for (int i = 0; i < 4; ++i)  // up and to the left, inside the rim
-      glint[i] = {e.x + radius * 7 / 10 * turn(18 + i).x / 4096, e.y + radius * 7 / 10 * turn(18 + i).y / 4096};
-    r.alpha = 170;
-    r.stroke16(glint, 4, wire, kCream);
-    r.alpha = 255;
-    r.stroke16(rim, 33, wire, kWire);
-  }
-  const Point bridge[] = {{at.eyeL.x + radius, at.eyeL.y - radius / 5},
-                          {(at.eyeL.x + at.eyeR.x) / 2, (at.eyeL.y + at.eyeR.y) / 2 - radius * 2 / 5},
-                          {at.eyeR.x - radius, at.eyeR.y - radius / 5}};
-  r.stroke16(bridge, 3, wire, kWire);
 }
 
 // The nightcap's pyjamas: from the lap's ring down past
@@ -523,8 +502,7 @@ int swingFor(const Engine& e) { return int(e.elapsedMs % 2000 / OutfitLayer::kSw
 // Peekaboo's gesture takes it all off, and it sleeps with its eyes bare;
 // the shades come off while it shows a feeling (a reaction, a face the
 // Mac lends it, needs you, listening), so its eyes are seen; the
-// nightcap comes with its pyjamas, but while it wears its reading
-// glasses.
+// nightcap comes with its pyjamas.
 Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
   const SceneState state = e.scenes.route.state;
@@ -541,7 +519,6 @@ Look lookFor(const Engine& e) {
 }
 
 void eyewear(Raster& r, const rig::Anchors& at, Eyewear eyes) {
-  if (eyes == Eyewear::kGlasses) glasses(r, at);
   if (eyes == Eyewear::kShades) shades(r, at);
 }
 

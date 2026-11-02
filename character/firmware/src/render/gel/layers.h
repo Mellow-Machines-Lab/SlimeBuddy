@@ -7,11 +7,10 @@
 //   the morning the sun up on its left, glowing, its rays turning, only
 //   where nothing else is drawn;
 // - the outfit, by the tags on now (state.when): a striped nightcap at
-//   night, and its pyjamas on the body's lower rings but while it wears
-//   reading glasses, a party hat on a party day, New Year's Day, Lunar New
-//   Year and Programmers' Day, a witch hat at Halloween, a bobble hat in
-//   winter; reading glasses while the latest prompt was an essay or for
-//   docs, else shades on a Friday's day, both off while it sleeps;
+//   night, and its pyjamas on the body's lower rings, a party hat on a
+//   party day, New Year's Day, Lunar New Year and Programmers' Day, a
+//   witch hat at Halloween, a bobble hat in winter; shades on a Friday's
+//   day, off while it sleeps;
 // - the air around it: snow in winter, confetti on a party day and New
 //   Year's Day, hearts on Valentine's;
 // - beside it: Zs rising while it sleeps at night, or its coffee, steaming

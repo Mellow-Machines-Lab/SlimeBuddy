@@ -835,8 +835,7 @@ the same tags, after the face art and before the props
 (`gel/layers.h`): a hat by the first tag that has one (Halloween's witch
 hat; a party hat for party, New Year's, Lunar New Year and Programmers'
 Day; a striped nightcap at night, flopping down its left side to a
-tassel by its cheek, with pyjamas to match but while it wears reading
-glasses; a bobble hat in winter), shades on a Friday from noon to
+tassel by its cheek, with pyjamas to match; a bobble hat in winter), shades on a Friday from noon to
 night, off while it shows a feeling (a reaction, a face the Mac lends
 it, needs you, listening) so its eyes are seen, and the air
 (snow, confetti, hearts, Zs asleep at night), and last the sign a
