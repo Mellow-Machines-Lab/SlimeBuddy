@@ -204,7 +204,7 @@ void GelFace::deal(SceneState look, uint32_t t) {
   const SceneState desk = e.scenes.route.state;
   const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
   for (const auto& p : kPastimes) {
-    if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
+    if (p.look != look || p.stage > stageOf(when) || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
     if (morning && (p.id == Pastime::kSip || p.id == Pastime::kReach || p.id == Pastime::kRefill)) continue;
     if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
       continue;
@@ -277,6 +277,11 @@ void GelFace::playPastime(Pastime p, uint32_t t) {
 void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
   SceneState look;
   const Pastime p = pastimeFor(name);
+  // A trick it doesn't know yet: it tries, and flops.
+  if (p != Pastime::kNone && info(p).stage > stageOf(engine_->scenes.when)) {
+    engine_->jolt(q(4), q(-6), 0, 1, kFlopMs);
+    return;
+  }
   if (p != Pastime::kNone && hasBody(info(p)) && showsLook(anim, look) &&
       (look == SceneState::kIdle || look == SceneState::kAsleep)) {
     start(info(p), look, t);

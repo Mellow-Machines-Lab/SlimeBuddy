@@ -2008,8 +2008,8 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(20, tagIndex("hushed"));  // last, after sprout: the Mac's list (Occasions.board) agrees
-  TEST_ASSERT_EQUAL_INT(21, kTagCount);
+  TEST_ASSERT_EQUAL_INT(22, tagIndex("hushed"));  // last, after the stages: the Mac's list (Tags.board) agrees
+  TEST_ASSERT_EQUAL_INT(23, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();

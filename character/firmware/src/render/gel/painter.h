@@ -47,6 +47,28 @@ constexpr int kNoseOverDesk = 54;
 constexpr int noseDropFor(const BodySettings& b) {
   return kNoseOverDesk - kNoseOverDesk * (b.size * (4096 + b.squash * 2130 / 4096) / 4096) / 4096;
 }
+// The stage it's at, from its tag: 1 a Hatchling's to 4 a Chonk's, and
+// Buddy's with none. The pastimes it knows go by it (render/gel/pastimes.h).
+int stageOf(uint32_t when);
+// Changing stage. Growing: it glows and draws in, pops past its new size and
+// settles. Shrinking: it sinks, with no show. The first tags it's told only
+// say what it is: it isn't growing up every time the Mac connects. A
+// function of the engine's clock, so the board, the simulator and the mirror
+// draw the same frame.
+constexpr int kGrowGlowMs = 900, kGrowPopMs = 260, kGrowSettleMs = 520, kShrinkMs = 1600;
+// How far under its old size it draws in, and past its new one it pops, in Q12.
+constexpr int kGrowDraw = 3768, kGrowPast = 4588;
+struct BodyChange {
+  BodySettings from, to;
+  uint32_t at = 0;
+  bool told = false, moving = false, growing = false;
+  void see(uint32_t when, uint32_t now);
+  BodySettings shown(uint32_t now) const;
+  // How much it glows, and how far the burst is through, 0 … 255: both 0 out
+  // of a growth.
+  int glow(uint32_t now) const;
+  int burst(uint32_t now) const;
+};
 // The rows the body fills at rest, laid out on the AMOLED's 410.
 inline int restBodyTop(int height) { return height * 92 / 410; }
 inline int restBodyBottom(int height) { return height * 322 / 410; }
@@ -118,6 +140,10 @@ extern int crossingPeak;
 // typing with none.
 struct Paws;
 void paintProps(Surface&, const Engine&, const Paws* paws = nullptr);
+// What a stage wears, over the body and what's on it: a Sprout's sprout on
+// its crown, kept off under a hat. And changing stage, the glow and the burst.
+void paintSprout(Surface&, const Engine&, const rig::Anchors&, int scale);
+void paintGrowing(Surface&, const Engine&, const rig::Anchors&);
 // A paw types: before each of its key contacts in the recipe playing it
 // lifts and comes back down over kTapMs, kTapLift thousandths of the
 // surface's height at the top, landing on the contact (whose sound and

@@ -3,6 +3,7 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/raster.h"
 #include "render/gel/subpixel.h"
+#include "render/tags.h"
 namespace render::gel {
 namespace {
 // The cards, in thousandths of the surface: x, y, width, height, radius.
@@ -184,7 +185,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
     }
     // The keyboard and the paws are its size, about the desk's front under it.
-    const int size = bodySettings(s.when).size;
+    const int size = e.body().size;
     auto scaled = [&](int v) { return v * size / 4096; };
     auto atX = [&](int v) { return 500 + scaled(v - 500); };
     auto atY = [&](int v) { return 749 + scaled(v - 749); };
@@ -257,5 +258,48 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   surface.cardKeyTo = cardsTo;
   std::copy(drawn, drawn + drawnCount, surface.cardBoxes);
   surface.cardBoxCount = drawnCount;
+}
+void paintSprout(Surface& surface, const Engine& e, const rig::Anchors& at, int scale) {
+  if (!surface.pixels || stageOf(e.scenes.when) != 2 || outfitFor(e.scenes.when) != Outfit::kNone) return;
+  Raster r{surface};
+  const uint16_t stem = rgb565(92, 190, 96), leaf = rgb565(128, 226, 122);
+  const auto px = [&](int v) { return v * scale / 4096; };
+  const int x = at.crown.x / 16, y = at.crown.y / 16 + 3, top = y - px(38);
+  r.line({x, y}, {x, top}, std::max(2, px(5)), stem);
+  // Each leaf a run of dots, widest at its middle, out and a little up.
+  for (int side : {-1, 1})
+    for (int i = 1; i <= 5; ++i) {
+      const int across = side * px(7) * i, up = px(i * (10 - i)) * 3 / 4;
+      r.disk(x + across, top + px(10) - up, std::max(1, px(9 - std::abs(3 - i) * 3)), leaf);
+    }
+}
+void paintGrowing(Surface& surface, const Engine& e, const rig::Anchors& at) {
+  if (!surface.pixels) return;
+  const uint32_t now = e.elapsedMs;
+  const int glow = e.bodyChange.glow(now), burst = e.bodyChange.burst(now);
+  if (!glow && !burst) return;
+  Raster r{surface};
+  const uint16_t warm = rgb565(255, 232, 150), bright = rgb565(255, 250, 220);
+  const int cx = at.crown.x, cy = (at.crown.y + at.hem[rig::Anchors::kRingPoints / 2].y) / 2,
+            reach = std::max(160, (at.hem[rig::Anchors::kRingPoints - 1].x - at.hem[0].x) / 2);
+  // The glow: rings close round it, brighter as it draws in.
+  if (glow)
+    for (int i = 0; i < 3; ++i) {
+      r.alpha = glow * (3 - i) / 4;
+      circle16(r, cx, cy, reach + (10 + i * 12) * 16, 3 * 16, warm);
+    }
+  // The burst: a ring and sparks flying out, fading.
+  if (burst) {
+    static constexpr int8_t kWays[10][2] = {{100, 0},  {81, 59},  {31, 95},  {-31, 95},  {-81, 59},
+                                            {-100, 0}, {-81, -59}, {-31, -95}, {31, -95}, {81, -59}};
+    const int out = reach + burst * 150 * 16 / 255, fade = 255 - burst;
+    r.alpha = fade;
+    circle16(r, cx, cy, out, 4 * 16, bright);
+    for (const auto& way : kWays) {
+      r.alpha = fade;
+      r.disk((cx + way[0] * out / 100) / 16, (cy + way[1] * out / 100) / 16, 5 - burst * 3 / 255, bright);
+    }
+  }
+  r.alpha = 255;
 }
 }  // namespace render::gel

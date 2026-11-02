@@ -556,6 +556,56 @@ BodySettings bodySettings(uint32_t when) {
   static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
   return when & hatchling ? kHatchlingBody : when & sprout ? kSproutBody : when & chonk ? kChonkBody : kBuddyBody;
 }
+int stageOf(uint32_t when) {
+  static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
+  return when & hatchling ? 1 : when & sprout ? 2 : when & chonk ? 4 : 3;
+}
+namespace {
+constexpr int lerpQ(int a, int b, int k) { return a + int(int64_t(b - a) * k / 4096); }
+constexpr int easeQ(int age, int ms) {
+  const int t = age >= ms ? 4096 : 4096 * age / ms;
+  return t * t / 4096 * (3 * 4096 - 2 * t) / 4096;
+}
+BodySettings between(const BodySettings& a, const BodySettings& b, int k) {
+  return {lerpQ(a.size, b.size, k), lerpQ(a.eyes, b.eyes, k), lerpQ(a.squash, b.squash, k)};
+}
+}  // namespace
+void BodyChange::see(uint32_t when, uint32_t now) {
+  static const uint32_t parts = tagBit("morning") | tagBit("day") | tagBit("evening") | tagBit("night");
+  const BodySettings target = bodySettings(when);
+  if (!told) {
+    to = target;
+    told = when & parts;
+    return;
+  }
+  if (target.size == to.size && target.eyes == to.eyes && target.squash == to.squash) return;
+  from = shown(now);
+  growing = target.size > to.size;
+  to = target;
+  at = now, moving = true;
+}
+BodySettings BodyChange::shown(uint32_t now) const {
+  if (!moving) return to;
+  const int age = int32_t(now - at);
+  if (!growing) return age >= kShrinkMs ? to : between(from, to, easeQ(age, kShrinkMs));
+  BodySettings drawn = from, past = to;
+  drawn.size = from.size * kGrowDraw / 4096;
+  past.size = to.size * kGrowPast / 4096;
+  if (age < kGrowGlowMs) return between(from, drawn, easeQ(age, kGrowGlowMs));
+  if (age < kGrowGlowMs + kGrowPopMs) return between(drawn, past, easeQ(age - kGrowGlowMs, kGrowPopMs));
+  const int settle = age - kGrowGlowMs - kGrowPopMs;
+  return settle >= kGrowSettleMs ? to : between(past, to, easeQ(settle, kGrowSettleMs));
+}
+int BodyChange::glow(uint32_t now) const {
+  const int age = int32_t(now - at);
+  if (!moving || !growing || age >= kGrowGlowMs + kGrowPopMs) return 0;
+  return age < kGrowGlowMs ? 255 * age / kGrowGlowMs : 255 - 255 * (age - kGrowGlowMs) / kGrowPopMs;
+}
+int BodyChange::burst(uint32_t now) const {
+  const int age = int32_t(now - at) - kGrowGlowMs;
+  if (!moving || !growing || age <= 0 || age >= kGrowPopMs + kGrowSettleMs) return 0;
+  return 255 * age / (kGrowPopMs + kGrowSettleMs);
+}
 void applyRig(PaintControls& c, const rig::Channels& rig) {
   using rig::Channel;
   const auto off = [&](Channel ch) { return rig[ch] - rig::kRest[ch]; };
@@ -623,7 +673,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   // scale about where it stands, and what the other's anchor moved kept as
   // an offset, so what's drawn on the anchors follows.
   const int finishX = c.anchorX, finishY = c.anchorY;
-  const BodySettings grown = bodySettings(e.scenes.when);
+  const BodySettings grown = e.body();
   if (grown.size != 4096) {
     const int standX = surface.width * 8, standY = restBodyBottom(surface.height) * 16;
     if (c.scale != 4096) {
@@ -687,6 +737,8 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
     if (pastimes) paintWorn(surface, *pastimes, *anchors);
+    if (!act || !act->shows()) paintSprout(surface, e, *anchors, c.scale);
+    paintGrowing(surface, e, *anchors);
   }
   if (finish.on)
     paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
