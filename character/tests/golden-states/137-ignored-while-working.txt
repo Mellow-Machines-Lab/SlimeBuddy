@@ -20,7 +20,7 @@ How to choose:
   it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
-- When NOW says Boop has gone off on an act by itself (a rocket and so on),
+- When NOW says Boop has gone off on an act by itself (a rocket, a sled and so on),
   the scene already plays, and no finish goes with it. Its voice is yours,
   and these are moments it has something to say: from a good MOOD, usually a
   short word that suits them; a cross or low MOOD may stay silent or mutter.
@@ -254,7 +254,7 @@ How to choose:
   it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
-- When NOW says Boop has gone off on an act by itself (a rocket and so on),
+- When NOW says Boop has gone off on an act by itself (a rocket, a sled and so on),
   the scene already plays, and no finish goes with it. Its voice is yours,
   and these are moments it has something to say: from a good MOOD, usually a
   short word that suits them; a cross or low MOOD may stay silent or mutter.
@@ -500,7 +500,7 @@ How to choose:
   it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
-- When NOW says Boop has gone off on an act by itself (a rocket and so on),
+- When NOW says Boop has gone off on an act by itself (a rocket, a sled and so on),
   the scene already plays, and no finish goes with it. Its voice is yours,
   and these are moments it has something to say: from a good MOOD, usually a
   short word that suits them; a cross or low MOOD may stay silent or mutter.
@@ -750,7 +750,7 @@ How to choose:
   it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
-- When NOW says Boop has gone off on an act by itself (a rocket and so on),
+- When NOW says Boop has gone off on an act by itself (a rocket, a sled and so on),
   the scene already plays, and no finish goes with it. Its voice is yours,
   and these are moments it has something to say: from a good MOOD, usually a
   short word that suits them; a cross or low MOOD may stay silent or mutter.
@@ -996,7 +996,7 @@ How to choose:
   it. After the minutes MOOD gives, it fades a step.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
-- When NOW says Boop has gone off on an act by itself (a rocket and so on),
+- When NOW says Boop has gone off on an act by itself (a rocket, a sled and so on),
   the scene already plays, and no finish goes with it. Its voice is yours,
   and these are moments it has something to say: from a good MOOD, usually a
   short word that suits them; a cross or low MOOD may stay silent or mutter.

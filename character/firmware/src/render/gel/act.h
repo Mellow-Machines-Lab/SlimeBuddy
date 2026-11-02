@@ -6,6 +6,10 @@
 // - The push: on a rocket, it blasts off the screen; only the trail and the
 //   sign stay, and now and then it drifts by in orbit. It parachutes down
 //   proud, or crash-lands in soot with the rocket in the ground.
+// - The tests: a crash-test dummy in a helmet with targets, strapped to a
+//   sled at a start line, facing a wall, puffed up and holding its breath, the
+//   sled inching on. It stops short with a big phew and a thumbs up, or
+//   hits the wall, splats and slides down it.
 #pragma once
 #include "render/gel/low_sign.h"
 #include "render/rig/rig.h"
@@ -25,6 +29,12 @@ constexpr int kOrbitFirstMs = 20000, kOrbitEveryMs = 26000, kOrbitMs = 8000;
 // A parachute's landing and a crash's impact, from the result's start.
 constexpr int kChuteLandMs = 2500, kCrashHitMs = 520;
 
+// The tests' opening: the wall and the sled come, then it holds its breath.
+constexpr int kTestsSetMs = 900;
+// How far along the track the sled gets, ever: it inches, and slows.
+// A pass's stop, and a fail's rush to the wall and its slide down it.
+constexpr int kPassStopMs = 300, kSplatMs = 300, kSlideMs = 2200;
+
 // What it does to the body now: as a finish's pose (render/gel/finish.h).
 struct ActPose {
   int dx16 = 0, dy16 = 0, scale = 4096, squash = 0, lean = 0;
@@ -35,7 +45,8 @@ ActPose actPose(const Surface& s, const ActShow& act);
 rig::Point actAnchor(const Surface& s);
 // A full act holds the screen: no desk, no pastime, no reaction's sign.
 inline bool actTakesOver(const ActShow& act) { return act.shows() && act.full; }
-// What the act draws behind the body and over it, at the body's anchors.
+// What the act draws behind the body and over it, at the body's anchors. The
+// small version draws only its prop, over it, as it does its Doing.
 void paintActBehind(Surface& s, const ActShow& act);
 void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at);
 // The face it wears now, or -1 for its mood's. A cross or low mood keeps its

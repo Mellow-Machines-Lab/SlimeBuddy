@@ -213,7 +213,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   fail and its small version; a needs-you and back), the
   work stream (`stream.jsonl`: two lanes' words falling, the to-do bar and
   the clock, a thought cloud, and every style as it lands: bonk and its dizzy
-  eyes, helmet, shrug, shatter, pass, hail's umbrella, helper and back (landing as a word does), the
+  eyes, bonk3, shrug, shatter, helper and back (landing as a word does), the
   tower's stack, flag and topple, an edit's bars, and the whole turn's
   moments: a compaction's cube, a freeze, a drop, buried, and a turn's
   end gathering its words after the stream goes), and

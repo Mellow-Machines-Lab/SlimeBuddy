@@ -20,11 +20,11 @@
 {"shot": "bonk-flying"}
 {"clock": 5200}
 {"shot": "bonk-dizzy"}
-// Up the ladder: a helmet.
+// Up the ladder: more stars.
 {"clock": 7500}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "swift", "as": "helmet"}}
+{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "swift", "as": "bonk3"}}
 {"clock": 8200}
-{"shot": "helmet"}
+{"shot": "bonk3"}
 // A lookup that found nothing: a shrug and an empty bubble.
 {"clock": 10500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "grep", "as": "shrug"}}
@@ -35,19 +35,6 @@
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "-400", "as": "shatter"}}
 {"clock": 14100}
 {"shot": "shatter"}
-// Tests pass: confetti, and a tick on the monitor.
-{"clock": 16500}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 4, "python"], [1, 3, "rg"]]}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "PASS", "as": "pass"}}
-{"clock": 17100}
-{"shot": "pass"}
-// Failing tests rain on it; the umbrella comes too late.
-{"clock": 19500}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "FAIL", "as": "hail"}}
-{"clock": 20000}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 4, "python"], [1, 3, "rg"]]}
-{"clock": 20500}
-{"shot": "hail"}
 // A helper's word lands like any other.
 {"clock": 46500}
 {"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 4, "python"], [1, 3, "rg"]]}

@@ -668,7 +668,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   }
   if (finish.on)
     paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
-  if (acting) paintActFront(surface, *act, *anchors);
+  if (act && act->shows() && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
   {
     Measure measure(profile.props);
     const Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};

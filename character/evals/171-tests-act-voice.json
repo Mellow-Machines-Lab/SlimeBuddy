@@ -1,0 +1,36 @@
+{
+  "name": "Boop holds its breath on the sled, and gets a voice for it",
+  "judge": "The agent runs tests and Boop straps itself to a sled by itself, holding its breath, then the tests pass and the sled stops short of the wall. What it says over that is for you.",
+  "reasonable": "A small nervous sound or word as the tests start, or nothing; relief or a small glad word as they pass, or nothing.",
+  "unreasonable": "A big upset moment, a finish's move, or a swear over tests passing.",
+  "steps": [
+    {
+      "event": "turn started",
+      "at": "0s",
+      "workspace": "landing"
+    },
+    {
+      "event": "command",
+      "at": "1m",
+      "topic": "tests",
+      "half": "start",
+      "workspace": "landing",
+      "brain": {
+        "react.face": "uneasy",
+        "say": "tests"
+      }
+    },
+    {
+      "event": "command",
+      "at": "1m30s",
+      "topic": "tests",
+      "half": "end",
+      "failed": false,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "relieved",
+        "say": "glad"
+      }
+    }
+  ]
+}

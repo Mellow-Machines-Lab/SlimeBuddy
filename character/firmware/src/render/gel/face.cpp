@@ -426,7 +426,6 @@ void GelFace::land(CallStyle style) {
     case CallMove::kTopple: e.jolt(q(-1.4), q(3.4), q(-2.6)); break;
     case CallMove::kSink: e.jolt(0, q(1.8), 0); break;
     case CallMove::kShatter: e.jolt(0, q(1.4), 0); break;
-    case CallMove::kHail: e.jolt(q(.4), q(1.2), 0); break;
     case CallMove::kShrug: e.jolt(0, q(-1.6), 0); break;
     case CallMove::kCheer: e.jolt(0, q(-2.6), 0); break;
     case CallMove::kDesk: e.jolt(q(-.6), 0, q(1)); break;

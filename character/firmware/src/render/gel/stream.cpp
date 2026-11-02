@@ -44,14 +44,12 @@ uint16_t callInk(const Stream::Call& c) {
   switch (c.style) {
     case CallStyle::kBonk:
     case CallStyle::kBonk2:
-    case CallStyle::kHelmet:
+    case CallStyle::kBonk3:
     case CallStyle::kThrow:
     case CallStyle::kNo:
     case CallStyle::kTimeout:
-    case CallStyle::kHail:
     case CallStyle::kTopple:
     case CallStyle::kBuried: return kFailInk;
-    case CallStyle::kPass:
     case CallStyle::kBuilt: return kPassInk;
     case CallStyle::kFreeze: return kIce;
     case CallStyle::kDrop: return kGrey;
@@ -160,15 +158,12 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
   const int flight = int(callFlightMs(c.style));
   const bool landed = age >= flight;
   switch (c.style) {
-    case CallStyle::kCross:
     case CallStyle::kStack:
     case CallStyle::kBonk2:
-    case CallStyle::kHelmet:
+    case CallStyle::kBonk3:
     case CallStyle::kThrow:
     case CallStyle::kLand: break;
-    case CallStyle::kPass:
     case CallStyle::kBuilt:
-    case CallStyle::kHail:
     case CallStyle::kTopple:
       if (landed) break;
       return;
@@ -176,18 +171,11 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
   }
   if (m.alpha < 8) return;
   const int cx = m.x + m.w / 2, cy = m.y + m.h / 2;
-  const bool crack = c.style == CallStyle::kBonk2 || c.style == CallStyle::kHelmet || c.style == CallStyle::kThrow;
+  const bool crack = c.style == CallStyle::kBonk2 || c.style == CallStyle::kBonk3 || c.style == CallStyle::kThrow;
   r.alpha = m.alpha;
   r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
   if (!crack) r.round(m.x, m.y, m.w, m.h, 6, rgb565(7, 24, 32));
   switch (c.style) {
-    case CallStyle::kCross:
-      for (int i = 0; i < 8; ++i) {  // a spinner: eight dots, one bright going round
-        const int lit = age / 90 % 8, on = (i - lit + 8) % 8;
-        r.disk(cx + 12 * cos40(i * 5) / 1000, cy + 12 * sin40(i * 5) / 1000, 2,
-               on == 0 ? 0xFFFF : rgb565(70, 110, 130));
-      }
-      break;
     case CallStyle::kStack: {  // a bar that crawls and never says how far, in sixteenths of a pixel
       const int span = (m.w - 16) * 16, at = age * 2 % (span + 30 * 16) - 30 * 16;
       const int from = std::max(0, at), to = std::min(span, at + 30 * 16);
@@ -195,13 +183,11 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       round16(r, (m.x + 8) * 16 + from, (cy - 4) * 16, to - from, 8 * 16, 4 * 16, laneInk(c.slot));
       break;
     }
-    case CallStyle::kPass:
     case CallStyle::kBuilt: {
       const Point tick[3] = {{cx - 12, cy}, {cx - 3, cy + 9}, {cx + 14, cy - 10}};
       r.line(tick[0], tick[1], 4, kPassInk), r.line(tick[1], tick[2], 4, kPassInk);
       break;
     }
-    case CallStyle::kHail:
     case CallStyle::kTopple:
       r.line({cx - 11, cy - 11}, {cx + 11, cy + 11}, 4, kFailInk);
       r.line({cx + 11, cy - 11}, {cx - 11, cy + 11}, 4, kFailInk);
@@ -217,7 +203,7 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       break;
     }
     default: {  // a crack, longer up the ladder
-      const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kHelmet ? 3 : 4;
+      const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kBonk3 ? 3 : 4;
       const Point at[6] = {{m.x + 6, m.y + 8},   {m.x + 20, m.y + 16}, {m.x + 30, m.y + 12},
                            {m.x + 44, m.y + 24}, {m.x + 56, m.y + 20}, {m.x + m.w - 6, m.y + m.h - 6}};
       for (int i = 0; i + 1 < std::min(6, rungs + 2); ++i) r.line(at[i], at[i + 1], 1, 0xFFFF);
@@ -530,15 +516,6 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
           star(r, cx, cy, l.x(13), turn % 10, kStarInk);
         }
       }
-      if (c.style == CallStyle::kHelmet && after < 1500) {
-        // A dome on the crown, its brim down over the brow.
-        r.alpha = fadeBy(after, 1500, 200);
-        const int hw = l.x(70) * 16, drop = l.y16(std::max(0, 160 - after) * 4), cx = crownX * 16, cy = crownY * 16;
-        round16(r, cx - hw, cy - l.y16(10 * 16) - drop, 2 * hw, l.y16(44 * 16), l.y16(30 * 16), rgb565(150, 160, 170));
-        round16(r, cx - hw - l.x16(8 * 16), cy + l.y16(26 * 16) - drop, 2 * hw + l.x16(16 * 16), l.y16(9 * 16),
-                l.y16(4 * 16), rgb565(95, 105, 115));
-        r.disk16(cx - l.x16(26 * 16) + 8, cy + l.y16(4 * 16) - drop + 8, l.x16(6 * 16) + 8, rgb565(230, 235, 240));
-      }
       break;
     }
     case CallMove::kSink: {  // it sinks into the crown, a ring spreading out
@@ -577,38 +554,6 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       if (after >= 780 && after < 1100) {  // a burp
         r.alpha = fadeBy(after, 1100, 200);
         centred(r, kSmall, mouthX + l.x(46), mouthY - l.y(20), "burp", rgb565(200, 200, 200));
-      }
-      break;
-    }
-    case CallMove::kHail: {  // more of them, raining down; the umbrella comes up
-                             // too late
-      const int open = std::clamp(after - 400, 0, 160), umbrella = after >= 400 ? open : 0;
-      const int roof = crownY - l.y(18) - (umbrella ? l.y(40) : 0);
-      for (int i = 0; i < 5; ++i) {
-        const int start = i * 180 - (i ? flight : 0), a = after - start;
-        if (a < -flight || a > 400) continue;
-        const int dx = l.x((i * 53) % 140 - 70);
-        if (a < 0) {
-          const int k = easeIn(a + flight, flight);
-          r.alpha = 255;
-          centred16(r, kSign, (crownX + dx) * 16, lerp(fromY * 16, roof * 16, k, flight), "FAIL", ink);
-        } else {
-          r.alpha = 255 - a * 255 / 400;
-          const int side = dx < 0 ? -1 : 1;
-          centred16(r, kSign, (crownX + dx) * 16 + side * l.x16(a * 90 * 16 / 400),
-                    roof * 16 - l.y16(a * 60 * 16 / 400) + l.y16(a * a / 100), "FAIL", ink);
-        }
-      }
-      if (umbrella) {
-        r.alpha = fadeBy(after, end - flight, 300);
-        const int rad = l.x(62) * open / 160, cy = crownY - l.y(34), cx = crownX + l.x(6);
-        r.line({cx, cy}, {cx, crownY + l.y(10)}, l.x(3), rgb565(220, 220, 220));
-        // Six panels round its top half, red and white.
-        auto rim = [&](int k) { return Point{cx + rad * cos40(k) / 1000, cy - rad * 6 / 10 * sin40(k) / 1000}; };
-        for (int s = 0; s < 6; ++s) {
-          const Point wedge[3] = {{cx, cy}, rim(s * 20 / 6), rim((s + 1) * 20 / 6)};
-          r.polygon(wedge, 3, s % 2 ? 0xFFFF : kFailInk);
-        }
       }
       break;
     }

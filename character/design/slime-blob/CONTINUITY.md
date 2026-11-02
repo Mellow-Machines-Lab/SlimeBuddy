@@ -917,6 +917,18 @@ nose down in a heap of ground, smoking, Boop flat with soot spots and stars
 that goes on to disappointed. A cross or low mood keeps its own face.
 The small version is the low sign alone over Doing.
 
+**The tests.** 0.9 s: a yellow helmet with a target comes down on it, it
+shrinks onto a sled that rolls in from a start line, belted, targets on its
+sides, and a hazard wall comes in on the right. Then it puffs up and shakes,
+cheeks pink, sweat running, holding its breath, and the sled inches on for as
+long as the tests take, slowing, never reaching the wall. Pass: the sled rushes
+to just short of it and stops; it lurches, lets it all out, "phew" goes up in a
+bubble, a thumb comes up, and it goes from relieved to proud. Fail: the sled
+rushes on, it flies against the wall, thin and tall, a burst, the wall cracks
+and keeps a splat of gel, and it slides down into a flat heap, stars round its
+askew helmet. The small version is the helmet and the sign over Doing; a
+failure after a minute gets the full ending.
+
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's
@@ -953,12 +965,11 @@ everything gone by 2.5 s:
 | Move | Styles | What plays |
 | --- | --- | --- |
 | Sink | land, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too); an edit's lines grow as green and red bars on the monitor |
-| Hit | bonk, bonk2, helmet, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder, a helmet on the third; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
+| Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
 | Shrug | shrug | Beside the head, an empty bubble over it |
 | Shatter | shatter | Bursting into its glyphs, swallowed, and a burp |
-| Hail | hail | More FAILs raining and bouncing off; an umbrella opens 0.4 s too late; a cross on the monitor |
-| Cheer | pass, built | Over its head with confetti, a tick on the monitor; built raises a flag on the tower |
-| Desk | cross, stack | The monitor's spinner; a build's bricks stacking up at the desk's right end |
+| Cheer | built | Over its head with confetti, a tick on the monitor; a flag on the tower |
+| Desk | stack | A build's bricks stacking up at the desk's right end |
 | Topple | topple | The tower wobbles a second and falls on its head: dizzy eyes, a cross on the monitor |
 | Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
 | Compact | compact | Its context compacted: the words squashed together over its head into a cube that thuds onto the desk |

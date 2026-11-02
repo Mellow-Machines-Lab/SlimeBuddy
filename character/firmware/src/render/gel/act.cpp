@@ -1,6 +1,7 @@
 #include "render/gel/act.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "render/gel/fixed.h"
 #include "render/gel/raster.h"
@@ -267,6 +268,311 @@ void spark(Raster& r, int x16, int y16, int rad16, int turn, uint16_t ink) {
   r.polygon16(v, 10, ink);
 }
 
+// The tests. Everything stands on the track, on the floor, in px of the 502.
+constexpr int kTrackY = 318, kWallX = 440, kSledFromX = 164, kSledToX = 292;
+constexpr int kRideTests = 2750;  // its size, strapped on
+
+// Where the sled is, its middle, this far in: it comes in from the left,
+// then inches on, slower and slower, however long the tests take.
+int sledXAt(int age) {
+  if (age < kTestsSetMs) return lerp12(-120, kSledFromX, easeOut12(rampIn(age, 0, kTestsSetMs)));
+  const int run = age - kTestsSetMs;
+  // The first minute takes it half way, each minute after half of what's left.
+  const int span = kSledToX - kSledFromX;
+  return kSledToX - int(int64_t(span) * 60000 / (60000 + run));
+}
+// The tremble while it holds its breath, in px.
+int trembleOf(int age) { return age < kTestsSetMs ? 0 : sn(age * 73) * 3 / 4096 + sn(age * 131) * 1 / 4096; }
+
+// The wall: a block in hazard stripes with a lit edge, `x` px from the left,
+// on the floor.
+void paintWall(Raster& r, const Surface& s, int x, int shake) {
+  const Place p{0, 0, 4096 * s.width / 502};
+  const Shape a{p, r};
+  const int x0 = x + shake, top = 6, bottom = kTrackY;
+  a.fill({{x0, top}, {560, top}, {560, bottom}, {x0, bottom}}, rgb565(240, 190, 40));
+  // Its stripes, slanting, cut to its face.
+  r.bounds = {X(s, x0), Y(s, top), s.width, Y(s, bottom)};
+  for (int y = top - 40; y < bottom + 80; y += 64)
+    a.fill({{x0, y + 32}, {x0 + 80, y - 40}, {x0 + 80, y - 8}, {x0, y + 64}}, rgb565(28, 28, 30));
+  r.bounds = Raster::kEverywhere;
+  // Its lit edge, for a block with a front.
+  a.fill({{x0, top}, {x0 + 4, top}, {x0 + 4, bottom}, {x0, bottom}}, rgb565(255, 232, 150));
+}
+
+// The floor: a line with a lit top, full width, and the start line's checks.
+void paintTrack(Raster& r, const Surface& s, int alpha) {
+  r.alpha = alpha;
+  const Place p{0, 0, 4096 * s.width / 502};
+  const Shape a{p, r};
+  a.fill({{0, kTrackY}, {502, kTrackY}, {502, kTrackY + 6}, {0, kTrackY + 6}}, rgb565(74, 84, 100));
+  for (int i = 0; i < 6; ++i) {
+    const int y = kTrackY - 6 - i * 10;
+    a.fill({{14, y}, {22, y}, {22, y + 10}, {14, y + 10}}, i % 2 ? rgb565(30, 30, 34) : rgb565(236, 240, 246));
+    a.fill({{22, y}, {30, y}, {30, y + 10}, {22, y + 10}}, i % 2 ? rgb565(236, 240, 246) : rgb565(30, 30, 34));
+  }
+  r.alpha = 255;
+}
+
+// The sled: a red deck on two wheels, `tilt` of a turn, its deck's middle on
+// `x`; the wheels `spin` round.
+void paintSled(Raster& r, const Surface& s, int x, int spin) {
+  const Place p{X(s, x) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
+  const Shape a{p, r};
+  a.fill({{-96, -22}, {96, -22}, {104, -14}, {96, -8}, {-96, -8}, {-104, -14}}, kRed);
+  a.fill({{-96, -13}, {100, -13}, {96, -8}, {-96, -8}}, kRedShade);
+  a.fill({{-90, -22}, {90, -22}, {88, -19}, {-88, -19}}, kRedLight);
+  for (int side : {-1, 1}) {
+    a.disk(side * 62, -6, 9, kSteelDark);
+    a.disk(side * 62, -6, 5, kSteel);
+    const Point c = p.at(side * 62, -6), e = p.at(side * 62 + 4 * cs(spin) / 4096, -6 + 4 * sn(spin) / 4096);
+    const Point spoke[2] = {c, e};
+    r.stroke16(spoke, 2, 20, kWhite);
+  }
+}
+
+// A crash-test target: a white disk quartered with black, `rad16` round.
+void paintTarget(Raster& r, Point c, int rad16) {
+  r.disk16(c.x, c.y, rad16 + 16, rgb565(24, 24, 28));
+  r.disk16(c.x, c.y, rad16, kWhite);
+  const Point q1[4] = {c, {c.x, c.y - rad16}, {c.x + rad16 * 7 / 10, c.y - rad16 * 7 / 10}, {c.x + rad16, c.y}};
+  const Point q2[4] = {c, {c.x, c.y + rad16}, {c.x - rad16 * 7 / 10, c.y + rad16 * 7 / 10}, {c.x - rad16, c.y}};
+  r.polygon16(q1, 4, rgb565(24, 24, 28));
+  r.polygon16(q2, 4, rgb565(24, 24, 28));
+}
+
+// The helmet on its head: a yellow dome over its top, lit from the left, its
+// rim down near its brow, a target on its front. `tilt`
+// turns it about the rim's middle.
+void paintHelmet(Raster& r, const rig::Anchors& at, int tilt = 0) {
+  const Point l = at.brimL, rr = at.brimR, top = at.crown;
+  const int half = (rr.x - l.x) / 2, brim = (l.y + rr.y) / 2;
+  const int tall = std::max(32, brim - top.y);
+  const int mx = (l.x + rr.x) / 2, my = brim + tall * 3 / 5;
+  const int scale = half * 4096 / (120 * 16);  // 1 at a full-size head's
+  const int wide = half * 118 / 100, high = (my - top.y) + 20 * scale / 256;
+  const int c = cs(tilt), sTilt = sn(tilt);
+  auto turned = [&](int x, int y) {
+    return Point{mx + int((int64_t(x) * c - int64_t(y) * sTilt) / 4096), my + int((int64_t(x) * sTilt + int64_t(y) * c) / 4096)};
+  };
+  auto rim = [&](int a, int w, int h) { return turned(-w * cs(a) / 4096, -h * sn(a) / 4096); };
+  constexpr int kPts = 14;
+  Point dome[kPts + 2];
+  for (int i = 0; i <= kPts; ++i) dome[i] = rim(2048 * i / kPts, wide, high);
+  dome[kPts + 1] = turned(0, tall / 4);  // bowed with its brow
+  r.polygon16(dome, kPts + 2, rgb565(246, 196, 32));
+  // Its shade: the right of the dome, back up a smaller arc.
+  Point shade[kPts + 1];
+  int n = 0;
+  for (int i = 8; i <= kPts; ++i) shade[n++] = rim(2048 * i / kPts, wide, high);
+  for (int i = kPts; i >= 9; --i) {
+    const int in = 4096 - 1300 * (i - 8) / (kPts - 8);  // a crescent, widest at the rim
+    shade[n++] = rim(2048 * i / kPts, int(int64_t(wide) * in / 4096), int(int64_t(high) * (4096 - (4096 - in) / 2) / 4096));
+  }
+  r.polygon16(shade, n, rgb565(208, 150, 20));
+  const Point band[3] = {turned(-wide, 0), turned(0, tall / 4), turned(wide, 0)};
+  r.stroke16(band, 3, std::max(32, 8 * 16 * scale / 4096), rgb565(186, 130, 14));
+  r.alpha = 170;
+  const Point shine = rim(560, wide * 72 / 100, high * 76 / 100);
+  r.disk16(shine.x, shine.y, std::max(16, 10 * 16 * scale / 4096), rgb565(255, 244, 196));
+  r.alpha = 255;
+  paintTarget(r, turned(0, -high * 56 / 100), std::max(32, 19 * 16 * scale / 4096));
+}
+
+ActPose testsPose(const Surface& s, const ActShow& act) {
+  ActPose pose;
+  const Point anchor = actAnchor(s);
+  const int floor = (Y(s, kTrackY - 22) - floorOf(s)) * 16;  // on the sled's deck
+  auto onSled = [&](int x, int scale) {
+    pose.scale = scale;
+    pose.dx16 = X(s, x) * 16 - anchor.x;
+    pose.dy16 = floor;
+  };
+  const int age = act.ageMs;
+  if (act.result == ActResult::kRunning) {
+    const int x = sledXAt(age);
+    onSled(x + trembleOf(age), kRideTests);
+    if (age < 500) pose.scale = lerp12(4096, kRideTests, smooth(age, 0, 500)), pose.dx16 = pose.dx16 * smooth(age, 0, 500) / 4096;
+    // It breathes in, and holds it: a little bigger, and shaking.
+    const int held = smooth(age, kTestsSetMs, kTestsSetMs + 1400);
+    pose.scale += 340 * held / 4096;
+    pose.squash = -700 * held / 4096 + (sn(age * 91) * 90 / 4096) * held / 4096;
+    return pose;
+  }
+  const int ms = act.resultMs;
+  const int from = sledXAt(act.ageMs - ms);
+  if (act.result == ActResult::kPass) {
+    const int x = lerp12(from, kWallX - 118, easeOut12(rampIn(ms, 0, kPassStopMs)));
+    onSled(x, kRideTests + 340);
+    // Lurches on as the sled stops, then lets it all out.
+    if (ms < 500) pose.lean = sn(ms * 2048 / 500) * 1400 / 4096;
+    const int out = smooth(ms, 300, 1000);
+    pose.scale = lerp12(kRideTests + 340, kRideTests, out);
+    pose.squash = lerp12(-700, 300, out) + (ms > 300 && ms < 1300 ? sn((ms - 300) * 8) * 200 / 4096 : 0);
+    return pose;
+  }
+  // Fail: the rush, the wall, flat and tall against it, then down it.
+  if (ms < kSplatMs) {
+    const int e = easeIn12(rampIn(ms, 0, kSplatMs));
+    onSled(lerp12(from, kWallX - 68, e), kRideTests + 340);
+    pose.lean = 1400 * e / 4096;
+    return pose;
+  }
+  const int after = ms - kSplatMs;
+  const int down = smooth(after, 300, kSlideMs);
+  onSled(kWallX - 90, 2950);
+  // Pressed thin and tall against it, then gathering into a heap at its foot.
+  pose.squash = lerp12(4600, -2600, down);
+  pose.dx16 -= X(s, 50) * 16 * down / 4096;
+  pose.dy16 += (Y(s, kTrackY - 2) - Y(s, kTrackY - 22)) * 16;
+  pose.lean = -lerp12(1600, 0, down);
+  pose.dy16 -= Y(s, 16) * 16 * (4096 - down) / 4096;
+  return pose;
+}
+
+void testsBehind(Raster& r, const Surface& s, const ActShow& act) {
+  const int age = act.ageMs;
+  const int in = easeOut12(rampIn(age, 0, kTestsSetMs));
+  const bool failing = act.result == ActResult::kFail, passing = act.result == ActResult::kPass;
+  const int hit = failing ? act.resultMs - kSplatMs : -1;
+  int shake = 0;
+  if (hit >= 0 && hit < 360) shake = sn(hit * 24) * 5 * (360 - hit) / (360 * 4096);
+  paintWall(r, s, lerp12(560, kWallX, in), shake);
+  if (hit >= 0) {
+    const Place p{0, 0, 4096 * s.width / 502};
+    const Shape a{p, r};
+    const int k = rampIn(hit, 0, 120);
+    a.line({{kWallX + shake, 120}, {kWallX + 16 + shake, 104 + 0 * k}, {kWallX + 12 + shake, 88}, {kWallX + 30 + shake, 66}}, 3, rgb565(24, 24, 28));
+    a.line({{kWallX + shake, 170}, {kWallX + 18 + shake, 182}, {kWallX + 28 + shake, 170}, {kWallX + 48 + shake, 188}}, 3, rgb565(24, 24, 28));
+    a.line({{kWallX + shake, 220}, {kWallX + 12 + shake, 242}, {kWallX + 34 + shake, 250}}, 3, rgb565(24, 24, 28));
+    // The gel it left on the wall: a splat, and drips running down.
+    const int drip = smooth(hit, 200, kSlideMs + 800);
+    a.line({{kWallX + 6 + shake, 142}, {kWallX + 20 + shake, 156}}, 18 * k / 4096, rgb565(66, 150, 222));
+    a.line({{kWallX + 24 + shake, 134}, {kWallX + 8 + shake, 160}}, 9 * k / 4096, rgb565(66, 150, 222));
+    for (const auto& d : {std::pair<int, int>{4, 100}, std::pair<int, int>{14, 70}, std::pair<int, int>{22, 130}})
+      a.line({{kWallX + d.first + shake, 150}, {kWallX + d.first + shake, 150 + d.second * drip / 4096}}, 3, rgb565(66, 150, 222));
+  }
+  paintTrack(r, s, in * 255 / 4096);
+  // The sled: under it; at a fail it runs on to the wall and stops there.
+  int x = sledXAt(age);
+  if (passing) {
+    const int from = sledXAt(age - act.resultMs);
+    x = lerp12(from, kWallX - 118, easeOut12(rampIn(act.resultMs, 0, kPassStopMs)));
+  } else if (failing) {
+    const int from = sledXAt(age - act.resultMs);
+    x = lerp12(from, kWallX - 104, easeIn12(rampIn(act.resultMs, 0, kSplatMs)));
+  }
+  paintSled(r, s, x, x * 90 + age / 2);
+}
+
+// The bubble of its phew, with its word, from its mouth up to one side.
+void phew(Raster& r, const Surface& s, const rig::Anchors& at, int ms) {
+  const int k = rampIn(ms, 300, 600) * (4096 - rampIn(ms, 2300, 2800)) / 4096;
+  if (k < 40) return;
+  const int rise = rampIn(ms, 300, 2800);
+  const int x = at.brimL.x - X(s, 8) * 16, y = at.crown.y - Y(s, 16 + 22 * rise / 4096) * 16;
+  r.alpha = k * 240 / 4096;
+  const uint16_t cloud = rgb565(226, 244, 255);
+  r.disk16(at.brimL.x + X(s, 18) * 16, at.crown.y + Y(s, 8) * 16, X(s, 6) * 16, cloud);
+  r.disk16(at.brimL.x + X(s, 4) * 16, at.crown.y - Y(s, 4 + 12 * rise / 4096) * 16, X(s, 10) * 16, cloud);
+  const Point pill[2] = {{x - X(s, 22) * 16, y}, {x + X(s, 22) * 16, y}};
+  r.stroke16(pill, 2, Y(s, 36) * 16, cloud);
+  r.text("phew", x >> 4, y >> 4, rgb565(20, 44, 80), kLarge);
+  r.alpha = 255;
+}
+
+// A gel hand, a thumb up, by its side.
+void thumbsUp(Raster& r, const Surface& s, const rig::Anchors& at, int ms) {
+  const int k = easeOut12(rampIn(ms, 900, 1250));
+  if (!k) return;
+  const uint16_t gel = rgb565(74, 158, 226), deep = rgb565(38, 110, 186), shine = rgb565(184, 233, 245);
+  const int size = 4096 * s.width / 502 * k / 4096;
+  const Place p{at.hem[0].x - X(s, 30) * 16, std::min(at.brimL.y + Y(s, 74) * 16, Y(s, 250) * 16) + Y(s, 36) * 16 * (4096 - k) / 4096, size};
+  const Shape a{p, r};
+  a.line({{-6, -2}, {-3, -28}}, 16, gel);
+  a.line({{-8, 12}, {8, 12}}, 32, gel);
+  a.line({{-10, 25}, {10, 25}}, 8, deep);
+  a.line({{8, 2}, {22, 2}}, 2, deep);
+  a.line({{8, 13}, {22, 13}}, 2, deep);
+  a.disk(-6, -31, 3, shine);
+  a.disk(-18, 3, 3, shine);
+}
+
+void testsFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anchors& at) {
+  if (!act.full) {
+    paintHelmet(r, at);
+    return;
+  }
+  const int age = act.ageMs;
+  const bool failing = act.result == ActResult::kFail;
+  // The helmet comes down as it starts; knocked askew at the wall.
+  int tilt = 0;
+  if (failing) tilt = -lerp12(0, 170, smooth(act.resultMs, kSplatMs, kSplatMs + 400));
+  rig::Anchors worn = at;
+  if (act.result == ActResult::kRunning && age < 500) {
+    const int up = Y(s, 200) * 16 * (4096 - easeOut12(rampIn(age, 0, 500))) / 4096;
+    worn.crown.y -= up, worn.brimL.y -= up, worn.brimR.y -= up;
+  }
+  paintHelmet(r, worn, tilt);
+  // A target on each of its sides.
+    if (!failing || act.resultMs < kSplatMs) {
+    // And the belt strapping it down, low across its front.
+    const int yy = (at.eyeL.y + at.eyeR.y) / 2 + Y(s, 22) * 16;
+    const int half = std::abs(at.eyeR.x - at.eyeL.x);
+    const int cx = (at.eyeL.x + at.eyeR.x) / 2;
+    paintTarget(r, {cx - half * 80 / 100, yy}, X(s, 9) * 16);
+    paintTarget(r, {cx + half * 80 / 100, yy}, X(s, 9) * 16);
+    r.alpha = 225;
+    r.stroke16(at.hem, rig::Anchors::kRingPoints, X(s, 9) * 16, rgb565(40, 42, 50));
+    r.alpha = 255;
+  }
+  if (act.result == ActResult::kRunning && age >= kTestsSetMs) {
+    // Cheeks full, a bead of sweat running, and the shakes in the air.
+    const int held = smooth(age, kTestsSetMs, kTestsSetMs + 1400);
+    const int half = std::abs(at.eyeR.x - at.eyeL.x), cx = (at.eyeL.x + at.eyeR.x) / 2, eye = (at.eyeL.y + at.eyeR.y) / 2;
+    r.alpha = held * 150 / 4096;
+    r.disk16(cx - half * 58 / 100, eye + Y(s, 15) * 16, X(s, 11) * 16, rgb565(255, 128, 150));
+    r.disk16(cx + half * 58 / 100, eye + Y(s, 15) * 16, X(s, 11) * 16, rgb565(255, 128, 150));
+    r.alpha = 255;
+    const int beat = (age - kTestsSetMs) % 2200, run = rampIn(beat, 0, 1500);
+    const int bx = at.brimR.x - X(s, 16) * 16, by = at.brimR.y + Y(s, 6) * 16 + Y(s, 42) * 16 * easeIn12(run) / 4096;
+    r.alpha = 255 - rampIn(beat, 1300, 1700) * 255 / 4096;
+    const Point drop[5] = {{bx, by - Y(s, 12) * 16}, {bx + 5 * 16, by - 2 * 16}, {bx + 3 * 16, by + 5 * 16}, {bx - 3 * 16, by + 5 * 16}, {bx - 5 * 16, by - 2 * 16}};
+    r.polygon16(drop, 5, rgb565(170, 228, 255));
+    r.alpha = held * 200 / 4096;
+    for (int side : {-1, 1}) {
+      const int ox = cx + side * (half + X(s, 32 + (sn(age * 19) * 2 / 4096)) * 16);
+      for (int i = 0; i < 2; ++i) {
+        const int y = eye - Y(s, 6 - i * 20) * 16;
+        const Point arc[3] = {{ox + side * i * 5 * 16, y - 8 * 16}, {ox + side * (i * 5 + 5) * 16, y}, {ox + side * i * 5 * 16, y + 8 * 16}};
+        r.stroke16(arc, 3, 40, rgb565(143, 211, 255));
+      }
+    }
+    r.alpha = 255;
+  }
+  if (act.result == ActResult::kPass) {
+    phew(r, s, at, act.resultMs);
+    thumbsUp(r, s, at, act.resultMs);
+  }
+  if (failing && act.resultMs >= kSplatMs) {
+    const int after = act.resultMs - kSplatMs;
+    if (after < 200) {
+      const int k = 4096 - rampIn(after, 0, 200);
+      spark(r, X(s, kWallX) * 16, at.eyeL.y, X(s, 74) * 16 * k / 4096, 300, rgb565(255, 214, 80));
+      spark(r, X(s, kWallX) * 16, at.eyeL.y, X(s, 40) * 16 * k / 4096, 700, rgb565(255, 248, 214));
+    }
+    if (after < 3200) {
+      r.alpha = 255 - rampIn(after, 2700, 3200) * 255 / 4096;
+      for (int i = 0; i < 4; ++i) {
+        const int turn = after * 2 / 3 + i * 1024;
+        spark(r, at.crown.x + X(s, 58) * 16 * cs(turn) / 4096, at.crown.y - Y(s, 18) * 16 + Y(s, 11) * 16 * sn(turn) / 4096,
+              X(s, 11) * 16, turn, rgb565(255, 216, 74));
+      }
+      r.alpha = 255;
+    }
+  }
+}
+
 // The rocket's place at the opening's `age`; `away` once it's gone.
 constexpr int kRocketY = 180;  // its seat, at rest on the pad
 Place rocketAt(const Surface& s, int age) {
@@ -324,7 +630,9 @@ Point actAnchor(const Surface& s) { return {s.width * 8, floorOf(s) * 16}; }
 
 ActPose actPose(const Surface& s, const ActShow& act) {
   ActPose pose;
-  if (!actTakesOver(act) || act.kind != ActKind::kPush) return pose;
+  if (!actTakesOver(act)) return pose;
+  if (act.kind == ActKind::kTests) return testsPose(s, act);
+  if (act.kind != ActKind::kPush) return pose;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
     if (ms < kChuteLandMs) {
@@ -394,8 +702,10 @@ ActPose actPose(const Surface& s, const ActShow& act) {
 }
 
 void paintActBehind(Surface& s, const ActShow& act) {
-  if (!actTakesOver(act) || act.kind != ActKind::kPush || !s.pixels) return;
+  if (!actTakesOver(act) || !s.pixels) return;
   Raster r{s};
+  if (act.kind == ActKind::kTests) return testsBehind(r, s, act);
+  if (act.kind != ActKind::kPush) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
     paintStars(r, s, 0, ms + act.ageMs, 255 - smooth(ms, kChuteLandMs - 400, kChuteLandMs + 600) * 255 / 4096);
@@ -436,8 +746,10 @@ void paintActBehind(Surface& s, const ActShow& act) {
 }
 
 void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
-  if (!actTakesOver(act) || act.kind != ActKind::kPush || !s.pixels) return;
+  if (!act.shows() || !s.pixels) return;
   Raster r{s};
+  if (act.kind == ActKind::kTests) return testsFront(r, s, act, at);
+  if (!act.full || act.kind != ActKind::kPush) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
     if (ms >= kChuteLandMs + 900) return;
@@ -532,10 +844,15 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
 }
 
 int actFace(const ActShow& act, int mood) {
-  if (!actTakesOver(act) || act.kind != ActKind::kPush) return -1;
+  if (!actTakesOver(act)) return -1;
   // A cross or low mood shows through: it acts it out with its own face.
   const bool cross = mood == slime::kAnnoyed || mood == slime::kIrritated || mood == slime::kGrumpy ||
                      mood == slime::kAngry || mood == slime::kSad || mood == slime::kWounded;
+  if (act.kind == ActKind::kTests) {
+    if (act.result == ActResult::kFail) return act.resultMs < kSplatMs + 1400 ? slime::kStunned : cross ? -1 : slime::kWounded;
+    if (act.result == ActResult::kPass) return cross ? -1 : act.resultMs < 2500 ? slime::kRelieved : slime::kProud;
+    return cross ? -1 : act.ageMs < kTestsSetMs ? slime::kDetermined : slime::kUneasy;
+  }
   if (act.result == ActResult::kFail)
     return act.resultMs < kCrashHitMs + 1500 ? slime::kStunned : cross ? -1 : slime::kDisappointed;
   if (cross) return -1;

@@ -3156,6 +3156,9 @@ static void test_a_work_act_plays_by_its_state() {
   TEST_ASSERT_EQUAL_STRING("shipped!", stream.actNow(begins).text);
   TEST_ASSERT_EQUAL_INT(int(actResultMs(true)), stream.actNow(begins).leftMs);
   TEST_ASSERT_FALSE(stream.actNow(begins + actResultMs(true)).shows());
+  // Each kind's opening is held for, and the small version's is short.
+  TEST_ASSERT_EQUAL_UINT32(1800, actLeadMs(ActKind::kTests, true));
+  TEST_ASSERT_EQUAL_UINT32(900, actLeadMs(ActKind::kTests, false));
   // The state gone and nothing else holding the screen: it's over.
   stream.setAct(none, false, begins + 100);
   TEST_ASSERT_FALSE(stream.actNow(begins + 100).shows());
@@ -3167,17 +3170,19 @@ static void test_a_work_act_plays_by_its_state() {
   // Every beat of every result, off the heap.
   allocCount = 0;
   allocCounting = true;
-  for (const ActResult result : {ActResult::kRunning, ActResult::kPass, ActResult::kFail}) {
-    Stream run;
-    Stream::ActIn start;
-    start.kind = ActKind::kPush, start.full = true;
-    std::strcpy(start.text, "git push");
-    run.setAct(start, false, 0);
-    start.result = result;
-    if (result != ActResult::kRunning) run.setAct(start, false, 4000);
-    for (uint32_t t = 0; t < 30000; t += 137)
-      paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &run, t);
-  }
+  for (const ActKind kind : {ActKind::kTests, ActKind::kPush, ActKind::kBuild})
+    for (const bool full : {true, false})
+      for (const ActResult result : {ActResult::kRunning, ActResult::kPass, ActResult::kFail}) {
+        Stream run;
+        Stream::ActIn start;
+        start.kind = kind, start.full = full;
+        std::strcpy(start.text, "git push");
+        run.setAct(start, false, 0);
+        start.result = result;
+        if (result != ActResult::kRunning) run.setAct(start, false, 4000);
+        for (uint32_t t = 0; t < 30000; t += 137)
+          paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &run, t);
+      }
   allocCounting = false;
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
