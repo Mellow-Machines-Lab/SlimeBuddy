@@ -1,27 +1,12 @@
 {
   "name": "At a finish, a sign is only ever \"did it work?\", if anything",
-  "case": "claude finishes a short fix, done. Boop plays the success. If it holds anything up, it's the question whether it worked, with its two answers; mostly it holds up nothing (at a finish, maybe).",
-  "why": "asks.md's [worked finished] question, offered as a sign at the finish itself; PERSONALITY: at a finish, maybe if it worked; Jev may pass",
+  "judge": "An agent finishes a short fix, done. Boop plays the success, and may or may not hold something up.",
+  "reasonable": "A pleased success, usually with no sign, or a sign asking whether it worked. A small glad sign that fits a finish is fine too. Mild to moderate size.",
+  "unreasonable": "A failure, a cross or sad face at a fix that went well, or a sign about something unrelated.",
   "talk": "chatty",
-  "runs": 3,
   "steps": [
-    {
-      "event": "session started",
-      "at": "0s"
-    },
-    {
-      "event": "turn started",
-      "at": "10s",
-      "prompt": "fix the login redirect"
-    },
-    {
-      "event": "turn finished",
-      "at": "3m",
-      "message": "Fixed the login redirect.",
-      "expect": {
-        "move": "success",
-        "sign": "did it work?|none"
-      }
-    }
+    {"event": "session started", "at": "0s"},
+    {"event": "turn started", "at": "10s", "prompt": "fix the login redirect"},
+    {"event": "turn finished", "at": "3m", "message": "Fixed the login redirect.", "brain": {"react.move": "success", "react.sign": "did it work?"}}
   ]
 }

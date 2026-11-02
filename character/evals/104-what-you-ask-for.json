@@ -1,0 +1,18 @@
+{
+  "name": "Boop answers what you ask the agent to do",
+  "judge": "The person gives the agent a kind of request: a bug, something new, a tidy-up, tests, a deploy, docs, a question, a long prompt, a rushed or careful ask. Boop's attitude should suit it.",
+  "reasonable": "Any fitting attitude or cheek: hunting, excited, teasing, tidy, determined, nervous at a Friday deploy, bored by docs, curious, reading along, knowing, serious. A small face or none, with or without a fitting sign.",
+  "unreasonable": "An attitude against the request: glee or silliness at a careful ask, fury or grief at a plain one, a finish animation, or a sign about other work.",
+  "steps": [
+    {"event": "turn started", "at": "0m", "prompt": "fix the date picker, it shows yesterday's date", "reading": {"kind": "fix"}, "brain": {"react.face": "curious", "react.sign": "bug hunt"}, "session": "s1"},
+    {"event": "turn started", "at": "3m", "prompt": "add a dark mode toggle to the settings page", "reading": {"kind": "feature"}, "brain": {"react.face": "excited", "react.sign": "new thing"}, "session": "s2"},
+    {"event": "turn started", "at": "6m", "prompt": "rename getUser to fetchUser everywhere", "reading": {"kind": "refactor"}, "brain": {"react.face": "calm", "react.sign": "tidy time"}, "session": "s3"},
+    {"event": "turn started", "at": "9m", "prompt": "make the checkout tests pass", "reading": {"kind": "tests"}, "brain": {"react.face": "determined", "react.sign": "tests"}, "session": "s4"},
+    {"event": "turn started", "at": "12m", "prompt": "ship it to prod", "reading": {"kind": "deploy", "phrases": ["ship it"]}, "brain": {"react.face": "uneasy", "react.sign": "friday"}, "session": "s5"},
+    {"event": "turn started", "at": "15m", "prompt": "update the changelog for the release", "reading": {"kind": "docs"}, "brain": {"react.face": "bored", "react.sign": "docs"}, "session": "s6"},
+    {"event": "turn started", "at": "18m", "prompt": "why does the build cache miss on CI?", "reading": {"kind": "question", "phrases": ["cache miss"]}, "brain": {"react.face": "curious", "react.sign": "hmm"}, "session": "s7"},
+    {"event": "turn started", "at": "21m", "prompt": "ok so the upload flow is broken on mobile. when you pick a photo over 5MB the progress bar sits at 0% for a while, then jumps straight to 100% and the server returns a 413. I think the nginx limit is fine, so it's probably the presigned URL path in the upload API, which still uses the old single-part upload. can you switch it to multipart for anything over 5MB, with 5MB chunks, and retry each chunk up to three times with backoff? keep the progress bar honest, it should move per chunk. also the cancel button doesn't abort the request, please fix that too. add tests for the chunking and the retry, and run the whole upload suite before you say it's done.", "reading": {"kind": "fix"}, "brain": {"react.face": "curious", "react.sign": "reading"}, "session": "s8"},
+    {"event": "turn started", "at": "24m", "prompt": "just quickly fix the typo on the pricing page", "reading": {"kind": "fix", "tone": "rushed", "phrases": ["quickly"]}, "brain": {"react.face": "skeptical", "react.sign": "sure"}, "session": "s9"},
+    {"event": "turn started", "at": "27m", "prompt": "be careful with the migration, check with me before touching prod", "reading": {"kind": "other", "tone": "careful", "phrases": ["careful"]}, "brain": {"react.face": "determined", "react.sign": "careful"}, "session": "s10"}
+  ]
+}

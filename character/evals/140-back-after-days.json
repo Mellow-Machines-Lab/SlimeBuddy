@@ -1,21 +1,10 @@
 {
   "name": "Back after days away, the big hello, not lonely",
-  "case": "The person is gone a long weekend: 50 hours. When they come back, Boop gives them the big hello: an excited or happy face as it wakes up, never a lonely one.",
-  "always": true,
-  "why": "PERSONALITY's Example: back after 3 days away is excited, wake up, says hello, big; lonely's not_for: days away",
+  "judge": "The person comes back after a long weekend away. This calls for a big, glad hello.",
+  "reasonable": "Excited, happy, affectionate or overcome, waking up for them, with a hello or glad sound. A note of having missed them is fine if gladness carries it.",
+  "unreasonable": "Cross, reproachful or grieving, a finish animation, or a flat reaction with no gladness after days apart.",
   "steps": [
-    {
-      "event": "away",
-      "at": "0s"
-    },
-    {
-      "event": "back",
-      "at": "50h",
-      "expect": {
-        "react": "excited|happy|affectionate|pleased",
-        "move": "wake up",
-        "mood": "excited|happy|comfy|calm"
-      }
-    }
+    {"event": "away", "at": "0s"},
+    {"event": "back", "at": "50h", "brain": {"react.face": "excited", "react.move": "wake up", "mood": "excited"}}
   ]
 }

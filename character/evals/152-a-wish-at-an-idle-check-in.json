@@ -1,28 +1,13 @@
 {
   "name": "At an idle check-in, chatty, Boop may make its wish for the day",
-  "case": "With nothing going on and Boop calm, an idle check-in with CONTEXT saying no wish yet today offers its wishes beside its asks and musings. Chatty, it holds one up: most often a wish.",
-  "why": "MomentOutput: the wish options in the sign question, within Core.wishable; asks.md's [wish …]",
+  "judge": "An idle moment with Boop calm, chatty, with no wish yet today. It might hold up a wish, or one of its questions or musings.",
+  "reasonable": "A wish is the likeliest and fine, such as wanting a pet or a chat. A question, a musing, or nothing at this one check-in is also fine. A small face.",
+  "unreasonable": "A finish animation, a big dramatic moment at an empty check-in, or a sign that reproaches the person.",
   "talk": "chatty",
   "steps": [
-    {
-      "event": "session started",
-      "at": "0s"
-    },
-    {
-      "event": "turn started",
-      "at": "1m",
-      "prompt": "add a search bar"
-    },
-    {
-      "event": "turn finished",
-      "at": "2m"
-    },
-    {
-      "event": "wait",
-      "at": "17m",
-      "expect": {
-        "sign": "pet me?|talk to me?|work with me?|fav snack?|hat or bow?"
-      }
-    }
+    {"event": "session started", "at": "0s"},
+    {"event": "turn started", "at": "1m", "prompt": "add a search bar"},
+    {"event": "turn finished", "at": "2m"},
+    {"event": "wait", "at": "17m", "brain": {"react.sign": "pet me?"}}
   ]
 }

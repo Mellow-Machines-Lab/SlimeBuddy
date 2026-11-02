@@ -1,13 +1,13 @@
 {
   "name": "A turn of a few minutes gets a face but leaves the mood alone",
-  "case": "Two turns of a few minutes each finish well, one with passing tests, the second Codex's, which Boop treats as it would Claude's. Each finish gets a pleased face, held once or twice, played as a success, but nothing bigger, since neither stands out. Boop stays calm, follows the work (engaged) while it goes on, or is a little glad (happy) at a long turn's hard work done, never more.",
-  "gap": "Jev sometimes plays a few minutes' turn done, its tests passing, as a big moment, held three times (1 or 2 of 3 runs, 2026-11-01), where PERSONALITY's Example says small or medium. A firmer Example, or a size the turn's band sets in code, would fix it.",
-  "why": "character/steering/mood/calm.md: calm stays through routine finishes, even a few minutes long, since only a very long turn (5 minutes or more) finishing done lifts it; it may follow a long turn, engaged, at a check-in; PERSONALITY's Examples: a turn of a minute or more finishing done gets a happy face and its success, small or medium, and the 2nd quick win of a streak a pleased one; mood/calm.md: calm leaves for happy at a long turn's hard work done. The view lines Codex's hooks as Claude's (agent-hooks' Mapping.codex), and Codex never says a turn failed",
+  "judge": "Two turns of a few minutes each finish well, one by Claude and one by Codex. These are solid but ordinary wins, and both agents count alike.",
+  "reasonable": "A pleased face and a success each time, mild to fairly warm. Mood calm, engaged or a little glad. A brief extra lift is fine.",
+  "unreasonable": "Treating either as a triumph of the year, playing failure, sadness or crossness, or reacting to one agent's finish and ignoring the other's.",
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "command", "at": "30s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "3m", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success", "intensity": "small|medium", "mood": "calm|engaged|happy"}},
+    {"event": "turn finished", "at": "3m", "brain": {"react.face": "excited", "react.move": "success", "react.intensity": "small", "mood": "calm"}},
     {"event": "turn started", "at": "4m", "agent": "codex"},
-    {"event": "turn finished", "at": "6m30s", "agent": "codex", "expect": {"react": "excited|happy|pleased|proud|calm|engaged", "move": "success|reply", "intensity": "small|medium", "mood": "calm|engaged|happy"}}
+    {"event": "turn finished", "at": "6m30s", "agent": "codex", "brain": {"react.face": "excited", "react.move": "success", "react.intensity": "small", "mood": "calm"}}
   ]
 }

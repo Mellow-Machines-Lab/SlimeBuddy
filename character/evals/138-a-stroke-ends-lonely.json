@@ -1,11 +1,11 @@
 {
   "name": "Lonely, a stroke ends it at once",
-  "case": "Boop is lonely. The person strokes it: the loneliness ends at once, an affectionate or happy face, its mood comfy or happy.",
-  "always": true,
-  "why": "mood/lonely.md: anything you do to it ends it at once, a stroke comfy",
+  "judge": "Boop is lonely and the person strokes it. That attention should end the loneliness right away.",
+  "reasonable": "Melts into something warm: affectionate, happy, comfy, pleased, shy or relieved, with its mood moving out of lonely. A sound or a sign is optional.",
+  "unreasonable": "Staying lonely after the stroke, a cross or scolding face, or no reaction at all.",
   "mood": "lonely",
   "steps": [
     {"event": "session started", "at": "0s"},
-    {"event": "gesture", "at": "1m", "kind": "stroke", "expect": {"react": "affectionate|happy|comfy|pleased", "mood": "comfy|happy"}}
+    {"event": "gesture", "at": "1m", "kind": "stroke", "brain": {"react.face": "affectionate", "mood": "comfy"}}
   ]
 }
