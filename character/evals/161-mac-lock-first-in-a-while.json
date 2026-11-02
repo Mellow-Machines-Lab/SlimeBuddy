@@ -1,0 +1,16 @@
+{
+  "name": "The first lock in a while gets a real wave",
+  "judge": "The person locks the Mac for the first time in a long while. Boop should wave them off properly.",
+  "reasonable": "A wave at a small to medium size with a word or a sound and a goodbye sign, in a glad or calm face.",
+  "unreasonable": "No reaction, a sad or reproachful face, a lonely mood, a finish, or a huge moment.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "lock",
+      "at": "1m"
+    }
+  ]
+}

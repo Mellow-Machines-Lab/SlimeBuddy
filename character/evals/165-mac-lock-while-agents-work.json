@@ -1,0 +1,27 @@
+{
+  "name": "Agents working as you lock: Boop keeps watching",
+  "judge": "An agent is working when the person locks the Mac. Boop should see them off and keep watching.",
+  "reasonable": "A wave with the sign that says it keeps watching, a sound or a word, or a small wave alone, in a calm or engaged face.",
+  "unreasonable": "A nap, a sad or lonely face, a finish, or a big moment.",
+  "start": "2026-10-28T23:00",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "run the migration"
+    },
+    {
+      "event": "command",
+      "at": "2m",
+      "topic": "tests"
+    },
+    {
+      "event": "lock",
+      "at": "3m"
+    }
+  ]
+}

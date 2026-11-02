@@ -1,0 +1,29 @@
+{
+  "name": "Locking the Mac soon after the last: a slight silent wave",
+  "judge": "The person locks the Mac, unlocks it two minutes later and locks it again. Routine. Boop should notice, barely.",
+  "reasonable": "A small wave in silence with a calm or content face, no sign, at the lock and at the unlock. Now and then a sound, or another small face.",
+  "unreasonable": "No reaction at all, a big moment, words at each lock, a finish, a lonely or sad face or mood at a routine lock.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "lock",
+      "at": "1m",
+      "brain": {
+        "react.face": "calm",
+        "react.move": "wave",
+        "react.intensity": "small"
+      }
+    },
+    {
+      "event": "unlock",
+      "at": "3m"
+    },
+    {
+      "event": "lock",
+      "at": "8m"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-01. The slime's one engine is the C++ in
+Updated 2026-11-02. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -700,6 +700,11 @@ small nod, and for unhush a perk-up, lifting tall with its eyes wide and
 up at you, then a little bounce. The clips move only the body,
 eyes and mouth: there's no new drawing, and the face and its sign are
 the Moment's. A reply the pack has no clip for plays the face alone.
+
+The Mac's reply at your lock or unlock of the Mac (not to what you said)
+is the same move: `bye` or `hello` for a bigger moment, and for a small
+one `reply-wave`, a sway at about a third of `bye`'s lean with the eyes
+barely softening, over in a second, so it reads as a nod to you going by.
 
 A nap and a dance are tricks the gel already knows, its pastimes (below,
 Pastimes): the pack's table `kReplyPastimes` (`render/gel/pastimes.h`)
