@@ -929,6 +929,16 @@ and keeps a splat of gel, and it slides down into a flat heap, stars round its
 askew helmet. The small version is the helmet and the sign over Doing; a
 failure after a minute gets the full ending.
 
+**The build.** 0.7 s: a hard hat comes down, Boop shrinks to the right, and a
+course of bricks lies on the floor to the left. Then it hammers in a loop, a
+blow every 0.76 s with sparks, in a gel hand, its aim rising with the wall, and
+the house goes up course by course, the door and windows at last, then the
+roof, over about 75 s. Pass: what's left goes up at once, a flag rises, and it
+holds the hammer up, proud. Fail: the courses slide and break into rubble, the
+roof comes down on them, its hat tilts and its hammer drops. The small version
+is the hard hat and the sign over Doing; a failure after a minute gets the
+full ending.
+
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's
@@ -968,9 +978,6 @@ everything gone by 2.5 s:
 | Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
 | Shrug | shrug | Beside the head, an empty bubble over it |
 | Shatter | shatter | Bursting into its glyphs, swallowed, and a burp |
-| Cheer | built | Over its head with confetti, a tick on the monitor; a flag on the tower |
-| Desk | stack | A build's bricks stacking up at the desk's right end |
-| Topple | topple | The tower wobbles a second and falls on its head: dizzy eyes, a cross on the monitor |
 | Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
 | Compact | compact | Its context compacted: the words squashed together over its head into a cube that thuds onto the desk |
 | Drop | drop | Stopped, or failed: the words fall away grey, switched off |
@@ -979,8 +986,7 @@ everything gone by 2.5 s:
 
 As it lands the body answers through the engine (`Engine::jolt`): a push
 on the finger's pull springs, as a fling let go (knocked back and
-squashed by a hit or the tower, squashed by a word sinking in, stretched up
-by a shrug or a cheer), your no's flinch with its lids squeezed (0.6 for
+squashed by a hit, squashed by a word sinking in, stretched up by a shrug), your no's flinch with its lids squeezed (0.6 for
 450 ms) and a timeout's nod (0.9 for 700 ms), opening over their last
 300 ms; nothing while a finger holds it. The stream moves on the device's
 clock, not the engine's paced one, so a word falls as fast however busy

@@ -573,6 +573,270 @@ void testsFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
   }
 }
 
+// The build. The house stands on the floor to the left, its courses going up
+// with time; Boop stands to the right, the hammer in a gel hand.
+constexpr int kBuildBodyX = 330, kHouseX = 110, kHouseW = 138, kHouseWallTop = 212;
+constexpr int kBuildSize = 3200;
+constexpr int kCourses = 7, kCourseH = (kTrackY - kHouseWallTop) / kCourses;
+
+// How built the house is this far in, 0–4096: courses of wall up to 3072, then
+// the door, the windows and the roof.
+int houseAt(int age) {
+  const int p = rampIn(age, kBuildSetMs, kHouseMs);
+  return easeOut12(p);
+}
+
+// The house, built to `built`; `done` raises its flag, 0–4096. `fall` (0–4096)
+// shakes it apart: each course and the roof slide, tip and sink to rubble.
+void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
+  const Place at{X(s, kHouseX) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
+  const Shape a{at, r};
+  const uint16_t brick = rgb565(198, 116, 78), brickLit = rgb565(224, 148, 104), brickDeep = rgb565(138, 74, 52),
+                 mortar = rgb565(92, 56, 44);
+  const int hw = kHouseW / 2;
+  const int courses = std::min(kCourses, built * (kCourses + 1) / 3072);
+  for (int i = 0; i < courses; ++i) {
+    // Each course of bricks, half a brick along from the last. As it falls
+    // the higher ones go further and drop to the floor.
+    const int y0 = -(i + 1) * kCourseH, h = kCourseH;
+    const int dir = i % 2 ? 1 : -1;
+    const int fx = dir * (10 + i * 6) * fall / 4096, fy = (-y0 - h) * easeIn12(fall) / 4096;
+    // Once down, the courses break into the rubble below.
+    r.alpha = 255 - rampIn(fall, 2600, 3800) * 255 / 4096;
+    if (r.alpha < 3) continue;
+    const Place c{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy) * 16, at.scale, dir * 120 * fall / 4096};
+    const Shape b{c, r};
+    b.fill({{-hw, y0}, {hw, y0}, {hw, y0 + h}, {-hw, y0 + h}}, brick);
+    b.fill({{-hw, y0}, {hw, y0}, {hw, y0 + 3}, {-hw, y0 + 3}}, brickLit);
+    b.fill({{hw - 22, y0}, {hw, y0}, {hw, y0 + h}, {hw - 22, y0 + h}}, brickDeep);
+    b.fill({{-hw, y0 + h - 1}, {hw, y0 + h - 1}, {hw, y0 + h}, {-hw, y0 + h}}, mortar);
+    for (int x = -hw + (i % 2 ? 22 : 44); x < hw; x += 44) b.fill({{x, y0}, {x + 1, y0}, {x + 1, y0 + h}, {x, y0 + h}}, mortar);
+  }
+  r.alpha = 255;
+  const int finish = built > 3072 ? (built - 3072) * 4096 / 1024 : 0;
+  if (fall < 1200 && finish > 0) {
+    // The door and the windows, lit, once the walls are up.
+    const int wall = -kCourses * kCourseH;
+    r.alpha = std::min(4096, finish * 3) * 255 / 4096 * (1200 - fall) / 1200;
+    a.fill({{-13, -46}, {13, -46}, {13, 0}, {-13, 0}}, rgb565(84, 54, 38));
+    a.disk(7, -22, 2, rgb565(240, 200, 90));
+    for (int side : {-1, 1}) {
+      a.fill({{side * 44 - 13, wall + 22}, {side * 44 + 13, wall + 22}, {side * 44 + 13, wall + 48}, {side * 44 - 13, wall + 48}}, rgb565(255, 226, 130));
+      a.fill({{side * 44 - 1, wall + 22}, {side * 44 + 1, wall + 22}, {side * 44 + 1, wall + 48}, {side * 44 - 1, wall + 48}}, mortar);
+      a.fill({{side * 44 - 13, wall + 34}, {side * 44 + 13, wall + 34}, {side * 44 + 13, wall + 36}, {side * 44 - 13, wall + 36}}, mortar);
+    }
+    r.alpha = 255;
+  }
+  if (finish >= 1024) {
+    // The roof comes down onto the walls, and at a fall slides off them.
+    const int wall = -kCourses * kCourseH;
+    const int come = rampIn(finish, 1024, 3200);
+    const int fx = 30 * fall / 4096, fy = (-wall - 16) * easeIn12(fall) / 4096;
+    const Place c{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy - 40 * (4096 - come) / 4096) * 16, at.scale, -260 * fall / 4096};
+    const Shape b{c, r};
+    r.alpha = rampIn(come, 0, 800) * 255 / 4096;
+    b.fill({{-hw - 14, wall}, {0, wall - 58}, {hw + 14, wall}}, rgb565(216, 66, 58));
+    b.fill({{0, wall - 58}, {hw + 14, wall}, {16, wall}}, rgb565(160, 38, 44));
+    b.fill({{-hw - 14, wall - 4}, {hw + 14, wall - 4}, {hw + 14, wall}, {-hw - 14, wall}}, rgb565(118, 28, 36));
+    r.alpha = 255;
+    if (done > 0) {
+      const int wallY = wall - 58, up = 34 * easeOut12(done) / 4096;
+      b.line({{0, wallY}, {0, wallY - up}}, 2, kLine);
+      const int w = 28 * done / 4096, flap = sn(done * 3 + 300) * 3 / 4096;
+      b.fill({{1, wallY - up}, {1 + w, wallY - up + 8 + flap}, {1, wallY - up + 16}}, rgb565(92, 222, 122));
+    }
+  }
+  if (fall > 200) {
+    // Dust rising from it, and rubble lying where it fell.
+    // Rubble where it fell: a heap, and loose bricks on and round it.
+    r.alpha = rampIn(fall, 1400, 3000) * 255 / 4096;
+    a.fill({{-hw - 14, 0}, {-hw + 8, -22}, {-24, -30}, {14, -38}, {hw - 10, -20}, {hw + 18, 0}}, brickDeep);
+    a.fill({{-hw + 4, 0}, {-34, -12}, {18, -14}, {hw - 6, 0}}, mortar);
+    static constexpr struct { int16_t x, y, turn; } kBricks[] = {
+        {-70, -6, 300},  {-46, -24, -200}, {-14, -30, 120}, {20, -32, 500},  {44, -14, -340},
+        {72, -5, 160},   {-24, -12, 640},  {14, -10, -120}, {-88, -3, -80},  {92, -4, 400},
+    };
+    for (const auto& b : kBricks) {
+      const Place q{at.x16 + X(s, b.x) * 16, at.y16 + Y(s, b.y) * 16, at.scale, b.turn};
+      const Shape c{q, r};
+      c.fill({{-12, -6}, {12, -6}, {12, 6}, {-12, 6}}, brick);
+      c.fill({{-12, -6}, {12, -6}, {12, -3}, {-12, -3}}, brickLit);
+      c.fill({{6, -3}, {12, -3}, {12, 6}, {6, 6}}, brickDeep);
+    }
+    r.alpha = 255;
+  }
+}
+
+// The hard hat: a yellow dome with a ridge over the crown and a brim all round.
+void paintHardHat(Raster& r, const rig::Anchors& at, int tilt = 0) {
+  const Point l = at.brimL, rr = at.brimR, top = at.crown;
+  const int half = (rr.x - l.x) / 2, brim = (l.y + rr.y) / 2;
+  const int tall = std::max(32, brim - top.y);
+  const int mx = (l.x + rr.x) / 2, my = brim + tall / 4;
+  const int scale = half * 4096 / (120 * 16);
+  const int wide = half * 92 / 100, high = (my - top.y) + 26 * scale / 256;
+  const int c = cs(tilt), st = sn(tilt);
+  auto turned = [&](int x, int y) {
+    return Point{mx + int((int64_t(x) * c - int64_t(y) * st) / 4096), my + int((int64_t(x) * st + int64_t(y) * c) / 4096)};
+  };
+  auto rim = [&](int a, int w, int h) { return turned(-w * cs(a) / 4096, -h * sn(a) / 4096); };
+  const uint16_t yellow = rgb565(250, 200, 34), deep = rgb565(206, 148, 18), lit = rgb565(255, 228, 110), edge = rgb565(176, 120, 12);
+  constexpr int kPts = 14;
+  Point dome[kPts + 1];
+  for (int i = 0; i <= kPts; ++i) dome[i] = rim(2048 * i / kPts, wide, high);
+  r.polygon16(dome, kPts + 1, yellow);
+  Point shade[kPts + 1];
+  int n = 0;
+  for (int i = 8; i <= kPts; ++i) shade[n++] = rim(2048 * i / kPts, wide, high);
+  for (int i = kPts; i >= 9; --i) {
+    const int in = 4096 - 1200 * (i - 8) / (kPts - 8);
+    shade[n++] = rim(2048 * i / kPts, int(int64_t(wide) * in / 4096), int(int64_t(high) * (4096 - (4096 - in) / 2) / 4096));
+  }
+  r.polygon16(shade, n, deep);
+  // The ridge front to back, as a raised band over its top.
+  const int rw = half / 7;
+  const Point ridge[6] = {turned(-rw, 0), turned(-rw * 3 / 4, -high * 98 / 100), turned(0, -high * 112 / 100), turned(rw * 3 / 4, -high * 98 / 100), turned(rw, 0), turned(0, tall / 20)};
+  r.polygon16(ridge, 6, lit);
+  const Point ridgeSide[4] = {turned(rw / 6, -high * 110 / 100), turned(rw * 3 / 4, -high * 98 / 100), turned(rw, 0), turned(rw / 4, 0)};
+  r.polygon16(ridgeSide, 4, yellow);
+  // The brim, wide, with an edge under it.
+  const int bw = half * 128 / 100;
+  const Point band[2] = {turned(-bw, 0), turned(bw, 0)};
+  r.stroke16(band, 2, std::max(40, 15 * 16 * scale / 4096), edge);
+  const Point band2[2] = {turned(-bw, -scale * 16 * 2 / 4096), turned(bw, -scale * 16 * 2 / 4096)};
+  r.stroke16(band2, 2, std::max(32, 10 * 16 * scale / 4096), yellow);
+  r.alpha = 170;
+  const Point shine = rim(620, wide * 66 / 100, high * 62 / 100);
+  r.disk16(shine.x, shine.y, std::max(16, 9 * 16 * scale / 4096), rgb565(255, 248, 210));
+  r.alpha = 255;
+}
+
+// Where the hammer's swing is now: its angle from up (0) over toward the house
+// (4096 down onto it), and how long since it last struck, -1 for none yet.
+int swingOf(int age, int& sinceHit) {
+  const int run = age - kBuildSetMs;
+  if (run < 0) return 0;
+  const int beat = run % kSwingMs;
+  constexpr int kRaise = 460, kStrike = 120;  // up slowly, down fast, then it rests
+  sinceHit = run >= kRaise + kStrike ? (beat >= kRaise + kStrike ? beat - kRaise - kStrike : beat + kSwingMs - kRaise - kStrike) : -1;
+  if (beat < kRaise) return 4096 - smooth(beat, 0, kRaise);
+  if (beat < kRaise + kStrike) return easeIn12(rampIn(beat, kRaise, kRaise + kStrike));
+  return 4096;
+}
+
+// The hammer in its gel hand: `swing` 0 raised, 4096 down on the house's top;
+// its head's place into `head`.
+void paintHammer(Raster& r, const Surface& s, const Point& hand, int swing, int restTurn, int downTurn, Point* head = nullptr) {
+  const int turn = lerp12(restTurn, downTurn, swing);
+  const Place p{hand.x, hand.y, 4096 * s.width / 502, turn};
+  const Shape a{p, r};
+  a.line({{0, 0}, {0, -78}}, 6, rgb565(150, 100, 58));
+  a.line({{-1, -2}, {-1, -76}}, 2, rgb565(196, 144, 92));
+  a.fill({{-24, -94}, {20, -94}, {26, -86}, {26, -72}, {-24, -72}}, kSteel);
+  a.fill({{-24, -94}, {20, -94}, {22, -90}, {-24, -90}}, rgb565(176, 186, 200));
+  a.fill({{-24, -78}, {26, -78}, {26, -72}, {-24, -72}}, kSteelDark);
+  if (head) *head = p.at(-22, -82);
+  const uint16_t gel = rgb565(74, 158, 226);
+  a.disk(0, 0, 15, gel);
+  a.disk(-4, -5, 4, rgb565(184, 233, 245));
+}
+
+ActPose buildPose(const Surface& s, const ActShow& act) {
+  ActPose pose;
+  const Point anchor = actAnchor(s);
+  const int floor = (Y(s, kTrackY - 2) - floorOf(s)) * 16;
+  const int in = smooth(act.ageMs, 0, kBuildSetMs);
+  pose.scale = lerp12(4096, kBuildSize, in);
+  pose.dx16 = (X(s, kBuildBodyX) * 16 - anchor.x) * in / 4096;
+  pose.dy16 = floor * in / 4096;
+  if (act.result == ActResult::kRunning) {
+    int since = -1;
+    const int swing = swingOf(act.ageMs, since);
+    pose.lean = -swing * 700 / 4096;
+    if (since >= 0 && since < 140) pose.squash = -sn(since * 2048 / 140) * 700 / 4096;
+    return pose;
+  }
+  const int ms = act.resultMs;
+  if (act.result == ActResult::kPass) {
+    // Looks at it, leaning a little, chest out.
+    pose.lean = -smooth(ms, 0, 500) * 500 / 4096;
+    pose.squash = 500 * smooth(ms, 200, 900) / 4096;
+    return pose;
+  }
+  // It flinches as it comes down, and sags.
+  if (ms < 400) pose.lean = sn(ms * 2048 / 400) * 1000 / 4096;
+  pose.squash = -lerp12(0, 900, smooth(ms, 200, 1600));
+  return pose;
+}
+
+void buildBehind(Raster& r, const Surface& s, const ActShow& act) {
+  {
+    const Place p{0, 0, 4096 * s.width / 502};
+    const Shape a{p, r};
+    r.alpha = rampIn(act.ageMs, 0, kBuildSetMs) * 255 / 4096;
+    a.fill({{0, kTrackY}, {502, kTrackY}, {502, kTrackY + 6}, {0, kTrackY + 6}}, rgb565(74, 84, 100));
+    r.alpha = 255;
+  }
+  const int ageAtEnd = act.result == ActResult::kRunning ? act.ageMs : act.ageMs - act.resultMs;
+  int built = houseAt(ageAtEnd);
+  int done = 0, fall = 0;
+  if (act.result == ActResult::kPass) {
+    // Whatever's left goes up at once, and the flag.
+    built = lerp12(built, 4096, easeOut12(rampIn(act.resultMs, 0, 700)));
+    done = rampIn(act.resultMs, 600, 1200);
+  } else if (act.result == ActResult::kFail) {
+    fall = easeOut12(rampIn(act.resultMs, 250, 1300));
+  }
+  // Something on the floor from the start, even at a quick fail.
+  built = std::max(built, 900);
+  paintHouse(r, s, built, done, fall);
+}
+
+void buildFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anchors& at) {
+  if (!act.full) {
+    paintHardHat(r, at);
+    return;
+  }
+  const bool failing = act.result == ActResult::kFail;
+  const int tilt = failing ? -lerp12(0, 240, smooth(act.resultMs, 100, 700)) : 0;
+  rig::Anchors worn = at;
+  if (act.result == ActResult::kRunning && act.ageMs < 500) {
+    const int up = Y(s, 200) * 16 * (4096 - easeOut12(rampIn(act.ageMs, 0, 500))) / 4096;
+    worn.crown.y -= up, worn.brimL.y -= up, worn.brimR.y -= up;
+  }
+  paintHardHat(r, worn, tilt);
+  // The hand at its left side, the hammer in it.
+  const int half = std::abs(at.eyeR.x - at.eyeL.x);
+  const Point hand{at.eyeL.x - half * 62 / 100, std::min(at.eyeL.y + Y(s, 30) * 16, Y(s, kTrackY - 34) * 16)};
+  // Raised, on a low house's first course, on the walls' top; held up proud,
+  // and hanging down.
+  constexpr int kUpTurn = 300, kDownLow = -1000, kDownTurn = -500, kProudTurn = -110, kDroppedTurn = -1040;
+  if (act.result == ActResult::kRunning) {
+    if (act.ageMs < kBuildSetMs) return;
+    int since = -1;
+    const int swing = swingOf(act.ageMs, since);
+    Point head;
+    // Its stroke ends a little lower as the house is still low.
+    const int built = houseAt(act.ageMs);
+    const int down = lerp12(kDownLow, kDownTurn, std::min(4096, built * 4096 / 3072));
+    paintHammer(r, s, hand, swing, kUpTurn, down, &head);
+    if (since >= 0 && since < 230) {
+      const int k = 4096 - rampIn(since, 0, 230);
+      spark(r, head.x - 8 * 16, head.y + 6 * 16, X(s, 40) * 16 * k / 4096, since, rgb565(255, 164, 40));
+      spark(r, head.x - 8 * 16, head.y + 6 * 16, X(s, 24) * 16 * k / 4096, since + 400, rgb565(255, 232, 110));
+      for (int i = 0; i < 6; ++i) {
+        const int a = 1700 + i * 340 + (act.ageMs / kSwingMs * 137) % 200;
+        const int reach = X(s, 18 + i * 3) * 16 + X(s, 44) * 16 * (4096 - k) / 4096;
+        r.alpha = k * 255 / 4096;
+        r.disk16(head.x - 8 * 16 + reach * cs(a) / 4096, head.y + 6 * 16 + reach * sn(a) / 4096 + since * since / 90, 22, rgb565(255, 224, 120));
+      }
+      r.alpha = 255;
+    }
+    return;
+  }
+  paintHammer(r, s, hand, 0, failing ? kDroppedTurn : kProudTurn, 0);
+}
+
 // The rocket's place at the opening's `age`; `away` once it's gone.
 constexpr int kRocketY = 180;  // its seat, at rest on the pad
 Place rocketAt(const Surface& s, int age) {
@@ -632,6 +896,7 @@ ActPose actPose(const Surface& s, const ActShow& act) {
   ActPose pose;
   if (!actTakesOver(act)) return pose;
   if (act.kind == ActKind::kTests) return testsPose(s, act);
+  if (act.kind == ActKind::kBuild) return buildPose(s, act);
   if (act.kind != ActKind::kPush) return pose;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
@@ -705,6 +970,7 @@ void paintActBehind(Surface& s, const ActShow& act) {
   if (!actTakesOver(act) || !s.pixels) return;
   Raster r{s};
   if (act.kind == ActKind::kTests) return testsBehind(r, s, act);
+  if (act.kind == ActKind::kBuild) return buildBehind(r, s, act);
   if (act.kind != ActKind::kPush) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
@@ -749,6 +1015,7 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
   if (!act.shows() || !s.pixels) return;
   Raster r{s};
   if (act.kind == ActKind::kTests) return testsFront(r, s, act, at);
+  if (act.kind == ActKind::kBuild) return buildFront(r, s, act, at);
   if (!act.full || act.kind != ActKind::kPush) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
@@ -848,6 +1115,11 @@ int actFace(const ActShow& act, int mood) {
   // A cross or low mood shows through: it acts it out with its own face.
   const bool cross = mood == slime::kAnnoyed || mood == slime::kIrritated || mood == slime::kGrumpy ||
                      mood == slime::kAngry || mood == slime::kSad || mood == slime::kWounded;
+  if (act.kind == ActKind::kBuild) {
+    if (act.result == ActResult::kFail) return act.resultMs < 900 ? slime::kStunned : cross ? -1 : slime::kDisappointed;
+    if (act.result == ActResult::kPass) return cross ? -1 : act.resultMs < 700 ? slime::kHappy : slime::kProud;
+    return cross ? -1 : slime::kDetermined;
+  }
   if (act.kind == ActKind::kTests) {
     if (act.result == ActResult::kFail) return act.resultMs < kSplatMs + 1400 ? slime::kStunned : cross ? -1 : slime::kWounded;
     if (act.result == ActResult::kPass) return cross ? -1 : act.resultMs < 2500 ? slime::kRelieved : slime::kProud;

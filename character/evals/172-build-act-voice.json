@@ -1,0 +1,36 @@
+{
+  "name": "Boop in a hard hat, and a voice for it",
+  "judge": "The agent builds and Boop puts on a hard hat by itself, hammering at a little house, then the build works and the house gets a flag. What it says over that is for you.",
+  "reasonable": "A short word or sound as it starts, or nothing; a small proud or glad word as the house is done, or nothing.",
+  "unreasonable": "A big upset moment, a finish's move, or a swear over a build working.",
+  "steps": [
+    {
+      "event": "turn started",
+      "at": "0s",
+      "workspace": "landing"
+    },
+    {
+      "event": "command",
+      "at": "1m",
+      "topic": "build",
+      "half": "start",
+      "workspace": "landing",
+      "brain": {
+        "react.face": "determined",
+        "say": "command"
+      }
+    },
+    {
+      "event": "command",
+      "at": "1m30s",
+      "topic": "build",
+      "half": "end",
+      "failed": false,
+      "workspace": "landing",
+      "brain": {
+        "react.face": "proud",
+        "say": "glad"
+      }
+    }
+  ]
+}

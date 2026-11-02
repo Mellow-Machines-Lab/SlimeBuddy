@@ -10,6 +10,10 @@
 //   sled at a start line, facing a wall, puffed up and holding its breath, the
 //   sled inching on. It stops short with a big phew and a thumbs up, or
 //   hits the wall, splats and slides down it.
+// - The build: in a hard hat, hammering in a loop with sparks, a little house
+//   going up beside it course by course. The house is done, with a flag, and
+//   it looks at it, proud; or the house falls apart, its hat tilted, its
+//   hammer down.
 #pragma once
 #include "render/gel/low_sign.h"
 #include "render/rig/rig.h"
@@ -34,6 +38,9 @@ constexpr int kTestsSetMs = 900;
 // How far along the track the sled gets, ever: it inches, and slows.
 // A pass's stop, and a fail's rush to the wall and its slide down it.
 constexpr int kPassStopMs = 300, kSplatMs = 300, kSlideMs = 2200;
+
+// The build: a swing of the hammer, and how long the house takes to go up.
+constexpr int kBuildSetMs = 700, kSwingMs = 760, kHouseMs = 75000;
 
 // What it does to the body now: as a finish's pose (render/gel/finish.h).
 struct ActPose {

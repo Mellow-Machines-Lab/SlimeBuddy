@@ -11,12 +11,12 @@
     },
     {
       "at": 0.001,
-      "line": "{\"t\":\"do\",\"id\":2134602471,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "line": "{\"t\":\"do\",\"id\":697789909,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
       "at": 0.001,
       "effect": "Boop stretches and yawns",
-      "line": "{\"t\":\"do\",\"id\":2134602472,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"Happy Halloween!\"}}"
+      "line": "{\"t\":\"do\",\"id\":697789910,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"Happy Halloween!\"}}"
     },
     {
       "at": 0.853,
@@ -30,60 +30,60 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier5\"]}"
     },
     {
-      "at": 1.179,
+      "at": 1.174,
       "effect": "Boop stretches and yawns and says “Mm-hm”",
-      "line": "{\"t\":\"do\",\"id\":2134602473,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you were away 10 h\",\"say\":{\"take\":\"phase1.nonverbal.delight.mm-hm__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":697789911,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you were away 10 h\",\"say\":{\"take\":\"phase1.nonverbal.delight.mm-hm__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
     },
     {
-      "at": 1.18,
+      "at": 1.176,
       "effect": "Boop's mood is now happy",
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier5\"]}"
     },
     {
-      "at": 7.58,
+      "at": 7.573,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
     },
     {
-      "at": 7.58,
-      "line": "{\"t\":\"do\",\"id\":2134602474,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\"}}"
+      "at": 7.573,
+      "line": "{\"t\":\"do\",\"id\":697789912,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\"}}"
     },
     {
-      "at": 7.582,
+      "at": 7.575,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Add a spooky theme for today”"
       }
     },
     {
-      "at": 8.646,
+      "at": 8.639,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 10.779,
+      "at": 10.772,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/theme.css"
       }
     },
     {
-      "at": 12.475,
+      "at": 12.468,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
     },
     {
-      "at": 12.475,
-      "line": "{\"t\":\"do\",\"id\":2134602475,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.468,
+      "line": "{\"t\":\"do\",\"id\":697789913,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.476,
+      "at": 12.469,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 12.798,
+      "at": 12.791,
       "effect": "Boop celebrates and says “Whoa”",
-      "line": "{\"t\":\"do\",\"id\":2134602476,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{\"take\":\"phase1.word.poke.whoa__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":697789914,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{\"take\":\"phase1.word.poke.whoa__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
     }
   ],
   "face": "gel",
