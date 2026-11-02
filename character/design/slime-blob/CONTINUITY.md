@@ -945,27 +945,19 @@ screen linger 1.5 s (`Stream::kEndMs`), falling where they dropped, and a
 word may still come forward in that time, as a turn's end does to gather
 them; something needing you clears everything at once.
 
-In front, after the props and before the sign: the word a `call` brings
-forward flies from its lane's name (a paper plane from the edge) and
-does what its move does (`render::CallMove`),
+Almost every call is only that, its word falling. In front, after the props
+and before the sign, the few a `call` brings forward fly from their lane's
+name and do what their move does (`render::CallMove`),
 everything gone by 2.5 s:
 
 | Move | Styles | What plays |
 | --- | --- | --- |
-| Sink, arrive | land, arrive, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too); a turn's first twinkles; an edit's lines grow as green and red bars on the monitor |
-| Look | look | Beside the head, a magnifier sweeping it; the monitor's page scrolls |
-| Stir | stir | Into a pot at the desk's right end, bubbling and steaming |
-| Stamp | stamp | Onto a card beside it, and a stamp comes down: OK |
-| Rocket | launch | Onto the crown, then up and away on a rocket; the monitor counts 3, 2, 1, LIFTOFF |
-| Poof | poof | Beside it, gone in a puff |
-| Plane | plane | A paper plane swooping in from the edge, caught at its hands; a globe turns on the monitor |
-| Phone | phone | An old phone ringing beside it, the word its call |
-| Page | page | A page beside it, its corner turning |
+| Sink | land, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too); an edit's lines grow as green and red bars on the monitor |
 | Hit | bonk, bonk2, helmet, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder, a helmet on the third; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
 | Shrug | shrug | Beside the head, an empty bubble over it |
 | Shatter | shatter | Bursting into its glyphs, swallowed, and a burp |
 | Hail | hail | More FAILs raining and bouncing off; an umbrella opens 0.4 s too late; a cross on the monitor |
-| Cheer, combo | pass, built, combo | Over its head with confetti, a tick on the monitor; built raises a flag on the tower; a combo's count twinkles |
+| Cheer | pass, built | Over its head with confetti, a tick on the monitor; built raises a flag on the tower |
 | Desk | cross, stack | The monitor's spinner; a build's bricks stacking up at the desk's right end |
 | Topple | topple | The tower wobbles a second and falls on its head: dizzy eyes, a cross on the monitor |
 | Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
@@ -976,9 +968,8 @@ everything gone by 2.5 s:
 
 As it lands the body answers through the engine (`Engine::jolt`): a push
 on the finger's pull springs, as a fling let go (knocked back and
-squashed by a hit or the tower, squashed by a word sinking in or a
-stamp, leaning to look, read, phone or catch, stretched up by a shrug, a
-rocket or a cheer), your no's flinch with its lids squeezed (0.6 for
+squashed by a hit or the tower, squashed by a word sinking in, stretched up
+by a shrug or a cheer), your no's flinch with its lids squeezed (0.6 for
 450 ms) and a timeout's nod (0.9 for 700 ms), opening over their last
 300 ms; nothing while a finger holds it. The stream moves on the device's
 clock, not the engine's paced one, so a word falls as fast however busy

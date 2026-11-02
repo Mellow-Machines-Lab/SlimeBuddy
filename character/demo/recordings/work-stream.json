@@ -6,148 +6,136 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.002,
+      "at": 0.001,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
       "at": 0.002,
-      "line": "{\"t\":\"do\",\"id\":1191932331,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "line": "{\"t\":\"do\",\"id\":365818250,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
-      "at": 1.008,
+      "at": 1.068,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.008,
+      "at": 1.068,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Clean up the old payment handlers and get the tests green”"
       }
     },
     {
-      "at": 1.332,
+      "at": 1.391,
       "effect": "Boop makes an engaged face and says “Andiamo”",
-      "line": "{\"t\":\"do\",\"id\":1191932332,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.borrowed.andiamo__engaged__contained\"},\"mood\":\"engaged\",\"loops\":2}}"
+      "line": "{\"t\":\"do\",\"id\":365818251,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.borrowed.andiamo__engaged__contained\"},\"mood\":\"engaged\",\"loops\":2}}"
     },
     {
-      "at": 3.465,
+      "at": 3.524,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"read\"]]}"
     },
     {
-      "at": 3.465,
-      "line": "{\"t\":\"do\",\"id\":1191932333,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"read\",\"as\":\"arrive\"}}"
-    },
-    {
-      "at": 4.098,
+      "at": 4.159,
       "cause": {
         "kind": "tool",
         "text": "Claude reads src/payments/handlers.js"
       }
     },
     {
-      "at": 5.166,
+      "at": 5.226,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"grep\"]]}"
     },
     {
-      "at": 7.299,
+      "at": 7.359,
       "cause": {
         "kind": "tool",
         "text": "Claude: find the old handlers"
       }
     },
     {
-      "at": 8.365,
+      "at": 8.42,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 10.498,
+      "at": 10.553,
       "cause": {
         "kind": "tool",
         "text": "Claude: read the routes"
       }
     },
     {
-      "at": 11.566,
+      "at": 11.621,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 11.566,
-      "line": "{\"t\":\"do\",\"id\":1191932334,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 11.621,
+      "line": "{\"t\":\"do\",\"id\":365818252,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
-      "at": 11.567,
+      "at": 11.622,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 11.567,
+      "at": 11.622,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Update the payments docs”"
       }
     },
     {
-      "at": 12.008,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
-    },
-    {
-      "at": 12.633,
+      "at": 12.687,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"],[1,1,\"read\"]]}"
     },
     {
-      "at": 12.633,
-      "line": "{\"t\":\"do\",\"id\":1191932335,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":1,\"w\":\"read\",\"as\":\"arrive\"}}"
-    },
-    {
-      "at": 13.266,
+      "at": 13.317,
       "cause": {
         "kind": "tool",
         "text": "Claude reads docs/payments.md"
       }
     },
     {
-      "at": 15.009,
+      "at": 14.999,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"],[1,1,\"read\"]]}"
     },
     {
-      "at": 15.395,
+      "at": 15.451,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,1,\"read\"]]}"
     },
     {
-      "at": 17.529,
-      "line": "{\"t\":\"do\",\"id\":1191932336,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"grep\",\"as\":\"shrug\"}}"
+      "at": 17.583,
+      "line": "{\"t\":\"do\",\"id\":365818253,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"grep\",\"as\":\"shrug\"}}"
     },
     {
-      "at": 17.529,
+      "at": 17.583,
       "cause": {
         "kind": "tool_failed",
         "text": "A lookup that finds nothing: a shrug"
       }
     },
     {
-      "at": 19.662,
+      "at": 19.717,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 20.296,
+      "at": 20.35,
       "cause": {
         "kind": "tool",
         "text": "Claude edits docs/payments.md"
       }
     },
     {
-      "at": 22.007,
+      "at": 22.003,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 22.429,
+      "at": 22.483,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,5,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 24.562,
-      "line": "{\"t\":\"do\",\"id\":1191932337,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk\"}}"
+      "at": 24.616,
+      "line": "{\"t\":\"do\",\"id\":365818254,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk\"}}"
     },
     {
-      "at": 24.562,
+      "at": 24.616,
       "cause": {
         "kind": "tool_failed",
         "text": "A failed command hits it"
@@ -158,34 +146,34 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,5,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 27.762,
+      "at": 27.817,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,6,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 29.895,
-      "line": "{\"t\":\"do\",\"id\":1191932338,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk2\"}}"
+      "at": 29.95,
+      "line": "{\"t\":\"do\",\"id\":365818255,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk2\"}}"
     },
     {
-      "at": 29.895,
+      "at": 29.95,
       "cause": {
         "kind": "tool_failed",
         "text": "Again: harder"
       }
     },
     {
-      "at": 32.007,
+      "at": 32.003,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,6,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 32.998,
+      "at": 33.002,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,7,\"edit -140\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
       "at": 33.635,
-      "line": "{\"t\":\"do\",\"id\":1191932339,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"-140\",\"as\":\"shatter\"}}"
+      "line": "{\"t\":\"do\",\"id\":365818256,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"-140\",\"as\":\"shatter\"}}"
     },
     {
-      "at": 33.636,
+      "at": 33.635,
       "cause": {
         "kind": "tool",
         "text": "A big deletion, swallowed"
@@ -196,97 +184,97 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,7,\"edit -140\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 36.829,
+      "at": 36.834,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,8,\"npm test\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 36.829,
-      "line": "{\"t\":\"do\",\"id\":1191932340,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
+      "at": 36.834,
+      "line": "{\"t\":\"do\",\"id\":365818257,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
     },
     {
-      "at": 38.962,
-      "line": "{\"t\":\"do\",\"id\":1191932341,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"FAIL\",\"as\":\"hail\"}}"
+      "at": 38.967,
+      "line": "{\"t\":\"do\",\"id\":365818258,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"FAIL\",\"as\":\"hail\"}}"
     },
     {
-      "at": 38.962,
+      "at": 38.967,
       "cause": {
         "kind": "tool_failed",
         "text": "Failing tests rain on it"
       }
     },
     {
-      "at": 40.999,
+      "at": 41,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,9,\"edit +1 -1\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 41.629,
+      "at": 41.635,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/payments/routes.js"
       }
     },
     {
-      "at": 44.007,
+      "at": 44.009,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,9,\"edit +1 -1\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 44.829,
+      "at": 44.834,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,10,\"npm test\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 44.829,
-      "line": "{\"t\":\"do\",\"id\":1191932342,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
+      "at": 44.834,
+      "line": "{\"t\":\"do\",\"id\":365818259,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
     },
     {
-      "at": 46.962,
-      "line": "{\"t\":\"do\",\"id\":1191932343,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
+      "at": 46.967,
+      "line": "{\"t\":\"do\",\"id\":365818260,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
     },
     {
-      "at": 46.962,
+      "at": 46.967,
       "cause": {
         "kind": "tool",
         "text": "Green: confetti"
       }
     },
     {
-      "at": 49.007,
+      "at": 49.001,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,10,\"npm test\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 50.633,
+      "at": 50.634,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 50.633,
-      "line": "{\"t\":\"do\",\"id\":1191932344,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 50.634,
+      "line": "{\"t\":\"do\",\"id\":365818261,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 50.633,
+      "at": 50.634,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 50.947,
+      "at": 50.956,
       "effect": "Boop celebrates and says “Nailed it”",
-      "line": "{\"t\":\"do\",\"id\":1191932345,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"the-work-stream\"},\"say\":{\"take\":\"phase1.phrase.pride.nailed-it__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
+      "line": "{\"t\":\"do\",\"id\":365818262,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"the-work-stream\"},\"say\":{\"take\":\"phase1.phrase.pride.nailed-it__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
     },
     {
-      "at": 50.948,
+      "at": 50.957,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"proud\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 53.634,
+      "at": 53.636,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 53.634,
-      "line": "{\"t\":\"do\",\"id\":1191932346,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":1,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 53.636,
+      "line": "{\"t\":\"do\",\"id\":365818263,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":1,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 53.634,
+      "at": 53.636,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"

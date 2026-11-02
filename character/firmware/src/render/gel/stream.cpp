@@ -34,9 +34,7 @@ struct Layout {
 constexpr int kTop = 10;  // where words start falling, from the top edge
 
 // The props' inks, and a few of the stream's own.
-constexpr uint16_t kPaper = 0xFFDE, kPaperLine = 0xA554, kNavy = 0x10E8, kBrick = 0xC3CA, kBrickRim = 0x8A26,
-                   kPot = 0x3186, kSteel = 0x9CF3, kSmoke = 0x8410, kIce = 0xA6FF,
-                   kGrey = 0x8410;
+constexpr uint16_t kNavy = 0x10E8, kBrick = 0xC3CA, kBrickRim = 0x8A26, kIce = 0xA6FF, kGrey = 0x8410;
 
 uint16_t laneInk(uint8_t slot) { return kLaneInk[slot % Stream::kLanes]; }
 
@@ -121,17 +119,6 @@ void twinkle(Raster& r, const Layout& l, int cx, int cy, int ms, int alpha) {
   }
 }
 
-// A puff: grey balls swelling, rising and thinning, `ms` in of `over`, in
-// sixteenths of a pixel.
-void puff(Raster& r, const Layout& l, int cx, int cy, int ms, int over) {
-  const int grow = std::min(ms, over);
-  r.alpha = fadeBy(ms, over, over);
-  for (int i = 0; i < 6; ++i)
-    r.disk16(cx * 16 + 8 + l.x16(22 * 16) * cos40(i * 7) / 1000 * grow / over,
-             cy * 16 + 8 + l.y16(14 * 16) * sin40(i * 7) / 1000 * grow / over - l.y16(grow * 16 / 40),
-             l.x16((8 + (i % 3) * 2) * 16 + grow * 160 / over) + 8, kSmoke);
-}
-
 // The desk's monitor's screen, as the props draw it, and how much the desk
 // shows.
 struct Screen {
@@ -166,9 +153,8 @@ void editSize(const char* word, int& added, int& removed) {
   }
 }
 
-// The monitor answering the word forward: a check's spinner, crawl, count,
-// tick or cross; a failure's crack up the ladder; the page a lookup reads
-// scrolling; an edit's lines as bars; a globe for the web.
+// The monitor answering the word forward: a check's spinner or crawl, its
+// tick or cross; a failure's crack up the ladder; an edit's lines as bars.
 void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c, int age) {
   const Screen m = screen(s, e);
   const int flight = int(callFlightMs(c.style));
@@ -179,8 +165,6 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
     case CallStyle::kBonk2:
     case CallStyle::kHelmet:
     case CallStyle::kThrow:
-    case CallStyle::kLook:
-    case CallStyle::kPlane:
     case CallStyle::kLand: break;
     case CallStyle::kPass:
     case CallStyle::kBuilt:
@@ -222,13 +206,6 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       r.line({cx - 11, cy - 11}, {cx + 11, cy + 11}, 4, kFailInk);
       r.line({cx + 11, cy - 11}, {cx - 11, cy + 11}, 4, kFailInk);
       break;
-    case CallStyle::kLook:  // a page scrolling past, in sixteenths of a pixel, a line lit as it's read
-      for (int i = 0; i < 6; ++i) {
-        const int y16 = (m.y + 4) * 16 + ((i * 8 * 16 - age * 16 / 25) % (48 * 16) + 48 * 16) % (48 * 16);
-        round16(r, (m.x + 8) * 16, y16, (20 + (i * 37) % 44) * 16, 3 * 16, 16,
-                i == 2 ? laneInk(c.slot) : rgb565(110, 160, 180));
-      }
-      break;
     case CallStyle::kLand: {  // an edit's lines: green added, red removed, to scale
       int added = 0, removed = 0;
       editSize(c.text, added, removed);
@@ -237,16 +214,6 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       const int grow = easeOut(std::min(400, age), 400);  // in sixteenths of a pixel
       round16(r, (m.x + 8) * 16, (cy - 9) * 16, bar(added) * 16 * grow / 400, 7 * 16, 3 * 16, kPassInk);
       round16(r, (m.x + 8) * 16, (cy + 3) * 16, bar(removed) * 16 * grow / 400, 7 * 16, 3 * 16, kFailInk);
-      break;
-    }
-    case CallStyle::kPlane: {  // a globe turning
-      const int rad = 14, spin = age / 30;
-      r.ring(cx - rad, cy - rad, 2 * rad, 2 * rad, rad, 2, laneInk(c.slot));
-      for (int k = 0; k < 2; ++k) {
-        const int wx = std::abs(rad * cos40(spin + k * 20) / 1000);
-        if (wx > 2) r.ring(cx - wx, cy - rad, 2 * wx, 2 * rad, wx, 1, laneInk(c.slot));
-      }
-      r.line({cx - rad, cy}, {cx + rad, cy}, 1, laneInk(c.slot));
       break;
     }
     default: {  // a crack, longer up the ladder
@@ -479,11 +446,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
   const CallMove move = callMove(c.style);
   const int flight = int(callFlightMs(c.style)), after = age - flight, end = int(Stream::kCallMs);
   const uint16_t ink = callInk(c);
-  char word[Stream::kWordBytes + 8];
-  if (c.style == CallStyle::kCombo)
-    std::snprintf(word, sizeof(word), "%s x%u", c.text, unsigned(c.count));
-  else
-    std::snprintf(word, sizeof(word), "%s", c.text);
+  const char* word = c.text;
   switch (move) {
     case CallMove::kGather:
     case CallMove::kCompact:
@@ -499,25 +462,13 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
   const int crownX = at.crown.x / 16, crownY = at.crown.y / 16;
   const bool right = fromX >= surface.width / 2;
   const int sideX = (right ? at.brimR.x : at.brimL.x) / 16 + l.x(right ? 48 : -48), sideY = at.brimR.y / 16;
-  const int potX = l.x(458), potY = l.y(286), deskY = l.y(305);
-  int sx = fromX, sy = fromY;  // where its flight starts
+  const int deskY = l.y(305);
   int toX = crownX, toY = crownY - l.y(18);
   switch (move) {
     case CallMove::kHit: toX = eyesX, toY = eyesY; break;
-    case CallMove::kShrug:
-    case CallMove::kLook:
-    case CallMove::kPoof:
-    case CallMove::kPhone:
-    case CallMove::kPage:
-    case CallMove::kStamp: toX = sideX, toY = sideY; break;
+    case CallMove::kShrug: toX = sideX, toY = sideY; break;
     case CallMove::kShatter: toY = crownY - l.y(50); break;
-    case CallMove::kCheer:
-    case CallMove::kCombo: toY = crownY - l.y(46); break;
-    case CallMove::kStir: toX = potX, toY = potY - l.y(22); break;
-    case CallMove::kPlane:
-      sx = right ? surface.width + l.x(40) : -l.x(40), sy = l.y(150);
-      toX = at.handF.x / 16 + l.x(right ? 70 : -70), toY = at.handF.y / 16 - l.y(30);
-      break;
+    case CallMove::kCheer: toY = crownY - l.y(46); break;
     case CallMove::kDesk:
       if (c.style == CallStyle::kStack) {
         toX = l.x(456), toY = deskY - l.y(110);
@@ -530,7 +481,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     default: break;
   }
 
-  // In flight: a word from its lane; a plane from the edge.
+  // In flight: a word from its lane.
   if (after < 0) {
     if (move == CallMove::kTopple) {  // the tower, built, wobbling
       const int wobble = l.x(10) * sin40(age / 12) / 1000 * age / flight;
@@ -539,26 +490,12 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       centred(r, kSign, l.x(456), deskY - l.y(118), word, ink);
       return;
     }
-    const bool rises = move == CallMove::kCheer || move == CallMove::kCombo;
+    const bool rises = move == CallMove::kCheer;
     const int k = rises ? easeOut(age, flight) : easeIn(age, flight);
     // In sixteenths of a pixel.
-    int x = lerp(sx * 16, toX * 16, k, flight), y = lerp(sy * 16, toY * 16, k, flight);
-    if (move == CallMove::kPlane) {  // a paper plane, swooping in
-      y -= l.y16(60 * 16) * sin40(20 * age / flight) / 1000;
-      const int dir = right ? -1 : 1;
-      const Point plane[3] = {{x + dir * l.x16(26 * 16), y},
-                              {x - dir * l.x16(20 * 16), y - l.y16(14 * 16)},
-                              {x - dir * l.x16(12 * 16), y + l.y16(10 * 16)}};
-      r.alpha = 255;
-      r.polygon16(plane, 3, kPaper);
-      const Point crease[2] = {{x + dir * l.x16(26 * 16), y}, {x - dir * l.x16(14 * 16), y + l.y16(2 * 16)}};
-      r.stroke16(crease, 2, 16, kPaperLine);
-      centred16(r, kLarge, x, y - l.y16(26 * 16), word, ink);
-      return;
-    }
+    int x = lerp(fromX * 16, toX * 16, k, flight), y = lerp(fromY * 16, toY * 16, k, flight);
     r.alpha = 255;
     centred16(r, big, x, y, word, ink);
-    if (move == CallMove::kArrive) twinkle(r, l, x >> 4, y >> 4, age, 255);
     return;
   }
 
@@ -604,8 +541,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       }
       break;
     }
-    case CallMove::kSink:
-    case CallMove::kArrive: {  // it sinks into the crown, a ring spreading out
+    case CallMove::kSink: {  // it sinks into the crown, a ring spreading out
       const int k = std::min(320, after);
       r.alpha = 255 - k * 255 / 320;
       if (r.alpha > 2) centred16(r, big, toX * 16, toY * 16 + l.y16(k * 34 * 16 / 320), word, ink);
@@ -614,104 +550,6 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
         r.alpha = 160 - after * 160 / 500;
         r.ring(crownX - radius, crownY - radius / 4, 2 * radius, radius / 2, radius / 4, 2, ink);
       }
-      if (move == CallMove::kArrive && after < 700)
-        twinkle(r, l, crownX, crownY - l.y(20), age, fadeBy(after, 700, 300));
-      break;
-    }
-    case CallMove::kLook: {  // read through a magnifier sweeping across it
-      r.alpha = fadeBy(after, end - flight, 400);
-      centred(r, big, toX, toY, word, ink);
-      const int span = glyphCount(word) * big.w / 2 + l.x(10);
-      const int lx = toX - span + (after * 2 * span / 900) % (2 * span), ly = toY + l.y(4), rad = l.x(22);
-      r.alpha = std::min(r.alpha, 70);
-      r.disk(lx, ly, rad, 0xFFFF);
-      r.alpha = fadeBy(after, end - flight, 400);
-      r.ring(lx - rad, ly - rad, 2 * rad, 2 * rad, rad, l.x(4), kSteel);
-      r.line({lx + rad * 7 / 10, ly + rad * 7 / 10}, {lx + rad * 3 / 2, ly + rad * 3 / 2}, l.x(6), rgb565(120, 80, 50));
-      break;
-    }
-    case CallMove::kStir: {  // into the pot, bubbling and steaming
-      r.alpha = fadeBy(after, end - flight, 300);
-      const int pw = l.x(58), ph = l.y(34);
-      r.round(potX - pw / 2, potY - ph / 2, pw, ph, l.y(14), kPot);
-      r.round(potX - pw / 2 - l.x(5), potY - ph / 2 - l.y(4), pw + l.x(10), l.y(8), l.y(4), kSteel);
-      for (int i = 0; i < 5; ++i) {
-        const int life = (after + i * 170) % 700, bx = potX - l.x(16) + i * l.x(8);
-        r.disk16(bx * 16 + 8, (potY - ph / 2) * 16 + 8 - l.y16(life * 16 / 18), l.x16(3 * 16 + life * 16 / 200) + 8,
-                 rgb565(140, 223, 120));
-      }
-      const int sink = std::min(300, after);
-      r.alpha = std::max(0, r.alpha - sink * 255 / 300);
-      if (r.alpha > 2)
-        centred16(r, kSign, potX * 16, (potY - ph / 2 - l.y(14)) * 16 + l.y16(sink * 16 / 10), word, ink);
-      if (after > 250 && after < 1400) puff(r, l, potX, potY - ph, after - 250, 1150);
-      break;
-    }
-    case CallMove::kStamp: {  // onto a card, and a stamp comes down on it
-      r.alpha = fadeBy(after, end - flight, 400);
-      const int cw = glyphCount(word) * kSign.w + l.x(24), ch = l.y(46);
-      r.round(toX - cw / 2, toY - ch / 2, cw, ch, l.y(6), kPaper);
-      centred(r, kSign, toX, toY, word, kNavy);
-      if (after >= 300) {
-        const int a = r.alpha;
-        r.alpha = std::min(a, 220);
-        r.ring(toX - l.x(26), toY - l.y(20), l.x(52), l.y(40), l.y(10), l.x(4), kFailInk);
-        centred(r, kSmall, toX, toY + l.y(1), "OK", kFailInk);
-        r.alpha = a;
-      } else if (after >= 120) {  // the stamp, coming down
-        const int k = after - 120, y = (toY - l.y(70)) * 16 + l.y16(70 * 16) * easeIn(k, 180) / 180, x = toX * 16;
-        round16(r, x - l.x16(22 * 16), y - l.y16(26 * 16), l.x16(44 * 16), l.y16(16 * 16), l.y16(4 * 16),
-                rgb565(140, 80, 50));
-        round16(r, x - l.x16(8 * 16), y - l.y16(46 * 16), l.x16(16 * 16), l.y16(22 * 16), l.y16(6 * 16),
-                rgb565(140, 80, 50));
-      }
-      break;
-    }
-    case CallMove::kPoof: {  // gone in a puff
-      r.alpha = fadeBy(after, 260, 260);
-      if (r.alpha > 2) centred(r, big, toX, toY, word, ink);
-      puff(r, l, toX, toY, after, 900);
-      break;
-    }
-    case CallMove::kPlane: {  // caught: it unfolds into the word, then goes
-      r.alpha = fadeBy(after, end - flight, 400);
-      centred16(r, big, toX * 16, toY * 16 - l.y16(after < 200 ? (20 * 16 - after * 16 / 10) : 0), word, ink);
-      break;
-    }
-    case CallMove::kPhone: {  // a phone ringing beside it, the word its call
-      const int shake = after < 900 ? l.x(3) * sin40(after / 6) / 1000 : 0;
-      r.alpha = fadeBy(after, end - flight, 400);
-      const int px = toX + shake, py = toY + l.y(8);
-      // An old phone: its body, a dial, and the handset's arc on top.
-      const uint16_t black = rgb565(50, 50, 60);
-      r.round(px - l.x(26), py - l.y(4), l.x(52), l.y(28), l.y(10), black);
-      r.ring(px - l.x(9), py + l.y(1), l.x(18), l.y(18), l.y(9), 2, rgb565(200, 200, 210));
-      Point handset[9];
-      for (int i = 0; i < 9; ++i)
-        handset[i] = {(px + l.x(26) * cos40(20 - i * 20 / 8) / 1000) * 16,
-                      (py - l.y(8) - l.y(14) * sin40(20 - i * 20 / 8) / 1000) * 16};
-      r.stroke16(handset, 9, l.x(9) * 16, black);
-      r.round(px - l.x(34), py - l.y(14), l.x(18), l.y(12), l.y(5), black);
-      r.round(px + l.x(16), py - l.y(14), l.x(18), l.y(12), l.y(5), black);
-      if (after < 900 && (after / 150) % 2 == 0)
-        for (int i = 1; i <= 2; ++i)
-          r.ring(px - l.x(30 + i * 8), py - l.y(24 + i * 6), l.x(60 + i * 16), l.y(40 + i * 12), l.y(20 + i * 6), 2,
-                 laneInk(c.slot));
-      const int bw = glyphCount(word) * kSign.w + l.x(20), by = py - l.y(58);
-      r.round(px - bw / 2, by - l.y(20), bw, l.y(40), l.y(18), 0xFFFF);
-      centred(r, kSign, px, by, word, ink == 0xFFFF ? kNavy : ink);
-      break;
-    }
-    case CallMove::kPage: {  // a page beside it, its corner turning
-      r.alpha = fadeBy(after, end - flight, 400);
-      const int pw = l.x(70), ph = l.y(86), px = toX - pw / 2, py = toY - ph / 2;
-      r.round(px, py, pw, ph, l.y(4), kPaper);
-      for (int i = 0; i < 5; ++i)
-        r.round(px + l.x(8), py + l.y(30 + i * 10), pw - l.x(16) - (i * 7) % 20, l.y(3), 1, kPaperLine);
-      centred(r, kLarge, toX, py + l.y(16), word, ink);
-      const int turn = (after / 450) % 2, fold = l.x(turn ? 22 : 14);
-      const Point corner[3] = {{px + pw - fold, py}, {px + pw, py + fold}, {px + pw - fold, py + fold}};
-      r.polygon(corner, 3, kPaperLine);
       break;
     }
     case CallMove::kShrug: {  // beside its head, and an empty bubble over it
@@ -774,14 +612,9 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       }
       break;
     }
-    case CallMove::kCheer:
-    case CallMove::kCombo: {  // over its head; confetti, or its count popping
+    case CallMove::kCheer: {  // over its head; confetti
       r.alpha = fadeBy(after, 1900, 400);
       if (r.alpha > 2) centred16(r, big, toX * 16, toY * 16 - l.y16(std::min(after, 300) * 16 / 15), word, ink);
-      if (move == CallMove::kCombo) {
-        twinkle(r, l, toX, toY, age, fadeBy(after, 1500, 400));
-        break;
-      }
       if (c.style == CallStyle::kBuilt) {  // the tower, done, a flag on its top
         tower(r, l, 6, deskY, 0, 0, 0, 0);
         const int top = deskY - 6 * (l.y(15) + 2), rise = l.y(std::min(after, 300) * 30 / 300);

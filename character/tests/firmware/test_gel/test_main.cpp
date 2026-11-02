@@ -2774,7 +2774,7 @@ static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
   int over = 0;
   for (int i = 0; i < 90; ++i) {
     if (i == 10) stream.setLanes(&lane, 1, true, false, t);
-    if (i == 12) stream.startCall("read", 1, CallStyle::kLand, 1, t);  // it comes forward and lands on the crown
+    if (i == 12) stream.startCall("read", 1, CallStyle::kLand, t);  // it comes forward and lands on the crown
     e->step(t += 33);
     Surface& s = turns[i % 2];
     const uint32_t kept = s.cardKey;
@@ -3205,7 +3205,7 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   TEST_ASSERT_TRUE(left > 40 && right > 40);
   TEST_ASSERT_EQUAL_HEX16(bare[size_t(205) * 502 + 251], px[size_t(205) * 502 + 251]);
   // A failure flies at its face from the second lane, and lands.
-  stream.startCall("make", 1, CallStyle::kBonk, 0, 1000);
+  stream.startCall("make", 1, CallStyle::kBonk, 1000);
   TEST_ASSERT_EQUAL_UINT32(380, callFlightMs(CallStyle::kBonk));
   TEST_ASSERT_EQUAL_INT(int(CallMove::kHit), int(callMove(CallStyle::kBonk)));
   const F open = e->blink();
@@ -3223,7 +3223,7 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   for (uint32_t t = 1000; t < 3500; t += 100)
     paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
   for (int g = 0; g < int(CallStyle::kCount); ++g) {
-    stream.startCall("x", 0, CallStyle(g), 5, 4000);
+    stream.startCall("x", 0, CallStyle(g), 4000);
     for (uint32_t t = 4000; t < 6500; t += 250)
       paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
   }

@@ -6,28 +6,32 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0,
+      "at": 0.001,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0,
-      "line": "{\"t\":\"do\",\"id\":782799796,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 0.001,
+      "line": "{\"t\":\"do\",\"id\":121544825,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
     },
     {
-      "at": 2.008,
+      "at": 0.002,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
+    },
+    {
+      "at": 2.006,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.011,
+      "at": 2.008,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Fix the login bug”"
       }
     },
     {
-      "at": 2.333,
+      "at": 2.322,
       "effect": "Boop makes a curious face and says “Andiamo”",
-      "line": "{\"t\":\"do\",\"id\":782799797,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.borrowed.andiamo__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544826,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.borrowed.andiamo__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
       "at": 5.521,
@@ -35,14 +39,14 @@
     },
     {
       "at": 5.521,
-      "line": "{\"t\":\"do\",\"id\":782799798,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"arrive\"}}"
+      "line": "{\"t\":\"do\",\"id\":121544827,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"npm test\",\"as\":\"cross\"}}"
     },
     {
-      "at": 7.653,
-      "line": "{\"t\":\"do\",\"id\":782799799,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
+      "at": 7.652,
+      "line": "{\"t\":\"do\",\"id\":121544828,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"PASS\",\"as\":\"pass\"}}"
     },
     {
-      "at": 7.654,
+      "at": 7.652,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the tests"
@@ -53,43 +57,43 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]]}"
     },
     {
-      "at": 12.554,
+      "at": 12.555,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 12.554,
-      "line": "{\"t\":\"do\",\"id\":782799800,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.555,
+      "line": "{\"t\":\"do\",\"id\":121544829,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.554,
+      "at": 12.556,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 12.872,
+      "at": 12.876,
       "effect": "Boop celebrates and says “Hehehe...”",
-      "line": "{\"t\":\"do\",\"id\":782799801,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"fav-snack\"},\"say\":{\"take\":\"phase1.nonverbal.delight.hehehe__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544830,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"fav-snack\"},\"say\":{\"take\":\"phase1.nonverbal.delight.hehehe__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
-      "at": 16.992,
+      "at": 16.997,
       "cause": {
         "kind": "wait",
         "text": "A quiet hour later"
       }
     },
     {
-      "at": 16.993,
+      "at": 16.998,
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"]}"
     },
     {
-      "at": 17.308,
+      "at": 17.32,
       "effect": "Boop makes a curious face and asks “fav snack?”: cookie or pizza",
-      "line": "{\"t\":\"do\",\"id\":782799802,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"fav snack?\",\"ask\":{\"q\":\"snack\",\"a\":\"cookie\",\"b\":\"pizza\",\"touch\":false},\"say\":{},\"mood\":\"curious\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544831,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"fav snack?\",\"ask\":{\"q\":\"snack\",\"a\":\"cookie\",\"b\":\"pizza\",\"touch\":false},\"say\":{},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
-      "at": 21.573,
+      "at": 21.585,
       "cause": {
         "kind": "tap",
         "text": "You tap the left answer"
@@ -97,81 +101,81 @@
       "input": "answer-a"
     },
     {
-      "at": 21.895,
+      "at": 21.903,
       "effect": "Boop makes a happy face and says “Mm-hm”",
-      "line": "{\"t\":\"do\",\"id\":782799803,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"nom nom\",\"reason\":\"Boop will remember\",\"say\":{\"take\":\"phase1.nonverbal.delight.mm-hm__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544832,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"nom nom\",\"reason\":\"Boop will remember\",\"say\":{\"take\":\"phase1.nonverbal.delight.mm-hm__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
-      "at": 25.99,
+      "at": 25.998,
       "cause": {
         "kind": "back",
         "text": "The next morning"
       }
     },
     {
-      "at": 25.993,
+      "at": 26,
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"morning\",\"tier5\"]}"
     },
     {
-      "at": 26.317,
+      "at": 26.32,
       "effect": "Boop stretches and yawns and says “Hello”",
-      "line": "{\"t\":\"do\",\"id\":782799804,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"1 turn\",\"say\":{\"take\":\"phase1.word.attention.hello__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544833,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"1 turn\",\"say\":{\"take\":\"phase1.word.attention.hello__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
-      "at": 30.583,
+      "at": 30.587,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"morning\"]}"
     },
     {
-      "at": 30.583,
-      "line": "{\"t\":\"do\",\"id\":782799805,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\"}}"
+      "at": 30.587,
+      "line": "{\"t\":\"do\",\"id\":121544834,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\"}}"
     },
     {
-      "at": 30.584,
+      "at": 30.587,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Add a dark mode”"
       }
     },
     {
-      "at": 30.905,
+      "at": 30.909,
       "effect": "Boop makes a curious face and says “Ready”",
-      "line": "{\"t\":\"do\",\"id\":782799806,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.ready__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544835,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.ready__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
-      "at": 34.629,
+      "at": 34.635,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"morning\"]}"
     },
     {
-      "at": 34.629,
+      "at": 34.636,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 34.951,
+      "at": 34.956,
       "effect": "Boop celebrates and says “Ahh...”",
-      "line": "{\"t\":\"do\",\"id\":782799807,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"fav-snack\"},\"say\":{\"take\":\"phase1.nonverbal.relief.ahh__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544836,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"fav-snack\"},\"say\":{\"take\":\"phase1.nonverbal.relief.ahh__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
-      "at": 38.987,
+      "at": 38.997,
       "cause": {
         "kind": "wait",
         "text": "A quiet half hour"
       }
     },
     {
-      "at": 38.987,
+      "at": 38.998,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"morning\",\"tier5\"]}"
     },
     {
-      "at": 39.351,
+      "at": 39.364,
       "effect": "Boop makes a happy face",
-      "line": "{\"t\":\"do\",\"id\":782799808,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"snack time?\",\"say\":{},\"mood\":\"happy\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":121544837,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"snack time?\",\"say\":{},\"mood\":\"happy\",\"loops\":1}}"
     }
   ],
   "face": "gel",
-  "length": 45.75,
+  "length": 45.76,
   "name": "Boop",
   "script": "2c3b50758d84a80116172cfc5e832ddfd2c51a0b0f6cd4f61ebfb8e25872ce15",
   "takes": [

@@ -424,19 +424,10 @@ void GelFace::land(CallStyle style) {
       else e.jolt(q(1.2), q(3.2), q(-3));
       break;
     case CallMove::kTopple: e.jolt(q(-1.4), q(3.4), q(-2.6)); break;
-    case CallMove::kSink:
-    case CallMove::kArrive: e.jolt(0, q(1.8), 0); break;
-    case CallMove::kStamp: e.jolt(side * q(.4), q(1.2), 0); break;
-    case CallMove::kPlane: e.jolt(side * q(.9), q(1.2), 0); break;
-    case CallMove::kLook:
-    case CallMove::kPhone:
-    case CallMove::kPage: e.jolt(side * q(.8), q(-.4), q(.6)); break;
-    case CallMove::kStir: e.jolt(q(.9), 0, q(.6)); break;
+    case CallMove::kSink: e.jolt(0, q(1.8), 0); break;
     case CallMove::kShatter: e.jolt(0, q(1.4), 0); break;
     case CallMove::kHail: e.jolt(q(.4), q(1.2), 0); break;
-    case CallMove::kShrug:
-    case CallMove::kPoof: e.jolt(0, q(-1.6), 0); break;
-    case CallMove::kCombo: e.jolt(0, q(-1.8), 0); break;
+    case CallMove::kShrug: e.jolt(0, q(-1.6), 0); break;
     case CallMove::kCheer: e.jolt(0, q(-2.6), 0); break;
     case CallMove::kDesk: e.jolt(q(-.6), 0, q(1)); break;
     // The whole turn's: a gulp at its end; the cube's thud; buried, its
