@@ -200,7 +200,7 @@ Boop has been excited for 5 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -213,7 +213,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -430,7 +430,7 @@ sad news; wounded at rude words to Boop.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:23, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 23 min.
 Today: 1 turn.
@@ -444,7 +444,7 @@ Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:47, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 47 min.
 Today: 1 turn.
@@ -458,7 +458,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:06, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -472,7 +472,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:31, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -486,7 +486,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:59, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.

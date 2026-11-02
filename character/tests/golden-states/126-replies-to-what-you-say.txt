@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop once.
@@ -219,7 +219,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop twice.
@@ -234,7 +234,7 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 3 times.
@@ -251,7 +251,7 @@ Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 4 times.
@@ -270,7 +270,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: you talked to Boop 5 times.
@@ -290,7 +290,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: you talked to Boop 6 times.
@@ -312,7 +312,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: you talked to Boop 7 times.
@@ -336,7 +336,7 @@ Boop did nothing on its own.
 === pass 8
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 3 min.
 Today: you talked to Boop 8 times.
@@ -362,7 +362,7 @@ Boop did nothing on its own.
 === pass 9
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 3 min.
 Today: you talked to Boop 9 times.
@@ -390,7 +390,7 @@ Boop did nothing on its own.
 === pass 10
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:04, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 4 min.
 Today: you talked to Boop 10 times.
@@ -420,7 +420,7 @@ Boop did nothing on its own.
 === pass 11
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:04, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 4 min.
 Today: you talked to Boop 11 times.
@@ -452,7 +452,7 @@ Boop did nothing on its own.
 === pass 12
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 5 min.
 Today: you talked to Boop 12 times.
@@ -486,7 +486,7 @@ Boop did nothing on its own.
 === pass 13
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 5 min.
 Today: you talked to Boop 13 times.
@@ -522,7 +522,7 @@ Boop did nothing on its own.
 === pass 14
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 6 min.
 Today: you talked to Boop 14 times.
@@ -560,7 +560,7 @@ Boop did nothing on its own.
 === pass 15
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 6 min.
 Today: you talked to Boop 15 times.
@@ -600,7 +600,7 @@ Boop did nothing on its own.
 === pass 16
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:07, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 7 min.
 Today: you talked to Boop 16 times.
@@ -642,7 +642,7 @@ Boop did nothing on its own.
 === pass 17
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:07, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 7 min.
 Today: you talked to Boop 17 times.
@@ -686,7 +686,7 @@ Boop did nothing on its own.
 === pass 18
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 8 min.
 Today: you talked to Boop 18 times.
@@ -732,7 +732,7 @@ Boop did nothing on its own.
 === pass 19
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:08, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 8 min.
 Today: you talked to Boop 19 times.
@@ -780,7 +780,7 @@ Boop did nothing on its own.
 === pass 20
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 9 min.
 Today: you talked to Boop 20 times.
@@ -830,7 +830,7 @@ Boop did nothing on its own.
 === pass 21
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 9 min.
 Today: you talked to Boop 21 times.
@@ -882,7 +882,7 @@ Boop did nothing on its own.
 === pass 22
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:10, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 10 min.
 Today: you talked to Boop 22 times.
@@ -936,7 +936,7 @@ Boop did nothing on its own.
 === pass 23
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:10, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 10 min.
 Today: you talked to Boop 23 times.
@@ -989,7 +989,7 @@ Boop did nothing on its own.
 === pass 24
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:11, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 11 min.
 Today: you talked to Boop 24 times.
@@ -1042,7 +1042,7 @@ Boop did nothing on its own.
 === pass 25
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:11, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 11 min.
 Today: you talked to Boop 25 times.
@@ -1095,7 +1095,7 @@ Boop did nothing on its own.
 === pass 26
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 12 min.
 Today: you talked to Boop 26 times.
@@ -1148,7 +1148,7 @@ Boop did nothing on its own.
 === pass 27
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 12 min.
 Today: you talked to Boop 27 times.
@@ -1201,7 +1201,7 @@ Boop did nothing on its own.
 === pass 28
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:13, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 13 min.
 Today: you talked to Boop 28 times.

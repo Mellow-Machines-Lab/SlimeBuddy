@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -218,7 +218,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -430,7 +430,7 @@ Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn, 1 failed.
@@ -653,7 +653,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:26, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 24 min.
 Today: 1 turn, 1 failed.
@@ -666,7 +666,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:44, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 42 min.
 Today: 1 turn, 1 failed.
@@ -679,7 +679,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:10, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn, 1 failed.
@@ -692,7 +692,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:38, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn, 1 failed.
@@ -705,7 +705,7 @@ Boop did nothing on its own.
 === pass 8
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:54, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn, 1 failed.

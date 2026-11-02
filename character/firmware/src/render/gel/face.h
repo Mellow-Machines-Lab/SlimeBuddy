@@ -53,6 +53,7 @@ class GelFace final : public Face {
   // A swipe flings the dome on, and plays nothing else.
   bool playsSwipe() const override { return false; }
   bool holdsUpFinish() const override { return true; }
+  int noseDrop() const override;
   // The agents' drawer, up from the strip (render/gel/drawer.h).
   bool hasDrawer() const override { return true; }
   void drawer(const Drawer* drawer) override { drawer_ = drawer; }

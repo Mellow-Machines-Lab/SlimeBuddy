@@ -29,6 +29,24 @@ struct PaintControls {
   int scale = 4096, anchorX = 0, anchorY = 0, offsetX = 0, offsetY = 0;
   bool eyes = true;
 };
+// A growth stage's body, on every animation, as the stage's tag says
+// (render/tags.h): its size, about where it stands on the desk, and its
+// eyes' size about their middles, Q12, and how far it's squashed (as
+// PaintControls' squash). Every stage draws the same art; Buddy, with no tag,
+// is the size the art is laid out at. The Chonk is a wider Buddy, about as
+// tall as ever: the hats, the sign over its head and the needs-you card
+// have no room above it to grow into.
+struct BodySettings {
+  int size = 4096, eyes = 4096, squash = 0;
+};
+constexpr BodySettings kHatchlingBody{2253, 6349}, kSproutBody{2867, 5120}, kBuddyBody{}, kChonkBody{4588, 3482, -867};
+BodySettings bodySettings(uint32_t when);
+// How far the nose sinks at these settings, on the canvas's 240 rows: it
+// stands this far above where the body stands at Buddy's height.
+constexpr int kNoseOverDesk = 54;
+constexpr int noseDropFor(const BodySettings& b) {
+  return kNoseOverDesk - kNoseOverDesk * (b.size * (4096 + b.squash * 2130 / 4096) / 4096) / 4096;
+}
 // The rows the body fills at rest, laid out on the AMOLED's 410.
 inline int restBodyTop(int height) { return height * 92 / 410; }
 inline int restBodyBottom(int height) { return height * 322 / 410; }

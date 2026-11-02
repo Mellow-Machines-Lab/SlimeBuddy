@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 22:06, Wednesday, night.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 5 min while you were here.
 Agents: claude idle on "landing" for 8 h.
 

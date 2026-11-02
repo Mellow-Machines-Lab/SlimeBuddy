@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:20, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 19 min while you were here.
 Agents: claude working on "landing" for 1 min.
 
@@ -219,7 +219,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:21, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 20 min while you were here.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -435,7 +435,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:45, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 44 min while you were here.
 Agents: claude working on "landing" for 1 min.
 Today: 1 turn.
@@ -450,7 +450,7 @@ Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:46, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 45 min while you were here.
 Agents: claude idle on "landing" for 1 min.
 Today: 2 turns.
@@ -671,7 +671,7 @@ going on.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:11, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 1 h while you were here.
 Agents: claude idle on "landing" for 25 min.
 Today: 2 turns.
@@ -685,7 +685,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:39, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; Boop's wish: a pet, waiting 1 h while you were here.
 Agents: claude idle on "landing" for 53 min.
 Today: 2 turns.
@@ -699,7 +699,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:55, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; Boop's wish: a pet, waiting 1 h while you were here.
 Agents: claude idle on "landing" for 1 h.
 Today: 2 turns.

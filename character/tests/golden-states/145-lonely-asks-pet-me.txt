@@ -207,7 +207,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:00, Thursday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 
 HISTORY (oldest first; indented lines add to the line above)
@@ -219,7 +219,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:13, Thursday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 12 min.
 
@@ -232,7 +232,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:17, Thursday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Hatchling.
+Boop: a Buddy.
 Agents: claude idle on "landing" for 16 min.
 Today: you touched Boop once.
 Boop's wish today: met.
@@ -249,7 +249,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:17, Thursday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Hatchling.
+Boop: a Buddy.
 Agents: claude idle on "landing" for 16 min.
 Today: you touched Boop once.
 Boop's wish today: met.

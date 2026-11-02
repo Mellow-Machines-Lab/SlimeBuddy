@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:00, Wednesday, morning; Boop is 50 days old.
-Boop: a Hatchling, 50 days old.
+Boop: a Buddy, 50 days old.
 You: no wish yet today.
 
 HISTORY (oldest first; indented lines add to the line above)

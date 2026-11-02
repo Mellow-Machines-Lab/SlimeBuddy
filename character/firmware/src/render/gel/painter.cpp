@@ -9,6 +9,7 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
 #include "render/helper.h"
+#include "render/tags.h"
 #include "slime_mesh.h"
 #include <algorithm>
 #include <array>
@@ -551,6 +552,10 @@ void drawBody(Surface& s, const PaintControls& c, rig::Anchors* anchors, const S
   share = std::clamp(share + (lower.us > mine ? 8 : -8), 128, 896);
 }
 }  // namespace
+BodySettings bodySettings(uint32_t when) {
+  static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
+  return when & hatchling ? kHatchlingBody : when & sprout ? kSproutBody : when & chonk ? kChonkBody : kBuddyBody;
+}
 void applyRig(PaintControls& c, const rig::Channels& rig) {
   using rig::Channel;
   const auto off = [&](Channel ch) { return rig[ch] - rig::kRest[ch]; };
@@ -614,6 +619,22 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     c.squash = std::clamp(c.squash + actMove.squash, -5407, 5407);
     c.lean = std::clamp(c.lean + actMove.lean, -5120, 5120);
   }
+  // The stage's body, within what a finish or an act does to it: the one
+  // scale about where it stands, and what the other's anchor moved kept as
+  // an offset, so what's drawn on the anchors follows.
+  const int finishX = c.anchorX, finishY = c.anchorY;
+  const BodySettings grown = bodySettings(e.scenes.when);
+  if (grown.size != 4096) {
+    const int standX = surface.width * 8, standY = restBodyBottom(surface.height) * 16;
+    if (c.scale != 4096) {
+      c.offsetX += int(int64_t(c.anchorX - standX) * (4096 - c.scale) / 4096);
+      c.offsetY += int(int64_t(c.anchorY - standY) * (4096 - c.scale) / 4096);
+    }
+    c.anchorX = standX, c.anchorY = standY;
+    c.scale = c.scale * grown.size / 4096;
+  }
+  c.eyeSize = c.eyeSize * grown.eyes / 4096;
+  c.squash = std::clamp(c.squash + grown.squash, -5407, 5407);
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -651,6 +672,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     const int n = finishMinis(surface, finish.ageMs, minis);
     for (int i = 0; i < n; ++i) {
       PaintControls m = c;
+      m.anchorX = finishX, m.anchorY = finishY;
       m.offsetX = minis[i].dx16, m.offsetY = minis[i].dy16, m.scale = minis[i].scale;
       m.squash = std::clamp(c.squash + minis[i].squash, -5407, 5407);
       m.lean = std::clamp(c.lean + minis[i].lean, -5120, 5120);

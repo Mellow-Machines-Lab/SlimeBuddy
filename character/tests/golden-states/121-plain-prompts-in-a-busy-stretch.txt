@@ -202,7 +202,7 @@ Boop has been happy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "exporter" for 1 min.
 
@@ -217,7 +217,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min.
 
@@ -236,7 +236,7 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude idle on "exporter" for 1 min.
 Today: 1 turn.
@@ -461,7 +461,7 @@ sad news; wounded at rude words to Boop.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude working on "onboarding" for 1 min; claude idle on "exporter" for 1 min.
 Today: 1 turn.
@@ -489,7 +489,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min; claude working on "onboarding" for 1 min.
 Today: 1 turn.
@@ -521,7 +521,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "exporter" for 1 min; claude working on "buddy-touch" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 2 turns.
@@ -759,7 +759,7 @@ going on.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "buddy-touch" for 2 min; claude idle on "exporter" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 3 turns.
@@ -996,7 +996,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "buddy-touch" for 1 min; claude idle on "exporter" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 3 turns.
@@ -1038,7 +1038,7 @@ Boop did nothing on its own.
 === pass 9
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude idle on "exporter" for 1 min; claude idle on "buddy-touch" for 1 min; claude idle on "onboarding" for 1 min.
 Today: 4 turns.
@@ -1286,7 +1286,7 @@ going on.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "onboarding" for 1 min; claude idle on "exporter" for 6 min; claude idle on "buddy-touch" for 5 min.
 Today: 4 turns.

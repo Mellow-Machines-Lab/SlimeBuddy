@@ -206,7 +206,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 Agents: claude idle on "landing" for 5 min.
 Today: you touched Boop once.
 Boop's wish today: met.
@@ -220,7 +220,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 Agents: claude idle on "landing" for 5 min.
 Today: you touched Boop once.
 Boop's wish today: met.

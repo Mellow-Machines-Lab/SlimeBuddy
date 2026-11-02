@@ -209,7 +209,7 @@ an hour while you were here; lonely too back after 20 to 40 hours away.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:23, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 22 min while you were here.
 Agents: claude idle on "landing" for 23 min.
 
@@ -221,7 +221,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:30, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 29 min while you were here.
 Agents: claude working on "landing" for 1 min.
 
@@ -236,7 +236,7 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:31, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 30 min while you were here.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -457,7 +457,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:49, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 48 min while you were here.
 Agents: claude idle on "landing" for 18 min.
 Today: 1 turn.

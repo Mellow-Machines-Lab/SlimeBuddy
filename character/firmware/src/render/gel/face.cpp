@@ -38,6 +38,7 @@ const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, O
   return take(profileFor(mood), row, std::max(0, std::min(takes(row) - 1, variant)));
 }
 
+int GelFace::noseDrop() const { return engine_ ? noseDropFor(bodySettings(engine_->scenes.when)) : 0; }
 void GelFace::reset(uint32_t t, linkkit::Rng&) {
   engine_ = std::make_unique<Engine>(kSeed);
   engine_->step(0);
