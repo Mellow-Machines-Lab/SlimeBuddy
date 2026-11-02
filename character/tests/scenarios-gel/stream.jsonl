@@ -36,6 +36,8 @@
 {"clock": 14100}
 {"shot": "shatter"}
 // A helper's word lands like any other.
+{"clock": 30000}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 4, "python"], [1, 3, "rg"]]}
 {"clock": 46500}
 {"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 4, "python"], [1, 3, "rg"]]}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "helper", "as": "helper"}}
