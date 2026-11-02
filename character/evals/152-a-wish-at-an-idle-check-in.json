@@ -1,7 +1,7 @@
 {
   "name": "At an idle check-in, chatty, Boop may make its wish for the day",
-  "case": "With nothing going on and Boop calm, an idle check-in offers its wishes beside its musings. Chatty, it makes one: pet me?, talk to me? or work with me?.",
-  "why": "MomentOutput: the wish options in the sign question, within Core.wishable; asks.md's [wish \u2026]",
+  "case": "With nothing going on and Boop calm, an idle check-in with CONTEXT saying no wish yet today offers its wishes beside its asks and musings. Chatty, it holds one up: most often a wish.",
+  "why": "MomentOutput: the wish options in the sign question, within Core.wishable; asks.md's [wish …]",
   "talk": "chatty",
   "steps": [
     {
@@ -21,7 +21,7 @@
       "event": "wait",
       "at": "17m",
       "expect": {
-        "sign": "pet me?|talk to me?|work with me?|none"
+        "sign": "pet me?|talk to me?|work with me?|fav snack?|hat or bow?"
       }
     }
   ]
