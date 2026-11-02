@@ -318,7 +318,7 @@ void test_the_finger_numbers() {
 // at their times. The gesture springs are the lean's, squash's, ripple's and
 // forward's 9, the lift's 11 and the roll's 10, damped 6.4 and held within
 // 0.42, the lift's 0.24, the roll's 0.12 and the forward's 0.18, at 5 a
-// second; a gag's slide is 10 and 9 within 0.7 at 5, its lids 24 and 48
+// second; a bit's slide is 10 and 9 within 0.7 at 5, its lids 24 and 48
 // (critically damped) within 1 at 20. The mood's posture follows the mood
 // on a critically damped spring of 10, proud's squash 0.05.
 void test_acting_timing_and_springs() {
@@ -688,7 +688,7 @@ std::array<double, 3> aim(const Engine& e) {
 // and forward 0.05, at 1.2 a second) toward what the scene aims at in that
 // frame (aim, above), across the looks, the reactions and a mood's own
 // recovery. A desk's contacts play up to 40 ms either side of their time,
-// at 0.9 to 1.1 of their strength, and other recipes' as written. A gag's
+// at 0.9 to 1.1 of their strength, and other recipes' as written. A bit's
 // keys ease from rest, a smoothstep to each, then hold the last, each
 // channel's keys in order and the last at rest; a channel with none stays
 // at rest.
@@ -762,7 +762,7 @@ void test_the_scenes_formulas() {
     }
   }
   TEST_ASSERT_TRUE(checked > 10000 && jittered > 0 && picks > 20);
-  // Every gag keys its channels inside their bounds (the gestures' lean,
+  // Every bit keys its channels inside their bounds (the gestures' lean,
   // squash and ripple .42, lift .24, roll .12, forward .18, the slide .7 and
   // the lids 1), which the springs would otherwise clamp, and times its
   // impulses in order within its length.

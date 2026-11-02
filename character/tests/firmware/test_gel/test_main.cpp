@@ -1055,8 +1055,8 @@ static void test_timing_comes_from_the_recipe_table() {
   // A finish's result reaches the strip (screens.cpp's tick or cross).
   TEST_ASSERT_TRUE(f.outcome(Mood::kSad, SceneState::kTaskComplete, 1, Outcome::kFailure) == Outcome::kFailure);
 }
-// Idle's takes are an expression's three gestures and its own gags, and
-// its bag deals the gags from its second round; the comedy every mood
+// Idle's takes are an expression's three gestures and its own bits, and
+// its bag deals the bits from its second round; the comedy every mood
 // shares, the yawn and the sneeze, is the face's to deal, as pastimes. A
 // yawn stretches up with its eyes squeezed; the zoomies slide it edge to
 // edge and back; a sneeze is a contact a second in that may sound,
@@ -1069,7 +1069,7 @@ static void test_comedy_plays_in_idle_and_asleep() {
   for (int p : {slime::kBored, slime::kTired, slime::kLazy, slime::kComfy, slime::kExcited})
     TEST_ASSERT_EQUAL_INT(4, Acting::takes(p));
   TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 2));
-  const int yawning = gagOf(info(Pastime::kYawn)), sneezing = gagOf(info(Pastime::kSneeze));
+  const int yawning = bitOf(info(Pastime::kYawn)), sneezing = bitOf(info(Pastime::kSneeze));
   TEST_ASSERT_EQUAL_STRING("yawn-and-settle", slime::kGags[yawning].gesture.type);
   TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", slime::kGags[sneezing].gesture.type);
   TEST_ASSERT_EQUAL_STRING("long-yawn", Acting::gesture(slime::kTired, 3).type);
@@ -1086,14 +1086,14 @@ static void test_comedy_plays_in_idle_and_asleep() {
   }
   for (const auto& round : seen)
     for (int n : round) TEST_ASSERT_EQUAL_INT(1, n);
-  // A take of its own, or with `gag`, that gag as the face deals it.
+  // A take of its own, or with `bit`, that bit as the face deals it.
   auto play = [](int profile, int take, uint32_t ms, int gag = -1) {
     auto e = std::make_unique<Engine>();
     e->setMood(profile);
     e->step(0);
     e->step(16);
     if (gag >= 0)
-      e->playGag(gag);
+      e->playBit(gag);
     else
       e->acting.perform(e->motion.time, e->random, take);
     std::vector<std::array<F, 6>> frames;  // closure, slide, squash, lift, forward, the eyes' closing
@@ -1120,7 +1120,7 @@ static void test_comedy_plays_in_idle_and_asleep() {
   // A sneeze is one contact, a second in, and allocates nothing.
   auto e = std::make_unique<Engine>();
   e->step(0);
-  e->playGag(sneezing);
+  e->playBit(sneezing);
   int sneezes = 0;
   allocCount = 0;
   allocCounting = true;
@@ -1195,9 +1195,9 @@ static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
 }
 
 // The gesture state has a take for each of
-// render::Gesture, each its own gag under the face it borrows; the board
+// render::Gesture, each its own bit under the face it borrows; the board
 // names the take, and no bag deals it. Each plays held, under its face with
-// its gag, the mood kept, each contact once, and gives the face back; each
+// its bit, the mood kept, each contact once, and gives the face back; each
 // does what it says (a hand-off lifts and leans in, a stroke melts with its
 // eyes shut, a ruffle bristles, a boop on the nose squishes, a tickle
 // jiggles both ways, dizzy wobbles side to side, a pick-up stretches up, a
@@ -1478,7 +1478,7 @@ static void test_a_nap_or_a_dance_plays_its_pastime_when_idle() {
 // The notice state's three takes play the pack's rig clip for it
 // (rig/clips/notice.json) on the face's mixer, each under a face it
 // borrows (kNoticeFaces), dealt by its bag; its scene is the start
-// family's with no card, timed to the clip and 200 ms more, with no gag or
+// family's with no card, timed to the clip and 200 ms more, with no bit or
 // contact of its own. Heard at work, the clip moves what the painter
 // draws: it perks up tall, hops off the ground and lands flat; its eyes go
 // wide and up, then squeeze shut, and its mouth opens; its two cues sound
@@ -2715,7 +2715,7 @@ static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
   int over = 0;
   for (int i = 0; i < 90; ++i) {
     if (i == 10) stream.setLanes(&lane, 1, true, false, t);
-    if (i == 12) stream.startCall("read", 1, CallGag::kLand, 1, t);  // it comes forward and lands on the crown
+    if (i == 12) stream.startCall("read", 1, CallStyle::kLand, 1, t);  // it comes forward and lands on the crown
     e->step(t += 33);
     Surface& s = turns[i % 2];
     const uint32_t kept = s.cardKey;
@@ -3085,9 +3085,9 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   TEST_ASSERT_TRUE(left > 40 && right > 40);
   TEST_ASSERT_EQUAL_HEX16(bare[size_t(205) * 502 + 251], px[size_t(205) * 502 + 251]);
   // A failure flies at its face from the second lane, and lands.
-  stream.startCall("make", 1, CallGag::kBonk, 0, 1000);
-  TEST_ASSERT_EQUAL_UINT32(380, callFlightMs(CallGag::kBonk));
-  TEST_ASSERT_EQUAL_INT(int(CallMove::kHit), int(callMove(CallGag::kBonk)));
+  stream.startCall("make", 1, CallStyle::kBonk, 0, 1000);
+  TEST_ASSERT_EQUAL_UINT32(380, callFlightMs(CallStyle::kBonk));
+  TEST_ASSERT_EQUAL_INT(int(CallMove::kHit), int(callMove(CallStyle::kBonk)));
   const F open = e->blink();
   e->jolt(q(1.2), q(3.2), q(-3), q(.75), 900);
   TEST_ASSERT_TRUE(e->blink() >= q(.75));
@@ -3102,8 +3102,8 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   allocCounting = true;
   for (uint32_t t = 1000; t < 3500; t += 100)
     paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
-  for (int g = 0; g < int(CallGag::kCount); ++g) {
-    stream.startCall("x", 0, CallGag(g), 5, 4000);
+  for (int g = 0; g < int(CallStyle::kCount); ++g) {
+    stream.startCall("x", 0, CallStyle(g), 5, 4000);
     for (uint32_t t = 4000; t < 6500; t += 250)
       paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
   }

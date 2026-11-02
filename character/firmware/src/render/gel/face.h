@@ -8,7 +8,7 @@
 // (render/gel/pastimes.h), one at a time after a rest, and a reaction's
 // clip, a clip named as its state, as it starts. A clip's cues sound
 // through the engine's contacts. The engine keeps its expressions,
-// recipes, gags and springs. What it wears and the air around it come and
+// recipes, bits and springs. What it wears and the air around it come and
 // go through the rig's layer stack, the face's own too, and so does the
 // pastimes' kit.
 #pragma once
@@ -108,7 +108,7 @@ class GelFace final : public Face {
   // What it wears, the air and the Zs, as the engine's tags and state call
   // for them (layerContents), each fading in and out.
   rig::Layers layers_;
-  // The pastime playing, its clip on the mixer (none for a gag's or a
+  // The pastime playing, its clip on the mixer (none for a bit's or a
   // take's, which the engine plays), from when until when, and the look
   // it's for; the one stopped early, fading out from stoppedAt_; the one
   // dealt last, and when the next may be. They're dealt with dice of their
@@ -200,7 +200,7 @@ class GelFace final : public Face {
   // A clip played on the mixer, its cues to sound from now.
   void play(const rig::Clip& clip);
   // The body answers a word of the work stream as it lands.
-  void land(CallGag gag);
+  void land(CallStyle style);
   // A new revision: the sounds already queued belong to what came before.
   void restartCues();
   bool factsChanged(const FaceContext& context) const;

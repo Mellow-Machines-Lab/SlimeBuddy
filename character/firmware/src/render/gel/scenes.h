@@ -37,7 +37,7 @@ inline const slime::Recipe& take(int profile, int row, int variant) {
   return variant < kGestures ? slime::kRecipes[profile][row][variant]
                              : slime::kFourthTakes[profile][slime::kFourthRow[row]];
 }
-// Idle's takes: an expression's three gestures, then its own gags
+// Idle's takes: an expression's three gestures, then its own bits
 // (acting.h Acting::takes), at most this many.
 static_assert(slime::kMaxGestures == 4, "three gestures and an own gag");
 enum ContactKind {
@@ -50,7 +50,7 @@ enum ContactKind {
   kResult,
   kStart,
   kReply,
-  // Comedy's: a gag's sneeze and zoomies, a snore's breath.
+  // Comedy's: a bit's sneeze and zoomies, a snore's breath.
   kSneeze,
   kBreath,
   kZoom
@@ -126,7 +126,7 @@ struct Scenes {
   SceneState touchKind = SceneState::kIdle;
   // The tags on and how long the look has shown (Engine::setOccasion).
   uint32_t when = 0, lookMs = 0;
-  // The gag the recipe playing carries for acting (a gesture's, a
+  // The bit the recipe playing carries for acting (a gesture's, a
   // pastime's), as kGags numbers it, or -1.
   int gag() const { return generation ? recipe.gag : -1; }
   // The successful finish playing: its variation's, from its reveal.

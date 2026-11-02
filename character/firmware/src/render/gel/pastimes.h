@@ -6,7 +6,7 @@
 // them all (GelFace), with dice of its own. A row's body is one of three:
 // one of the pack's rig clips (rig/clips/: a sip, a hop, a lean to look)
 // and what the board draws with it, in time with it (the mug coming up to
-// its mouth, the bubble it blows, the book it reads); a gag of the engine's
+// its mouth, the bubble it blows, the book it reads); a bit of the engine's
 // (a yawn, a sneeze, a holiday's bounce: slime::kGags, by name), which its
 // acting plays in place of its next gesture; or a take of the engine's
 // (busier typing, a deeper snore, a dream: slime::kPastimeTakes, by name),
@@ -110,8 +110,8 @@ enum class Pastime : uint8_t {
   kCount
 };
 
-// What plays a pastime's body: a rig clip, an engine gag or an engine take.
-enum class Body : uint8_t { kClip, kGag, kTake };
+// What plays a pastime's body: a rig clip, an engine bit or an engine take.
+enum class Body : uint8_t { kClip, kBit, kTake };
 // A pastime: its body and that body's name, the look it's for, the tier it
 // needs (1 to 5, 0 for none), the wait, in seconds of its look, the tags
 // any one of which it needs (`party|newyear`, or none), and whether it's a
@@ -129,11 +129,11 @@ struct PastimeInfo {
 constexpr int kPastimeCount = int(Pastime::kCount) - 1;
 extern const PastimeInfo kPastimes[kPastimeCount];
 const PastimeInfo& info(Pastime p);
-// A row's body in the pack: its rig clip, its gag (an index of
+// A row's body in the pack: its rig clip, its bit (an index of
 // slime::kGags) or its take (of slime::kPastimeTakes); none (nullptr or -1)
 // for one of the other bodies, or one the pack hasn't got.
 const rig::Clip* clipOf(const PastimeInfo& p);
-int gagOf(const PastimeInfo& p);
+int bitOf(const PastimeInfo& p);
 int takeOf(const PastimeInfo& p);
 // Whether the pack has a row's body, and the tag bits it needs any one of:
 // each found once, by name, and kept.

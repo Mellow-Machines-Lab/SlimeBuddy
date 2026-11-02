@@ -31,7 +31,7 @@ struct Bag {
     return last;
   }
 };
-// A contact as it fires: a scene's, or a gag's (Shows::kGag), named by what
+// A contact as it fires: a scene's, or a bit's (Shows::kBit), named by what
 // showed, its generation, iteration and index.
 struct ContactEvent {
   uint64_t key = 0;
@@ -41,31 +41,31 @@ struct ContactEvent {
   T timeMs;
   F strength;
 };
-// A gag's target for a channel at its age, from (0, 0) at
+// A bit's target for a channel at its age, from (0, 0) at
 // its start, a smoothstep to each of the channel's keys, then its last value.
 F keyed(const slime::Gag& gag, int channel, T age);
 struct Acting {
-  // The six gesture springs, then a gag's own: the dome's slide, and how far
+  // The six gesture springs, then a bit's own: the dome's slide, and how far
   // its lids are closed (critically damped).
   Spring channels[6], slide, lids;
   Bag<slime::kMaxGestures> bags[slime::kProfiles];
   // performance is the take playing, or -1; playing, a recipe's or a
-  // pastime's gag (kGags) playing in its place.
+  // pastime's bit (kGags) playing in its place.
   int emotion = slime::kCalm, performance = -1, playing = -1, expression = slime::kCalm, chosen = -1, cursor = 0,
       contactCursor = 0, count = 0;
   T start, nextPerformance = 1;
   bool suppressed = false;
-  // A recipe's gag held for one pass of it (the scene's generation and
+  // A recipe's bit held for one pass of it (the scene's generation and
   // iteration): acting deals nothing of its own meanwhile.
   bool holding = false;
   int heldGeneration = 0, heldIteration = 0;
-  // This step's gag contacts, the sounds of a sneeze or the zoomies.
+  // This step's bit contacts, the sounds of a sneeze or the zoomies.
   std::vector<ContactEvent> contacts;
   Acting() { contacts.reserve(4); }
-  // Idle's takes for an expression: its three gestures, then its own gags.
+  // Idle's takes for an expression: its three gestures, then its own bits.
   // The comedy every mood shares is the face's to deal, as pastimes.
   static int takes(int profile) { return kGestures + slime::kProfile[profile].gagCount; }
-  // A take's gag; none for the three gestures.
+  // A take's bit; none for the three gestures.
   static const slime::Gag* gag(int profile, int take) {
     if (take < kGestures) return nullptr;
     return &slime::kGags[slime::kProfile[profile].gags[take - kGestures]];
@@ -75,20 +75,20 @@ struct Acting {
     const auto* g = gag(profile, take);
     return g ? g->gesture : slime::kProfile[profile].performances[take];
   }
-  // What plays now: a recipe's gag, or the take's (none for a gesture of
+  // What plays now: a recipe's bit, or the take's (none for a gesture of
   // the expression's own).
   const slime::Gag* current() const { return playing >= 0 ? &slime::kGags[playing] : gag(emotion, performance); }
   // The lids as drawn: a closure in [0, 1], like a blink's.
   F closure() const { return clamp(lids.x, 0, 1); }
   bool perform(T time, Random& random, int index = -1);
-  // A recipe's gag (kGags; -1 lets go), once for each pass of the recipe.
+  // A recipe's bit (kGags; -1 lets go), once for each pass of the recipe.
   // It plays from now, and acting's own next gesture waits three seconds
   // after it ends.
   void hold(int gag, int generation, int iteration, T time);
-  // A pastime's gag (kGags), which the face dealt: it plays from now in
+  // A pastime's bit (kGags), which the face dealt: it plays from now in
   // place of the next gesture, which waits three seconds after it ends.
   void play(int gag, T time);
-  // Gag g starts now, in place of a performance: hold's and play's start.
+  // Bit g starts now, in place of a performance: hold's and play's start.
   void begin(int g, T time);
   void setMood(int id, T time) {
     emotion = id;

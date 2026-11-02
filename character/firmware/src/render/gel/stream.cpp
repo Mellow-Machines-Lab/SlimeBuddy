@@ -43,20 +43,20 @@ uint16_t laneInk(uint8_t slot) { return kLaneInk[slot % Stream::kLanes]; }
 // The ink a word forward is drawn in: a failure's red, a pass's green, a
 // freeze's ice, a drop's grey, else its lane's.
 uint16_t callInk(const Stream::Call& c) {
-  switch (c.gag) {
-    case CallGag::kBonk:
-    case CallGag::kBonk2:
-    case CallGag::kHelmet:
-    case CallGag::kThrow:
-    case CallGag::kNo:
-    case CallGag::kTimeout:
-    case CallGag::kHail:
-    case CallGag::kTopple:
-    case CallGag::kBuried: return kFailInk;
-    case CallGag::kPass:
-    case CallGag::kBuilt: return kPassInk;
-    case CallGag::kFreeze: return kIce;
-    case CallGag::kDrop: return kGrey;
+  switch (c.style) {
+    case CallStyle::kBonk:
+    case CallStyle::kBonk2:
+    case CallStyle::kHelmet:
+    case CallStyle::kThrow:
+    case CallStyle::kNo:
+    case CallStyle::kTimeout:
+    case CallStyle::kHail:
+    case CallStyle::kTopple:
+    case CallStyle::kBuried: return kFailInk;
+    case CallStyle::kPass:
+    case CallStyle::kBuilt: return kPassInk;
+    case CallStyle::kFreeze: return kIce;
+    case CallStyle::kDrop: return kGrey;
     default: return laneInk(c.slot);
   }
 }
@@ -171,48 +171,48 @@ void editSize(const char* word, int& added, int& removed) {
 // scrolling; an edit's lines as bars; a globe for the web.
 void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c, int age) {
   const Screen m = screen(s, e);
-  const int flight = int(callFlightMs(c.gag));
+  const int flight = int(callFlightMs(c.style));
   const bool landed = age >= flight;
-  switch (c.gag) {
-    case CallGag::kCross:
-    case CallGag::kStack:
-    case CallGag::kLaunch:
-    case CallGag::kBonk2:
-    case CallGag::kHelmet:
-    case CallGag::kThrow:
-    case CallGag::kLook:
-    case CallGag::kPlane:
-    case CallGag::kLand: break;
-    case CallGag::kPass:
-    case CallGag::kBuilt:
-    case CallGag::kHail:
-    case CallGag::kTopple:
+  switch (c.style) {
+    case CallStyle::kCross:
+    case CallStyle::kStack:
+    case CallStyle::kLaunch:
+    case CallStyle::kBonk2:
+    case CallStyle::kHelmet:
+    case CallStyle::kThrow:
+    case CallStyle::kLook:
+    case CallStyle::kPlane:
+    case CallStyle::kLand: break;
+    case CallStyle::kPass:
+    case CallStyle::kBuilt:
+    case CallStyle::kHail:
+    case CallStyle::kTopple:
       if (landed) break;
       return;
     default: return;
   }
   if (m.alpha < 8) return;
   const int cx = m.x + m.w / 2, cy = m.y + m.h / 2;
-  const bool crack = c.gag == CallGag::kBonk2 || c.gag == CallGag::kHelmet || c.gag == CallGag::kThrow;
+  const bool crack = c.style == CallStyle::kBonk2 || c.style == CallStyle::kHelmet || c.style == CallStyle::kThrow;
   r.alpha = m.alpha;
   r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
   if (!crack) r.round(m.x, m.y, m.w, m.h, 6, rgb565(7, 24, 32));
-  switch (c.gag) {
-    case CallGag::kCross:
+  switch (c.style) {
+    case CallStyle::kCross:
       for (int i = 0; i < 8; ++i) {  // a spinner: eight dots, one bright going round
         const int lit = age / 90 % 8, on = (i - lit + 8) % 8;
         r.disk(cx + 12 * cos40(i * 5) / 1000, cy + 12 * sin40(i * 5) / 1000, 2,
                on == 0 ? 0xFFFF : rgb565(70, 110, 130));
       }
       break;
-    case CallGag::kStack: {  // a bar that crawls and never says how far, in sixteenths of a pixel
+    case CallStyle::kStack: {  // a bar that crawls and never says how far, in sixteenths of a pixel
       const int span = (m.w - 16) * 16, at = age * 2 % (span + 30 * 16) - 30 * 16;
       const int from = std::max(0, at), to = std::min(span, at + 30 * 16);
       r.round(m.x + 8, cy - 4, span / 16, 8, 4, rgb565(30, 60, 75));
       round16(r, (m.x + 8) * 16 + from, (cy - 4) * 16, to - from, 8 * 16, 4 * 16, laneInk(c.slot));
       break;
     }
-    case CallGag::kLaunch: {  // the count to lift off
+    case CallStyle::kLaunch: {  // the count to lift off
       char n[2] = {char('3' - std::min(2, age / 300)), 0};
       if (age < 900)
         centred(r, kLarge, cx, cy, n, kStarInk);
@@ -220,25 +220,25 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
         centred(r, kSmall, cx, cy, "LIFTOFF", kFlame);
       break;
     }
-    case CallGag::kPass:
-    case CallGag::kBuilt: {
+    case CallStyle::kPass:
+    case CallStyle::kBuilt: {
       const Point tick[3] = {{cx - 12, cy}, {cx - 3, cy + 9}, {cx + 14, cy - 10}};
       r.line(tick[0], tick[1], 4, kPassInk), r.line(tick[1], tick[2], 4, kPassInk);
       break;
     }
-    case CallGag::kHail:
-    case CallGag::kTopple:
+    case CallStyle::kHail:
+    case CallStyle::kTopple:
       r.line({cx - 11, cy - 11}, {cx + 11, cy + 11}, 4, kFailInk);
       r.line({cx + 11, cy - 11}, {cx - 11, cy + 11}, 4, kFailInk);
       break;
-    case CallGag::kLook:  // a page scrolling past, in sixteenths of a pixel, a line lit as it's read
+    case CallStyle::kLook:  // a page scrolling past, in sixteenths of a pixel, a line lit as it's read
       for (int i = 0; i < 6; ++i) {
         const int y16 = (m.y + 4) * 16 + ((i * 8 * 16 - age * 16 / 25) % (48 * 16) + 48 * 16) % (48 * 16);
         round16(r, (m.x + 8) * 16, y16, (20 + (i * 37) % 44) * 16, 3 * 16, 16,
                 i == 2 ? laneInk(c.slot) : rgb565(110, 160, 180));
       }
       break;
-    case CallGag::kLand: {  // an edit's lines: green added, red removed, to scale
+    case CallStyle::kLand: {  // an edit's lines: green added, red removed, to scale
       int added = 0, removed = 0;
       editSize(c.text, added, removed);
       if (!added && !removed) break;
@@ -248,7 +248,7 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       round16(r, (m.x + 8) * 16, (cy + 3) * 16, bar(removed) * 16 * grow / 400, 7 * 16, 3 * 16, kFailInk);
       break;
     }
-    case CallGag::kPlane: {  // a globe turning
+    case CallStyle::kPlane: {  // a globe turning
       const int rad = 14, spin = age / 30;
       r.ring(cx - rad, cy - rad, 2 * rad, 2 * rad, rad, 2, laneInk(c.slot));
       for (int k = 0; k < 2; ++k) {
@@ -259,7 +259,7 @@ void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c
       break;
     }
     default: {  // a crack, longer up the ladder
-      const int rungs = c.gag == CallGag::kBonk2 ? 2 : c.gag == CallGag::kHelmet ? 3 : 4;
+      const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kHelmet ? 3 : 4;
       const Point at[6] = {{m.x + 6, m.y + 8},   {m.x + 20, m.y + 16}, {m.x + 30, m.y + 12},
                            {m.x + 44, m.y + 24}, {m.x + 56, m.y + 20}, {m.x + m.w - 6, m.y + m.h - 6}};
       for (int i = 0; i + 1 < std::min(6, rungs + 2); ++i) r.line(at[i], at[i + 1], 1, 0xFFFF);
@@ -371,7 +371,7 @@ namespace {
 void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors& at, int age, uint16_t ink,
             const char* word) {
   const auto& c = stream.call;
-  const int flight = int(callFlightMs(c.gag)), end = int(Stream::kCallMs);
+  const int flight = int(callFlightMs(c.style)), end = int(Stream::kCallMs);
   const int eyesX = (at.eyeL.x + at.eyeR.x) / 32, eyesY = (at.eyeL.y + at.eyeR.y) / 32;
   const int crownX = at.crown.x / 16, crownY = at.crown.y / 16, deskY = l.y(305);
   const int mouthX = eyesX, mouthY = eyesY + l.y(36);
@@ -385,7 +385,7 @@ void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors
       if (stream.taken(w)) draw(wordAt(l, w, c.at), w.text, laneInk(w.slot));
     if (!taken && own) draw(Point{l.column(stream, c.slot) * 16, l.y(kTop) * 16}, word, ink);
   };
-  switch (callMove(c.gag)) {
+  switch (callMove(c.style)) {
     case CallMove::kGather: {  // into its mouth, and a happy "mm!"
       const int k = easeIn(std::min(age, flight), flight);
       each(age < flight, [&](Point p, const char* s, uint16_t in) {
@@ -485,11 +485,11 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
   Raster r{surface};
   monitor(r, surface, e, c, age);
   const Font& big = bubbleFont();
-  const CallMove move = callMove(c.gag);
-  const int flight = int(callFlightMs(c.gag)), after = age - flight, end = int(Stream::kCallMs);
+  const CallMove move = callMove(c.style);
+  const int flight = int(callFlightMs(c.style)), after = age - flight, end = int(Stream::kCallMs);
   const uint16_t ink = callInk(c);
   char word[Stream::kWordBytes + 8];
-  if (c.gag == CallGag::kCombo)
+  if (c.style == CallStyle::kCombo)
     std::snprintf(word, sizeof(word), "%s x%u", c.text, unsigned(c.count));
   else
     std::snprintf(word, sizeof(word), "%s", c.text);
@@ -528,7 +528,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       toX = at.handF.x / 16 + l.x(right ? 70 : -70), toY = at.handF.y / 16 - l.y(30);
       break;
     case CallMove::kDesk:
-      if (c.gag == CallGag::kStack) {
+      if (c.style == CallStyle::kStack) {
         toX = l.x(456), toY = deskY - l.y(110);
       } else {
         const Screen m = screen(surface, e);
@@ -575,7 +575,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     case CallMove::kHit: {
       // It sticks a moment, then slides off (or is thrown back up), under
       // stars; a hit dizzies it, more up the ladder.
-      if (c.gag == CallGag::kThrow && after >= 250) {
+      if (c.style == CallStyle::kThrow && after >= 250) {
         const int k = std::min(400, after - 250);
         r.alpha = 255 - k * 255 / 400;
         centred16(r, big, lerp(toX * 16, fromX * 16, easeOut(k, 400), 400),
@@ -587,13 +587,13 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
           centred16(r, big, toX * 16 + l.x16(k * 16 / 30), toY * 16 + l.y16(easeIn(k, 450) * 160 * 16 / 450), word,
                     ink);
       }
-      const int daze = c.gag == CallGag::kBonk2                              ? 1300
-                       : c.gag == CallGag::kThrow                            ? 700
-                       : c.gag == CallGag::kNo || c.gag == CallGag::kTimeout ? 0
+      const int daze = c.style == CallStyle::kBonk2                              ? 1300
+                       : c.style == CallStyle::kThrow                            ? 700
+                       : c.style == CallStyle::kNo || c.style == CallStyle::kTimeout ? 0
                                                                              : 1000;
       if (after < daze) dizzy(r, surface, l, at, after, fadeBy(after, daze, 200));
-      if (c.gag == CallGag::kNo || c.gag == CallGag::kTimeout) break;
-      const int stars = c.gag == CallGag::kBonk ? 3 : 5;
+      if (c.style == CallStyle::kNo || c.style == CallStyle::kTimeout) break;
+      const int stars = c.style == CallStyle::kBonk ? 3 : 5;
       if (after < 1100) {
         r.alpha = fadeBy(after, 1100, 200);
         for (int i = 0; i < stars; ++i) {
@@ -602,7 +602,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
           star(r, cx, cy, l.x(13), turn % 10, kStarInk);
         }
       }
-      if (c.gag == CallGag::kHelmet && after < 1500) {
+      if (c.style == CallStyle::kHelmet && after < 1500) {
         // A dome on the crown, its brim down over the brow.
         r.alpha = fadeBy(after, 1500, 200);
         const int hw = l.x(70) * 16, drop = l.y16(std::max(0, 160 - after) * 4), cx = crownX * 16, cy = crownY * 16;
@@ -816,7 +816,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
         twinkle(r, l, toX, toY, age, fadeBy(after, 1500, 400));
         break;
       }
-      if (c.gag == CallGag::kBuilt) {  // the tower, done, a flag on its top
+      if (c.style == CallStyle::kBuilt) {  // the tower, done, a flag on its top
         tower(r, l, 6, deskY, 0, 0, 0, 0);
         const int top = deskY - 6 * (l.y(15) + 2), rise = l.y(std::min(after, 300) * 30 / 300);
         r.alpha = 255;
@@ -836,7 +836,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       break;
     }
     case CallMove::kDesk: {
-      if (c.gag == CallGag::kStack) {  // the build's bricks stacking up beside it
+      if (c.style == CallStyle::kStack) {  // the build's bricks stacking up beside it
         tower(r, l, std::min(6, 1 + after / 300), deskY, 0, 0, 0, 0);
         r.alpha = fadeBy(after, 600, 300);
         if (r.alpha > 2) centred(r, kSign, toX, toY, word, ink);

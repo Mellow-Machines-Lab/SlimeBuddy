@@ -2,7 +2,7 @@
 namespace render::gel {
 namespace {
 // The channels a cue or a key names (slimegen's): the six gestures', then a
-// gag's slide and lids.
+// bit's slide and lids.
 constexpr int kSlide = 6, kLids = 7, kChannels = 8;
 }  // namespace
 F keyed(const slime::Gag& gag, int channel, T age) {
@@ -73,13 +73,13 @@ void Acting::advance(T dt, T time, bool grab, Random& random) {
       (cue.channel == kSlide ? slide : channels[cue.channel]).v += cue.velocity;
     }
     if (g) {
-      // A gag's keys set its channels' targets.
+      // A bit's keys set its channels' targets.
       for (int c = 0; c < kChannels; ++c) target[c] = keyed(*g, c, age);
       // Its contacts are its sounds; they move nothing themselves.
       while (contactCursor < g->contactCount && age >= g->contacts[contactCursor].at) {
         const int index = contactCursor++;
         const auto& c = g->contacts[index];
-        contacts.push_back({showKey(Shows::kGag, 0), count, 0, index, c.kind, 0, time * 1000, c.strength});
+        contacts.push_back({showKey(Shows::kBit, 0), count, 0, index, c.kind, 0, time * 1000, c.strength});
       }
     }
   }

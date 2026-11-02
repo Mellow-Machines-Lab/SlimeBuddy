@@ -27,8 +27,8 @@ struct Request {
 };
 // What a route shows, as one number: what it is, and which one (a look's
 // state, a needs-you's or a reaction's count). A scene keeps its take while
-// its key stays. A gag's contacts are keyed as a gag's (kGag).
-enum class Shows : uint8_t { kGag, kLook, kLostLink, kListening, kNeedsYou, kReaction };
+// its key stays. A bit's contacts are keyed as a bit's (kBit).
+enum class Shows : uint8_t { kBit, kLook, kLostLink, kListening, kNeedsYou, kReaction };
 constexpr uint64_t showKey(Shows what, uint32_t n) { return uint64_t(what) << 32 | n; }
 constexpr Shows shows(uint64_t key) { return Shows(key >> 32); }
 struct Route {

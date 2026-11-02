@@ -142,7 +142,7 @@ uint32_t GelFace::roll(uint32_t n) {
 
 void GelFace::endPastime(uint32_t t, bool early) {
   if (early && clip_) mixer_.stop(*clip_);
-  // One stopped early fades out what it draws; a gag's or a take's draws
+  // One stopped early fades out what it draws; a bit's or a take's draws
   // nothing, and the engine stops it itself as the look gives way.
   stopped_ = early && clip_;
   stoppedAt_ = t;
@@ -247,8 +247,8 @@ void GelFace::start(const PastimeInfo& p, SceneState look, uint32_t t) {
     ms = clip->ms;
     play(*clip);
     holdGestures(*clip);
-  } else if (const int gag = gagOf(p); gag >= 0) {
-    engine_->playGag(gag);
+  } else if (const int gag = bitOf(p); gag >= 0) {
+    engine_->playBit(gag);
     ms = uint32_t(F(slime::kGags[gag].gesture.duration * 1000).integer());
   } else if (const int take = takeOf(p); take >= 0) {
     engine_->playTake(take);
@@ -388,27 +388,27 @@ void GelFace::step(uint32_t t, linkkit::Rng&) {
   if (!stream_ || !stream_->drawn(t) || !stream_->call.live) return;
   const auto& c = stream_->call;
   if (c.at != landedAt_) landed_ = false, landedAt_ = c.at;
-  if (!landed_ && int32_t(t - c.at) >= int32_t(callFlightMs(c.gag))) {
+  if (!landed_ && int32_t(t - c.at) >= int32_t(callFlightMs(c.style))) {
     landed_ = true;
-    land(c.gag);
+    land(c.style);
   }
 }
 
 // What the body does as a word lands, in the pull's body units a second:
 // knocked back and dazed by a failure, longer up the ladder; a squash as a
 // word sinks in or a bit of hail lands; stretched up by a shrug or a cheer.
-void GelFace::land(CallGag gag) {
+void GelFace::land(CallStyle style) {
   auto& e = *engine_;
   // Toward the word's side: its lane's half of the screen.
   const int column = stream_ ? stream_->column(stream_->call.slot) : 0;
   const F side = stream_ && 2 * column + 1 >= stream_->laneCount ? F(1) : F(-1);
-  switch (callMove(gag)) {
+  switch (callMove(style)) {
     case CallMove::kHit:
       // A failure's knock; its dizzy eyes are the stream's to draw. Your
       // no makes it flinch and squeeze its eyes; a timeout lands on it
       // half asleep.
-      if (gag == CallGag::kNo) e.jolt(q(-1.5), q(2.4), q(-2), q(.6), 450);
-      else if (gag == CallGag::kTimeout) e.jolt(q(.6), q(2.8), q(-2), q(.9), 700);
+      if (style == CallStyle::kNo) e.jolt(q(-1.5), q(2.4), q(-2), q(.6), 450);
+      else if (style == CallStyle::kTimeout) e.jolt(q(.6), q(2.8), q(-2), q(.9), 700);
       else e.jolt(q(1.2), q(3.2), q(-3));
       break;
     case CallMove::kTopple: e.jolt(q(-1.4), q(3.4), q(-2.6)); break;

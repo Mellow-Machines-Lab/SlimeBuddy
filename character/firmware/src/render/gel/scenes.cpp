@@ -318,7 +318,7 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
   F recoveryPose[3]{};
   const auto& profile = slime::kProfile[profileExpression];
   // A fourth take (the hiccups) has no gesture of its own to recover with,
-  // and a recipe with a gag of its own recovers with that.
+  // and a recipe with a bit of its own recovers with that.
   if (active && !std::strcmp(phase, "recover") && !profile.representative && variant < kGestures && recipe.gag < 0) {
     const auto& perf = profile.performances[variant];
     T pt = F(1 - (recipe.duration - ageMs) / 480) * F(perf.duration);

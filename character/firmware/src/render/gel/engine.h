@@ -17,7 +17,7 @@ class Engine {
  public:
   explicit Engine(uint32_t seed = 53) : random(seed), soundRandom(seed ^ 0xa511e9b3u) {
     postureWeights[slime::kCalm].x = 1;
-    // A step's cues are its contacts, at most a recipe's and a gag's: room
+    // A step's cues are its contacts, at most a recipe's and a bit's: room
     // for them now keeps every frame off the heap (test_gel).
     cues.reserve(std::size(slime::Recipe{}.contacts) + std::size(slime::Gag{}.contacts) + kClipCues);
     clipContacts_.reserve(kClipCues);
@@ -59,10 +59,10 @@ class Engine {
     scenes.when = when;
     scenes.lookMs = lookMs;
   }
-  // A pastime's body the face dealt (render/gel/pastimes.h): a gag, which
+  // A pastime's body the face dealt (render/gel/pastimes.h): a bit, which
   // acting plays in place of its next gesture, or a take, which the scene
   // plays as the look's next.
-  void playGag(int gag) { acting.play(gag, motion.time); }
+  void playBit(int gag) { acting.play(gag, motion.time); }
   void playTake(int take) {
     scenes.playTake(take, timeMs(), random);
     sync();
@@ -140,7 +140,7 @@ class Engine {
   // A contact a rig clip's cue names (slime::kContactKindNames), sounded at
   // the next step as the scene's are; a name it doesn't know, none.
   void contact(const char* kind);
-  // How closed the eyes are drawn: the idle blink, a gag's lids or a hit's
+  // How closed the eyes are drawn: the idle blink, a bit's lids or a hit's
   // daze, whichever is most.
   F blink() const { return max(max(motion.blink(), acting.closure()), daze()); }
   // A word of the work stream landing (render/stream.h): a push on the
@@ -173,7 +173,7 @@ class Engine {
   int cueGeneration_ = -1, cueIteration_ = -1, cueCount_ = 0;
   History<uint64_t, 64> revealed_;
   void consumeCues();
-  // Whether a contact sounds: a gag's anywhere, at the routine chance; a
+  // Whether a contact sounds: a bit's anywhere, at the routine chance; a
   // scene's never in a quiet state, a reveal once for what shows, a desk loop's
   // within its cycle's routine budget and any other's on its first loop.
   bool admits(const ContactEvent& c, SceneState state, bool quiet, bool protect);
