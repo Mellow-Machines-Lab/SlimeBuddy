@@ -2243,7 +2243,7 @@ Boop has been curious for 1 h.
 
 NOW (09:00)
 You came back to the Mac after 15 hours away.
-  Boop dreamed about Tuesday: you stroked it 2 times; 2 turns on "api", 1 failed.
+  Boop dreamed about Tuesday afternoon: you stroked it 2 times; 2 turns on "api", 1 failed.
 Boop did nothing on its own.
 === pass 23
 --- head
@@ -2571,7 +2571,7 @@ Today: 1 turn; you touched Boop once.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You came back to the Mac after 15 hours away.
-  Boop dreamed about Tuesday: you stroked it 2 times; 2 turns on "api", 1 failed.
+  Boop dreamed about Tuesday afternoon: you stroked it 2 times; 2 turns on "api", 1 failed.
   Boop's mood changed: curious → calm.
   Boop had an annoyed moment (medium), and said "Ugh... Broken".
 

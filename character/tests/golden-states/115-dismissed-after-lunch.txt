@@ -336,6 +336,7 @@ Agents: claude waiting on you on "landing".
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: Nothing has happened for 2 hours.
 1 min ago: You came back to the Mac after 2 hours away.
+  Boop dreamed about Wednesday afternoon: a quiet time.
 
 NOW (16:03)
 You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.

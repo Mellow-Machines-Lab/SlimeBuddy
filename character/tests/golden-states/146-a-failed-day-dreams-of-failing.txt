@@ -1274,5 +1274,5 @@ just now: Nothing has happened for 17 hours.
 
 NOW (09:00)
 You came back to the Mac after 15 hours away.
-  Boop dreamed about Tuesday: 2 turns on "api", 2 failed.
+  Boop dreamed about Tuesday afternoon: 2 turns on "api", 2 failed.
 Boop did nothing on its own.
