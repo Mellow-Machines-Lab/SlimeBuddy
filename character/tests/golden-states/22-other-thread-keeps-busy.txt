@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -359,10 +359,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -677,7 +677,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "docs" (landing).
 1 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 Boop has been curious for 1 min.
 
 NOW (14:04)
@@ -695,7 +695,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "docs" (landing).
 2 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 just now: claude started turn 2 on "docs" (landing).
 Boop has been curious for 2 min.
 
@@ -709,10 +709,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1030,11 +1030,11 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "docs" (landing).
 3 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 2 min ago: claude started turn 2 on "docs" (landing).
 1 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 Boop has been engaged for 1 min.
 
 NOW (14:06)
@@ -1052,11 +1052,11 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "docs" (landing).
 4 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 2 min ago: claude started turn 2 on "docs" (landing).
 2 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 just now: claude started turn 3 on "docs" (landing).
 Boop has been engaged for 2 min.
 
@@ -1070,10 +1070,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1388,15 +1388,15 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "docs" (landing).
 5 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 4 min ago: claude started turn 2 on "docs" (landing).
 3 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 2 min ago: claude started turn 3 on "docs" (landing).
 1 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 Boop has been curious for 1 min.
 
 NOW (14:08)
@@ -1414,15 +1414,15 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "docs" (landing).
 6 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 4 min ago: claude started turn 2 on "docs" (landing).
 4 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 2 min ago: claude started turn 3 on "docs" (landing).
 2 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 just now: claude started turn 4 on "docs" (landing).
 Boop has been curious for 2 min.
 
@@ -1436,10 +1436,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1757,19 +1757,19 @@ HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 1 on "docs" (landing).
 7 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 6 min ago: claude started turn 2 on "docs" (landing).
 5 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 4 min ago: claude started turn 3 on "docs" (landing).
 3 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 2 min ago: claude started turn 4 on "docs" (landing).
 1 min ago: claude finished turn 4 on "docs" (landing): done, a short turn, no tool calls, the 4th quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 Boop has been engaged for 1 min.
 
 NOW (14:10)
@@ -1787,19 +1787,19 @@ HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 1 on "docs" (landing).
 8 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 6 min ago: claude started turn 2 on "docs" (landing).
 6 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 4 min ago: claude started turn 3 on "docs" (landing).
 4 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 2 min ago: claude started turn 4 on "docs" (landing).
 2 min ago: claude finished turn 4 on "docs" (landing): done, a short turn, no tool calls, the 4th quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 just now: claude started turn 5 on "docs" (landing).
 Boop has been engaged for 2 min.
 
@@ -1813,10 +1813,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2131,23 +2131,23 @@ HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude started turn 1 on "docs" (landing).
 9 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 8 min ago: claude started turn 2 on "docs" (landing).
 7 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 6 min ago: claude started turn 3 on "docs" (landing).
 5 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 4 min ago: claude started turn 4 on "docs" (landing).
 3 min ago: claude finished turn 4 on "docs" (landing): done, a short turn, no tool calls, the 4th quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 2 min ago: claude started turn 5 on "docs" (landing).
 1 min ago: claude finished turn 5 on "docs" (landing): done, a short turn, no tool calls, the 5th quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 Boop has been curious for 1 min.
 
 NOW (14:12)
@@ -2165,23 +2165,23 @@ HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude started turn 1 on "docs" (landing).
 10 min ago: claude finished turn 1 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 8 min ago: claude started turn 2 on "docs" (landing).
 8 min ago: claude finished turn 2 on "docs" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Whew".
 6 min ago: claude started turn 3 on "docs" (landing).
 6 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 4 min ago: claude started turn 4 on "docs" (landing).
 4 min ago: claude finished turn 4 on "docs" (landing): done, a short turn, no tool calls, the 4th quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 2 min ago: claude started turn 5 on "docs" (landing).
 2 min ago: claude finished turn 5 on "docs" (landing): done, a short turn, no tool calls, the 5th quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 just now: claude started turn 6 on "docs" (landing).
 Boop has been curious for 2 min.
 
@@ -2195,10 +2195,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2515,19 +2515,19 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 3 on "docs" (landing).
 8 min ago: claude finished turn 3 on "docs" (landing): done, a short turn, no tool calls, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 7 min ago: claude started turn 4 on "docs" (landing).
 6 min ago: claude finished turn 4 on "docs" (landing): done, a short turn, no tool calls, the 4th quick win of a streak.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 5 min ago: claude started turn 5 on "docs" (landing).
 4 min ago: claude finished turn 5 on "docs" (landing): done, a short turn, no tool calls, the 5th quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop played a success in a happy face (small), and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 3 min ago: claude started turn 6 on "docs" (landing).
 2 min ago: claude finished turn 6 on "docs" (landing): done, a short turn, no tool calls.
   Boop's mood changed: curious → engaged.
-  Boop played a success in a happy face (small), and said "Eep!".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 Boop has been engaged for 2 min.
 
 NOW (14:15)

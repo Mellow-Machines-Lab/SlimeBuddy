@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -346,10 +346,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -663,7 +663,7 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "api" (landing).
 3 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 Boop has been curious for 3 min.
 
 NOW (15:05)
@@ -680,9 +680,9 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "api" (landing).
 8 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 5 min ago: You stroked Boop.
-  Boop made an engaged face (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Ngh".
 Boop has been curious for 8 min.
 
 NOW (15:10)
@@ -698,9 +698,9 @@ Today: 1 turn; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small), asking "did it work?": yes or no, and said "Phew...".
+  Boop had a happy moment (small), playing a success, asking "did it work?": yes or no, and said "Phew...".
 7 min ago: You stroked Boop.
-  Boop made an engaged face (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Ngh".
 2 min ago: claude started turn 2 on "api" (landing).
 Boop has been curious for 10 min.
 
@@ -714,10 +714,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1035,7 +1035,7 @@ HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 2 on "api" (landing).
 5 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Nn... Oops".
 
 NOW (15:17)
 claude is still working on "api" (landing), a very long turn, running tests.
@@ -1051,9 +1051,9 @@ HISTORY (oldest first; indented lines add to the line above)
 11 min ago: claude started turn 2 on "api" (landing).
 9 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Nn... Oops".
 4 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Validate".
 
 NOW (15:21)
 claude is still working on "api" (landing), a very long turn, running tests.
@@ -1070,12 +1070,12 @@ HISTORY (oldest first; indented lines add to the line above)
 16 min ago: claude started turn 2 on "api" (landing).
 14 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Nn... Oops".
 8 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Validate".
 4 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Test".
+  Boop had an engaged moment (small), and said "Test".
 
 NOW (15:26)
 claude is still working on "api" (landing), a very long turn, running tests.
@@ -1092,15 +1092,15 @@ HISTORY (oldest first; indented lines add to the line above)
 20 min ago: claude started turn 2 on "api" (landing).
 18 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Nn... Oops".
 13 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Validate".
 9 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Test".
+  Boop had an engaged moment (small), and said "Test".
 4 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Probe".
 
 NOW (15:30)
 claude is still working on "api" (landing), a very long turn, running tests.
@@ -1117,18 +1117,18 @@ HISTORY (oldest first; indented lines add to the line above)
 25 min ago: claude started turn 2 on "api" (landing).
 23 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Nn... Oops".
 17 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Validate".
 13 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Test".
+  Boop had an engaged moment (small), and said "Test".
 9 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Probe".
 4 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Checking".
 
 NOW (15:35)
 claude is still working on "api" (landing), a very long turn, running tests.
@@ -1143,9 +1143,9 @@ Today: 2 turns, 1 failed; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude is still working on "api" (landing), a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Checking".
 4 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 
 NOW (15:40)
 claude finished turn 2 on "api" (landing): failed, a very long turn, 1 tool call, after a failed check.
@@ -1157,10 +1157,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1470,10 +1470,10 @@ Today: 2 turns, 1 failed; you touched Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude is still working on "api" (landing), a very long turn, running tests.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 5 min ago: claude finished turn 2 on "api" (landing): failed, a very long turn, 1 tool call, after a failed check.
   Boop's mood changed: calm → comfy.
-  Boop played a failure in an annoyed face (medium), and said "Nnngh... Uh-oh".
+  Boop had an annoyed moment (medium), playing a failure, and said "Nnngh... Uh-oh".
 Boop has been comfy for 5 min.
 
 NOW (15:45)
@@ -1489,9 +1489,9 @@ Today: 2 turns, 1 failed; you touched Boop 3 times.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude finished turn 2 on "api" (landing): failed, a very long turn, 1 tool call, after a failed check.
   Boop's mood changed: calm → comfy.
-  Boop played a failure in an annoyed face (medium), and said "Nnngh... Uh-oh".
+  Boop had an annoyed moment (medium), playing a failure, and said "Nnngh... Uh-oh".
 5 min ago: You stroked Boop.
-  Boop made an engaged face (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 Boop has been comfy for 10 min.
 
 NOW (15:50)
@@ -1504,10 +1504,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1913,7 +1913,7 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 3 on "api" (landing).
 just now: claude is still working on "api" (landing), a long turn.
-  Boop made an engaged face (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (07:05)
 claude finished turn 3 on "api" (landing): done, a very long turn, no tool calls.
@@ -1925,10 +1925,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2252,10 +2252,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2573,7 +2573,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You came back to the Mac after 15 hours away.
   Boop dreamed about Tuesday: you stroked it 2 times; 2 turns on "api", 1 failed.
   Boop's mood changed: curious → calm.
-  Boop made an annoyed face (medium), and said "Ugh... Broken".
+  Boop had an annoyed moment (medium), and said "Ugh... Broken".
 
 NOW (09:01)
 You poked Boop.

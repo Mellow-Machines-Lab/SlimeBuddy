@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -334,7 +334,7 @@ Today: you talked to Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "fuck you, you stupid blob"
-  Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:00)
 You said to Boop: "what's the build doing?"
@@ -347,9 +347,9 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "fuck you, you stupid blob"
-  Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: You said to Boop: "what's the build doing?"
-  Boop made a proud face (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 
 NOW (14:00)
 You said to Boop: "just kidding, I'm sorry"

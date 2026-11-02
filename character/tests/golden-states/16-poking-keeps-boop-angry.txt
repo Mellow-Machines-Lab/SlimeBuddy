@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -334,10 +334,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -649,7 +649,7 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 Boop has been comfy for under a minute.
 
 NOW (14:00)
@@ -662,10 +662,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -983,11 +983,11 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 
 NOW (14:00)
 You poked Boop 3 times in a row.
@@ -999,10 +999,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1314,15 +1314,15 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 Boop has been comfy for under a minute.
 
 NOW (14:00)
@@ -1335,10 +1335,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1656,19 +1656,19 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 1 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 
 NOW (14:01)
 You poked Boop again.
@@ -1680,10 +1680,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1995,23 +1995,23 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 1 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 Boop has been comfy for under a minute.
 
 NOW (14:01)
@@ -2024,10 +2024,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2345,27 +2345,27 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 1 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 
 NOW (14:01)
 You poked Boop 3 times in a row, again.
@@ -2377,10 +2377,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -2692,31 +2692,31 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 1 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 just now: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 Boop has been comfy for under a minute.
 
 NOW (14:01)
@@ -2729,10 +2729,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -3050,35 +3050,35 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 2 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 2 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 2 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 1 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 1 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 
 NOW (14:02)
 You poked Boop again.
@@ -3090,10 +3090,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -3405,39 +3405,39 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 2 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 2 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 2 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 1 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 1 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 Boop has been comfy for under a minute.
 
 NOW (14:02)
@@ -3450,10 +3450,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -3771,43 +3771,43 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 2 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 2 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 2 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 1 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 1 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 
 NOW (14:02)
 You poked Boop 3 times in a row, again.
@@ -3819,10 +3819,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -4134,47 +4134,47 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 2 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 2 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 2 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 1 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 1 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 1 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 1 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 just now: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 just now: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 Boop has been comfy for under a minute.
 
 NOW (14:02)
@@ -4187,10 +4187,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -4508,51 +4508,51 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 6 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 6 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 6 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 4 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 4 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 4 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 4 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 3 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 3 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 3 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 3 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 
 NOW (14:06)
 claude started turn 1 on "landing".
@@ -4568,51 +4568,51 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 6 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 6 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 6 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 5 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 5 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 5 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 5 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Yep".
+  Boop had a curious moment (small), and said "Yep".
 4 min ago: You poked Boop again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Boop".
+  Boop had a curious moment (small), and said "Boop".
 4 min ago: You poked Boop 2 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 4 min ago: You poked Boop 3 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 4 min ago: You poked Boop 4 times in a row, again.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop made a curious face (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Whoa".
 just now: claude started turn 1 on "landing".
 
 NOW (14:06)

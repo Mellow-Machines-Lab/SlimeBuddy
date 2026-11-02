@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -341,7 +341,7 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: claude started turn 1 on "landing".
 just now: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 
 NOW (14:00)
 claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
@@ -353,10 +353,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -671,10 +671,10 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 1 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small).
+  Boop had a happy moment (small), playing a success.
 just now: claude started turn 2 on "landing".
 Boop has been curious for 1 min.
 
@@ -694,14 +694,14 @@ HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 1 on "landing".
 8 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 7 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small).
+  Boop had a happy moment (small), playing a success.
 6 min ago: claude started turn 2 on "landing".
 6 min ago: You asked claude on "landing" for a fix, in a sentence, frustrated.
   Your words: "still broken", "does nothing".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 Boop has been curious for 7 min.
 
 NOW (14:08)
@@ -714,10 +714,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1036,17 +1036,17 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for something new, in a sentence.
   Your words: "dark mode".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 8 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop played a success in a happy face (small).
+  Boop had a happy moment (small), playing a success.
 7 min ago: claude started turn 2 on "landing".
 7 min ago: You asked claude on "landing" for a fix, in a sentence, frustrated.
   Your words: "still broken", "does nothing".
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 1 min ago: claude finished turn 2 on "landing": failed, a very long turn, no tool calls.
   Boop's mood changed: curious → calm.
-  Boop played a failure in an annoyed face (medium).
+  Boop had an annoyed moment (medium), playing a failure.
 
 NOW (14:09)
 You poked Boop.

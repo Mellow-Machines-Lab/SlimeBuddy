@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -347,7 +347,7 @@ Agents: claude working on "landing" for 9 min.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 4 min ago: claude is still working on "landing", a long turn.
-  Boop made an engaged face (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Tch".
 
 NOW (14:09)
 claude is still working on "landing", a very long turn.
@@ -362,10 +362,10 @@ Agents: claude working on "landing" for 13 min.
 HISTORY (oldest first; indented lines add to the line above)
 13 min ago: claude started turn 1 on "landing".
 8 min ago: claude is still working on "landing", a long turn.
-  Boop made an engaged face (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (14:13)
 claude is still working on "landing", a very long turn.
@@ -380,13 +380,13 @@ Agents: claude working on "landing" for 19 min.
 HISTORY (oldest first; indented lines add to the line above)
 19 min ago: claude started turn 1 on "landing".
 14 min ago: claude is still working on "landing", a long turn.
-  Boop made an engaged face (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Tch".
 10 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hup".
 5 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Nnh".
 
 NOW (14:19)
 claude is still working on "landing", a very long turn.
@@ -401,16 +401,16 @@ Agents: claude working on "landing" for 23 min.
 HISTORY (oldest first; indented lines add to the line above)
 23 min ago: claude started turn 1 on "landing".
 19 min ago: claude is still working on "landing", a long turn.
-  Boop made an engaged face (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Tch".
 14 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hup".
 10 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Nnh".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (14:23)
 claude is still working on "landing", a very long turn.
@@ -425,9 +425,9 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop made an engaged face (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 min ago: claude is still working on "landing", a very long turn.
-  Boop made an engaged face (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:25)
 claude finished turn 1 on "landing": failed, a very long turn, no tool calls.

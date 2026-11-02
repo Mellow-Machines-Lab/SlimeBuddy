@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -336,7 +336,7 @@ Today: you touched Boop once and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: You said to Boop: "shh, be quiet for a bit"
-  Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:05)
 You poked Boop.
@@ -348,10 +348,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -661,11 +661,11 @@ Today: you touched Boop once and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You said to Boop: "shh, be quiet for a bit"
-  Boop made a proud face (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 5 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 Boop has been comfy for 5 min.
 
 NOW (14:10)
@@ -682,7 +682,7 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop made a curious face (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Tickles".
 4 min ago: claude started turn 1 on "landing".
 Boop has been comfy for 9 min.
 
@@ -696,10 +696,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1022,10 +1022,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -1338,7 +1338,7 @@ HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 Boop has been comfy for 5 min.
 
 NOW (14:40)
@@ -1356,9 +1356,9 @@ HISTORY (oldest first; indented lines add to the line above)
 7 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 2 min ago: You hushed Boop from the Mac: it says nothing for 30 min.
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 Boop has been comfy for 7 min.
 
 NOW (14:42)
@@ -1376,11 +1376,11 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: lazy → comfy.
-  Boop made a curious face (small), and said "Oh".
+  Boop had a curious moment (small), and said "Oh".
 4 min ago: You hushed Boop from the Mac: it says nothing for 30 min.
-  Boop made an engaged face (small).
+  Boop had an engaged moment (small).
 2 min ago: You said to Boop: "okay okay, you can talk now"
-  Boop made a proud face (small), replying yes, holding up a sign: "yes yes!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!".
 Boop has been comfy for 9 min.
 
 NOW (14:44)

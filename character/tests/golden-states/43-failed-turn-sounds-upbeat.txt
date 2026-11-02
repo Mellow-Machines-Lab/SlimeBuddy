@@ -5,10 +5,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -336,7 +336,7 @@ Agents: claude working on "landing" for 2 min.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 
 NOW (14:02)
 claude's tests failed on "landing".
@@ -348,10 +348,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -662,10 +662,10 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 just now: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop made an annoyed face (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Failed".
 Boop has been comfy for under a minute.
 
 NOW (14:02)
@@ -679,10 +679,10 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts: its face, its
-move (a finished turn's outcome; to what the person said, its reply),
-what it says (how it feels, or what NOW is about) and how big the
-moment is: an Example that gives no size is small.
+decide whether its mood moves, and whether it reacts with a moment:
+its emotion, its move (a finished turn's outcome; to what the person said, its reply),
+what it says (how it feels, or what NOW is about) and how big it
+is: an Example that gives no size is small.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own.
@@ -999,14 +999,14 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 3 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop made an annoyed face (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Failed".
 2 min ago: claude finished turn 1 on "landing": failed, a long turn, 1 tool call, after a failed check, saying it's done, cheerful.
   Its words: "All done", "working great".
   Boop's mood changed: comfy → calm.
-  Boop played a failure in an annoyed face (medium), asking "did it work?": yes or no, and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), playing a failure, asking "did it work?": yes or no, and said "Uuuh... Ouch".
 
 NOW (14:05)
 claude started turn 2 on "landing".
@@ -1021,14 +1021,14 @@ Today: 2 turns, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 7 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop made an engaged face (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Measure".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop made an annoyed face (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Failed".
 4 min ago: claude finished turn 1 on "landing": failed, a long turn, 1 tool call, after a failed check, saying it's done, cheerful.
   Its words: "All done", "working great".
   Boop's mood changed: comfy → calm.
-  Boop played a failure in an annoyed face (medium), asking "did it work?": yes or no, and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), playing a failure, asking "did it work?": yes or no, and said "Uuuh... Ouch".
 2 min ago: claude started turn 2 on "landing".
 
 NOW (14:07)
