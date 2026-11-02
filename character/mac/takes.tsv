@@ -3423,3 +3423,60 @@ phase1.borrowed.salut__proud__contained	Salut	reply	hello	word	proud mischievous
 phase1.borrowed.salut__proud__contained	Salut	reply	bye	word	proud mischievous		1347
 phase1.borrowed.salut__curious__contained	Salut	reply	hello	word	curious shy surprised stunned speechless confused baffled skeptical		738
 phase1.borrowed.salut__curious__contained	Salut	reply	bye	word	curious shy surprised stunned speechless confused baffled skeptical		738
+phase1.word.setback.ouch__calm__contained	Ouch	feeling	shaken	word	calm comfy lazy bored relieved tired exhausted		928
+phase1.word.setback.ouch__engaged__contained	Ouch	feeling	shaken	word	engaged		838
+phase1.word.setback.ouch__determined__contained	Ouch	feeling	shaken	word	determined hopeful		818
+phase1.word.setback.ouch__annoyed__contained	Ouch	feeling	shaken	word	annoyed uncomfortable disgusted		898
+phase1.word.setback.ouch__irritated__contained	Ouch	feeling	shaken	word	irritated		908
+phase1.word.setback.ouch__grumpy__contained	Ouch	feeling	shaken	word	grumpy angry		898
+phase1.word.setback.ouch__whiny__contained	Ouch	feeling	shaken	word	whiny		1377
+phase1.word.setback.ouch__wounded__contained	Ouch	feeling	shaken	word	wounded uneasy scared frightened embarrassed overwhelmed		967
+phase1.word.setback.ouch__sad__contained	Ouch	feeling	shaken	word	sad disappointed crying lonely		1047
+phase1.word.setback.ouch__happy__contained	Ouch	feeling	shaken	word	happy pleased amused affectionate		868
+phase1.word.setback.ouch__excited__contained	Ouch	feeling	shaken	word	excited		908
+phase1.word.setback.ouch__proud__contained	Ouch	feeling	shaken	word	proud mischievous		958
+phase1.word.setback.ouch__curious__contained	Ouch	feeling	shaken	word	curious shy surprised stunned speechless confused baffled skeptical		848
+phase1.word.stop.stop__annoyed__contained	Stop	feeling	shaken	word	annoyed uncomfortable disgusted		848
+phase1.word.stop.stop__irritated__contained	Stop	feeling	shaken	word	irritated		967
+phase1.word.stop.stop__grumpy__contained	Stop	feeling	shaken	word	grumpy angry		1007
+phase1.word.stop.stop__whiny__contained	Stop	feeling	shaken	word	whiny		1037
+phase1.word.stop.halt__annoyed__contained	Halt	feeling	shaken	word	annoyed uncomfortable disgusted		778
+phase1.word.stop.halt__irritated__contained	Halt	feeling	shaken	word	irritated		858
+phase1.word.stop.halt__grumpy__contained	Halt	feeling	shaken	word	grumpy angry		808
+phase1.word.stop.halt__whiny__contained	Halt	feeling	shaken	word	whiny		1237
+phase1.word.stop.enough__annoyed__contained	Enough	feeling	shaken	word	annoyed uncomfortable disgusted		948
+phase1.word.stop.enough__irritated__contained	Enough	feeling	shaken	word	irritated		987
+phase1.word.stop.enough__grumpy__contained	Enough	feeling	shaken	word	grumpy angry		948
+phase1.word.stop.enough__whiny__contained	Enough	feeling	shaken	word	whiny		1416
+phase1.word.poke.oh__calm__contained	Oh	feeling	shaken	word	calm comfy lazy bored relieved tired exhausted		698
+phase1.word.poke.oh__engaged__contained	Oh	feeling	shaken	word	engaged		708
+phase1.word.poke.oh__determined__contained	Oh	feeling	shaken	word	determined hopeful		728
+phase1.word.poke.oh__annoyed__contained	Oh	feeling	shaken	word	annoyed uncomfortable disgusted		798
+phase1.word.poke.oh__irritated__contained	Oh	feeling	shaken	word	irritated		928
+phase1.word.poke.oh__grumpy__contained	Oh	feeling	shaken	word	grumpy angry		878
+phase1.word.poke.oh__whiny__contained	Oh	feeling	shaken	word	whiny		1117
+phase1.word.poke.oh__wounded__contained	Oh	feeling	shaken	word	wounded uneasy scared frightened embarrassed overwhelmed		878
+phase1.word.poke.oh__sad__contained	Oh	feeling	shaken	word	sad disappointed crying lonely		778
+phase1.word.poke.oh__happy__contained	Oh	feeling	shaken	word	happy pleased amused affectionate		718
+phase1.word.poke.oh__excited__contained	Oh	feeling	shaken	word	excited		748
+phase1.word.poke.oh__proud__contained	Oh	feeling	shaken	word	proud mischievous		1017
+phase1.word.poke.oh__curious__contained	Oh	feeling	shaken	word	curious shy surprised stunned speechless confused baffled skeptical		738
+phase1.word.poke.whoa__calm__contained	Whoa	feeling	shaken	word	calm comfy lazy bored relieved tired exhausted		977
+phase1.word.poke.whoa__engaged__contained	Whoa	feeling	shaken	word	engaged		1007
+phase1.word.poke.whoa__determined__contained	Whoa	feeling	shaken	word	determined hopeful		878
+phase1.word.poke.whoa__annoyed__contained	Whoa	feeling	shaken	word	annoyed uncomfortable disgusted		908
+phase1.word.poke.whoa__irritated__contained	Whoa	feeling	shaken	word	irritated		1097
+phase1.word.poke.whoa__grumpy__contained	Whoa	feeling	shaken	word	grumpy angry		1047
+phase1.word.poke.whoa__whiny__contained	Whoa	feeling	shaken	word	whiny		1337
+phase1.word.poke.whoa__wounded__contained	Whoa	feeling	shaken	word	wounded uneasy scared frightened embarrassed overwhelmed		1027
+phase1.word.poke.whoa__sad__contained	Whoa	feeling	shaken	word	sad disappointed crying lonely		898
+phase1.word.poke.whoa__happy__contained	Whoa	feeling	shaken	word	happy pleased amused affectionate		1007
+phase1.word.poke.whoa__excited__contained	Whoa	feeling	shaken	word	excited		1057
+phase1.word.poke.whoa__proud__contained	Whoa	feeling	shaken	word	proud mischievous		1197
+phase1.word.poke.whoa__curious__contained	Whoa	feeling	shaken	word	curious shy surprised stunned speechless confused baffled skeptical		1007
+phase1.phrase.poke.easy-there__calm__contained	Easy there	feeling	shaken	phrase	calm comfy lazy bored relieved tired exhausted		1197
+phase1.phrase.poke.personal-space__annoyed__contained	Personal space	feeling	shaken	phrase	annoyed uncomfortable disgusted		1436
+phase1.nonverbal.frustration.hmph__annoyed__contained	Hmph	feeling	shaken	sound	annoyed uncomfortable disgusted		1486
+phase1.nonverbal.frustration.hmph__irritated__contained	Hmph	feeling	shaken	sound	irritated		568
+phase1.nonverbal.frustration.hmph__grumpy__contained	Hmph	feeling	shaken	sound	grumpy angry		668
+phase1.nonverbal.frustration.hmph__whiny__contained	Hmph	feeling	shaken	sound	whiny		1007

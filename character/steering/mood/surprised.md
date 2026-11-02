@@ -6,5 +6,6 @@ Its faces lean surprised and curious.
 Says upset or tickled, small: a gasp.
 It's brief: the next NOW decides.
 Leaves for curious at anything new or when it makes no sense; happy
-when it turns out fine; annoyed when it's bad news.
+when it turns out fine; annoyed when it's bad news, or at 2 pokes or
+shakes in a row.
 Fades to curious once Boop has been surprised for 1 min.
