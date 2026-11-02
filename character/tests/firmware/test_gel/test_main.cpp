@@ -765,7 +765,7 @@ static void test_the_lane_fades_whatever_the_draw_cadence() {
           dirty = true;
         }
         b.advance(t, rng);
-        b.face().draw(c, &s, b.show(t), t, b.bubble(t), b.sign(t), b.done(t), b.strip(t), dirty);
+        b.face().draw(c, &s, b.show(t), t, b.bubble(t), b.caption(t), b.sign(t), b.done(t), b.strip(t), dirty);
         dirty = false;
         for (uint32_t shot : shots)
           if (shot == t) lanes.emplace_back(px.begin() + kLane * kW, px.end());

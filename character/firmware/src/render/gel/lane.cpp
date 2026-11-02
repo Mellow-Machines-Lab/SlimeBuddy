@@ -39,6 +39,10 @@ constexpr int kBubbleMargin = 10;
 constexpr int kBubblePad = 12;  // from the outline to the text, left and right
 constexpr int kBubbleLine = 2;
 constexpr int kBubbleRadius = 14;
+// The caption's line sits this far below the bubble's usual foot, into
+// the rounded corners' rows its narrow centred text clears, and the bubble
+// over it stops this far above it.
+constexpr int kCaptionDrop = 10, kCaptionGap = 4;
 
 // The bubble's rows, and how far in from either side it stands:
 // kBubbleMargin, or clear of the panel's rounded corners, its own corners
@@ -167,25 +171,39 @@ void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t 
 
 namespace {
 
-// The line in its bubble, which takes the whole lane: a box with round
-// corners and a short tail up to the face, the text centred in the
-// bubble's font, or the sign's, the large or the small one when it doesn't
-// fit (on the AMOLED, the longest take, 22, fits the sign's; a line of 34,
-// the small), cut to fit.
-void bubble(Lane& l, const char* line) {
+// The caption's line, the lane's last: kSmall's height and a gap above it,
+// which a bubble over it gives up from its foot.
+int captionTop(const BubbleBox& box) { return box.bottom - kSmall.h + kCaptionDrop; }
+
+// The line in its bubble, which takes the whole lane but for the caption's
+// line under it when there is one: a box with round corners and a short
+// tail up to the face, the text centred in the bubble's font, or the
+// sign's, the large or the small one when it doesn't fit its width or,
+// over a caption, its height (on the AMOLED, the longest take, 22, fits
+// the sign's; a line of 34, the small), cut to fit.
+void bubble(Lane& l, const char* line, bool captioned) {
   const uint16_t dim = inkRgb565(kInkDim);
   const BubbleBox box(l.r.s);
   const int room = box.room(l.w);
+  const int top = box.top, bottom = captioned ? captionTop(box) - kCaptionGap : box.bottom, cx = l.w / 2;
   const Font* f = &kFontBubble;
   for (const Font* smaller : {&kSign, &kLarge, &kSmall})
-    if (glyphCount(line) * f->w > room) f = smaller;
+    if (glyphCount(line) * f->w > room || f->h > bottom - top - 2 * kBubbleLine) f = smaller;
   const int tw = std::min(glyphCount(line) * f->w, room);
   const int bw = tw + 2 * (kBubblePad + kBubbleLine), left = (l.w - bw) / 2;
-  const int top = box.top, bottom = box.bottom, cx = l.w / 2;
   l.r.ring(left, top, bw, bottom - top, kBubbleRadius, kBubbleLine, dim);
   const Point tail[] = {{cx - 9, top + kBubbleLine}, {cx + 9, top + kBubbleLine}, {cx, l.y(kLaneTop)}};
   l.r.polygon(tail, 3, dim);
   text(l.r, *f, (l.w - tw) / 2, (top + bottom) / 2 - f->h / 2, line, inkRgb565(kInkAmber), room);
+}
+
+// The caption: the reaction's reason, the app's narration of why, in the
+// strip's small type and its secondary grey, with no box, centred on the
+// lane's last line, so it reads as a note, not as something said.
+void caption(Lane& l, const char* line) {
+  const BubbleBox box(l.r.s);
+  const int room = box.room(l.w), tw = std::min(glyphCount(line) * kSmall.w, room);
+  text(l.r, kSmall, (l.w - tw) / 2, captionTop(box), line, inkRgb565(kInkGrey), room);
 }
 
 // The strip's marks, each in a kIcon box with its middle at (x + 9, cy).
@@ -414,14 +432,15 @@ void fade(Surface& s, int from, int alpha) {
 // are (FNV-1a over the line or the strip's fields; never 0).
 }  // namespace
 
-uint32_t laneKey(const char* line, const Strip& s, int spin) {
+uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption) {
   uint32_t h = 2166136261u;
   auto add = [&](const void* data, size_t n) {
     for (size_t i = 0; i < n; ++i) h = (h ^ static_cast<const uint8_t*>(data)[i]) * 16777619u;
   };
   auto str = [&](const char* v) { add(v ? v : "\x01", v ? std::strlen(v) + 1 : 1); };
   str(line);
-  if (!line) {
+  str(caption);
+  if (!line && !caption) {
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
     const int numbers[] = {s.more,     int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
                            s.todoDone, s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0};
@@ -432,23 +451,25 @@ uint32_t laneKey(const char* line, const Strip& s, int spin) {
 
 int bubbleRoom(const Surface& surface) { return BubbleBox(surface).room(surface.width); }
 
-void paintLane(Surface& surface, const char* line, const Strip& s, int spin) {
+void paintLane(Surface& surface, const char* line, const Strip& s, int spin, const char* note) {
   if (!surface.pixels) return;
   Lane l{Raster{surface}, surface.width, surface.height};
   l.r.limit = surface.height;
-  if (line) {
-    bubble(l, line);
+  if (line || note) {
+    if (line) bubble(l, line, note != nullptr);
+    if (note) caption(l, note);
   } else {
     strip(l, s, spin);
     fade(surface, l.y(kLaneTop), (s.opacity * 255 + 500) / 1000);
   }
-  surface.laneKey = laneKey(line, s, spin);
+  surface.laneKey = laneKey(line, s, spin, note);
   surface.laneKeyFrom = l.y(kLaneTop);
 }
 
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
-                const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer) {
+                const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
+                const char* note) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -463,7 +484,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // erased and drawn again (Surface::clear): the glow over it too.
   const int glow = doneGlow(done);
   const int spin = spinStep(now);
-  uint32_t key = laneKey(line, s, spin);
+  uint32_t key = laneKey(line, s, spin, note);
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome))) * 16777619u) | 1;
   // The ticket swings over where a card may be, so a card is drawn whole
   // while it hangs, not kept.
@@ -487,7 +508,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   paintTicket(surface, done);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
-  if (lane) paintLane(surface, line, s, spin), surface.laneKey = key;
+  if (lane) paintLane(surface, line, s, spin, note), surface.laneKey = key;
   // A kept lane keeps its glow.
   paintGlow(surface, done, 0, lane ? surface.height : surface.laneKeyFrom);
 }
