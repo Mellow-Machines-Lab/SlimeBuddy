@@ -5,7 +5,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -335,7 +335,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -664,7 +664,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -1002,7 +1002,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -1339,7 +1339,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -1685,7 +1685,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -2030,7 +2030,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -2384,7 +2384,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -2737,7 +2737,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -3099,7 +3099,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -3460,7 +3460,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -3830,7 +3830,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
@@ -4199,7 +4199,7 @@ watches their AI coding agents work. Boop never approves or blocks
 anything.
 On its own, Boop only plays with taps and alerts when an agent needs
 the person: nothing marks a finish or speaks unless you react. You
-decide whether its mood moves, and whether it reacts with a moment:
+decide whether its mood moves, and whether it has a moment:
 its emotion, its move (a finished turn's outcome; to what the person said, its reply),
 what it says (how it feels, or what NOW is about) and how big it
 is: an Example that gives no size is small.
