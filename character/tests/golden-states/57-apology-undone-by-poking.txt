@@ -21,7 +21,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -97,7 +98,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -229,7 +230,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -353,7 +354,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -429,7 +431,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -561,7 +563,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -640,10 +642,10 @@ turn, upset, big, or swears when it stings.
 Leaves for grumpy when a turn short of very long finishes failed or at
 4+ pokes in a row; determined when a check fails and the agent works
 on; annoyed when a check passes after failing, the person says sorry
-to Boop or strokes it; calm when the person thanks the agent; sad when
-the agent gives up, a very long turn fails or the person shares sad
-news. Fades to annoyed once Boop has been irritated for 3
-min.
+to Boop or strokes it, a swipe too; calm when the person thanks the
+agent; sad when the agent gives up, a very long turn fails or the
+person shares sad news. Fades to annoyed once Boop has been irritated
+for 3 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
@@ -684,7 +686,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -760,7 +763,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -892,7 +895,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -971,7 +974,7 @@ medium, at a failed turn.
 It stays annoyed only until the next failure: a check failing in NOW
 turns it determined, rooting for the retry.
 Leaves for determined too when the person sounds frustrated; irritated
-at 3+ pokes in a row; grumpy when a turn short of very long finishes
+at 3+ pokes or shakes in a row; grumpy when a turn short of very long finishes
 failed; sad when the agent gives up, a very long turn fails or the
 person shares sad news; wounded at rude words to Boop; calm
 when the person says sorry to Boop or strokes it. Fades to calm once
@@ -1020,7 +1023,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -1096,7 +1100,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -1228,7 +1232,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -1361,7 +1365,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -1437,7 +1442,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -1569,7 +1574,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -1732,7 +1737,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -1808,7 +1814,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -1940,7 +1946,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -2083,7 +2089,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -2159,7 +2166,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -2291,7 +2298,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -2433,7 +2440,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -2509,7 +2517,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -2641,7 +2649,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.
@@ -2792,7 +2800,8 @@ How to choose:
 - The mood is the backdrop and moves a step at a time: to a mood on
   offer when NOW is MOOD's reason to leave, but never for a routine
   turn alone, and not while HISTORY ends "for under a minute" unless a
-  turn failed, a very long turn ended, or Boop was poked or talked to.
+  turn failed, a very long turn ended, or Boop was poked, shaken or
+  talked to.
   After the minutes MOOD gives, or an hour of nothing, it fades one
   step, to the mood MOOD names, at whatever NOW is.
 - When NOW moves the mood, react with the new mood's face.
@@ -2868,7 +2877,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -3000,7 +3009,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.

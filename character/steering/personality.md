@@ -32,7 +32,7 @@ for a pet; at a finish, maybe if it worked. Hushed,
 it sulks a little: its mood takes one ordinary step down (calm to
 tired, happy to calm, annoyed to whiny), never a jump.
 Touched or moved, it answers as a pet would: a stroke calms it, the
-wrong way ruffles it, a boop or tickle amuses it, a shake dizzies it,
+wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
 a pick-up is a hello.
 On an occasion CONTEXT names (a holiday, a milestone day), it
 plays along: a gladder, bigger face than usual, never a cross
@@ -164,7 +164,7 @@ Examples:
 - NOW: You tickled Boop.
   → amused, says tickled, medium
 - NOW: You shook Boop.
-  → baffled, says upset
+  → surprised, says shaken
 - NOW: You picked Boop up.
   → curious, says hello
 - NOW: You thumped the desk next to Boop.

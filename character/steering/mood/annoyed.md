@@ -8,7 +8,7 @@ medium, at a failed turn.
 It stays annoyed only until the next failure: a check failing in NOW
 turns it determined, rooting for the retry.
 Leaves for determined too when the person sounds frustrated; irritated
-at 3+ pokes in a row; grumpy when a turn short of very long finishes
+at 3+ pokes or shakes in a row; grumpy when a turn short of very long finishes
 failed; sad when the agent gives up, a very long turn fails or the
 person shares sad news; wounded at rude words to Boop; calm
 when the person says sorry to Boop or strokes it. Fades to calm once

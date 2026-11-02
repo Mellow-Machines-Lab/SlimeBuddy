@@ -1,0 +1,13 @@
+{
+  "name": "Shaken, Boop says whoa, then wants it to stop",
+  "case": "The person shakes Boop once, again a second later, and a third time a second after that. The first shake startles it: a surprised or baffled face, never a cross one, and it says how being shaken feels (a whoa, an oh, an ouch), and its mood turns surprised or curious, or stays calm. The second, two in a row, leaves it put out, and its mood turns annoyed. The third, three in a row, makes it cross: an irritated or grumpy face and a shaken word or a grumble (enough, stop, hmph), and its mood turns irritated or grumpy. Each shake moves its mood one step, never a move the mood graph doesn't have.",
+  "always": true,
+  "why": "The owner's ask of 2026-11-01: a shake gets a whoa at first, then annoyed, as if saying put me down. PERSONALITY: a shake startles it; its Example: one shake, surprised, says shaken. The shaken feeling's words are Whoa, Oh, Ouch and Easy there in every mood, and Enough, Stop, Halt, Hmph and Personal space in a cross one (voicegen's SHAKEN). mood/surprised.md: annoyed at 2 pokes or shakes in a row; mood/annoyed.md: irritated at 3+. The line counts the shakes in a row, each within 4 s of the last (TranscriptView.shakesInARowMs), and every shake wakes the brain.",
+  "checks": {"moves_on_graph": true},
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "gesture", "at": "0s", "kind": "dizzy", "expect": {"react": "surprised|baffled|stunned|confused|curious", "move": "none", "say": "shaken", "said": "some", "mood": "surprised|curious|calm"}},
+    {"event": "gesture", "at": "1s", "kind": "dizzy", "expect": {"react": "annoyed|uneasy|uncomfortable|irritated", "move": "none", "mood": "annoyed"}},
+    {"event": "gesture", "at": "2s", "kind": "dizzy", "expect": {"react": "irritated|grumpy|annoyed", "move": "none", "say": "shaken|upset", "mood": "irritated|grumpy", "said": "some"}}
+  ]
+}

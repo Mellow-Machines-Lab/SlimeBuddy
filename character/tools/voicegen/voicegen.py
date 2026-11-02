@@ -34,7 +34,9 @@ push-to-talk: an entry of intent `talk.<reply>` is that reply's own
 words, and a feeling's or topic's that fits one counts for it too
 (REPLY_OF): "Yep" is a yes, "Tsk" a no. takes.tsv lists it
 a second time for each reply, as part `reply`, by the same id; the voice
-file has it once, so neither it nor the version changes. Six takes were recorded in
+file has it once, so neither it nor the version changes. The same goes
+for the `shaken` feeling's takes (SHAKEN): startled words, and cross ones
+in a cross mood, listed again as that feeling. Six takes were recorded in
 moods Boop doesn't have; MOOD_OF gives them one, by the owner's word
 (2026-09-29).
 
@@ -149,9 +151,26 @@ REPLY_OF = {
     "phrase.celebrate.boom-shakalaka": ["dance"], "word.celebrate.woohoo": ["dance"],
     "nonverbal.relief.ahh": ["unhush"], "nonverbal.relief.phew": ["unhush"], "word.celebrate.hooray": ["unhush"],
 }
+# Entries that are also how Boop feels when it's shaken (the `shaken`
+# feeling), by the moods they were recorded in, None for every one:
+# startled anywhere, told to stop only when cross. Each of their takes
+# counts for it too, in its own mood, as REPLY_OF's do for a reply.
+CROSS = {"annoyed", "irritated", "grumpy", "whiny"}
+SHAKEN = {
+    "word.poke.whoa": None, "word.poke.oh": None, "word.setback.ouch": None, "phrase.poke.easy-there": None,
+    "word.stop.enough": CROSS, "word.stop.stop": CROSS, "word.stop.halt": CROSS,
+    "phrase.poke.personal-space": CROSS, "nonverbal.frustration.hmph": CROSS,
+}
 # The facts the bank says a take needs that the Mac can check: a success
 # word only on a success. Swears play only on a failed turn.
 SUCCESS = {"success_confirmed", "fix_confirmed", "tests_passed", "insight_confirmed"}
+
+
+def is_shaken(entry_id: str, mood: str) -> bool:
+    """Whether the take of `entry_id` recorded in `mood` is also `shaken`."""
+    if entry_id not in SHAKEN:
+        return False
+    return SHAKEN[entry_id] is None or mood in SHAKEN[entry_id]
 
 
 def kind(entry: dict) -> str:
@@ -330,10 +349,13 @@ def main() -> None:
     # A reply's takes are the recorded ones again: rows of the table only.
     replies = [{**t, "part": "reply", "meaning": reply, "finish": None}
                for rec, t in zip(recs, takes) for reply in REPLY_OF.get(rec["entryId"], [])]
-    missing = set(REPLY_OF) - {rec["entryId"] for rec in recs}
-    if missing:
-        raise SystemExit(f"voicegen: REPLY_OF names entries with no recording: {', '.join(sorted(missing))}")
-    table = write_table(ver, takes + replies)
+    # And a shaken take's: rows of the table only, as a reply's.
+    shaken = [{**t, "part": "feeling", "meaning": "shaken"} for rec, t in zip(recs, takes) if is_shaken(rec["entryId"], t["mood"])]
+    for name, table_of in (("REPLY_OF", REPLY_OF), ("SHAKEN", SHAKEN)):
+        missing = set(table_of) - {rec["entryId"] for rec in recs}
+        if missing:
+            raise SystemExit(f"voicegen: {name} names entries with no recording: {', '.join(sorted(missing))}")
+    table = write_table(ver, takes + replies + shaken)
     write_pack(args.pack / PACK, ver, takes, clips, mouths)
     (args.pack / TABLE).parent.mkdir(parents=True, exist_ok=True)
     (args.pack / TABLE).write_text(table)
@@ -356,7 +378,7 @@ def main() -> None:
                 w.writeframes(c)
     ms = [t["ms"] for t in takes]
     where = f", copied to {args.card / CARD_PATH}" if args.card else ""
-    print(f"voicegen: {len(takes)} takes ({len(replies)} more rows as replies), version {ver}, {built.stat().st_size} B pack "
+    print(f"voicegen: {len(takes)} takes ({len(replies)} more rows as replies, {len(shaken)} as shaken), version {ver}, {built.stat().st_size} B pack "
           f"({min(ms)}–{max(ms)} ms) → {PACK} and {TABLE} in {args.pack.name}{where}")
     if args.card:
         print("voicegen: put the card back in the board and press its reset button: it mounts the card only at boot")
