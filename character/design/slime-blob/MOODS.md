@@ -363,7 +363,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Lonely (`lonely`)
 
-**Meaning:** Rare. Missing you, only at an idle check-in after you've worked 2 hours or more without a touch or a word, or when you come back after 20 to 40 hours away.
+**Meaning:** Rare. Missing you, only at an idle check-in when CONTEXT says its wish is waiting 1 h or more, or when you come back after 20 to 40 hours away.
 
 **Strength / activation / persistence:** mild to moderate / low / sustained expressive mood.
 
