@@ -566,10 +566,7 @@ BodySettings bodySettings(uint32_t when) {
   static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
   return when & hatchling ? kHatchlingBody : when & sprout ? kSproutBody : when & chonk ? kChonkBody : kBuddyBody;
 }
-int stageOf(uint32_t when) {
-  static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
-  return when & hatchling ? 1 : when & sprout ? 2 : when & chonk ? 4 : 3;
-}
+int stageOf(uint32_t when) { return growthStage(when); }
 namespace {
 constexpr int lerpQ(int a, int b, int k) { return a + int(int64_t(b - a) * k / 4096); }
 constexpr int easeQ(int age, int ms) {

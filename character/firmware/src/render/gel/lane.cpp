@@ -472,7 +472,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
-                const char* note, const WishShow* wish) {
+                const char* note, const WishShow* wish, const GrowthShow* growth) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -523,6 +523,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
   if (sign.text && !actTakesOver(act)) paintSign(surface, sign, at);
+  if (growth && !actTakesOver(act)) paintGrowthBar(surface, *growth, at);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {

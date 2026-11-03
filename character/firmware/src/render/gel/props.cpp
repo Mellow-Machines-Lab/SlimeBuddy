@@ -260,7 +260,10 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   surface.cardBoxCount = drawnCount;
 }
 void paintSprout(Surface& surface, const Engine& e, const rig::Anchors& at, int scale) {
-  if (!surface.pixels || stageOf(e.scenes.when) != 2 || outfitFor(e.scenes.when) != Outfit::kNone) return;
+  const BodySettings& to = e.bodyChange.to;
+  if (!surface.pixels || to.size != kSproutBody.size || to.eyes != kSproutBody.eyes || !e.bodyChange.arrived(e.elapsedMs) ||
+      outfitFor(e.scenes.when) != Outfit::kNone)
+    return;
   Raster r{surface};
   const uint16_t stem = rgb565(92, 190, 96), leaf = rgb565(128, 226, 122);
   const auto px = [&](int v) { return v * scale / 4096; };

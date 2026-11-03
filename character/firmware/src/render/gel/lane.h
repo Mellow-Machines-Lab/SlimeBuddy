@@ -78,7 +78,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
                 const rig::Layers* layers = nullptr,
                 uint32_t t = 0, const Stream* stream = nullptr, uint32_t now = 0,
                 const PastimeShow* pastimes = nullptr, const Drawer* drawer = nullptr, const char* caption = nullptr,
-                const WishShow* wish = nullptr);
+                const WishShow* wish = nullptr, const GrowthShow* growth = nullptr);
 // The widest line the bubble holds on a surface, in px, clear of its
 // rounded corners: on the AMOLED's, the longest take (22 glyphs) in the
 // sign's font, a line of 34 in the small one (pinned by test_gel).

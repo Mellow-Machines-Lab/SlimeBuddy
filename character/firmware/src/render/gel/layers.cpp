@@ -764,7 +764,7 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   if (wish.pop == WishShow::kMet) {
     // The icon pops into a heart, with sparks flying out from it.
     constexpr uint16_t kHeart = rgb565(226, 78, 104);
-    heart(r, cx * 16, (cy - 6) * 16, std::min(11, 4 + age / 30), kHeart);
+    if (!wish.flies || age < int(GrowthShow::kHeartWaitMs)) heart(r, cx * 16, (cy - 6) * 16, std::min(11, 4 + age / 30), kHeart);
     for (int i = 0; i < 6; ++i) {
       const Point out = turn(i * 32 / 6);
       const int d = kRadius + age / 18;
@@ -772,6 +772,76 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
     }
   } else {
     wishIcon(r, wish, cx, cy, kInk);
+  }
+  r.alpha = 255;
+}
+
+namespace {
+// The bubble's middle, as paintWish holds it on the panel: where a heart leaves from.
+Point wishBubble(const Surface& s, const rig::Anchors& at) {
+  constexpr int kRadius = 26;
+  return {std::min(s.width - kRadius - 8, at.brimR.x / 16 + 30), std::max(kRadius + 6, at.crown.y / 16 + 6) - 6};
+}
+// A little Boop for a stage, on the bar's row: wider and taller as it grows.
+void littleBoop(Raster& r, int cx, int cy, int stage, uint16_t ink, uint16_t eyes) {
+  const int w = 16 + stage * 5, h = 12 + stage * 3;
+  r.round(cx - w / 2, cy - h / 2, w, h, h / 2, ink);
+  r.disk(cx - w / 5, cy + 1, 2, eyes);
+  r.disk(cx + w / 5, cy + 1, 2, eyes);
+}
+}  // namespace
+
+void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at) {
+  if (!s.pixels || !bar.opacity) return;
+  Raster r{s};
+  constexpr int kWidth = 280, kHeight = 18, kTop = 18, kSlide = 40;
+  constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
+                     kFillTop = rgb565(170, 222, 245), kFull = rgb565(242, 196, 86), kFullTop = rgb565(255, 234, 160),
+                     kHeart = rgb565(226, 78, 104), kShadow = rgb565(46, 66, 84), kGlow = rgb565(255, 250, 220);
+  const int x = (s.width - kWidth) / 2, y = kTop - kSlide * (255 - bar.opacity) / 255;
+  const bool last = bar.stage >= 4;
+  // Swells as it lands, and settles.
+  const int swell = bar.gulp ? 4 * (bar.gulp < 300 ? bar.gulp : (1000 - bar.gulp) * 300 / 700) / 300 : 0;
+  const int top = y - swell / 2, height = kHeight + swell, cy = y + kHeight / 2;
+  const int tip = x + 2 + (kWidth - 4) * bar.fill / 1000;
+  r.alpha = bar.opacity;
+  littleBoop(r, x - 30, cy, bar.stage, kFill, kInk);
+  if (!last) littleBoop(r, x + kWidth + 32, cy, bar.stage + 1, kShadow, kTrack);
+  r.round(x, top, kWidth, height, height / 2, kTrack);
+  if (tip > x + 4) {
+    const int w = tip - x - 2;
+    r.round(x + 2, top + 2, w, height - 4, (height - 4) / 2, last ? kFull : kFill);
+    if (w > 12) r.round(x + 7, top + 3, w - 10, 2, 1, last ? kFullTop : kFillTop);
+  }
+  r.ring(x, top, kWidth, height, height / 2, 1, kRim);
+  if (bar.gulp) {
+    // A flash along what's filled, and sparks off the tip.
+    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000 / 2;
+    if (tip > x + 4) r.round(x + 2, top + 2, tip - x - 2, height - 4, (height - 4) / 2, kGlow);
+    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000;
+    for (int i = 0; i < 6; ++i) {
+      const Point out = turn(i * 32 / 6 + 3);
+      const int d = 8 + bar.gulp * 26 / 1000;
+      r.disk(tip + d * out.x / 4096, cy + d * out.y / 4096, 2, i % 2 ? kGlow : kHeart);
+    }
+  }
+  if (bar.flight >= 0) {
+    // Up and over from the bubble, quicker as the bar draws it in: a curve
+    // that starts out and to the side, and three fading behind it.
+    const Point from = wishBubble(s, at);
+    const auto along = [&](int k, int& px, int& py) {
+      const int e = k * k / 1000, q = 1000 - e;
+      const int midX = (from.x + tip) / 2 + 46, midY = std::max(kTop + 30, from.y - 34);
+      px = (q * q / 1000 * from.x + 2 * q * e / 1000 * midX + e * e / 1000 * tip) / 1000;
+      py = (q * q / 1000 * from.y + 2 * q * e / 1000 * midY + e * e / 1000 * cy) / 1000;
+    };
+    for (int i = 3; i >= 0; --i) {
+      const int k = std::max(0, bar.flight - i * 45);
+      int px, py;
+      along(k, px, py);
+      r.alpha = i ? 200 - i * 50 : 255;
+      heart(r, px * 16, py * 16, std::max(5, 13 - k * 5 / 1000 - i * 2), kHeart);
+    }
   }
   r.alpha = 255;
 }

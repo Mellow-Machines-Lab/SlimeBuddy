@@ -108,5 +108,10 @@ void paintSign(Surface& surface, const SignShow& sign, const rig::Anchors& at);
 // a speech dot, a laptop); met, the icon pops into a heart with sparks; left,
 // the bubble fades.
 void paintWish(Surface& surface, const WishShow& wish, const rig::Anchors& at);
+// The growth bar along the top of the screen: this stage's little Boop, the
+// bar, and the next stage's in shadow, as the popover shows it; full and gold
+// at the last stage. A met wish's heart flies from its bubble into the bar's
+// tip, and the bar gulps. Its row is clear of Buddy's head, under what's worn.
+void paintGrowthBar(Surface& surface, const GrowthShow& bar, const rig::Anchors& at);
 
 }  // namespace render::gel

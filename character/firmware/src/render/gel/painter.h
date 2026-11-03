@@ -64,6 +64,8 @@ struct BodyChange {
   bool told = false, moving = false, growing = false;
   void see(uint32_t when, uint32_t now);
   BodySettings shown(uint32_t now) const;
+  // Whether it's at its new stage yet: a stage's feature comes with the pop.
+  bool arrived(uint32_t now) const { return !moving || !growing || int32_t(now - at) >= kGrowGlowMs; }
   // How much it glows, and how far the burst is through, 0 … 255: both 0 out
   // of a growth.
   int glow(uint32_t now) const;

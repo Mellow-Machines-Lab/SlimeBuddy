@@ -2001,7 +2001,7 @@
 {"clock":750}
 {"clock":1000}
 {"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"happy","idle":1}
-{"t":"do","id":1,"name":"react","play":"now","args":{"mood":"excited","sign":"I'm a Sprout!"}}
+{"t":"do","id":1,"name":"react","play":"now","args":{"mood":"excited","sign":"look, a sprout!"}}
 {"clock":1050}
 {"clock":1100}
 {"clock":1150}

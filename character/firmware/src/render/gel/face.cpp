@@ -38,7 +38,7 @@ const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, O
   return take(profileFor(mood), row, std::max(0, std::min(takes(row) - 1, variant)));
 }
 
-int GelFace::noseDrop() const { return engine_ ? noseDropFor(bodySettings(engine_->scenes.when)) : 0; }
+int GelFace::noseDrop() const { return engine_ ? noseDropFor(engine_->body()) : 0; }
 void GelFace::reset(uint32_t t, linkkit::Rng&) {
   engine_ = std::make_unique<Engine>(kSeed);
   engine_->step(0);
@@ -370,6 +370,12 @@ void GelFace::wish(const WishShow& show) {
   wish_ = show;
 }
 
+void GelFace::growth(const GrowthShow& show) {
+  growth_ = show;
+  // A stage a met wish reached waits for its heart to land.
+  if (engine_) engine_->bodyWaits = show.heartComing;
+}
+
 void GelFace::play(const rig::Clip& clip) {
   mixer_.play(clip);
   cueing_ = &clip;
@@ -598,7 +604,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow kit = stream_ && actTakesOver(stream_->actNow(t)) ? PastimeShow{} : pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &kit, drawer_, caption, &wish_);
+             lastTick_, stream_, t, &kit, drawer_, caption, &wish_, &growth_);
   return true;
 }
 
