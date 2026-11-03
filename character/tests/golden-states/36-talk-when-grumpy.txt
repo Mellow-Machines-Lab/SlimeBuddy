@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -219,7 +219,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -397,7 +397,7 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Tickles".
 Boop has been comfy for under a minute.
 
 NOW (14:00)
@@ -420,7 +420,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -606,11 +606,11 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Tickles".
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Whoa".
 
 NOW (14:00)
 You poked Boop 3 times in a row.
@@ -632,7 +632,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -810,11 +810,11 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Tickles".
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Whoa".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
@@ -841,7 +841,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1027,11 +1027,11 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: You poked Boop.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Whoa".
+  Boop had a curious moment (small), and said "Tickles".
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Whoa".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
@@ -1039,7 +1039,7 @@ just now: You poked Boop 3 times in a row.
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Yep".
+  Boop had a curious moment (small), and said "Oh".
 
 NOW (14:00)
 You said to Boop: "sorry buddy, you're doing great"

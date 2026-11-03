@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -229,7 +229,7 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You asked claude on "landing" in a sentence.
   Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude is still working on "landing", a long turn, running tests.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Trial".
 
 NOW (14:09)
 claude is still working on "landing", a very long turn, running tests.
@@ -245,10 +245,10 @@ Today: 1 turn.
 
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude is still working on "landing", a long turn, running tests.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Trial".
 2 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Test".
 
 NOW (14:12)
 claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, saying it's done.

@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -216,7 +216,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" to carry on, in a sentence, politely.
   Your words: "thank you", "huge help".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 Boop has been sad for 4 min.
 
 NOW (14:04)
@@ -234,9 +234,9 @@ HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" to carry on, in a sentence, politely.
   Your words: "thank you", "huge help".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 3 min ago: You said to Boop: "you're useless"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 just now: claude started turn 2 on "landing".
 Boop has been sad for 7 min.
 

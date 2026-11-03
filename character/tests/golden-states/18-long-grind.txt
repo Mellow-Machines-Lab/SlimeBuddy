@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -224,7 +224,7 @@ Agents: claude working on "landing" for 9 min.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 4 min ago: claude is still working on "landing", a long turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:09)
 claude is still working on "landing", a very long turn.
@@ -240,10 +240,10 @@ Agents: claude working on "landing" for 13 min.
 HISTORY (oldest first; indented lines add to the line above)
 13 min ago: claude started turn 1 on "landing".
 8 min ago: claude is still working on "landing", a long turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 
 NOW (14:13)
 claude is still working on "landing", a very long turn.
@@ -259,13 +259,13 @@ Agents: claude working on "landing" for 19 min.
 HISTORY (oldest first; indented lines add to the line above)
 19 min ago: claude started turn 1 on "landing".
 14 min ago: claude is still working on "landing", a long turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 10 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 5 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:19)
 claude is still working on "landing", a very long turn.
@@ -282,10 +282,10 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (14:20)
 claude finished turn 1 on "landing": done, a very long turn, no tool calls.

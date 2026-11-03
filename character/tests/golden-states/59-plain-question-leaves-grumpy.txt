@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -219,7 +219,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -423,7 +423,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -609,7 +609,7 @@ just now: You poked Boop.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: irritated → annoyed.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Oh".
 Boop has been annoyed for under a minute.
 
 NOW (14:00)
@@ -632,7 +632,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -822,11 +822,11 @@ just now: You poked Boop.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: irritated → annoyed.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Oh".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: annoyed → calm.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Yep".
 
 NOW (14:00)
 You poked Boop 4 times in a row.
@@ -848,7 +848,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1030,15 +1030,15 @@ just now: You poked Boop.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: irritated → annoyed.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Oh".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: annoyed → calm.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Yep".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Yep".
+  Boop had a curious moment (small), and said "Tickles".
 Boop has been comfy for under a minute.
 
 NOW (14:00)

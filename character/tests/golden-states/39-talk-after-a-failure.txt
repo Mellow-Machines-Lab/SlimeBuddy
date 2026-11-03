@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -232,7 +232,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -410,7 +410,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 just now: claude finished turn 1 on "landing": failed, a long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Uh-oh".
+  Boop had an annoyed moment (medium), playing a failure, and said "Ach".
 Boop has been comfy for under a minute.
 
 NOW (14:02)
@@ -428,9 +428,9 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 1 min ago: claude finished turn 1 on "landing": failed, a long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Uh-oh".
+  Boop had an annoyed moment (medium), playing a failure, and said "Ach".
 just now: You said to Boop: "ugh, this is so frustrating"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 Boop has been comfy for 1 min.
 
 NOW (14:03)

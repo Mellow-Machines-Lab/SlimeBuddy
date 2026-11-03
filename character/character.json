@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "default_mood": "calm",
   "startup_mood": "happy",
+  "claims_a_fix": ["Fixed"],
   "faces": {
     "amoled206": "gel"
   },

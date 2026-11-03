@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -212,7 +212,7 @@ Agents: claude working on "api" for 5 min.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "api" (landing).
 5 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (15:05)
 claude is still working on "api" (landing), a very long turn.
@@ -227,9 +227,9 @@ Agents: claude working on "api" for 11 min.
 HISTORY (oldest first; indented lines add to the line above)
 11 min ago: claude started turn 1 on "api" (landing).
 11 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
-5 min ago: claude is still working on "api" (landing), a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+5 min ago: claude is still working on "api" (landing), a very long turn.
+  Boop had an engaged moment (small), and said "Krr...".
 
 NOW (15:11)
 claude is still working on "api" (landing), a very long turn.
@@ -245,12 +245,12 @@ Agents: claude working on "api" for 16 min.
 HISTORY (oldest first; indented lines add to the line above)
 16 min ago: claude started turn 1 on "api" (landing).
 16 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
-11 min ago: claude is still working on "api" (landing), a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+11 min ago: claude is still working on "api" (landing), a very long turn.
+  Boop had an engaged moment (small), and said "Krr...".
 5 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (15:16)
 claude is still working on "api" (landing), a very long turn.
@@ -267,10 +267,10 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Tch".
 
 NOW (15:20)
 claude finished turn 1 on "api" (landing): failed, a very long turn, no tool calls.
@@ -292,7 +292,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -469,7 +469,7 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude finished turn 1 on "api" (landing): failed, a very long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Drat".
+  Boop had an annoyed moment (medium), playing a failure, and said "Oops".
 just now: claude started turn 2 on "api" (landing).
 Boop has been comfy for 10 min.
 
@@ -487,7 +487,7 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 2 on "api" (landing).
 4 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 Boop has been comfy for 14 min.
 
 NOW (15:34)
@@ -504,9 +504,9 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 2 on "api" (landing).
 9 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 4 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 Boop has been comfy for 19 min.
 
 NOW (15:39)
@@ -524,12 +524,12 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 13 min ago: claude started turn 2 on "api" (landing).
 13 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 9 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 4 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 Boop has been comfy for 23 min.
 
 NOW (15:43)
@@ -547,15 +547,15 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 18 min ago: claude started turn 2 on "api" (landing).
 18 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 14 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 9 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 5 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 Boop has been comfy for 28 min.
 
 NOW (15:48)
@@ -573,18 +573,18 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 22 min ago: claude started turn 2 on "api" (landing).
 22 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 18 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 13 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 9 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 4 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Hup".
 Boop has been comfy for 32 min.
 
 NOW (15:52)
@@ -601,20 +601,20 @@ Today: 1 turn, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 28 min ago: claude started turn 2 on "api" (landing).
 28 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 23 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 19 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 14 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 9 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Hup".
 5 min ago: claude is still working on "api" (landing), a very long turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Krr...".
 Boop has been comfy for 38 min.
 
 NOW (15:58)
@@ -631,10 +631,10 @@ Today: 2 turns, 2 failed.
 
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude is still working on "api" (landing), a very long turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Krr...".
 1 min ago: claude is still working on "api" (landing), a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 Boop has been comfy for 40 min.
 
 NOW (16:00)
@@ -657,7 +657,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once

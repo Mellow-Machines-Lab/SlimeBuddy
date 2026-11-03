@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -213,7 +213,7 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 just now: claude started turn 1 on "landing".
 just now: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (14:00)
 claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
@@ -235,7 +235,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -414,10 +414,10 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 just now: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 just now: claude started turn 2 on "landing".
 Boop has been curious for under a minute.
 
@@ -435,13 +435,13 @@ Today: 2 turns.
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 just now: claude started turn 2 on "landing".
 just now: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 Boop has been curious for 1 min.
 
 NOW (14:01)
@@ -464,7 +464,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -647,16 +647,16 @@ Today: 2 turns.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 2 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 2 min ago: claude started turn 2 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 1 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 just now: claude started turn 3 on "landing".
 Boop has been engaged for 1 min.
 
@@ -674,19 +674,19 @@ Today: 3 turns.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 2 min ago: claude started turn 2 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 1 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 just now: claude started turn 3 on "landing".
 just now: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 Boop has been engaged for 1 min.
 
 NOW (14:03)
@@ -709,7 +709,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -888,22 +888,22 @@ Today: 3 turns.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 4 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 4 min ago: claude started turn 2 on "landing".
 4 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 3 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 2 min ago: claude started turn 3 on "landing".
 2 min ago: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude finished turn 3 on "landing": done, a short turn, no tool calls, the 3rd quick win of a streak, only answering.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 just now: claude started turn 4 on "landing".
 Boop has been curious for 1 min.
 
@@ -921,25 +921,25 @@ Today: 4 turns.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 4 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 4 min ago: claude started turn 2 on "landing".
 4 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 3 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 2 min ago: claude started turn 3 on "landing".
 2 min ago: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude finished turn 3 on "landing": done, a short turn, no tool calls, the 3rd quick win of a streak, only answering.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 just now: claude started turn 4 on "landing".
 just now: You asked claude on "landing" to ship it, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Krr...".
 Boop has been curious for 1 min.
 
 NOW (14:05)
@@ -962,7 +962,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1145,28 +1145,28 @@ Today: 4 turns.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 7 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 6 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 6 min ago: claude started turn 2 on "landing".
 6 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 5 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 4 min ago: claude started turn 3 on "landing".
 4 min ago: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 3 min ago: claude finished turn 3 on "landing": done, a short turn, no tool calls, the 3rd quick win of a streak, only answering.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 2 min ago: claude started turn 4 on "landing".
 2 min ago: You asked claude on "landing" to ship it, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Krr...".
 1 min ago: claude finished turn 4 on "landing": done, a short turn, no tool calls, the 4th quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Ahh...".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 just now: claude started turn 5 on "landing".
 Boop has been engaged for 1 min.
 
@@ -1184,31 +1184,31 @@ Today: 5 turns.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 7 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 7 min ago: claude finished turn 1 on "landing": done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 6 min ago: claude started turn 2 on "landing".
 6 min ago: You asked claude on "landing" about tests, in a few words.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Checking".
 5 min ago: claude finished turn 2 on "landing": done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 4 min ago: claude started turn 3 on "landing".
 4 min ago: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 4 min ago: claude finished turn 3 on "landing": done, a short turn, no tool calls, the 3rd quick win of a streak, only answering.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Haa...".
 2 min ago: claude started turn 4 on "landing".
 2 min ago: You asked claude on "landing" to ship it, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Krr...".
 2 min ago: claude finished turn 4 on "landing": done, a short turn, no tool calls, the 4th quick win of a streak, saying it's done.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Ahh...".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 just now: claude started turn 5 on "landing".
 just now: You asked claude on "landing" for docs, in a few words.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 Boop has been engaged for 2 min.
 
 NOW (14:07)

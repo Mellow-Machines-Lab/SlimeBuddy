@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -210,7 +210,7 @@ Today: you talked to Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "fuck you, you stupid blob"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:00)
 You said to Boop: "what's the build doing?"
@@ -224,9 +224,9 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "fuck you, you stupid blob"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 just now: You said to Boop: "what's the build doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 
 NOW (14:00)
 You said to Boop: "just kidding, I'm sorry"

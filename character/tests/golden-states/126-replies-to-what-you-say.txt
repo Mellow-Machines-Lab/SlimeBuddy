@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -212,7 +212,7 @@ Today: you talked to Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "hi boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh". (in progress)
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh". (in progress)
 
 NOW (14:00)
 You said to Boop: "are you listening to me?"
@@ -227,9 +227,9 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "hi boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh". (in progress)
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh". (in progress)
 just now: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 
 NOW (14:00)
 You said to Boop: "hey, how's it going?"
@@ -244,11 +244,11 @@ Today: you talked to Boop 4 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You said to Boop: "hi boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh". (in progress)
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh". (in progress)
 just now: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 just now: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 
 NOW (14:01)
 You said to Boop: "are you awake?"
@@ -264,11 +264,11 @@ Today: you talked to Boop 5 times.
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You said to Boop: "hi boop"
 1 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 1 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 just now: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 
 NOW (14:01)
 You said to Boop: "can you hear me?"
@@ -284,13 +284,13 @@ Today: you talked to Boop 6 times.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You said to Boop: "hi boop"
 1 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-1 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-1 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-just now: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+1 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+1 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+just now: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 
 NOW (14:02)
 You said to Boop: "great work today"
@@ -306,15 +306,15 @@ Today: you talked to Boop 7 times.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You said to Boop: "hi boop"
 2 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-2 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-1 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-1 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+2 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+1 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+1 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 just now: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:02)
 You said to Boop: "we shipped it!"
@@ -330,15 +330,15 @@ Today: you talked to Boop 8 times.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You said to Boop: "hi boop"
 2 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-2 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-2 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-1 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+2 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+2 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+1 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 1 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 just now: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 
@@ -356,19 +356,19 @@ Today: you talked to Boop 9 times.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You said to Boop: "hi boop"
 3 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-3 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-2 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-2 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+3 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+2 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+2 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 1 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 1 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 just now: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 
 NOW (14:03)
 You said to Boop: "I love you so much, boop"
@@ -384,21 +384,21 @@ Today: you talked to Boop 10 times.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: You said to Boop: "hi boop"
 3 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-3 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-3 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-2 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+3 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+3 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+2 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 2 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 1 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 1 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 just now: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:04)
 You said to Boop: "you're so annoying"
@@ -414,23 +414,23 @@ Today: you talked to Boop 11 times.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: You said to Boop: "hi boop"
 4 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-4 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-3 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-3 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+4 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+3 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+3 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 2 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 1 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 1 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:04)
 You said to Boop: "sorry boop, I didn't mean it"
@@ -446,25 +446,25 @@ Today: you talked to Boop 12 times.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You said to Boop: "hi boop"
 4 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-4 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-4 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-3 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+4 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+4 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+3 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 3 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 2 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 1 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 just now: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 
 NOW (14:05)
 You said to Boop: "my cat is sick"
@@ -480,27 +480,27 @@ Today: you talked to Boop 13 times.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You said to Boop: "hi boop"
 5 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-5 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-4 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-4 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+5 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+4 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+4 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 3 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 3 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 2 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 1 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 just now: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 
 NOW (14:05)
 You said to Boop: "I'm exhausted"
@@ -516,29 +516,29 @@ Today: you talked to Boop 14 times.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You said to Boop: "hi boop"
 5 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-5 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-5 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-4 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+5 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+5 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+4 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 4 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 3 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 3 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-2 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-1 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-1 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-just now: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "you're so annoying"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+1 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+1 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+just now: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 
 NOW (14:06)
 You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
@@ -554,31 +554,31 @@ Today: you talked to Boop 15 times.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You said to Boop: "hi boop"
 6 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-6 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-5 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-5 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+6 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+5 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+5 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 4 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 4 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 3 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 3 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-2 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-2 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-1 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-1 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "you're so annoying"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+2 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+1 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+1 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 just now: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 
 NOW (14:06)
 You said to Boop: "what's the capital of France?"
@@ -594,33 +594,33 @@ Today: you talked to Boop 16 times.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: You said to Boop: "hi boop"
 6 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-6 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-6 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-5 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+6 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+6 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+5 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 5 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 4 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 4 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 3 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-3 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-2 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-2 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-1 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+3 min ago: You said to Boop: "you're so annoying"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+2 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+2 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+1 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 1 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 just now: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
 
 NOW (14:07)
 You said to Boop: "will it rain tomorrow?"
@@ -636,35 +636,35 @@ Today: you talked to Boop 17 times.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: You said to Boop: "hi boop"
 7 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-7 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-6 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-6 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+7 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+6 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+6 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 5 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 5 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 4 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 4 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-3 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-3 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-2 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-2 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-1 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-1 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-just now: You said to Boop: "will it rain tomorrow?"
+3 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+3 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+2 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+2 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+1 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+1 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+just now: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 
 NOW (14:07)
 You said to Boop: "glorp fizzle banana sprocket"
@@ -680,37 +680,37 @@ Today: you talked to Boop 18 times.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: You said to Boop: "hi boop"
 7 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-7 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-7 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-6 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+7 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+7 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+6 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 6 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 5 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 5 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 4 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-4 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-3 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-3 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-2 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-2 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-1 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-1 min ago: You said to Boop: "will it rain tomorrow?"
+4 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+3 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+3 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+2 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+2 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+1 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+1 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 just now: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:08)
 You said to Boop: "go to sleep, little guy"
@@ -726,39 +726,39 @@ Today: you talked to Boop 19 times.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: You said to Boop: "hi boop"
 8 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-8 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-7 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-7 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+8 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+7 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+7 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 6 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 6 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 5 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 5 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-4 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-4 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-3 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-3 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-2 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-2 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-1 min ago: You said to Boop: "will it rain tomorrow?"
+4 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-1 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-just now: You said to Boop: "go to sleep, little guy"
+4 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+3 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+3 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+2 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+2 min ago: You said to Boop: "what's the capital of France?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+1 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+1 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+just now: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 
 NOW (14:08)
 You said to Boop: "shh, be quiet"
@@ -774,41 +774,41 @@ Today: you talked to Boop 20 times.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You said to Boop: "hi boop"
 8 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-8 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-8 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-7 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+8 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+8 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+7 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 7 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 6 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 6 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 5 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-5 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-4 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-4 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-3 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-3 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-2 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-2 min ago: You said to Boop: "will it rain tomorrow?"
+5 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-1 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-1 min ago: You said to Boop: "go to sleep, little guy"
+4 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+4 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+3 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+3 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+2 min ago: You said to Boop: "what's the capital of France?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+2 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+1 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+1 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 just now: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 
 NOW (14:09)
 You said to Boop: "dance for me!"
@@ -824,43 +824,43 @@ Today: you talked to Boop 21 times.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You said to Boop: "hi boop"
 9 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-9 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-8 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-8 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+9 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+8 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+8 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 7 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 7 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 6 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 6 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-5 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-5 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-4 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-4 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-3 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-3 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-2 min ago: You said to Boop: "will it rain tomorrow?"
+5 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-2 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-1 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-1 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-just now: You said to Boop: "dance for me!"
+5 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+4 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+4 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+3 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+3 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+2 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+2 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+1 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+1 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+just now: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 
 NOW (14:09)
 You said to Boop: "roll over"
@@ -876,45 +876,45 @@ Today: you talked to Boop 22 times.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "hi boop"
 9 min ago: You said to Boop: "are you listening to me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-9 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-9 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-8 min ago: You said to Boop: "can you hear me?"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+9 min ago: You said to Boop: "hey, how's it going?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+9 min ago: You said to Boop: "are you awake?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+8 min ago: You said to Boop: "can you hear me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 8 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 7 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 7 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 6 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-6 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-5 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-5 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-4 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-4 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-3 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-3 min ago: You said to Boop: "will it rain tomorrow?"
+6 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-2 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-2 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-1 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-1 min ago: You said to Boop: "dance for me!"
+5 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+5 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+4 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+4 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+3 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+3 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+2 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+1 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+1 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 just now: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:10)
 You said to Boop: "tell claude yes"
@@ -929,45 +929,45 @@ Today: you talked to Boop 23 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "hey, how's it going?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 9 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 9 min ago: You said to Boop: "can you hear me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 8 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 8 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 7 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 7 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-6 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-6 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-5 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-5 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-4 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-4 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-3 min ago: You said to Boop: "will it rain tomorrow?"
+6 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-3 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-2 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-2 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-1 min ago: You said to Boop: "dance for me!"
+6 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+5 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+5 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+4 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+4 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+3 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+3 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+2 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+1 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 1 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:10)
 You said to Boop: "can you approve it for me?"
@@ -982,45 +982,45 @@ Today: you talked to Boop 24 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "are you awake?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 9 min ago: You said to Boop: "can you hear me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 9 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 8 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 8 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 7 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-7 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-6 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-6 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-5 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-5 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-4 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-4 min ago: You said to Boop: "will it rain tomorrow?"
+7 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-3 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-3 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-2 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-2 min ago: You said to Boop: "dance for me!"
+6 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+6 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+5 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
-1 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-1 min ago: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-just now: You said to Boop: "can you approve it for me?"
+5 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+4 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+4 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+3 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+3 min ago: You said to Boop: "go to sleep, little guy"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+2 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+2 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
+1 min ago: You said to Boop: "roll over"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+1 min ago: You said to Boop: "tell claude yes"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+just now: You said to Boop: "can you approve it for me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
 
 NOW (14:11)
 You said to Boop: "is claude done yet?"
@@ -1035,45 +1035,45 @@ Today: you talked to Boop 25 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "can you hear me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 9 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 9 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 8 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 8 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-7 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-7 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-6 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-6 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-5 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-5 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-4 min ago: You said to Boop: "will it rain tomorrow?"
+7 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-4 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-3 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-3 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-2 min ago: You said to Boop: "dance for me!"
+7 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+6 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+6 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
-2 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-1 min ago: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-1 min ago: You said to Boop: "can you approve it for me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-just now: You said to Boop: "is claude done yet?"
+5 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+5 min ago: You said to Boop: "what's the capital of France?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+4 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+4 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+3 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+3 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+2 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
+2 min ago: You said to Boop: "roll over"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+1 min ago: You said to Boop: "tell claude yes"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+1 min ago: You said to Boop: "can you approve it for me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+just now: You said to Boop: "is claude done yet?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 
 NOW (14:11)
 You said to Boop: "are the agents working?"
@@ -1088,45 +1088,45 @@ Today: you talked to Boop 26 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "great work today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 9 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 9 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 8 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-8 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-7 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-7 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-6 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-6 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-5 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-5 min ago: You said to Boop: "will it rain tomorrow?"
+8 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-4 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-4 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-3 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-3 min ago: You said to Boop: "dance for me!"
+7 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+7 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+6 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
-2 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-2 min ago: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-1 min ago: You said to Boop: "can you approve it for me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-1 min ago: You said to Boop: "is claude done yet?"
+6 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+5 min ago: You said to Boop: "what's the capital of France?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-just now: You said to Boop: "are the agents working?"
+5 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+4 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+4 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+3 min ago: You said to Boop: "shh, be quiet"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+3 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
+2 min ago: You said to Boop: "roll over"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "tell claude yes"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+1 min ago: You said to Boop: "can you approve it for me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+1 min ago: You said to Boop: "is claude done yet?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+just now: You said to Boop: "are the agents working?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
 
 NOW (14:12)
 You said to Boop: "how many agents are running?"
@@ -1143,43 +1143,43 @@ HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "we shipped it!"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
 9 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 9 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-8 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-8 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-7 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-7 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-6 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-6 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-5 min ago: You said to Boop: "will it rain tomorrow?"
+8 min ago: You said to Boop: "you're so annoying"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-5 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-4 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-4 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-3 min ago: You said to Boop: "dance for me!"
+8 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+7 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+7 min ago: You said to Boop: "I'm exhausted"
   Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
-3 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-2 min ago: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-2 min ago: You said to Boop: "can you approve it for me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-1 min ago: You said to Boop: "is claude done yet?"
+6 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+6 min ago: You said to Boop: "what's the capital of France?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-1 min ago: You said to Boop: "are the agents working?"
+5 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+5 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+4 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+4 min ago: You said to Boop: "shh, be quiet"
   Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-just now: You said to Boop: "how many agents are running?"
+3 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
+3 min ago: You said to Boop: "roll over"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+2 min ago: You said to Boop: "tell claude yes"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+2 min ago: You said to Boop: "can you approve it for me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+1 min ago: You said to Boop: "is claude done yet?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+1 min ago: You said to Boop: "are the agents working?"
   Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
+just now: You said to Boop: "how many agents are running?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:12)
 You said to Boop: "okay, see you later"
@@ -1194,45 +1194,45 @@ Today: you talked to Boop 28 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: You said to Boop: "wish me luck"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-9 min ago: You said to Boop: "I love you so much, boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
-9 min ago: You said to Boop: "you're so annoying"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
-8 min ago: You said to Boop: "sorry boop, I didn't mean it"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-8 min ago: You said to Boop: "my cat is sick"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-7 min ago: You said to Boop: "I'm exhausted"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
-7 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-6 min ago: You said to Boop: "what's the capital of France?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-6 min ago: You said to Boop: "will it rain tomorrow?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
-5 min ago: You said to Boop: "glorp fizzle banana sprocket"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-5 min ago: You said to Boop: "go to sleep, little guy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-4 min ago: You said to Boop: "shh, be quiet"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
-4 min ago: You said to Boop: "dance for me!"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
-3 min ago: You said to Boop: "roll over"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
-3 min ago: You said to Boop: "tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
-2 min ago: You said to Boop: "can you approve it for me?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
-2 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
-1 min ago: You said to Boop: "are the agents working?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
-1 min ago: You said to Boop: "how many agents are running?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
-just now: You said to Boop: "okay, see you later"
   Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+9 min ago: You said to Boop: "I love you so much, boop"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+9 min ago: You said to Boop: "you're so annoying"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+8 min ago: You said to Boop: "sorry boop, I didn't mean it"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+8 min ago: You said to Boop: "my cat is sick"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+7 min ago: You said to Boop: "I'm exhausted"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+7 min ago: You said to Boop: "why did the chicken cross the road? to get to the other side, haha"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+6 min ago: You said to Boop: "what's the capital of France?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+6 min ago: You said to Boop: "will it rain tomorrow?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+5 min ago: You said to Boop: "glorp fizzle banana sprocket"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+5 min ago: You said to Boop: "go to sleep, little guy"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+4 min ago: You said to Boop: "shh, be quiet"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+4 min ago: You said to Boop: "dance for me!"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
+3 min ago: You said to Boop: "roll over"
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+3 min ago: You said to Boop: "tell claude yes"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+2 min ago: You said to Boop: "can you approve it for me?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
+2 min ago: You said to Boop: "is claude done yet?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+1 min ago: You said to Boop: "are the agents working?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
+1 min ago: You said to Boop: "how many agents are running?"
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+just now: You said to Boop: "okay, see you later"
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
 
 NOW (14:13)
 You said to Boop: "good night boop"

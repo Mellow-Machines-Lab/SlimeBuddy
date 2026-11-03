@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -238,7 +238,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -421,7 +421,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 2 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Nnngh... Drat".
 Boop has been comfy for 2 min.
 
 NOW (14:04)
@@ -444,7 +444,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -635,10 +635,10 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Nnngh... Drat".
 2 min ago: claude's tests failed again on "api" (landing), 2 times in a row.
   Boop's mood changed: comfy → calm.
-  Boop had an annoyed moment (medium), and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), and said "Mm... Trouble".
 
 NOW (14:06)
 claude's tests passed on "api" (landing) after failing.
@@ -660,7 +660,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -846,13 +846,13 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 6 min ago: claude's tests failed on "api" (landing).
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Nnngh... Drat".
 4 min ago: claude's tests failed again on "api" (landing), 2 times in a row.
   Boop's mood changed: comfy → calm.
-  Boop had an annoyed moment (medium), and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), and said "Mm... Trouble".
 2 min ago: claude's tests passed on "api" (landing) after failing.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), and said "Ha!".
+  Boop had a happy moment (small), and said "Heh...".
 Boop has been curious for 2 min.
 
 NOW (14:08)

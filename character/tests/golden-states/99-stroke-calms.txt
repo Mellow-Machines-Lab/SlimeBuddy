@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -218,7 +218,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -418,7 +418,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -607,7 +607,7 @@ just now: You poked Boop while it slept.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Boop".
 
 NOW (14:00)
 You poked Boop 3 times in a row.
@@ -629,7 +629,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -810,11 +810,11 @@ just now: You poked Boop while it slept.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Boop".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Oh".
 Boop has been comfy for under a minute.
 
 NOW (14:00)
@@ -837,7 +837,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1026,11 +1026,11 @@ just now: You poked Boop while it slept.
 just now: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Boop".
 just now: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Oh".
 just now: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
@@ -1054,17 +1054,17 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Boop".
 3 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Oh".
 3 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
   Boop had a curious moment (small), and said "Yep".
 2 min ago: You stroked Boop.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Nnh".
 
 NOW (14:03)
 You shook Boop.
@@ -1084,19 +1084,19 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You poked Boop 2 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
-  Boop had a curious moment (small), and said "Tickles".
+  Boop had a curious moment (small), and said "Boop".
 6 min ago: You poked Boop 3 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: calm → comfy.
-  Boop had a curious moment (small), and said "Boop".
+  Boop had a curious moment (small), and said "Oh".
 6 min ago: You poked Boop 4 times in a row.
   Boop wiggled on its own.
   Boop's mood changed: comfy → calm.
   Boop had a curious moment (small), and said "Yep".
 5 min ago: You stroked Boop.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Nnh".
 3 min ago: You shook Boop.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 
 NOW (14:06)
 You swiped Boop, a quick stroke.

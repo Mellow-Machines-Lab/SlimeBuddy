@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -212,7 +212,7 @@ Today: you touched Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You shook Boop.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (14:00)
 You shook Boop 2 times in a row.
@@ -227,9 +227,9 @@ Today: you touched Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You shook Boop.
-  Boop had an engaged moment (small), and said "Tch".
-just now: You shook Boop 2 times in a row.
   Boop had an engaged moment (small), and said "Hup".
+just now: You shook Boop 2 times in a row.
+  Boop had an engaged moment (small), and said "Krr...".
 
 NOW (14:00)
 You shook Boop 3 times in a row.

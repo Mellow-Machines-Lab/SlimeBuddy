@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -232,7 +232,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -412,7 +412,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 just now: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 Boop has been curious for under a minute.
 
 NOW (14:01)
@@ -430,7 +430,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 just now: claude started turn 2 on "landing".
 Boop has been curious for 1 min.
 
@@ -454,7 +454,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -638,7 +638,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 1 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 1 min ago: claude started turn 2 on "landing".
 just now: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -660,7 +660,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 1 min ago: claude started turn 2 on "landing".
 1 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -688,7 +688,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -868,7 +868,7 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 3 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 3 min ago: claude started turn 2 on "landing".
 2 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -876,7 +876,7 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 3 on "landing".
 1 min ago: claude finished turn 3 on "landing": done, a short turn, 1 tool call, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 Boop has been curious for 1 min.
 
 NOW (14:04)
@@ -894,7 +894,7 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 9 min ago: claude finished turn 1 on "landing": done, a short turn, 1 tool call.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 8 min ago: claude started turn 2 on "landing".
 8 min ago: claude finished turn 2 on "landing": done, a short turn, 1 tool call, the 2nd quick win of a streak.
   Boop's mood changed: curious → engaged.
@@ -902,7 +902,7 @@ HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 3 on "landing".
 7 min ago: claude finished turn 3 on "landing": done, a short turn, 1 tool call, the 3rd quick win of a streak.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Ooh!".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 5 min ago: claude started turn 4 on "landing".
 Boop has been curious for 7 min.
 
@@ -920,7 +920,7 @@ Today: 3 turns.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude started turn 4 on "landing".
 4 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 Boop has been curious for 11 min.
 
 NOW (14:14)
@@ -937,10 +937,10 @@ Today: 4 turns.
 
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Nnh".
 Boop has been curious for 13 min.
 
 NOW (14:16)

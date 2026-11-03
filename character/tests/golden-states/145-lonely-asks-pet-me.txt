@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -225,7 +225,7 @@ Boop's wish today: met.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: Nothing has happened for 12 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Hup".
+  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Rrr... tik".
 1 min ago: Boop wished for a pet.
 
 NOW (16:17)
@@ -242,10 +242,10 @@ Boop's wish today: met.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: Nothing has happened for 12 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Hup".
+  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Rrr... tik".
 1 min ago: Boop wished for a pet.
 just now: You stroked Boop.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 
 NOW (16:17)
 You gave Boop its wish: a pet.

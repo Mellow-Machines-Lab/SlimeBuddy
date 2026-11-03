@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -226,7 +226,7 @@ Today: you talked to Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 just now: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 
 NOW (14:04)
 claude's tests failed on "landing".
@@ -248,7 +248,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -425,10 +425,10 @@ Today: you talked to Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 1 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 just now: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 Boop has been comfy for under a minute.
 
 NOW (14:05)
@@ -445,12 +445,12 @@ Today: you talked to Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 1 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 1 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 just now: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 Boop has been comfy for 1 min.
 
 NOW (14:05)
@@ -473,7 +473,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -652,15 +652,15 @@ Today: 1 turn; you talked to Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "landing".
 1 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 1 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 just now: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 Boop has been lazy for under a minute.
 
 NOW (14:06)
@@ -683,7 +683,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -868,15 +868,15 @@ Today: 1 turn; you talked to Boop 3 times.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 2 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 2 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 1 min ago: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
   Boop had a happy moment (small), playing a success, and said "Ahh...".
@@ -895,20 +895,20 @@ Today: 1 turn; you talked to Boop 3 times.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 3 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 2 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 2 min ago: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
   Boop had a happy moment (small), playing a success, and said "Ahh...".
 just now: You said to Boop: "so, is it finished?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 
 NOW (14:07)
 codex started turn 1 on "landing".
@@ -924,20 +924,20 @@ Today: 1 turn; you talked to Boop 4 times.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 5 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 4 min ago: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
   Boop had a happy moment (small), playing a success, and said "Ahh...".
 2 min ago: You said to Boop: "so, is it finished?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: codex started turn 1 on "landing".
 
 NOW (14:09)
@@ -954,23 +954,23 @@ Today: 1 turn; you talked to Boop 5 times.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 5 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 4 min ago: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
   Boop had a happy moment (small), playing a success, and said "Ahh...".
 2 min ago: You said to Boop: "so, is it finished?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: codex started turn 1 on "landing".
 just now: You said to Boop: "is codex done?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 
 NOW (14:09)
 You said to Boop: "how many agents are running?"
@@ -986,25 +986,25 @@ Today: 2 turns; you talked to Boop 5 times.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude started turn 1 on "landing".
 5 min ago: You said to Boop: "is claude done yet?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Nn... Oops".
+  Boop had an annoyed moment (medium), and said "Uuuh... Failed".
 4 min ago: You said to Boop: "did the tests pass?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Hehehe...".
+  Boop had a happy moment (small), and said "Ooh!".
 4 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check.
   Boop's mood changed: lazy → calm.
   Boop had a happy moment (small), playing a success, and said "Ahh...".
 3 min ago: You said to Boop: "so, is it finished?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
 2 min ago: codex started turn 1 on "landing".
 just now: You said to Boop: "is codex done?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
 just now: You said to Boop: "how many agents are running?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mhm".
 
 NOW (14:10)
 codex finished turn 1 on "landing": done, a long turn, no tool calls.
@@ -1026,7 +1026,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once

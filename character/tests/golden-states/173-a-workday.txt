@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -212,7 +212,7 @@ Agents: claude working on "landing" for 5 min.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Nnh".
 
 NOW (09:10)
 claude is still working on "landing", a very long turn.
@@ -228,9 +228,9 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 1 on "landing".
 8 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Nnh".
 2 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (09:13)
 claude finished turn 1 on "landing": done, a very long turn, no tool calls, saying it's done.
@@ -252,7 +252,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -431,12 +431,12 @@ Today: 1 turn; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 10 min ago: claude started turn 1 on "landing".
 10 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Nnh".
 4 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 2 min ago: claude finished turn 1 on "landing": done, a very long turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Whee!".
 Boop has been curious for 2 min.
 
 NOW (09:15)
@@ -482,7 +482,7 @@ Today: 1 turn; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 2 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Verify".
 Boop has been curious for 39 min.
 
 NOW (09:52)
@@ -505,7 +505,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -690,10 +690,10 @@ Today: 2 turns; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 2 on "landing".
 3 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Verify".
 1 min ago: claude's tests failed on "landing".
   Boop's mood changed: curious → calm.
-  Boop had an annoyed moment (medium), and said "Nn... Broken".
+  Boop had an annoyed moment (medium), and said "Pfft Ouch".
 
 NOW (09:53)
 claude finished turn 2 on "landing": failed, a long turn, 1 tool call, after a failed check, giving up, saying it couldn't finish.
@@ -715,7 +715,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -892,13 +892,13 @@ Today: 2 turns; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 2 on "landing".
 5 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Verify".
 3 min ago: claude's tests failed on "landing".
   Boop's mood changed: curious → calm.
-  Boop had an annoyed moment (medium), and said "Nn... Broken".
+  Boop had an annoyed moment (medium), and said "Pfft Ouch".
 2 min ago: claude finished turn 2 on "landing": failed, a long turn, 1 tool call, after a failed check, giving up, saying it couldn't finish.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Ach".
+  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
 just now: claude started turn 3 on "landing".
 Boop has been comfy for 2 min.
 
@@ -916,16 +916,16 @@ Today: 2 turns; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 2 on "landing".
 8 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Verify".
 6 min ago: claude's tests failed on "landing".
   Boop's mood changed: curious → calm.
-  Boop had an annoyed moment (medium), and said "Nn... Broken".
+  Boop had an annoyed moment (medium), and said "Pfft Ouch".
 5 min ago: claude finished turn 2 on "landing": failed, a long turn, 1 tool call, after a failed check, giving up, saying it couldn't finish.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Ach".
+  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
 3 min ago: claude started turn 3 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 Boop has been comfy for 5 min.
 
 NOW (09:58)
@@ -948,7 +948,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1127,19 +1127,19 @@ Today: 3 turns; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 2 on "landing".
 8 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Verify".
 6 min ago: claude's tests failed on "landing".
   Boop's mood changed: curious → calm.
-  Boop had an annoyed moment (medium), and said "Nn... Broken".
+  Boop had an annoyed moment (medium), and said "Pfft Ouch".
 5 min ago: claude finished turn 2 on "landing": failed, a long turn, 1 tool call, after a failed check, giving up, saying it couldn't finish.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Ach".
+  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
 3 min ago: claude started turn 3 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Whee!".
+  Boop had a happy moment (small), and said "Hehehe...".
 Boop has been lazy for under a minute.
 
 NOW (09:58)
@@ -1162,7 +1162,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1347,19 +1347,19 @@ Today: 3 turns; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude's tests failed on "landing".
   Boop's mood changed: curious → calm.
-  Boop had an annoyed moment (medium), and said "Nn... Broken".
+  Boop had an annoyed moment (medium), and said "Pfft Ouch".
 8 min ago: claude finished turn 2 on "landing": failed, a long turn, 1 tool call, after a failed check, giving up, saying it couldn't finish.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Pfft Ach".
+  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
 6 min ago: claude started turn 3 on "landing".
 6 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 3 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), and said "Whee!".
+  Boop had a happy moment (small), and said "Hehehe...".
 2 min ago: claude finished turn 3 on "landing": done, a long turn, 1 tool call, saying it's done.
   Boop's mood changed: lazy → calm.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 
 NOW (10:01)
 You poked Boop.
@@ -1381,7 +1381,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1601,7 +1601,7 @@ Today: 4 turns; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for docs, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 Boop has been comfy for 1 h.
 
 NOW (11:03)
@@ -1624,7 +1624,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1848,7 +1848,7 @@ Today: 4 turns; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: You came back to the Mac after 50 min away.
   Boop dreamed about Wednesday morning: you stroked it once; 4 turns on "landing".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hup".
 just now: claude started turn 4 on "landing".
 Boop has been lazy for 1 h.
 
@@ -1866,7 +1866,7 @@ Today: 4 turns; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 4 on "landing".
 5 min ago: You asked claude on "landing" to ship it, in a sentence.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Hrr...".
 Boop has been lazy for 1 h.
 
 NOW (12:41)
@@ -1883,9 +1883,9 @@ Today: 5 turns; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 4 on "landing".
 8 min ago: You asked claude on "landing" to ship it, in a sentence.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Hrr...".
 2 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 Boop has been lazy for 1 h.
 
 NOW (12:44)
@@ -1908,7 +1908,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -2092,10 +2092,10 @@ Today: 5 turns; you touched Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 3 min ago: claude finished turn 4 on "landing": done, a very long turn, no tool calls, saying it's done.
   Boop's mood changed: lazy → calm.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 just now: claude started turn 5 on "landing".
 
 NOW (12:47)
@@ -2111,10 +2111,10 @@ Today: 6 turns, 1 failed; you touched Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 6 min ago: claude finished turn 4 on "landing": done, a very long turn, no tool calls, saying it's done.
   Boop's mood changed: lazy → calm.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 3 min ago: claude started turn 5 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a sentence, in a hurry.
   Boop had an engaged moment (small), and said "Tch".
@@ -2139,7 +2139,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -2316,13 +2316,13 @@ Today: 6 turns, 1 failed; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude finished turn 4 on "landing": done, a very long turn, no tool calls, saying it's done.
   Boop's mood changed: lazy → calm.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 5 min ago: claude started turn 5 on "landing".
 5 min ago: You asked claude on "landing" for a fix, in a sentence, in a hurry.
   Boop had an engaged moment (small), and said "Tch".
 2 min ago: claude finished turn 5 on "landing": failed, a long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
+  Boop had an annoyed moment (medium), playing a failure, and said "Oh... Basta".
 just now: claude started turn 6 on "landing".
 Boop has been comfy for 2 min.
 
@@ -2343,10 +2343,10 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 5 min ago: claude finished turn 5 on "landing": failed, a long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
+  Boop had an annoyed moment (medium), playing a failure, and said "Oh... Basta".
 3 min ago: claude started turn 6 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 Boop has been comfy for 5 min.
 
 NOW (12:55)
@@ -2369,7 +2369,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -2551,13 +2551,13 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an engaged moment (small), and said "Tch".
 6 min ago: claude finished turn 5 on "landing": failed, a long turn, no tool calls.
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), playing a failure, and said "Basta".
+  Boop had an annoyed moment (medium), playing a failure, and said "Oh... Basta".
 4 min ago: claude started turn 6 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: claude finished turn 6 on "landing": done, a long turn, no tool calls, saying it's done.
   Boop's mood changed: comfy → lazy.
-  Boop had a happy moment (small), playing a success, and said "Phew...".
+  Boop had a happy moment (small), playing a success, and said "Eep!".
 Boop has been lazy for under a minute.
 
 NOW (12:56)
@@ -2603,7 +2603,7 @@ Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 2 on "landing".
 3 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr...".
 Boop has been lazy for 52 min.
 
 NOW (13:48)
@@ -2626,7 +2626,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -2836,7 +2836,7 @@ Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: Nothing has happened for 43 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hup".
 just now: claude started turn 7 on "landing".
 
 NOW (14:40)
@@ -2853,7 +2853,7 @@ Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 7 on "landing".
 4 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (14:44)
 claude is still working on "landing", a long turn.
@@ -2869,9 +2869,9 @@ Today: 9 turns, 1 failed; you touched Boop twice and talked to it once.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 7 on "landing".
 8 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude is still working on "landing", a long turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:48)
 claude finished turn 7 on "landing": done, a very long turn, no tool calls, saying it's done.
@@ -2893,7 +2893,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -3072,7 +3072,7 @@ Today: 9 turns, 1 failed; you touched Boop 3 times and talked to it once.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude finished turn 7 on "landing": done, a very long turn, no tool calls, saying it's done.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Ha!".
+  Boop had a happy moment (small), playing a success, and said "Ooh!".
 Boop has been curious for 7 min.
 
 NOW (14:55)
@@ -3155,7 +3155,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -3365,7 +3365,7 @@ Today: 10 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: Nothing has happened for 52 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hup".
 just now: claude started turn 8 on "landing".
 Boop has been engaged for 57 min.
 
@@ -3382,10 +3382,10 @@ Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: Nothing has happened for 52 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Hup".
 3 min ago: claude started turn 8 on "landing".
 3 min ago: You asked claude on "landing" a question, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Hrr...".
 Boop has been engaged for 1 h.
 
 NOW (16:53)
@@ -3408,7 +3408,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -3614,7 +3614,7 @@ Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.
 
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: You locked the Mac, first time in 6 h.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 Boop has been curious for 46 min.
 
 NOW (17:39)

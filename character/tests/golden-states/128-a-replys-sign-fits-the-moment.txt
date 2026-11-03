@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -215,7 +215,7 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:01)
 You said to Boop: "go to sleep, buddy"
@@ -232,9 +232,9 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 
 NOW (14:01)
 You said to Boop: "what's claude doing?"
@@ -251,11 +251,11 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 2 min ago: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 1 min ago: You said to Boop: "what's claude doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 
 NOW (14:03)
 You said to Boop: "how long have I been at it?"
@@ -272,13 +272,13 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 2 min ago: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 2 min ago: You said to Boop: "what's claude doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 just now: You said to Boop: "how long have I been at it?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 just now: claude needs you on "landing".
 
 NOW (14:03)
@@ -296,13 +296,13 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 3 min ago: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 2 min ago: You said to Boop: "what's claude doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 1 min ago: You said to Boop: "how long have I been at it?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 just now: claude needs you on "landing".
 just now: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
   Boop had an engaged moment (small), and said "Hup".
@@ -322,18 +322,18 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 3 min ago: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 3 min ago: You said to Boop: "what's claude doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 1 min ago: You said to Boop: "how long have I been at it?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 1 min ago: claude needs you on "landing".
 1 min ago: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
   Boop had an engaged moment (small), and said "Hup".
 just now: You said to Boop: "just tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
 
 NOW (14:04)
 You said to Boop: "you're useless"
@@ -350,20 +350,20 @@ HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" for a fix, in a sentence.
   Your words: "login bug".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 4 min ago: You said to Boop: "go to sleep, buddy"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 3 min ago: You said to Boop: "what's claude doing?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm!".
 2 min ago: You said to Boop: "how long have I been at it?"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
 1 min ago: claude needs you on "landing".
 1 min ago: You held a finger on Boop's needs-you screen, to stop it showing; the agent still waits.
   Boop had an engaged moment (small), and said "Hup".
 1 min ago: You said to Boop: "just tell claude yes"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mhm".
 just now: You said to Boop: "you're useless"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
 
 NOW (14:05)
 You said to Boop: "sorry boop, I didn't mean it"
