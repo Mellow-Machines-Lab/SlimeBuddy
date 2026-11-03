@@ -5,6 +5,7 @@
   "default_mood": "calm",
   "startup_mood": "happy",
   "claims_a_fix": ["Fixed"],
+  "remember_word": "Hey",
   "faces": {
     "amoled206": "gel"
   },
