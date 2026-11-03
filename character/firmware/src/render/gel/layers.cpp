@@ -284,7 +284,7 @@ void wishIcon(Raster& r, const WishShow& wish, int cx, int cy, uint16_t ink) {
   const int phase = int(wish.ms % kPeriodMs);
   switch (wish.kind) {
     case WishShow::kPet: {  // an open hand: a palm and four fingers
-      if (wish.how) cx += 8 * (std::abs(phase * 4 - kPeriodMs * 2) - kPeriodMs) / kPeriodMs;
+      if (wish.how) cx += 8 - wave(phase, kPeriodMs, 16);
       r.round(cx - 9, cy - 1, 18, 13, 5, ink);
       for (int i = 0; i < 4; ++i) r.line({cx - 7 + i * 5, cy + 1}, {cx - 7 + i * 5, cy - 11 + (i == 0 || i == 3 ? 3 : 0)}, 4, ink);
       break;

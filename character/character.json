@@ -7,6 +7,23 @@
   "faces": {
     "amoled206": "gel"
   },
+  "acts": {
+    "build": {
+      "start": "{name} has put on a hard hat, by itself, and is hammering at a little house.",
+      "pass": "{name}'s little house is done, a flag on it, by itself.",
+      "fail": "{name}'s little house has fallen apart, by itself."
+    },
+    "tests": {
+      "start": "{name} has strapped itself to a sled facing a wall, by itself, and is holding its breath.",
+      "pass": "{name}'s sled has stopped just short of the wall, by itself.",
+      "fail": "{name} has hit the wall and slid down it, by itself."
+    },
+    "push": {
+      "start": "{name} has climbed on a rocket for it, by itself, and is blasting off.",
+      "pass": "{name} is parachuting back down, by itself.",
+      "fail": "{name} has crash-landed, by itself, its rocket in the ground."
+    }
+  },
   "moods": [
     {
       "id": "calm",
@@ -69,7 +86,7 @@
       "id": "bored",
       "family": "settled",
       "settles": "lazy",
-      "face": "A bored face: nothing to see."
+      "face": "A bored face: nothing to see.", "face_not_for": "Most idle check-ins: they get MOOD's own face."
     },
     {
       "id": "pleased",
@@ -241,7 +258,7 @@
           "wounded"
         ]
       },
-      "face": "An annoyed face: a small failure, or poked twice in a row, a little miffed."
+      "face": "An annoyed face: a small failure, or poked twice in a row, a little miffed.", "face_not_for": "A win."
     },
     {
       "id": "irritated",
@@ -262,7 +279,7 @@
         ]
       },
       "face": "An irritated face: a turn that failed, or failures or pokes that keep coming.",
-      "face_not_for": "An agent giving up: that's sad."
+      "face_not_for": "An agent giving up: that's sad. A win."
     },
     {
       "id": "grumpy",
@@ -443,8 +460,8 @@
     },
     {
       "id": "lonely",
-      "meaning": "Rare. Missing you, only at an idle check-in after you've worked 2 hours or more without a touch or a word, or when you come back after 20 to 40 hours away.",
-      "not_for": "A finish, a check, a prompt, a heartbeat, a quiet spell with no work (that's rest: Boop dozes), a night away, days away.",
+      "meaning": "Rare. Missing you, only at an idle check-in when CONTEXT says its wish is waiting 1 h or more, or when you come back after 20 to 40 hours away.",
+      "not_for": "A finish, a check, a prompt, a heartbeat, a quiet spell (that's rest: Boop dozes), a night away, days away.",
       "family": "social",
       "moves": {
         "ordinary": [
@@ -456,8 +473,7 @@
           "happy"
         ]
       },
-      "face": "A lonely face: small, looking for you.",
-      "face_not_for": "A quiet spell or a long idle stretch on its own: Boop isn't lonely then."
+      "face": "Rare. A lonely face, only when CONTEXT says its wish is waiting 1 h or more, or you're back after 20 to 40 hours."
     },
     {
       "id": "tired",

@@ -1,7 +1,7 @@
 {
   "name": "The nap at a night's lock sleeps at once, until you unlock",
   "case": "At night, the person locks the Mac with an agent's thread sitting idle, and Boop takes its nap. It's asleep at once, as Doing says, not after the usual doze. A short unlock wakes it.",
-  "why": "plan/lock-and-unlock.md: Boop sleeps at once, and the dream follows by itself. Core.nap holds it, so no Jev is needed",
+  "why": "Boop sleeps at once, and the dream follows by itself. Core.nap holds it, so no Jev is needed",
   "scripted": true,
   "start": "2026-10-28T23:00",
   "steps": [

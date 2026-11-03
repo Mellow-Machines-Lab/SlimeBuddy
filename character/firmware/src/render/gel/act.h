@@ -15,6 +15,7 @@
 //   it looks at it, proud; or the house falls apart, its hat tilted, its
 //   hammer down.
 #pragma once
+#include "render/gel/finish.h"
 #include "render/gel/low_sign.h"
 #include "render/rig/rig.h"
 #include "render/stream.h"
@@ -42,14 +43,12 @@ constexpr int kPassStopMs = 300, kSplatMs = 300, kSlideMs = 2200;
 // The build: a swing of the hammer, and how long the house takes to go up.
 constexpr int kBuildSetMs = 700, kSwingMs = 760, kHouseMs = 75000;
 
-// What it does to the body now: as a finish's pose (render/gel/finish.h).
-struct ActPose {
-  int dx16 = 0, dy16 = 0, scale = 4096, squash = 0, lean = 0;
+// What it does to the body now: as a finish's pose, about its anchor
+// (render/gel/finish.h).
+struct ActPose : FinishPose {
   bool away = false;  // not on the screen at all
 };
 ActPose actPose(const Surface& s, const ActShow& act);
-// Where it scales the body about: the middle of where it stands.
-rig::Point actAnchor(const Surface& s);
 // A full act holds the screen: no desk, no pastime, no reaction's sign.
 inline bool actTakesOver(const ActShow& act) { return act.shows() && act.full; }
 // What the act draws behind the body and over it, at the body's anchors. The

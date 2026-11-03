@@ -10,7 +10,7 @@
 - [wish pet how] stroke my face?
 - [wish chat] talk to me?
 - [wish chat met] i hear u
-- [wish chat how] hold BOOT and talk
+- [wish chat how] hold BOOT, say hi?
 - [wish work] work with me?
 - [wish work met] lets go!
 - [wish work how] prompt an agent?

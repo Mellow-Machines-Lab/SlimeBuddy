@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "render/gel/fixed.h"
+#include "render/gel/frame.h"
 #include "render/gel/raster.h"
 #include "render/maths.h"
 #include "render/palette.h"
@@ -23,44 +24,21 @@ constexpr uint16_t kHull = rgb565(232, 238, 245), kHullLight = rgb565(255, 255, 
                    kSoot = rgb565(18, 20, 26), kWhite = 0xFFFF;
 constexpr uint16_t kSage = rgb565(kSageRgb), kClay = rgb565(kClayRgb), kEye = rgb565(kEyeRgb);
 
-int floorOf(const Surface& s) { return s.height * 783 / 1000; }
 int X(const Surface& s, int p) { return s.width * p / 502; }
 int Y(const Surface& s, int p) { return s.height * p / 410; }
 
-int clampTo(int v, int lo, int hi) { return std::min(std::max(v, lo), hi); }
-// Q12: the smoothstep of where t is between a and b.
-int smooth(int t, int a, int b) {
-  if (t <= a) return 0;
-  if (t >= b) return 4096;
-  const int64_t p = int64_t(t - a) * 4096 / (b - a);
-  return int(p * p * (3 * 4096 - 2 * p) / (4096 * 4096));
-}
-int rampIn(int t, int a, int b) { return t <= a ? 0 : t >= b ? 4096 : int(int64_t(t - a) * 4096 / (b - a)); }
-int lerp12(int a, int b, int e12) { return a + int(int64_t(b - a) * e12 / 4096); }
-// Quick at first, as a thing let go settles: 1 - (1 - p)².
-int easeOut12(int p) { return 4096 - int(int64_t(4096 - p) * (4096 - p) / 4096); }
-int easeIn12(int p) { return int(int64_t(p) * p / 4096); }
 // sin and cos of `t` 4096ths of a turn, Q12.
 int sn(int t) { return sinTurn(t); }
 int cs(int t) { return sinTurn(t + 1024); }
 // The ink darkened toward the background's black, which blends without
 // overlaps showing: `k` of 255.
-uint16_t dim(uint16_t ink, int k) { return mix565(0, ink, clampTo(k, 0, 255)); }
+uint16_t dim(uint16_t ink, int k) { return mix565(0, ink, std::clamp(k, 0, 255)); }
 
-// Art's own coordinates, in px at scale 1 and y down from an origin, turned
-// and scaled onto the surface.
-struct Place {
-  int x16, y16, scale = 4096, turn = 0;
-  Point at(int ux, int uy) const {
-    const int c = cs(turn), s = sn(turn);
-    const int64_t rx = int64_t(ux) * c - int64_t(uy) * s, ry = int64_t(ux) * s + int64_t(uy) * c;
-    return {x16 + int(rx * scale * 16 / (int64_t(4096) * 4096)), y16 + int(ry * scale * 16 / (int64_t(4096) * 4096))};
-  }
-  int size16(int u) const { return std::max(8, u * scale * 16 / 4096); }
-};
+// Art in px of the 502, on the whole screen.
+Frame artPlace(const Surface& s) { return {0, 0, 4096 * s.width / 502}; }
 // A shape in art coordinates: at most 24 points, cut to `clip` if it's given.
 struct Shape {
-  const Place& p;
+  const Frame& p;
   Raster& r;
   void fill(std::initializer_list<Point> pts, uint16_t ink, const Point* clip = nullptr, int clipN = 0) const {
     Point v[24];
@@ -89,7 +67,7 @@ constexpr Point kHullOutline[] = {{0, -172}, {16, -158}, {32, -134}, {46, -100},
 constexpr int kHullPoints = int(sizeof kHullOutline / sizeof kHullOutline[0]);
 
 // `soot` of 255: how burnt it is.
-void paintRocket(Raster& r, const Place& p, int soot = 0) {
+void paintRocket(Raster& r, const Frame& p, int soot = 0) {
   const Shape a{p, r};
   const int k = 255 - soot * 2 / 3;
   // The fins behind, each with a shaded lower edge.
@@ -122,7 +100,7 @@ void paintRocket(Raster& r, const Place& p, int soot = 0) {
 }
 
 // The flame under the nozzle, `len` long, flickering by `ms`.
-void paintFlame(Raster& r, const Place& p, int len, int ms) {
+void paintFlame(Raster& r, const Frame& p, int len, int ms) {
   if (len < 4) return;
   const Shape a{p, r};
   const int flick = sn(ms * 37) * 9 / 4096 + sn(ms * 89 + 800) * 5 / 4096;
@@ -167,6 +145,7 @@ void cloud(Raster& r, int x16, int y16, int rad16, int k) {
 // The billows along the ground from lighting up (`ms` since) on, spreading
 // out either side and thinning once the rocket has gone.
 void paintPadSmoke(Raster& r, const Surface& s, int ms) {
+  if (ms >= 2300) return;  // thinned away
   static constexpr struct { int16_t dx; int16_t y; uint8_t rad; uint16_t delay; } kBillows[] = {
       {226, 306, 26, 500}, {-226, 304, 28, 520}, {176, 300, 32, 360}, {-180, 298, 34, 380}, {128, 304, 30, 200},
       {-124, 302, 32, 220}, {82, 306, 28, 90},   {-78, 306, 30, 110},  {40, 312, 24, 0},     {-38, 312, 24, 30},
@@ -176,7 +155,7 @@ void paintPadSmoke(Raster& r, const Surface& s, int ms) {
     const int age = ms - b.delay;
     if (age <= 0) continue;
     const int grow = easeOut12(rampIn(age, 0, 900));
-    const int thin = 4096 - smooth(ms, 1200, 2300);
+    const int thin = 4096 - ease(ms, 1200, 2300);
     const int k = thin * 255 / 4096;
     const int rise = age * 6 / 1000 + (age > 1200 ? (age - 1200) * 10 / 1000 : 0);
     cloud(r, cx + X(s, b.dx) * 16 * (1024 + grow * 3 / 4) / 4096, (Y(s, b.y) - rise) * 16,
@@ -190,7 +169,7 @@ void paintTrail(Raster& r, const Surface& s, int age, int topY, int k) {
   if (k < 4) return;
   const int cx = s.width * 8, bottom = Y(s, 322);
   constexpr int kStep = 13;
-  const uint16_t dark = rgb565(120, 128, 142), light = rgb565(206, 212, 222);
+  const uint16_t dark = dim(rgb565(120, 128, 142), k), light = dim(rgb565(206, 212, 222), k * 2 / 3);
   int i = 0;
   for (int y = bottom; y > -12; y -= kStep, ++i) {
     if (y < topY) break;
@@ -198,15 +177,15 @@ void paintTrail(Raster& r, const Surface& s, int age, int topY, int k) {
     const int wander = (sn(i * 260 + age / 7) * (2 + i / 3) + sn(i * 700 - age / 11) * 2) / 4096;
     const int rad = (13 * 16 - up * 10 * 16 / 4096) * (7 + (i * 5) % 4) / 10;
     r.alpha = 255;
-    r.disk16(cx + wander * 16, y * 16, rad, dim(dark, k));
-    r.disk16(cx + wander * 16 - rad / 4, y * 16 - rad / 4, rad * 5 / 8, dim(light, k * 2 / 3));
+    r.disk16(cx + wander * 16, y * 16, rad, dark);
+    r.disk16(cx + wander * 16 - rad / 4, y * 16 - rad / 4, rad * 5 / 8, light);
   }
 }
 
 // The canopy, its rim's middle at the origin: gores of two colours round a
 // dome, each with a shaded side, its rim scalloped; `wide` and `tall` in
 // px. `sag` (0–4096) lets it collapse as it lands.
-void paintCanopy(Raster& r, const Place& p, int wide, int tall, int sag) {
+void paintCanopy(Raster& r, const Frame& p, int wide, int tall, int sag) {
   constexpr int kGores = 6, kRows = 8;
   const int w = wide - wide * sag / 8192, h = tall - tall * sag * 3 / (4 * 4096);
   auto meridian = [&](int g, int row) {
@@ -243,11 +222,17 @@ void paintCanopy(Raster& r, const Place& p, int wide, int tall, int sag) {
   }
 }
 
-// A soot mark on the body: a see-through dark spot.
+// A soot mark on the body: a wide, uneven smear of see-through dark spots, not
+// one round one, darkest where they overlap, with specks flung off its ends.
 void smudge(Raster& r, int x16, int y16, int rad16, int alpha) {
   if (alpha <= 2) return;
-  r.alpha = alpha;
-  r.disk16(x16, y16, rad16, kSoot);
+  r.alpha = alpha / 2;
+  constexpr struct { int dx, dy, rad; } kSpots[] = {
+      {-62, 6, 34}, {-30, -10, 52}, {6, 6, 60}, {42, -6, 44}, {70, 8, 26},
+      {-96, -22, 9}, {-104, 18, 6}, {94, -24, 8}, {108, 20, 5}, {30, 44, 7},
+  };
+  for (const auto& d : kSpots)
+    r.disk16(x16 + rad16 * d.dx / 100, y16 + rad16 * d.dy / 100, rad16 * d.rad / 100, kSoot);
   r.alpha = 255;
 }
 
@@ -268,6 +253,19 @@ void spark(Raster& r, int x16, int y16, int rad16, int turn, uint16_t ink) {
   r.polygon16(v, 10, ink);
 }
 
+// Stars going round its head after a crash, `after` since, gone by `endMs`: on
+// an orbit `rx` by `ry` round `dy` below its crown, each `size` round.
+void headStars(Raster& r, const Surface& s, const rig::Anchors& at, int after, int endMs, int rx, int dy, int ry, int size) {
+  if (after >= endMs) return;
+  r.alpha = 255 - rampIn(after, endMs - 500, endMs) * 255 / 4096;
+  for (int i = 0; i < 4; ++i) {
+    const int turn = after * 2 / 3 + i * 1024;
+    spark(r, at.crown.x + X(s, rx) * 16 * cs(turn) / 4096, at.crown.y - Y(s, dy) * 16 + Y(s, ry) * 16 * sn(turn) / 4096,
+          X(s, size) * 16, turn, rgb565(255, 216, 74));
+  }
+  r.alpha = 255;
+}
+
 // The tests. Everything stands on the track, on the floor, in px of the 502.
 constexpr int kTrackY = 318, kWallX = 440, kSledFromX = 164, kSledToX = 292;
 constexpr int kRideTests = 2750;  // its size, strapped on
@@ -275,11 +273,11 @@ constexpr int kRideTests = 2750;  // its size, strapped on
 // Where the sled is, its middle, this far in: it comes in from the left,
 // then inches on, slower and slower, however long the tests take.
 int sledXAt(int age) {
-  if (age < kTestsSetMs) return lerp12(-120, kSledFromX, easeOut12(rampIn(age, 0, kTestsSetMs)));
+  if (age < kTestsSetMs) return lerp(-120, kSledFromX, easeOut12(rampIn(age, 0, kTestsSetMs)));
   const int run = age - kTestsSetMs;
   // The first minute takes it half way, each minute after half of what's left.
   const int span = kSledToX - kSledFromX;
-  return kSledToX - int(int64_t(span) * 60000 / (60000 + run));
+  return kSledToX - int(uint32_t(span) * 60000u / uint32_t(60000 + run));
 }
 // The tremble while it holds its breath, in px.
 int trembleOf(int age) { return age < kTestsSetMs ? 0 : sn(age * 73) * 3 / 4096 + sn(age * 131) * 1 / 4096; }
@@ -287,7 +285,7 @@ int trembleOf(int age) { return age < kTestsSetMs ? 0 : sn(age * 73) * 3 / 4096 
 // The wall: a block in hazard stripes with a lit edge, `x` px from the left,
 // on the floor.
 void paintWall(Raster& r, const Surface& s, int x, int shake) {
-  const Place p{0, 0, 4096 * s.width / 502};
+  const Frame p = artPlace(s);
   const Shape a{p, r};
   const int x0 = x + shake, top = 6, bottom = kTrackY;
   a.fill({{x0, top}, {560, top}, {560, bottom}, {x0, bottom}}, rgb565(240, 190, 40));
@@ -300,12 +298,15 @@ void paintWall(Raster& r, const Surface& s, int x, int shake) {
   a.fill({{x0, top}, {x0 + 4, top}, {x0 + 4, bottom}, {x0, bottom}}, rgb565(255, 232, 150));
 }
 
-// The floor: a line with a lit top, full width, and the start line's checks.
+// The floor, full width.
+void paintFloor(const Shape& a) { a.fill({{0, kTrackY}, {502, kTrackY}, {502, kTrackY + 6}, {0, kTrackY + 6}}, rgb565(74, 84, 100)); }
+
+// The floor and the start line's checks.
 void paintTrack(Raster& r, const Surface& s, int alpha) {
   r.alpha = alpha;
-  const Place p{0, 0, 4096 * s.width / 502};
+  const Frame p = artPlace(s);
   const Shape a{p, r};
-  a.fill({{0, kTrackY}, {502, kTrackY}, {502, kTrackY + 6}, {0, kTrackY + 6}}, rgb565(74, 84, 100));
+  paintFloor(a);
   for (int i = 0; i < 6; ++i) {
     const int y = kTrackY - 6 - i * 10;
     a.fill({{14, y}, {22, y}, {22, y + 10}, {14, y + 10}}, i % 2 ? rgb565(30, 30, 34) : rgb565(236, 240, 246));
@@ -317,7 +318,7 @@ void paintTrack(Raster& r, const Surface& s, int alpha) {
 // The sled: a red deck on two wheels, `tilt` of a turn, its deck's middle on
 // `x`; the wheels `spin` round.
 void paintSled(Raster& r, const Surface& s, int x, int spin) {
-  const Place p{X(s, x) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
+  const Frame p{X(s, x) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
   const Shape a{p, r};
   a.fill({{-96, -22}, {96, -22}, {104, -14}, {96, -8}, {-96, -8}, {-104, -14}}, kRed);
   a.fill({{-96, -13}, {100, -13}, {96, -8}, {-96, -8}}, kRedShade);
@@ -341,48 +342,73 @@ void paintTarget(Raster& r, Point c, int rad16) {
   r.polygon16(q2, 4, rgb565(24, 24, 28));
 }
 
+// A dome worn on its head, the helmet's or the hard hat's: `wide` by `high`
+// about its rim's middle, turned `tilt`.
+struct Dome {
+  int half, tall, mx, my, scale, wide = 0, high = 0, c = 4096, st = 0;
+  static constexpr int kPts = 14;
+  // Its rim dropNum/dropDen of the head's height below the brim line.
+  Dome(const rig::Anchors& at, int dropNum, int dropDen, int widePct, int lift, int tilt) {
+    const int brim = (at.brimL.y + at.brimR.y) / 2;
+    half = (at.brimR.x - at.brimL.x) / 2;
+    tall = std::max(32, brim - at.crown.y);
+    mx = (at.brimL.x + at.brimR.x) / 2, my = brim + tall * dropNum / dropDen;
+    scale = half * 4096 / (120 * 16);  // 1 at a full-size head's
+    wide = half * widePct / 100, high = (my - at.crown.y) + lift * scale / 256;
+    c = cs(tilt), st = sn(tilt);
+  }
+  Point turned(int x, int y) const {
+    return {mx + int((int64_t(x) * c - int64_t(y) * st) / 4096), my + int((int64_t(x) * st + int64_t(y) * c) / 4096)};
+  }
+  Point rim(int a, int w, int h) const { return turned(-w * cs(a) / 4096, -h * sn(a) / 4096); }
+  // The shell: an arc, closed through `bow` if it's given, and its shade, the
+  // right of it, back up a smaller arc, a crescent widest at the rim.
+  void paintShell(Raster& r, uint16_t ink, uint16_t shadeInk, int crescent, const Point* bow = nullptr) const {
+    Point dome[kPts + 2];
+    for (int i = 0; i <= kPts; ++i) dome[i] = rim(2048 * i / kPts, wide, high);
+    if (bow) dome[kPts + 1] = *bow;
+    r.polygon16(dome, kPts + 1 + (bow ? 1 : 0), ink);
+    Point shade[kPts + 1];
+    int n = 0;
+    for (int i = 8; i <= kPts; ++i) shade[n++] = rim(2048 * i / kPts, wide, high);
+    for (int i = kPts; i >= 9; --i) {
+      const int in = 4096 - crescent * (i - 8) / (kPts - 8);
+      shade[n++] = rim(2048 * i / kPts, int(int64_t(wide) * in / 4096), int(int64_t(high) * (4096 - (4096 - in) / 2) / 4096));
+    }
+    r.polygon16(shade, n, shadeInk);
+  }
+};
+
 // The helmet on its head: a yellow dome over its top, lit from the left, its
 // rim down near its brow, a target on its front. `tilt`
 // turns it about the rim's middle.
 void paintHelmet(Raster& r, const rig::Anchors& at, int tilt = 0) {
-  const Point l = at.brimL, rr = at.brimR, top = at.crown;
-  const int half = (rr.x - l.x) / 2, brim = (l.y + rr.y) / 2;
-  const int tall = std::max(32, brim - top.y);
-  const int mx = (l.x + rr.x) / 2, my = brim + tall * 3 / 5;
-  const int scale = half * 4096 / (120 * 16);  // 1 at a full-size head's
-  const int wide = half * 118 / 100, high = (my - top.y) + 20 * scale / 256;
-  const int c = cs(tilt), sTilt = sn(tilt);
-  auto turned = [&](int x, int y) {
-    return Point{mx + int((int64_t(x) * c - int64_t(y) * sTilt) / 4096), my + int((int64_t(x) * sTilt + int64_t(y) * c) / 4096)};
-  };
-  auto rim = [&](int a, int w, int h) { return turned(-w * cs(a) / 4096, -h * sn(a) / 4096); };
-  constexpr int kPts = 14;
-  Point dome[kPts + 2];
-  for (int i = 0; i <= kPts; ++i) dome[i] = rim(2048 * i / kPts, wide, high);
-  dome[kPts + 1] = turned(0, tall / 4);  // bowed with its brow
-  r.polygon16(dome, kPts + 2, rgb565(246, 196, 32));
-  // Its shade: the right of the dome, back up a smaller arc.
-  Point shade[kPts + 1];
-  int n = 0;
-  for (int i = 8; i <= kPts; ++i) shade[n++] = rim(2048 * i / kPts, wide, high);
-  for (int i = kPts; i >= 9; --i) {
-    const int in = 4096 - 1300 * (i - 8) / (kPts - 8);  // a crescent, widest at the rim
-    shade[n++] = rim(2048 * i / kPts, int(int64_t(wide) * in / 4096), int(int64_t(high) * (4096 - (4096 - in) / 2) / 4096));
-  }
-  r.polygon16(shade, n, rgb565(208, 150, 20));
-  const Point band[3] = {turned(-wide, 0), turned(0, tall / 4), turned(wide, 0)};
+  const Dome d(at, 3, 5, 118, 20, tilt);
+  const int wide = d.wide, high = d.high, tall = d.tall, scale = d.scale;
+  const Point bow = d.turned(0, tall / 4);  // bowed with its brow
+  d.paintShell(r, rgb565(246, 196, 32), rgb565(208, 150, 20), 1300, &bow);
+  const Point band[3] = {d.turned(-wide, 0), bow, d.turned(wide, 0)};
   r.stroke16(band, 3, std::max(32, 8 * 16 * scale / 4096), rgb565(186, 130, 14));
   r.alpha = 170;
-  const Point shine = rim(560, wide * 72 / 100, high * 76 / 100);
+  const Point shine = d.rim(560, wide * 72 / 100, high * 76 / 100);
   r.disk16(shine.x, shine.y, std::max(16, 10 * 16 * scale / 4096), rgb565(255, 244, 196));
   r.alpha = 255;
-  paintTarget(r, turned(0, -high * 56 / 100), std::max(32, 19 * 16 * scale / 4096));
+  paintTarget(r, d.turned(0, -high * 56 / 100), std::max(32, 19 * 16 * scale / 4096));
+}
+
+// Its head's anchors while a hat comes down onto them, `age` into the act.
+rig::Anchors droppedOn(const Surface& s, rig::Anchors at, int age) {
+  if (age < 500) {
+    const int up = Y(s, 200) * 16 * (4096 - easeOut12(rampIn(age, 0, 500))) / 4096;
+    at.crown.y -= up, at.brimL.y -= up, at.brimR.y -= up;
+  }
+  return at;
 }
 
 ActPose testsPose(const Surface& s, const ActShow& act) {
   ActPose pose;
-  const Point anchor = actAnchor(s);
-  const int floor = (Y(s, kTrackY - 22) - floorOf(s)) * 16;  // on the sled's deck
+  const Point anchor = finishAnchor(s);
+  const int floor = (Y(s, kTrackY - 22) - floorY(s)) * 16;  // on the sled's deck
   auto onSled = [&](int x, int scale) {
     pose.scale = scale;
     pose.dx16 = X(s, x) * 16 - anchor.x;
@@ -392,9 +418,9 @@ ActPose testsPose(const Surface& s, const ActShow& act) {
   if (act.result == ActResult::kRunning) {
     const int x = sledXAt(age);
     onSled(x + trembleOf(age), kRideTests);
-    if (age < 500) pose.scale = lerp12(4096, kRideTests, smooth(age, 0, 500)), pose.dx16 = pose.dx16 * smooth(age, 0, 500) / 4096;
+    if (age < 500) pose.scale = lerp(4096, kRideTests, ease(age, 0, 500)), pose.dx16 = pose.dx16 * ease(age, 0, 500) / 4096;
     // It breathes in, and holds it: a little bigger, and shaking.
-    const int held = smooth(age, kTestsSetMs, kTestsSetMs + 1400);
+    const int held = ease(age, kTestsSetMs, kTestsSetMs + 1400);
     pose.scale += 340 * held / 4096;
     pose.squash = -700 * held / 4096 + (sn(age * 91) * 90 / 4096) * held / 4096;
     return pose;
@@ -402,30 +428,30 @@ ActPose testsPose(const Surface& s, const ActShow& act) {
   const int ms = act.resultMs;
   const int from = sledXAt(act.ageMs - ms);
   if (act.result == ActResult::kPass) {
-    const int x = lerp12(from, kWallX - 118, easeOut12(rampIn(ms, 0, kPassStopMs)));
+    const int x = lerp(from, kWallX - 118, easeOut12(rampIn(ms, 0, kPassStopMs)));
     onSled(x, kRideTests + 340);
     // Lurches on as the sled stops, then lets it all out.
     if (ms < 500) pose.lean = sn(ms * 2048 / 500) * 1400 / 4096;
-    const int out = smooth(ms, 300, 1000);
-    pose.scale = lerp12(kRideTests + 340, kRideTests, out);
-    pose.squash = lerp12(-700, 300, out) + (ms > 300 && ms < 1300 ? sn((ms - 300) * 8) * 200 / 4096 : 0);
+    const int out = ease(ms, 300, 1000);
+    pose.scale = lerp(kRideTests + 340, kRideTests, out);
+    pose.squash = lerp(-700, 300, out) + (ms > 300 && ms < 1300 ? sn((ms - 300) * 8) * 200 / 4096 : 0);
     return pose;
   }
   // Fail: the rush, the wall, flat and tall against it, then down it.
   if (ms < kSplatMs) {
     const int e = easeIn12(rampIn(ms, 0, kSplatMs));
-    onSled(lerp12(from, kWallX - 68, e), kRideTests + 340);
+    onSled(lerp(from, kWallX - 68, e), kRideTests + 340);
     pose.lean = 1400 * e / 4096;
     return pose;
   }
   const int after = ms - kSplatMs;
-  const int down = smooth(after, 300, kSlideMs);
+  const int down = ease(after, 300, kSlideMs);
   onSled(kWallX - 90, 2950);
   // Pressed thin and tall against it, then gathering into a heap at its foot.
-  pose.squash = lerp12(4600, -2600, down);
+  pose.squash = lerp(4600, -2600, down);
   pose.dx16 -= X(s, 50) * 16 * down / 4096;
   pose.dy16 += (Y(s, kTrackY - 2) - Y(s, kTrackY - 22)) * 16;
-  pose.lean = -lerp12(1600, 0, down);
+  pose.lean = -lerp(1600, 0, down);
   pose.dy16 -= Y(s, 16) * 16 * (4096 - down) / 4096;
   return pose;
 }
@@ -437,16 +463,16 @@ void testsBehind(Raster& r, const Surface& s, const ActShow& act) {
   const int hit = failing ? act.resultMs - kSplatMs : -1;
   int shake = 0;
   if (hit >= 0 && hit < 360) shake = sn(hit * 24) * 5 * (360 - hit) / (360 * 4096);
-  paintWall(r, s, lerp12(560, kWallX, in), shake);
+  paintWall(r, s, lerp(560, kWallX, in), shake);
   if (hit >= 0) {
-    const Place p{0, 0, 4096 * s.width / 502};
+    const Frame p = artPlace(s);
     const Shape a{p, r};
     const int k = rampIn(hit, 0, 120);
-    a.line({{kWallX + shake, 120}, {kWallX + 16 + shake, 104 + 0 * k}, {kWallX + 12 + shake, 88}, {kWallX + 30 + shake, 66}}, 3, rgb565(24, 24, 28));
+    a.line({{kWallX + shake, 120}, {kWallX + 16 + shake, 104}, {kWallX + 12 + shake, 88}, {kWallX + 30 + shake, 66}}, 3, rgb565(24, 24, 28));
     a.line({{kWallX + shake, 170}, {kWallX + 18 + shake, 182}, {kWallX + 28 + shake, 170}, {kWallX + 48 + shake, 188}}, 3, rgb565(24, 24, 28));
     a.line({{kWallX + shake, 220}, {kWallX + 12 + shake, 242}, {kWallX + 34 + shake, 250}}, 3, rgb565(24, 24, 28));
     // The gel it left on the wall: a splat, and drips running down.
-    const int drip = smooth(hit, 200, kSlideMs + 800);
+    const int drip = ease(hit, 200, kSlideMs + 800);
     a.line({{kWallX + 6 + shake, 142}, {kWallX + 20 + shake, 156}}, 18 * k / 4096, rgb565(66, 150, 222));
     a.line({{kWallX + 24 + shake, 134}, {kWallX + 8 + shake, 160}}, 9 * k / 4096, rgb565(66, 150, 222));
     for (const auto& d : {std::pair<int, int>{4, 100}, std::pair<int, int>{14, 70}, std::pair<int, int>{22, 130}})
@@ -454,13 +480,12 @@ void testsBehind(Raster& r, const Surface& s, const ActShow& act) {
   }
   paintTrack(r, s, in * 255 / 4096);
   // The sled: under it; at a fail it runs on to the wall and stops there.
-  int x = sledXAt(age);
+  const int from = sledXAt(age - act.resultMs);
+  int x = from;
   if (passing) {
-    const int from = sledXAt(age - act.resultMs);
-    x = lerp12(from, kWallX - 118, easeOut12(rampIn(act.resultMs, 0, kPassStopMs)));
+    x = lerp(from, kWallX - 118, easeOut12(rampIn(act.resultMs, 0, kPassStopMs)));
   } else if (failing) {
-    const int from = sledXAt(age - act.resultMs);
-    x = lerp12(from, kWallX - 104, easeIn12(rampIn(act.resultMs, 0, kSplatMs)));
+    x = lerp(from, kWallX - 104, easeIn12(rampIn(act.resultMs, 0, kSplatMs)));
   }
   paintSled(r, s, x, x * 90 + age / 2);
 }
@@ -487,7 +512,7 @@ void thumbsUp(Raster& r, const Surface& s, const rig::Anchors& at, int ms) {
   if (!k) return;
   const uint16_t gel = rgb565(74, 158, 226), deep = rgb565(38, 110, 186), shine = rgb565(184, 233, 245);
   const int size = 4096 * s.width / 502 * k / 4096;
-  const Place p{at.hem[0].x - X(s, 30) * 16, std::min(at.brimL.y + Y(s, 74) * 16, Y(s, 250) * 16) + Y(s, 36) * 16 * (4096 - k) / 4096, size};
+  const Frame p{at.hem[0].x - X(s, 30) * 16, std::min(at.brimL.y + Y(s, 74) * 16, Y(s, 250) * 16) + Y(s, 36) * 16 * (4096 - k) / 4096, size};
   const Shape a{p, r};
   a.line({{-6, -2}, {-3, -28}}, 16, gel);
   a.line({{-8, 12}, {8, 12}}, 32, gel);
@@ -507,13 +532,8 @@ void testsFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
   const bool failing = act.result == ActResult::kFail;
   // The helmet comes down as it starts; knocked askew at the wall.
   int tilt = 0;
-  if (failing) tilt = -lerp12(0, 170, smooth(act.resultMs, kSplatMs, kSplatMs + 400));
-  rig::Anchors worn = at;
-  if (act.result == ActResult::kRunning && age < 500) {
-    const int up = Y(s, 200) * 16 * (4096 - easeOut12(rampIn(age, 0, 500))) / 4096;
-    worn.crown.y -= up, worn.brimL.y -= up, worn.brimR.y -= up;
-  }
-  paintHelmet(r, worn, tilt);
+  if (failing) tilt = -lerp(0, 170, ease(act.resultMs, kSplatMs, kSplatMs + 400));
+  paintHelmet(r, act.result == ActResult::kRunning ? droppedOn(s, at, age) : at, tilt);
   // A target on each of its sides.
     if (!failing || act.resultMs < kSplatMs) {
     // And the belt strapping it down, low across its front.
@@ -528,7 +548,7 @@ void testsFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
   }
   if (act.result == ActResult::kRunning && age >= kTestsSetMs) {
     // Cheeks full, a bead of sweat running, and the shakes in the air.
-    const int held = smooth(age, kTestsSetMs, kTestsSetMs + 1400);
+    const int held = ease(age, kTestsSetMs, kTestsSetMs + 1400);
     const int half = std::abs(at.eyeR.x - at.eyeL.x), cx = (at.eyeL.x + at.eyeR.x) / 2, eye = (at.eyeL.y + at.eyeR.y) / 2;
     r.alpha = held * 150 / 4096;
     r.disk16(cx - half * 58 / 100, eye + Y(s, 15) * 16, X(s, 11) * 16, rgb565(255, 128, 150));
@@ -561,15 +581,7 @@ void testsFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
       spark(r, X(s, kWallX) * 16, at.eyeL.y, X(s, 74) * 16 * k / 4096, 300, rgb565(255, 214, 80));
       spark(r, X(s, kWallX) * 16, at.eyeL.y, X(s, 40) * 16 * k / 4096, 700, rgb565(255, 248, 214));
     }
-    if (after < 3200) {
-      r.alpha = 255 - rampIn(after, 2700, 3200) * 255 / 4096;
-      for (int i = 0; i < 4; ++i) {
-        const int turn = after * 2 / 3 + i * 1024;
-        spark(r, at.crown.x + X(s, 58) * 16 * cs(turn) / 4096, at.crown.y - Y(s, 18) * 16 + Y(s, 11) * 16 * sn(turn) / 4096,
-              X(s, 11) * 16, turn, rgb565(255, 216, 74));
-      }
-      r.alpha = 255;
-    }
+    headStars(r, s, at, after, 3200, 58, 18, 11, 11);
   }
 }
 
@@ -589,7 +601,7 @@ int houseAt(int age) {
 // The house, built to `built`; `done` raises its flag, 0–4096. `fall` (0–4096)
 // shakes it apart: each course and the roof slide, tip and sink to rubble.
 void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
-  const Place at{X(s, kHouseX) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
+  const Frame at{X(s, kHouseX) * 16, Y(s, kTrackY) * 16, 4096 * s.width / 502};
   const Shape a{at, r};
   const uint16_t brick = rgb565(198, 116, 78), brickLit = rgb565(224, 148, 104), brickDeep = rgb565(138, 74, 52),
                  mortar = rgb565(92, 56, 44);
@@ -604,7 +616,7 @@ void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
     // Once down, the courses break into the rubble below.
     r.alpha = 255 - rampIn(fall, 2600, 3800) * 255 / 4096;
     if (r.alpha < 3) continue;
-    const Place c{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy) * 16, at.scale, dir * 120 * fall / 4096};
+    const Frame c = Frame{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy) * 16, at.scale}.turnedBy(dir * 120 * fall / 4096);
     const Shape b{c, r};
     b.fill({{-hw, y0}, {hw, y0}, {hw, y0 + h}, {-hw, y0 + h}}, brick);
     b.fill({{-hw, y0}, {hw, y0}, {hw, y0 + 3}, {-hw, y0 + 3}}, brickLit);
@@ -632,7 +644,7 @@ void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
     const int wall = -kCourses * kCourseH;
     const int come = rampIn(finish, 1024, 3200);
     const int fx = 30 * fall / 4096, fy = (-wall - 16) * easeIn12(fall) / 4096;
-    const Place c{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy - 40 * (4096 - come) / 4096) * 16, at.scale, -260 * fall / 4096};
+    const Frame c = Frame{at.x16 + X(s, fx) * 16, at.y16 + Y(s, fy - 40 * (4096 - come) / 4096) * 16, at.scale}.turnedBy(-260 * fall / 4096);
     const Shape b{c, r};
     r.alpha = rampIn(come, 0, 800) * 255 / 4096;
     b.fill({{-hw - 14, wall}, {0, wall - 58}, {hw + 14, wall}}, rgb565(216, 66, 58));
@@ -657,7 +669,7 @@ void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
         {72, -5, 160},   {-24, -12, 640},  {14, -10, -120}, {-88, -3, -80},  {92, -4, 400},
     };
     for (const auto& b : kBricks) {
-      const Place q{at.x16 + X(s, b.x) * 16, at.y16 + Y(s, b.y) * 16, at.scale, b.turn};
+      const Frame q = Frame{at.x16 + X(s, b.x) * 16, at.y16 + Y(s, b.y) * 16, at.scale}.turnedBy(b.turn);
       const Shape c{q, r};
       c.fill({{-12, -6}, {12, -6}, {12, 6}, {-12, 6}}, brick);
       c.fill({{-12, -6}, {12, -6}, {12, -3}, {-12, -3}}, brickLit);
@@ -669,30 +681,11 @@ void paintHouse(Raster& r, const Surface& s, int built, int done, int fall) {
 
 // The hard hat: a yellow dome with a ridge over the crown and a brim all round.
 void paintHardHat(Raster& r, const rig::Anchors& at, int tilt = 0) {
-  const Point l = at.brimL, rr = at.brimR, top = at.crown;
-  const int half = (rr.x - l.x) / 2, brim = (l.y + rr.y) / 2;
-  const int tall = std::max(32, brim - top.y);
-  const int mx = (l.x + rr.x) / 2, my = brim + tall / 4;
-  const int scale = half * 4096 / (120 * 16);
-  const int wide = half * 92 / 100, high = (my - top.y) + 26 * scale / 256;
-  const int c = cs(tilt), st = sn(tilt);
-  auto turned = [&](int x, int y) {
-    return Point{mx + int((int64_t(x) * c - int64_t(y) * st) / 4096), my + int((int64_t(x) * st + int64_t(y) * c) / 4096)};
-  };
-  auto rim = [&](int a, int w, int h) { return turned(-w * cs(a) / 4096, -h * sn(a) / 4096); };
+  const Dome d(at, 1, 4, 92, 26, tilt);
+  const int half = d.half, tall = d.tall, wide = d.wide, high = d.high, scale = d.scale;
+  auto turned = [&](int x, int y) { return d.turned(x, y); };
   const uint16_t yellow = rgb565(250, 200, 34), deep = rgb565(206, 148, 18), lit = rgb565(255, 228, 110), edge = rgb565(176, 120, 12);
-  constexpr int kPts = 14;
-  Point dome[kPts + 1];
-  for (int i = 0; i <= kPts; ++i) dome[i] = rim(2048 * i / kPts, wide, high);
-  r.polygon16(dome, kPts + 1, yellow);
-  Point shade[kPts + 1];
-  int n = 0;
-  for (int i = 8; i <= kPts; ++i) shade[n++] = rim(2048 * i / kPts, wide, high);
-  for (int i = kPts; i >= 9; --i) {
-    const int in = 4096 - 1200 * (i - 8) / (kPts - 8);
-    shade[n++] = rim(2048 * i / kPts, int(int64_t(wide) * in / 4096), int(int64_t(high) * (4096 - (4096 - in) / 2) / 4096));
-  }
-  r.polygon16(shade, n, deep);
+  d.paintShell(r, yellow, deep, 1200);
   // The ridge front to back, as a raised band over its top.
   const int rw = half / 7;
   const Point ridge[6] = {turned(-rw, 0), turned(-rw * 3 / 4, -high * 98 / 100), turned(0, -high * 112 / 100), turned(rw * 3 / 4, -high * 98 / 100), turned(rw, 0), turned(0, tall / 20)};
@@ -706,7 +699,7 @@ void paintHardHat(Raster& r, const rig::Anchors& at, int tilt = 0) {
   const Point band2[2] = {turned(-bw, -scale * 16 * 2 / 4096), turned(bw, -scale * 16 * 2 / 4096)};
   r.stroke16(band2, 2, std::max(32, 10 * 16 * scale / 4096), yellow);
   r.alpha = 170;
-  const Point shine = rim(620, wide * 66 / 100, high * 62 / 100);
+  const Point shine = d.rim(620, wide * 66 / 100, high * 62 / 100);
   r.disk16(shine.x, shine.y, std::max(16, 9 * 16 * scale / 4096), rgb565(255, 248, 210));
   r.alpha = 255;
 }
@@ -719,7 +712,7 @@ int swingOf(int age, int& sinceHit) {
   const int beat = run % kSwingMs;
   constexpr int kRaise = 460, kStrike = 120;  // up slowly, down fast, then it rests
   sinceHit = run >= kRaise + kStrike ? (beat >= kRaise + kStrike ? beat - kRaise - kStrike : beat + kSwingMs - kRaise - kStrike) : -1;
-  if (beat < kRaise) return 4096 - smooth(beat, 0, kRaise);
+  if (beat < kRaise) return 4096 - ease(beat, 0, kRaise);
   if (beat < kRaise + kStrike) return easeIn12(rampIn(beat, kRaise, kRaise + kStrike));
   return 4096;
 }
@@ -727,8 +720,8 @@ int swingOf(int age, int& sinceHit) {
 // The hammer in its gel hand: `swing` 0 raised, 4096 down on the house's top;
 // its head's place into `head`.
 void paintHammer(Raster& r, const Surface& s, const Point& hand, int swing, int restTurn, int downTurn, Point* head = nullptr) {
-  const int turn = lerp12(restTurn, downTurn, swing);
-  const Place p{hand.x, hand.y, 4096 * s.width / 502, turn};
+  const int turn = lerp(restTurn, downTurn, swing);
+  const Frame p = Frame{hand.x, hand.y, 4096 * s.width / 502}.turnedBy(turn);
   const Shape a{p, r};
   a.line({{0, 0}, {0, -78}}, 6, rgb565(150, 100, 58));
   a.line({{-1, -2}, {-1, -76}}, 2, rgb565(196, 144, 92));
@@ -743,10 +736,10 @@ void paintHammer(Raster& r, const Surface& s, const Point& hand, int swing, int 
 
 ActPose buildPose(const Surface& s, const ActShow& act) {
   ActPose pose;
-  const Point anchor = actAnchor(s);
-  const int floor = (Y(s, kTrackY - 2) - floorOf(s)) * 16;
-  const int in = smooth(act.ageMs, 0, kBuildSetMs);
-  pose.scale = lerp12(4096, kBuildSize, in);
+  const Point anchor = finishAnchor(s);
+  const int floor = (Y(s, kTrackY - 2) - floorY(s)) * 16;
+  const int in = ease(act.ageMs, 0, kBuildSetMs);
+  pose.scale = lerp(4096, kBuildSize, in);
   pose.dx16 = (X(s, kBuildBodyX) * 16 - anchor.x) * in / 4096;
   pose.dy16 = floor * in / 4096;
   if (act.result == ActResult::kRunning) {
@@ -759,22 +752,22 @@ ActPose buildPose(const Surface& s, const ActShow& act) {
   const int ms = act.resultMs;
   if (act.result == ActResult::kPass) {
     // Looks at it, leaning a little, chest out.
-    pose.lean = -smooth(ms, 0, 500) * 500 / 4096;
-    pose.squash = 500 * smooth(ms, 200, 900) / 4096;
+    pose.lean = -ease(ms, 0, 500) * 500 / 4096;
+    pose.squash = 500 * ease(ms, 200, 900) / 4096;
     return pose;
   }
   // It flinches as it comes down, and sags.
   if (ms < 400) pose.lean = sn(ms * 2048 / 400) * 1000 / 4096;
-  pose.squash = -lerp12(0, 900, smooth(ms, 200, 1600));
+  pose.squash = -lerp(0, 900, ease(ms, 200, 1600));
   return pose;
 }
 
 void buildBehind(Raster& r, const Surface& s, const ActShow& act) {
   {
-    const Place p{0, 0, 4096 * s.width / 502};
+    const Frame p = artPlace(s);
     const Shape a{p, r};
     r.alpha = rampIn(act.ageMs, 0, kBuildSetMs) * 255 / 4096;
-    a.fill({{0, kTrackY}, {502, kTrackY}, {502, kTrackY + 6}, {0, kTrackY + 6}}, rgb565(74, 84, 100));
+    paintFloor(a);
     r.alpha = 255;
   }
   const int ageAtEnd = act.result == ActResult::kRunning ? act.ageMs : act.ageMs - act.resultMs;
@@ -782,7 +775,7 @@ void buildBehind(Raster& r, const Surface& s, const ActShow& act) {
   int done = 0, fall = 0;
   if (act.result == ActResult::kPass) {
     // Whatever's left goes up at once, and the flag.
-    built = lerp12(built, 4096, easeOut12(rampIn(act.resultMs, 0, 700)));
+    built = lerp(built, 4096, easeOut12(rampIn(act.resultMs, 0, 700)));
     done = rampIn(act.resultMs, 600, 1200);
   } else if (act.result == ActResult::kFail) {
     fall = easeOut12(rampIn(act.resultMs, 250, 1300));
@@ -798,13 +791,8 @@ void buildFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
     return;
   }
   const bool failing = act.result == ActResult::kFail;
-  const int tilt = failing ? -lerp12(0, 240, smooth(act.resultMs, 100, 700)) : 0;
-  rig::Anchors worn = at;
-  if (act.result == ActResult::kRunning && act.ageMs < 500) {
-    const int up = Y(s, 200) * 16 * (4096 - easeOut12(rampIn(act.ageMs, 0, 500))) / 4096;
-    worn.crown.y -= up, worn.brimL.y -= up, worn.brimR.y -= up;
-  }
-  paintHardHat(r, worn, tilt);
+  const int tilt = failing ? -lerp(0, 240, ease(act.resultMs, 100, 700)) : 0;
+  paintHardHat(r, act.result == ActResult::kRunning ? droppedOn(s, at, act.ageMs) : at, tilt);
   // The hand at its left side, the hammer in it.
   const int half = std::abs(at.eyeR.x - at.eyeL.x);
   const Point hand{at.eyeL.x - half * 62 / 100, std::min(at.eyeL.y + Y(s, 30) * 16, Y(s, kTrackY - 34) * 16)};
@@ -818,7 +806,7 @@ void buildFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
     Point head;
     // Its stroke ends a little lower as the house is still low.
     const int built = houseAt(act.ageMs);
-    const int down = lerp12(kDownLow, kDownTurn, std::min(4096, built * 4096 / 3072));
+    const int down = lerp(kDownLow, kDownTurn, std::min(4096, built * 4096 / 3072));
     paintHammer(r, s, hand, swing, kUpTurn, down, &head);
     if (since >= 0 && since < 230) {
       const int k = 4096 - rampIn(since, 0, 230);
@@ -839,9 +827,9 @@ void buildFront(Raster& r, const Surface& s, const ActShow& act, const rig::Anch
 
 // The rocket's place at the opening's `age`; `away` once it's gone.
 constexpr int kRocketY = 180;  // its seat, at rest on the pad
-Place rocketAt(const Surface& s, int age) {
+Frame rocketAt(const Surface& s, int age) {
   const int size = s.width * 4096 / 502;
-  Place p{s.width * 8, Y(s, kRocketY) * 16, size};
+  Frame p{s.width * 8, Y(s, kRocketY) * 16, size};
   if (age < kPushBoardMs) {
     p.y16 += Y(s, 330) * 16 * (4096 - easeOut12(rampIn(age, 0, kPushBoardMs))) / 4096;
   } else if (age < kPushLightMs) {
@@ -859,11 +847,10 @@ Place rocketAt(const Surface& s, int age) {
 
 // Across the sky in orbit, this far into a pass: nearly side on, small.
 constexpr int kOrbitScale = 1250;
-Place orbitAt(const Surface& s, int ms) {
+Frame orbitAt(const Surface& s, int ms) {
   const int p = rampIn(ms, 0, kOrbitMs);
-  const int x = lerp12(-70, 572, p), y = 112 - sn(p / 2) * 44 / 4096;
-  Place place{X(s, x) * 16, Y(s, y) * 16, kOrbitScale * s.width / 502, 1024 + (cs(p / 2) * 180 / 4096)};
-  return place;
+  const int x = lerp(-70, 572, p), y = 112 - sn(p / 2) * 44 / 4096;
+  return Frame{X(s, x) * 16, Y(s, y) * 16, kOrbitScale * s.width / 502}.turnedBy(1024 + (cs(p / 2) * 180 / 4096));
 }
 // The pass this far into the act, or -1.
 int orbitMs(int age) {
@@ -880,24 +867,19 @@ int chuteSway(int ms) {
 }
 
 // The crash: where the rocket stuck, tail in the air, nose in the ground.
-Place crashedRocket(const Surface& s, int ms) {
+Frame crashedRocket(const Surface& s, int ms) {
   const int size = s.width * 4096 * 3 / (502 * 4);
   const int p = rampIn(ms, 0, kCrashHitMs);
   const int settle = ms > kCrashHitMs ? sn((ms - kCrashHitMs) * 5) * std::max(0, 500 - (ms - kCrashHitMs)) / 500 * 3 / 4096 : 0;
-  Place place{X(s, lerp12(560, 412, easeIn12(p))) * 16, Y(s, lerp12(-220, 248, easeIn12(p))) * 16, size, 2048 - 300 + settle * 6};
-  return place;
+  return Frame{X(s, lerp(560, 412, easeIn12(p))) * 16, Y(s, lerp(-220, 248, easeIn12(p))) * 16, size}.turnedBy(2048 - 300 + settle * 6);
 }
 
 }  // namespace
 
-Point actAnchor(const Surface& s) { return {s.width * 8, floorOf(s) * 16}; }
-
 ActPose actPose(const Surface& s, const ActShow& act) {
   ActPose pose;
-  if (!actTakesOver(act)) return pose;
   if (act.kind == ActKind::kTests) return testsPose(s, act);
   if (act.kind == ActKind::kBuild) return buildPose(s, act);
-  if (act.kind != ActKind::kPush) return pose;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
     if (ms < kChuteLandMs) {
@@ -909,7 +891,7 @@ ActPose actPose(const Surface& s, const ActShow& act) {
     }
     // Down: a thump, then up to its own size, chest out.
     const int after = ms - kChuteLandMs;
-    pose.scale = lerp12(2900, 4096, smooth(after, 120, 900));
+    pose.scale = lerp(2900, 4096, ease(after, 120, 900));
     if (after < 500) pose.squash = -sn(after * 2048 / 500) * 1500 / 4096;
     return pose;
   }
@@ -927,8 +909,8 @@ ActPose actPose(const Surface& s, const ActShow& act) {
     // Flattened, wide, and slowly gathering itself.
     pose.dx16 = -X(s, 56) * 16;
     pose.dy16 = -Y(s, 5) * 16;
-    pose.scale = lerp12(3300, 3700, smooth(after, 900, 2200));
-    pose.squash = lerp12(-3600, -900, smooth(after, 500, 2200));
+    pose.scale = lerp(3300, 3700, ease(after, 900, 2200));
+    pose.squash = lerp(-3600, -900, ease(after, 500, 2200));
     pose.lean = sn(after * 2) * 120 / 4096 * std::max(0, 2000 - after) / 2000;
     return pose;
   }
@@ -941,8 +923,8 @@ ActPose actPose(const Surface& s, const ActShow& act) {
   }
   // Riding: smaller, in front of the hull.
   constexpr int kRide = 2500;
-  const Point anchor = actAnchor(s);
-  auto seat = [&](const Place& p, int scale) {
+  const Point anchor = finishAnchor(s);
+  auto seat = [&](const Frame& p, int scale) {
     // The body's middle, some 115 px above its floor at full size, on the seat.
     const int middle = anchor.y - Y(s, 104) * 16 * scale / 4096;
     pose.scale = scale;
@@ -952,12 +934,12 @@ ActPose actPose(const Surface& s, const ActShow& act) {
     seat(orbitAt(s, orbit), 760);
     return pose;
   }
-  const Place p = rocketAt(s, age);
+  const Frame p = rocketAt(s, age);
   if (age < kPushBoardMs) {
-    const int e = smooth(age, 80, kPushBoardMs - 100);
-    seat(Place{s.width * 8, Y(s, kRocketY) * 16, 4096}, lerp12(4096, kRide, e));
+    const int e = ease(age, 80, kPushBoardMs - 100);
+    seat(Frame{s.width * 8, Y(s, kRocketY) * 16, 4096}, lerp(4096, kRide, e));
     pose.dy16 = pose.dy16 * e / 4096;
-    pose.squash = -sn(smooth(age, 0, 620) / 2) * 520 / 4096;
+    pose.squash = -sn(ease(age, 0, 620) / 2) * 520 / 4096;
     return pose;
   }
   seat(p, kRide);
@@ -967,19 +949,18 @@ ActPose actPose(const Surface& s, const ActShow& act) {
 }
 
 void paintActBehind(Surface& s, const ActShow& act) {
-  if (!actTakesOver(act) || !s.pixels) return;
+  if (!s.pixels) return;
   Raster r{s};
   if (act.kind == ActKind::kTests) return testsBehind(r, s, act);
   if (act.kind == ActKind::kBuild) return buildBehind(r, s, act);
-  if (act.kind != ActKind::kPush) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
-    paintStars(r, s, 0, ms + act.ageMs, 255 - smooth(ms, kChuteLandMs - 400, kChuteLandMs + 600) * 255 / 4096);
+    paintStars(r, s, 0, ms + act.ageMs, 255 - ease(ms, kChuteLandMs - 400, kChuteLandMs + 600) * 255 / 4096);
     return;
   }
   if (act.result == ActResult::kFail) {
     const int ms = act.resultMs;
-    paintStars(r, s, 0, ms + act.ageMs, 255 - smooth(ms, kCrashHitMs - 200, kCrashHitMs + 80) * 255 / 4096);
+    paintStars(r, s, 0, ms + act.ageMs, 255 - ease(ms, kCrashHitMs - 200, kCrashHitMs + 80) * 255 / 4096);
     paintRocket(r, crashedRocket(s, ms), std::min(255, ms * 255 / kCrashHitMs));
     return;
   }
@@ -987,25 +968,25 @@ void paintActBehind(Surface& s, const ActShow& act) {
   const int orbit = orbitMs(age);
   // The sky comes as it rises, and stays.
   const int climbed = easeIn12(rampIn(age, kPushLightMs, kPushGoneMs));
-  const int sky = smooth(age, kPushBoardMs, kPushLightMs + 600) * 255 / 4096;
+  const int sky = ease(age, kPushBoardMs, kPushLightMs + 600) * 255 / 4096;
   paintStars(r, s, Y(s, 500) * climbed / 4096 + std::max(0, age - kPushGoneMs) / 300, age, sky);
   if (age >= kPushLightMs) paintPadSmoke(r, s, age - kPushBoardMs);
   else if (age >= kPushBoardMs + 200) paintPadSmoke(r, s, age - kPushBoardMs - 200);
   if (age >= kPushLightMs) {
     // The trail stands where it rose; it thins but doesn't go.
-    const Place p = rocketAt(s, age);
-    const int k = lerp12(255, 120, smooth(age, kPushGoneMs, kPushGoneMs + 6000));
+    const Frame p = rocketAt(s, age);
+    const int k = lerp(255, 120, ease(age, kPushGoneMs, kPushGoneMs + 6000));
     paintTrail(r, s, age, (p.y16 >> 4) + Y(s, 130), k);
   }
   if (orbit >= 0) {
-    const Place p = orbitAt(s, orbit);
+    const Frame p = orbitAt(s, orbit);
     paintFlame(r, p, 44, age);
     paintRocket(r, p);
   } else if (age < kPushGoneMs) {
-    const Place p = rocketAt(s, age);
+    const Frame p = rocketAt(s, age);
     int len = 0;
-    if (age >= kPushBoardMs + 200) len = lerp12(10, 44, rampIn(age, kPushBoardMs + 200, kPushLightMs));
-    if (age >= kPushLightMs) len = lerp12(44, 150, rampIn(age, kPushLightMs, kPushLightMs + 600));
+    if (age >= kPushBoardMs + 200) len = lerp(10, 44, rampIn(age, kPushBoardMs + 200, kPushLightMs));
+    if (age >= kPushLightMs) len = lerp(44, 150, rampIn(age, kPushLightMs, kPushLightMs + 600));
     paintFlame(r, p, len, age);
     paintRocket(r, p);
   }
@@ -1016,7 +997,7 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
   Raster r{s};
   if (act.kind == ActKind::kTests) return testsFront(r, s, act, at);
   if (act.kind == ActKind::kBuild) return buildFront(r, s, act, at);
-  if (!act.full || act.kind != ActKind::kPush) return;
+  if (!act.full) return;
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;
     if (ms >= kChuteLandMs + 900) return;
@@ -1028,8 +1009,8 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
     const int size = s.width * 4096 / 502;
     const int sway = chuteSway(ms);
     const Point crown = at.crown;
-    const Place chute{crown.x + X(s, 8) * sway * 16 / 4096 + X(s, 200) * 16 * go / 4096,
-                      crown.y - Y(s, 34) * 16 + Y(s, 150) * 16 * go / 4096, size, sway * 90 / 4096 + go * 700 / 4096};
+    const Frame chute = Frame{crown.x + X(s, 8) * sway * 16 / 4096 + X(s, 200) * 16 * go / 4096,
+                              crown.y - Y(s, 34) * 16 + Y(s, 150) * 16 * go / 4096, size}.turnedBy(sway * 90 / 4096 + go * 700 / 4096);
     const int rim = 138, tall = 92;
     if (after == 0) {
       for (const Point& a : {at.brimL, at.brimR}) {
@@ -1048,7 +1029,7 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
       for (int side : {-1, 1})
         for (int i = 0; i < 2; ++i)
           dust(r, s.width * 8 + side * X(s, 112 + i * 28 + 60 * spread / 4096) * 16,
-               (floorOf(s) - 8) * 16 - Y(s, 10 + i * 4) * 16 * p / 4096, X(s, 15 - i * 3 + 14 * p / 4096) * 16,
+               (floorY(s) - 8) * 16 - Y(s, 10 + i * 4) * 16 * p / 4096, X(s, 15 - i * 3 + 14 * p / 4096) * 16,
                (4096 - p) * 200 / 4096);
     }
     return;
@@ -1061,20 +1042,10 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
     const int cx = (at.eyeL.x + at.eyeR.x) / 2, eyeY = (at.eyeL.y + at.eyeR.y) / 2;
     const int w = std::abs(at.eyeR.x - at.eyeL.x), up = std::max(16, eyeY - at.crown.y);
     const int soot = rampIn(after, 0, 80) * (4096 - rampIn(act.leftMs >= 0 ? 700 - act.leftMs : 0, 0, 700)) / 4096 * 140 / 4096;
-    smudge(r, cx - w * 45 / 100, eyeY - up * 58 / 100, X(s, 20) * 16, soot);
-    smudge(r, cx + w * 34 / 100, eyeY - up * 70 / 100, X(s, 24) * 16, soot);
-    smudge(r, cx + w * 66 / 100, eyeY - up * 4 / 100, X(s, 12) * 16, soot);
-    smudge(r, cx - w * 72 / 100, eyeY + up * 8 / 100, X(s, 14) * 16, soot);
-    if (after < 2800) {
-      r.alpha = 255 - rampIn(after, 2300, 2800) * 255 / 4096;
-      for (int i = 0; i < 4; ++i) {
-        const int turn = after * 2 / 3 + i * 1024;
-        spark(r, at.crown.x + X(s, 72) * 16 * cs(turn) / 4096, at.crown.y - Y(s, 8) * 16 + Y(s, 13) * 16 * sn(turn) / 4096,
-              X(s, 12) * 16, turn, rgb565(255, 216, 74));
-      }
-      r.alpha = 255;
-    }
-    const Place wreck = crashedRocket(s, ms);
+    smudge(r, cx + w * 30 / 100, eyeY - up * 64 / 100, X(s, 34) * 16, soot);
+    smudge(r, cx - w * 66 / 100, eyeY - up * 10 / 100, X(s, 22) * 16, soot);
+    headStars(r, s, at, after, 2800, 72, 8, 13, 12);
+    const Frame wreck = crashedRocket(s, ms);
     const Point tail = wreck.at(0, 120);
     for (int i = 0; i < 6; ++i) {
       const int life = (after + i * 300) % 1800, p = life * 4096 / 1800;
@@ -1082,7 +1053,7 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
       cloud(r, tail.x + (sn(life + i * 700) * 7 * 16 / 4096) - X(s, 12) * 16 * p / 4096, tail.y - Y(s, 150) * 16 * p / 4096,
             X(s, 9 + 15 * p / 4096) * 16, kk);
     }
-    const Place ground{0, 0, 4096 * s.width / 502};
+    const Frame ground = artPlace(s);
     const Shape g{ground, r};
     g.fill({{338, 334}, {352, 314}, {376, 300}, {404, 306}, {432, 296}, {462, 308}, {486, 320}, {500, 334}}, rgb565(74, 54, 42));
     g.fill({{358, 334}, {372, 318}, {398, 314}, {428, 308}, {456, 318}, {476, 334}}, rgb565(50, 36, 30));
@@ -1106,7 +1077,6 @@ void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at) {
       }
       r.alpha = 255;
     }
-    return;
   }
 }
 

@@ -88,8 +88,8 @@ int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, in
 }
 
 void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink, bool behind) {
-  // On the stack, not the board's scarce internal heap: a word forward and
-  // a combo's count, in the widest font (the bubble's, 20 px).
+  // On the stack, not the board's scarce internal heap: a word forward, in
+  // the widest font (the bubble's, 20 px).
   constexpr int kMostGlyphs = 20, kMostCells = kMostGlyphs * 20 + 1;
   if (!r.s.pixels || r.alpha <= 2 || f.w * kMostGlyphs >= kMostCells) return;
   int glyphs[kMostGlyphs], n = 0;
@@ -229,6 +229,7 @@ void sleeper(Raster& r, int x, int cy, uint16_t ink) {
   r.zee((x + 1) * 16, (cy + 7) * 16, 12 * 16, ink);
   r.zee((x + 12) * 16, (cy - 2) * 16, 7 * 16, ink);
 }
+}  // namespace
 void tick(Raster& r, int x, int cy, uint16_t ink) {
   r.line({x + 2, cy}, {x + 7, cy + 5}, 3, ink);
   r.line({x + 7, cy + 5}, {x + 16, cy - 6}, 3, ink);
@@ -237,6 +238,7 @@ void cross(Raster& r, int x, int cy, uint16_t ink) {
   r.line({x + 3, cy - 6}, {x + 15, cy + 6}, 3, ink);
   r.line({x + 15, cy - 6}, {x + 3, cy + 6}, 3, ink);
 }
+namespace {
 void dots(Raster& r, int x, int cy, uint16_t ink) {
   for (int i = 0; i < 3; ++i) r.disk(x + 3 + 6 * i, cy + 5, 2, ink);
 }
@@ -486,8 +488,10 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   const Stream::ActNow act = stream ? stream->actNow(now) : Stream::ActNow{};
   LowSign low = finishSign(done);
   // A finished turn's name outranks a work act's words.
-  if (!low.shows()) low = actSign(act);
-  if (low.shows() && low.leftMs >= 0 && (line || note)) low = LowSign{};
+  const bool actsSign = !low.shows();
+  if (actsSign) low = actSign(act);
+  // An act can run for long: what Boop says takes the lane from it meanwhile.
+  if (low.shows() && (actsSign || low.leftMs >= 0) && (line || note)) low = LowSign{};
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing.
   const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
@@ -509,14 +513,15 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   paintSky(surface, e, layers, t);
   if (stream) {
     Measure measure(profile.stream);
-    paintStreamBehind(surface, *stream, now);
-    // A full act holds the screen: no desk, no thought cloud, no word forward.
+    // A full act holds the screen: no words falling beside it, no desk, no
+    // thought cloud, no word forward.
     if (!actTakesOver(act)) {
+      paintStreamBehind(surface, *stream, now);
       paintStreamDesk(surface, *stream, e, s, now);
       paintStreamFront(surface, *stream, at, e, now);
     }
   }
-  if (wish) paintWish(surface, *wish, at);
+  if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
   if (sign.text && !actTakesOver(act)) paintSign(surface, sign, at);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;

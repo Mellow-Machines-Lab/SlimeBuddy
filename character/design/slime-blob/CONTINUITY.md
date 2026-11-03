@@ -903,7 +903,9 @@ the zip). The eyes, the body and every layer play as ever.
 A command Boop plays out for as long as it runs (`gel/act.h`, on `state`'s
 `wact`): the whole frame, as a finish holds it, its body moved and scaled the
 same way, the desk gone (`Scenes::clearStage`), no pastime, no sign of a
-Moment's. The low sign says what's running, then how it ended, in its place.
+Moment's. The low sign says what's running, then how it ended, in its place. What Boop says takes the
+lane from it while it runs, and the whole scene hides the falling words, the
+wish's bubble and a reaction's sign.
 
 **The push.** 0.8 s: the rocket comes up from below and Boop shrinks onto it,
 in front of its hull. To 1.7 s: it lights, smoke along the ground, a rumble.
@@ -913,7 +915,7 @@ tiny Boop on a tiny rocket drifts by in orbit. A result that comes before
 3.4 s waits for it. Pass, 2.5 s: down on a parachute, swaying, happy; it lets
 go at the thump, dust either side, and Boop grows to its own size, proud.
 Fail, 0.5 s: down fast, stunned, with the rocket; a burst, clods, the rocket
-nose down in a heap of ground, smoking, Boop flat with soot spots and stars
+nose down in a heap of ground, smoking, Boop flat with soot smears and stars
 that goes on to disappointed. A cross or low mood keeps its own face.
 The small version is the low sign alone over Doing.
 

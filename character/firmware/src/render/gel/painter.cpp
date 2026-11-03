@@ -552,6 +552,16 @@ void drawBody(Surface& s, const PaintControls& c, rig::Anchors* anchors, const S
   share = std::clamp(share + (lower.us > mine ? 8 : -8), 128, 896);
 }
 }  // namespace
+// A finish or a work act moves, scales and squashes the body, its face with
+// it, about where it stands.
+void applyMove(PaintControls& c, const Surface& s, const FinishPose& move) {
+  const Point anchor = finishAnchor(s);
+  c.anchorX = anchor.x, c.anchorY = anchor.y;
+  c.offsetX = move.dx16, c.offsetY = move.dy16, c.scale = move.scale;
+  c.squash = std::clamp(c.squash + move.squash, -5407, 5407);
+  c.lean = std::clamp(c.lean + move.lean, -5120, 5120);
+}
+
 BodySettings bodySettings(uint32_t when) {
   static const uint32_t hatchling = tagBit("hatchling"), sprout = tagBit("sprout"), chonk = tagBit("chonk");
   return when & hatchling ? kHatchlingBody : when & sprout ? kSproutBody : when & chonk ? kChonkBody : kBuddyBody;
@@ -651,11 +661,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   FinishPose move;
   if (finish.on) {
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
-    const Point anchor = finishAnchor(surface);
-    c.anchorX = anchor.x, c.anchorY = anchor.y;
-    c.offsetX = move.dx16, c.offsetY = move.dy16, c.scale = move.scale;
-    c.squash = std::clamp(c.squash + move.squash, -5407, 5407);
-    c.lean = std::clamp(c.lean + move.lean, -5120, 5120);
+    applyMove(c, surface, move);
     c.eyes = !move.starEyes;
   }
   // A work act moves it the same way, unless a finish holds it.
@@ -663,11 +669,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   ActPose actMove;
   if (acting) {
     actMove = actPose(surface, *act);
-    const Point anchor = actAnchor(surface);
-    c.anchorX = anchor.x, c.anchorY = anchor.y;
-    c.offsetX = actMove.dx16, c.offsetY = actMove.dy16, c.scale = actMove.scale;
-    c.squash = std::clamp(c.squash + actMove.squash, -5407, 5407);
-    c.lean = std::clamp(c.lean + actMove.lean, -5120, 5120);
+    applyMove(c, surface, actMove);
   }
   // The stage's body, within what a finish or an act does to it: the one
   // scale about where it stands, and what the other's anchor moved kept as
@@ -685,6 +687,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   }
   c.eyeSize = c.eyeSize * grown.eyes / 4096;
   c.squash = std::clamp(c.squash + grown.squash, -5407, 5407);
+  const bool body = !move.minis && !actMove.away;  // it's on the screen, itself
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -713,7 +716,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     }
     if (finish.on) paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs);
     if (acting) paintActBehind(surface, *act);
-    if (!move.minis && !actMove.away) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
+    if (body) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
   if (move.minis) {
@@ -733,7 +736,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.art);
     paintArt(surface, e, c, mouth, anchors);
   }
-  if (!move.minis && !actMove.away) {
+  if (body) {
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
     if (pastimes) paintWorn(surface, *pastimes, *anchors);
@@ -742,7 +745,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   }
   if (finish.on)
     paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
-  if (act && act->shows() && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
+  if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
   {
     Measure measure(profile.props);
     const Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};

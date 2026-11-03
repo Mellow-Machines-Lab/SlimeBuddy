@@ -2556,7 +2556,7 @@ static void test_the_lane_cuts_and_marks_as_the_canvas_does() {
     TEST_ASSERT_TRUE(lit > 10);
   }
 }
-// plan/finish-sign.md: the low sign takes the lane's rows and no others, so a
+// The low sign takes the lane's rows and no others, so a
 // lane kept keeps it (Surface::laneKeyFrom); a short name in the sign's size;
 // names to about 50 characters on two lines, whole, on the AMOLED's rounded
 // panel; a longer one cut; and rising, it moves from the panel's foot.
@@ -3186,6 +3186,57 @@ static void test_a_work_act_plays_by_its_state() {
   allocCounting = false;
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
+// A full act holds the screen, the body gone from its place: no wish's bubble
+// over it, as no reaction's sign. A small act leaves it.
+static void test_a_full_act_hides_the_wish() {
+  std::vector<uint16_t> px(502 * 410);
+  Surface s{502, 410, px.data()};
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 960; t += 16) e->step(t);
+  WishShow wish;
+  wish.kind = WishShow::kPet;
+  const SignShow none;
+  const Strip strip;
+  for (const bool full : {true, false}) {
+    Stream stream;
+    Stream::ActIn start;
+    start.kind = ActKind::kPush, start.full = full;
+    std::strcpy(start.text, "git push");
+    stream.setAct(start, false, 0);
+    const uint32_t t = 2500;
+    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
+    const std::vector<uint16_t> bare(px);
+    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t, nullptr, nullptr, nullptr, &wish);
+    TEST_ASSERT_EQUAL(full, px == bare);
+  }
+}
+
+// A running act's sign holds the lane, but what Boop says takes it, as it does
+// from any other low sign: talking to it during a long test shows the words.
+static void test_words_take_the_lane_from_a_running_act() {
+  std::vector<uint16_t> px(502 * 410);
+  Surface s{502, 410, px.data()};
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 960; t += 16) e->step(t);
+  const SignShow none;
+  const Strip strip;
+  Stream stream;
+  Stream::ActIn start;
+  start.kind = ActKind::kTests, start.full = true;
+  std::strcpy(start.text, "running tests");
+  stream.setAct(start, false, 0);
+  const uint32_t t = 2500;
+  paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
+  const std::vector<uint16_t> sign(px);
+  paintFrame(s, *e, false, 0, "hello there", none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
+  TEST_ASSERT_TRUE(px != sign);
+  const std::vector<uint16_t> said(px);
+  // And back to the sign once they're over.
+  paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
+  TEST_ASSERT_TRUE(px == sign);
+  TEST_ASSERT_TRUE(px != said);
+}
+
 static void test_the_work_stream_falls_behind_and_hits_in_front() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -3278,6 +3329,8 @@ static void test_the_desk_clock_shows_hours_from_the_hour() {
 int main() {
   UNITY_BEGIN();
   RUN_TEST(test_fixed_math_and_motion);
+  RUN_TEST(test_a_full_act_hides_the_wish);
+  RUN_TEST(test_words_take_the_lane_from_a_running_act);
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
   RUN_TEST(test_a_work_act_plays_by_its_state);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);

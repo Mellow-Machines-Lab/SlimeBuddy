@@ -138,39 +138,27 @@ void editSize(const char* word, int& added, int& removed) {
 // The monitor answering the word forward: a failure's crack up the ladder;
 // an edit's lines as bars.
 void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c, int age) {
-  const Screen m = screen(s, e);
-  const int flight = int(callFlightMs(c.style));
-  const bool landed = age >= flight;
-  switch (c.style) {
-    case CallStyle::kBonk2:
-    case CallStyle::kBonk3:
-    case CallStyle::kThrow:
-    case CallStyle::kLand: break;
-    default: return;
-  }
-  if (m.alpha < 8) return;
-  const int cx = m.x + m.w / 2, cy = m.y + m.h / 2;
   const bool crack = c.style == CallStyle::kBonk2 || c.style == CallStyle::kBonk3 || c.style == CallStyle::kThrow;
+  if (!crack && c.style != CallStyle::kLand) return;
+  const Screen m = screen(s, e);
+  if (m.alpha < 8) return;
   r.alpha = m.alpha;
   r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
-  if (!crack) r.round(m.x, m.y, m.w, m.h, 6, rgb565(7, 24, 32));
-  switch (c.style) {
-    case CallStyle::kLand: {  // an edit's lines: green added, red removed, to scale
-      int added = 0, removed = 0;
-      editSize(c.text, added, removed);
-      if (!added && !removed) break;
+  if (crack) {  // longer up the ladder
+    const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kBonk3 ? 3 : 4;
+    const Point at[6] = {{m.x + 6, m.y + 8},   {m.x + 20, m.y + 16}, {m.x + 30, m.y + 12},
+                         {m.x + 44, m.y + 24}, {m.x + 56, m.y + 20}, {m.x + m.w - 6, m.y + m.h - 6}};
+    for (int i = 0; i + 1 < std::min(6, rungs + 2); ++i) r.line(at[i], at[i + 1], 1, 0xFFFF);
+  } else {  // an edit's lines: green added, red removed, to scale
+    r.round(m.x, m.y, m.w, m.h, 6, rgb565(7, 24, 32));
+    int added = 0, removed = 0;
+    editSize(c.text, added, removed);
+    if (added || removed) {
+      const int cy = m.y + m.h / 2;
       auto bar = [&](int n) { return std::min(m.w - 30, 6 + n * (m.w - 36) / std::max(40, std::max(added, removed))); };
       const int grow = easeOut(std::min(400, age), 400);  // in sixteenths of a pixel
       round16(r, (m.x + 8) * 16, (cy - 9) * 16, bar(added) * 16 * grow / 400, 7 * 16, 3 * 16, kPassInk);
       round16(r, (m.x + 8) * 16, (cy + 3) * 16, bar(removed) * 16 * grow / 400, 7 * 16, 3 * 16, kFailInk);
-      break;
-    }
-    default: {  // a crack, longer up the ladder
-      const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kBonk3 ? 3 : 4;
-      const Point at[6] = {{m.x + 6, m.y + 8},   {m.x + 20, m.y + 16}, {m.x + 30, m.y + 12},
-                           {m.x + 44, m.y + 24}, {m.x + 56, m.y + 20}, {m.x + m.w - 6, m.y + m.h - 6}};
-      for (int i = 0; i + 1 < std::min(6, rungs + 2); ++i) r.line(at[i], at[i + 1], 1, 0xFFFF);
-      break;
     }
   }
   r.bounds = Raster::kEverywhere;
@@ -395,13 +383,12 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
   const CallMove move = callMove(c.style);
   const int flight = int(callFlightMs(c.style)), after = age - flight, end = int(Stream::kCallMs);
   const uint16_t ink = callInk(c);
-  const char* word = c.text;
   switch (move) {
     case CallMove::kGather:
     case CallMove::kCompact:
     case CallMove::kDrop:
     case CallMove::kFreeze:
-    case CallMove::kBuried: moment(r, l, stream, at, age, ink, word); return;
+    case CallMove::kBuried: moment(r, l, stream, at, age, ink, c.text); return;
     default: break;
   }
 
@@ -419,13 +406,13 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     default: break;
   }
 
-  // In flight: a word from its lane.
+  // In flight: a c.text from its lane.
   if (after < 0) {
     const int k = easeIn(age, flight);
     // In sixteenths of a pixel.
     int x = lerp(fromX * 16, toX * 16, k, flight), y = lerp(fromY * 16, toY * 16, k, flight);
     r.alpha = 255;
-    centred16(r, big, x, y, word, ink);
+    centred16(r, big, x, y, c.text, ink);
     return;
   }
 
@@ -437,12 +424,12 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
         const int k = std::min(400, after - 250);
         r.alpha = 255 - k * 255 / 400;
         centred16(r, big, lerp(toX * 16, fromX * 16, easeOut(k, 400), 400),
-                  lerp(toY * 16, -l.y(40) * 16, easeOut(k, 400), 400), word, ink);
+                  lerp(toY * 16, -l.y(40) * 16, easeOut(k, 400), 400), c.text, ink);
       } else {
         const int slide = std::max(0, after - 250), k = std::min(450, slide);
         r.alpha = 255 - k * 255 / 450;
         if (r.alpha > 2)
-          centred16(r, big, toX * 16 + l.x16(k * 16 / 30), toY * 16 + l.y16(easeIn(k, 450) * 160 * 16 / 450), word,
+          centred16(r, big, toX * 16 + l.x16(k * 16 / 30), toY * 16 + l.y16(easeIn(k, 450) * 160 * 16 / 450), c.text,
                     ink);
       }
       const int daze = c.style == CallStyle::kBonk2                              ? 1300
@@ -465,7 +452,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     case CallMove::kSink: {  // it sinks into the crown, a ring spreading out
       const int k = std::min(320, after);
       r.alpha = 255 - k * 255 / 320;
-      if (r.alpha > 2) centred16(r, big, toX * 16, toY * 16 + l.y16(k * 34 * 16 / 320), word, ink);
+      if (r.alpha > 2) centred16(r, big, toX * 16, toY * 16 + l.y16(k * 34 * 16 / 320), c.text, ink);
       if (after < 500) {
         const int radius = l.x(20 + after * 90 / 500);
         r.alpha = 160 - after * 160 / 500;
@@ -476,15 +463,15 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     case CallMove::kShrug: {  // beside its head, and an empty bubble over it
       r.alpha = fadeBy(after, 1600, 300);
       if (r.alpha < 3) break;
-      centred(r, big, toX, toY, word, ink);
+      centred(r, big, toX, toY, c.text, ink);
       const int bx = toX - l.x(32), by = toY - l.y(64), bw = l.x(64), bh = l.y(32);
       r.round(bx, by, bw, bh, bh / 2, 0xFFFF);
       for (int i = -1; i <= 1; ++i) r.disk(toX + i * l.x(14), by + bh / 2, l.x(4), rgb565(40, 40, 40));
       break;
     }
     case CallMove::kShatter: {  // bursting into its glyphs, which it swallows
-      const char* p = word;
-      const int n = std::max(1, glyphCount(word)), mouthX = eyesX, mouthY = eyesY + l.y(36);
+      const char* p = c.text;
+      const int n = std::max(1, glyphCount(c.text)), mouthX = eyesX, mouthY = eyesY + l.y(36);
       for (int i = 0, g; (g = nextGlyph(p)) >= 0; ++i) {
         const int out = easeOut(std::min(220, after), 220), in = easeIn(std::clamp(after - 320, 0, 480), 480);
         // In sixteenths of a pixel.
