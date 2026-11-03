@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -234,7 +237,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -312,6 +315,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -414,7 +420,7 @@ HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 3 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Pfft Uh-oh".
+  Boop had an annoyed moment (medium), and said "Nnngh... Uh-oh".
 Boop has been comfy for 3 min.
 
 NOW (14:04)
@@ -431,7 +437,7 @@ HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 4 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Pfft Uh-oh".
+  Boop had an annoyed moment (medium), and said "Nnngh... Uh-oh".
 1 min ago: claude's context on "landing" was compacted; it picks up where it left off.
   Boop had an engaged moment (small), and said "Tch".
 Boop has been comfy for 4 min.
@@ -456,7 +462,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -534,6 +540,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -639,7 +648,7 @@ HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "landing".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Pfft Uh-oh".
+  Boop had an annoyed moment (medium), and said "Nnngh... Uh-oh".
 2 min ago: claude's context on "landing" was compacted; it picks up where it left off.
   Boop had an engaged moment (small), and said "Tch".
 just now: claude's tests passed on "landing" after failing.

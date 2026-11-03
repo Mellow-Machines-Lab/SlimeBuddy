@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -214,7 +217,7 @@ HISTORY (oldest first; indented lines add to the line above)
 just now: claude started turn 1 on "exporter" (landing).
 just now: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 just now: claude started turn 1 on "buddy-touch" (landing).
 Boop has been happy for under a minute.
 
@@ -234,11 +237,11 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "exporter" (landing).
 1 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 just now: claude started turn 1 on "buddy-touch" (landing).
 just now: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 Boop has been happy for 1 min.
 
 NOW (14:01)
@@ -262,7 +265,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -340,6 +343,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -447,15 +453,15 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "exporter" (landing).
 1 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude started turn 1 on "buddy-touch" (landing).
 1 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 1 on "onboarding" (landing).
 Boop has been proud for under a minute.
 
@@ -475,19 +481,19 @@ HISTORY (oldest first; indented lines add to the line above)
 1 min ago: claude started turn 1 on "exporter" (landing).
 1 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude started turn 1 on "buddy-touch" (landing).
 1 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 1 on "onboarding" (landing).
 just now: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: claude started turn 2 on "exporter" (landing).
 Boop has been proud for under a minute.
 
@@ -507,23 +513,23 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "exporter" (landing).
 2 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 1 min ago: claude started turn 1 on "buddy-touch" (landing).
 1 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 1 min ago: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 just now: claude started turn 1 on "onboarding" (landing).
 just now: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: claude started turn 2 on "exporter" (landing).
 just now: You asked claude on "exporter" (landing) to ship it, in a paragraph.
   Your words: "push it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 Boop has been proud for 1 min.
 
 NOW (14:02)
@@ -546,7 +552,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -624,6 +630,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -733,26 +742,26 @@ HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "exporter" (landing).
 2 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 2 min ago: claude started turn 1 on "buddy-touch" (landing).
 2 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 1 min ago: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 1 min ago: claude started turn 1 on "onboarding" (landing).
 1 min ago: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: claude started turn 2 on "exporter" (landing).
 just now: You asked claude on "exporter" (landing) to ship it, in a paragraph.
   Your words: "push it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 just now: claude finished turn 1 on "onboarding" (landing): done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: proud → engaged.
-  Boop had a happy moment (small), playing a success, and said "Eep!".
+  Boop had a happy moment (small), playing a success, and said "Mm-hm".
 Boop has been engaged for under a minute.
 
 NOW (14:02)
@@ -775,7 +784,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -853,6 +862,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -958,29 +970,29 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "exporter" (landing).
 3 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 3 min ago: claude started turn 1 on "buddy-touch" (landing).
 3 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 2 min ago: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 2 min ago: claude started turn 1 on "onboarding" (landing).
 2 min ago: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 min ago: claude started turn 2 on "exporter" (landing).
 1 min ago: You asked claude on "exporter" (landing) to ship it, in a paragraph.
   Your words: "push it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 1 min ago: claude finished turn 1 on "onboarding" (landing): done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: proud → engaged.
-  Boop had a happy moment (small), playing a success, and said "Eep!".
+  Boop had a happy moment (small), playing a success, and said "Mm-hm".
 just now: claude finished turn 2 on "exporter" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Ha!".
 just now: claude started turn 2 on "buddy-touch" (landing).
 Boop has been curious for under a minute.
 
@@ -1000,29 +1012,29 @@ HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "exporter" (landing).
 3 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 3 min ago: claude started turn 1 on "buddy-touch" (landing).
 3 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 2 min ago: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 2 min ago: claude started turn 1 on "onboarding" (landing).
 2 min ago: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 2 min ago: claude started turn 2 on "exporter" (landing).
 2 min ago: You asked claude on "exporter" (landing) to ship it, in a paragraph.
   Your words: "push it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 1 min ago: claude finished turn 1 on "onboarding" (landing): done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: proud → engaged.
-  Boop had a happy moment (small), playing a success, and said "Eep!".
+  Boop had a happy moment (small), playing a success, and said "Mm-hm".
 1 min ago: claude finished turn 2 on "exporter" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Ha!".
 just now: claude started turn 2 on "buddy-touch" (landing).
 just now: You asked claude on "buddy-touch" (landing) about tests, in a paragraph.
   Your words: "test history", "quite frequent", "tweak it".
@@ -1049,7 +1061,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -1127,6 +1139,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -1236,36 +1251,36 @@ HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "exporter" (landing).
 9 min ago: You asked claude on "exporter" (landing) to clean up, in a sentence, politely.
   Your words: "unused", "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 8 min ago: claude started turn 1 on "buddy-touch" (landing).
 8 min ago: You asked claude on "buddy-touch" (landing) for something new, in a sentence, playfully.
   Your words: "really cute", "interactive", "lol".
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 8 min ago: claude finished turn 1 on "exporter" (landing): done, a long turn, no tool calls, giving up, saying it couldn't finish.
   Its words: "still open".
   Boop's mood changed: happy → proud.
-  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
+  Boop had a happy moment (small), playing a success, and said "Hehehe...".
 7 min ago: claude started turn 1 on "onboarding" (landing).
 7 min ago: You asked claude on "onboarding" (landing) for a fix, in a paragraph.
   Your words: "remove the names".
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 7 min ago: claude started turn 2 on "exporter" (landing).
 7 min ago: You asked claude on "exporter" (landing) to ship it, in a paragraph.
   Your words: "push it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 6 min ago: claude finished turn 1 on "onboarding" (landing): done, a short turn, no tool calls, saying it's done.
   Boop's mood changed: proud → engaged.
-  Boop had a happy moment (small), playing a success, and said "Eep!".
+  Boop had a happy moment (small), playing a success, and said "Mm-hm".
 6 min ago: claude finished turn 2 on "exporter" (landing): done, a short turn, no tool calls, the 2nd quick win of a streak, saying it's done.
   Boop's mood changed: engaged → curious.
-  Boop had a happy moment (small), playing a success, and said "Whee!".
+  Boop had a happy moment (small), playing a success, and said "Ha!".
 5 min ago: claude started turn 2 on "buddy-touch" (landing).
 5 min ago: You asked claude on "buddy-touch" (landing) about tests, in a paragraph.
   Your words: "test history", "quite frequent", "tweak it".
   Boop had an engaged moment (small), and said "Verify".
 5 min ago: claude finished turn 2 on "buddy-touch" (landing): done, a short turn, no tool calls, only answering.
   Boop's mood changed: curious → engaged.
-  Boop had a happy moment (small), playing a success, and said "Ahh...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 just now: claude started turn 2 on "onboarding" (landing).
 Boop has been engaged for 5 min.
 

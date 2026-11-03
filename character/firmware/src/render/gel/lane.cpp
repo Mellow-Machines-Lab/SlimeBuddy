@@ -492,6 +492,13 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   if (actsSign) low = actSign(act);
   // An act can run for long: what Boop says takes the lane from it meanwhile.
   if (low.shows() && (actsSign || low.leftMs >= 0) && (line || note)) low = LowSign{};
+  // Something it remembers takes the lane from an act, as words do; its own
+  // words have ended by then, their bubble going with them. A finished
+  // turn's name outranks it.
+  if (sign.low && sign.text && (actsSign || !low.shows())) {
+    low = LowSign{};
+    low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs;
+  }
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing.
   const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
@@ -522,7 +529,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     }
   }
   if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
-  if (sign.text && !actTakesOver(act)) paintSign(surface, sign, at);
+  if (sign.text && !sign.low && !actTakesOver(act)) paintSign(surface, sign, at);
   if (growth && !actTakesOver(act)) paintGrowthBar(surface, *growth, at);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;

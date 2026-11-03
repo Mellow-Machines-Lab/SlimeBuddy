@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -216,7 +219,7 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "api" (landing).
 4 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (15:05)
 claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
@@ -238,7 +241,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -316,6 +319,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -420,10 +426,10 @@ Today: 1 turn; you touched Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "api" (landing).
 5 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 Boop has been curious for 1 min.
 
 NOW (15:06)
@@ -440,10 +446,10 @@ Today: 1 turn; you touched Boop twice.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "api" (landing).
 6 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 2 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 1 min ago: You stroked Boop.
   Boop had an engaged moment (small), and said "Krr...".
 Boop has been curious for 2 min.
@@ -462,14 +468,14 @@ Today: 1 turn; you touched Boop 3 times.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "api" (landing).
 7 min ago: You asked claude on "api" (landing) in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude finished turn 1 on "api" (landing): done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Hehehe...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 2 min ago: You stroked Boop.
   Boop had an engaged moment (small), and said "Krr...".
 1 min ago: You stroked Boop.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Tch".
 Boop has been curious for 3 min.
 
 NOW (15:08)
@@ -492,7 +498,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -570,6 +576,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -757,7 +766,7 @@ Agents: claude working on "api" for 4 min.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 2 on "api" (landing).
 4 min ago: You asked claude on "api" (landing) in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (09:04)
 claude is still working on "api" (landing), a long turn.
@@ -773,9 +782,9 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 2 on "api" (landing).
 5 min ago: You asked claude on "api" (landing) in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 just now: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Krr...".
 
 NOW (09:05)
 claude finished turn 2 on "api" (landing): done, a very long turn, no tool calls.
@@ -797,7 +806,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -875,6 +884,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -979,12 +991,12 @@ Today: 1 turn; you talked to Boop once.
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 2 on "api" (landing).
 6 min ago: You asked claude on "api" (landing) in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Krr...".
 1 min ago: claude finished turn 2 on "api" (landing): done, a very long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 Boop has been curious for 1 min.
 
 NOW (09:06)
@@ -1001,14 +1013,14 @@ Today: 1 turn; you touched Boop once and talked to it once.
 HISTORY (oldest first; indented lines add to the line above)
 8 min ago: claude started turn 2 on "api" (landing).
 8 min ago: You asked claude on "api" (landing) in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude is still working on "api" (landing), a long turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Krr...".
 3 min ago: claude finished turn 2 on "api" (landing): done, a very long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Whew".
+  Boop had a happy moment (small), playing a success, and said "Mwahaha...".
 2 min ago: You said to Boop: "morning boop"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
 Boop has been curious for 3 min.
 
 NOW (09:08)

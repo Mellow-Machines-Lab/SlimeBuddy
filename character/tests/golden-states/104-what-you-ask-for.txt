@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -215,7 +218,7 @@ Agents: claude working on "landing" for 3 min; claude working on "landing" for 1
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 just now: claude started turn 1 on "landing".
 
 NOW (14:03)
@@ -231,10 +234,10 @@ Agents: claude working on "landing" for 6 min; claude working on "landing" for 3
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude started turn 1 on "landing".
 
 NOW (14:06)
@@ -250,13 +253,13 @@ Agents: claude working on "landing" for 9 min; claude working on "landing" for 6
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 just now: claude started turn 1 on "landing".
 
 NOW (14:09)
@@ -272,16 +275,16 @@ Agents: claude working on "landing" for 12 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 just now: claude started turn 1 on "landing".
 
 NOW (14:12)
@@ -298,20 +301,20 @@ Agents: claude working on "landing" for 15 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 15 min ago: claude started turn 1 on "landing".
 15 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" to ship it, in a few words.
   Your words: "ship it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 just now: claude started turn 1 on "landing".
 
 NOW (14:15)
@@ -327,23 +330,23 @@ Agents: claude working on "landing" for 18 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 18 min ago: claude started turn 1 on "landing".
 18 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 15 min ago: claude started turn 1 on "landing".
 15 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" to ship it, in a few words.
   Your words: "ship it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for docs, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Tch".
 just now: claude started turn 1 on "landing".
 
 NOW (14:18)
@@ -360,27 +363,27 @@ Agents: claude working on "landing" for 21 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 21 min ago: claude started turn 1 on "landing".
 21 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 18 min ago: claude started turn 1 on "landing".
 18 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 15 min ago: claude started turn 1 on "landing".
 15 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" to ship it, in a few words.
   Your words: "ship it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" for docs, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Tch".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" a question, in a sentence.
   Your words: "cache miss".
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 just now: claude started turn 1 on "landing".
 
 NOW (14:21)
@@ -397,31 +400,31 @@ Agents: claude working on "landing" for 24 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 24 min ago: claude started turn 1 on "landing".
 24 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 21 min ago: claude started turn 1 on "landing".
 21 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 18 min ago: claude started turn 1 on "landing".
 18 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 15 min ago: claude started turn 1 on "landing".
 15 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" to ship it, in a few words.
   Your words: "ship it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" for docs, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Tch".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" a question, in a sentence.
   Your words: "cache miss".
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, at length, politely.
   Your words: "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 just now: claude started turn 1 on "landing".
 
 NOW (14:24)
@@ -438,31 +441,31 @@ Agents: claude working on "landing" for 27 min; claude working on "landing" for 
 HISTORY (oldest first; indented lines add to the line above)
 27 min ago: claude started turn 1 on "landing".
 27 min ago: You asked claude on "landing" for a fix, in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hrr...".
 24 min ago: claude started turn 1 on "landing".
 24 min ago: You asked claude on "landing" for something new, in a sentence.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Ngh".
 21 min ago: claude started turn 1 on "landing".
 21 min ago: You asked claude on "landing" for a refactor, in a sentence.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr...".
 18 min ago: claude started turn 1 on "landing".
 18 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Verify".
 15 min ago: claude started turn 1 on "landing".
 15 min ago: You asked claude on "landing" to ship it, in a few words.
   Your words: "ship it".
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 12 min ago: claude started turn 1 on "landing".
 12 min ago: You asked claude on "landing" for docs, in a sentence.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Tch".
 9 min ago: claude started turn 1 on "landing".
 9 min ago: You asked claude on "landing" a question, in a sentence.
   Your words: "cache miss".
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Nnh".
 6 min ago: claude started turn 1 on "landing".
 6 min ago: You asked claude on "landing" for a fix, at length, politely.
   Your words: "please".
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a sentence, in a hurry.
   Your words: "quickly".

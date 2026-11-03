@@ -44,3 +44,17 @@
 {"expect":{"moment":{"anim":"wake_up"},"sign":"Happy Halloween!"}}
 {"clock":2200}
 {"shot":"greeting"}
+// Something it remembers, held low in the lane, its face clear: the look, then
+// the line for 5 s.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"calm","vol":0,"when":["evening"]}
+{"clock":1000}
+{"t":"do","name":"react","play":"now","args":{"sign":"u stay up late fridays","low":true,"clip":"remember","mood":"amused"}}
+{"clock":1600}
+{"shot":"remember-look"}
+{"clock":3000}
+{"shot":"remember-line"}
+{"t":"do","name":"react","play":"now","args":{"sign":"you say morning buddy when you sit down","low":true,"clip":"remember","mood":"happy"}}
+{"clock":4000}
+{"shot":"remember-long"}

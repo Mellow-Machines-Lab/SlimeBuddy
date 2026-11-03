@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -215,7 +218,7 @@ Agents: claude working on "landing" for 4 min.
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:04)
 claude is still working on "landing", a long turn, running tests.
@@ -231,9 +234,9 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" in a few words.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: claude is still working on "landing", a long turn, running tests.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Probe".
 
 NOW (14:05)
 claude finished turn 1 on "landing": done, a very long turn, 6 tool calls, saying it's done.

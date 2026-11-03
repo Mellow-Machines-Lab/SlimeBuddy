@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -215,7 +218,7 @@ Today: you talked to Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 
 NOW (14:00)
 You said to Boop: "Hey how are you today"
@@ -230,9 +233,9 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 just now: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 
 NOW (14:01)
 You said to Boop: "Where are you"
@@ -247,11 +250,11 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 just now: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 just now: claude started turn 1 on "landing".
 
 NOW (14:01)
@@ -267,14 +270,14 @@ Today: you talked to Boop 4 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 2 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:02)
 You said to Boop: "How many agents do I have"
@@ -289,16 +292,16 @@ Today: you talked to Boop 5 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 2 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 2 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 just now: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 
 NOW (14:03)
 You said to Boop: "What are you doing"
@@ -313,18 +316,18 @@ Today: 1 turn; you talked to Boop 5 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 3 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 3 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 2 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 1 min ago: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 just now: You said to Boop: "What are you doing"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 
 NOW (14:04)
 claude finished turn 1 on "landing": done, a long turn, no tool calls.
@@ -346,7 +349,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -424,6 +427,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -527,21 +533,21 @@ Today: 1 turn; you talked to Boop 6 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 3 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 3 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 1 min ago: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 1 min ago: You said to Boop: "What are you doing"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 just now: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 Boop has been curious for under a minute.
 
 NOW (14:04)
@@ -557,23 +563,23 @@ Today: 1 turn; you talked to Boop 7 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 4 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 4 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 3 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 3 min ago: claude started turn 1 on "landing".
 3 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 2 min ago: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 1 min ago: You said to Boop: "What are you doing"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 1 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 just now: You said to Boop: "nice work, thanks"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 Boop has been curious for 1 min.
 
 NOW (14:05)
@@ -589,25 +595,25 @@ Today: 1 turn; you talked to Boop 8 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 4 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 4 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 2 min ago: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 2 min ago: You said to Boop: "What are you doing"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 1 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 1 min ago: You said to Boop: "nice work, thanks"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 just now: You said to Boop: "love you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 Boop has been curious for 1 min.
 
 NOW (14:05)
@@ -623,27 +629,27 @@ Today: 1 turn; you talked to Boop 9 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: You said to Boop: "Hello"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 5 min ago: You said to Boop: "Hey how are you today"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 4 min ago: You said to Boop: "Where are you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 4 min ago: claude started turn 1 on "landing".
 4 min ago: You asked claude on "landing" for a fix, in a few words.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Ngh".
 3 min ago: You said to Boop: "How many agents do I have"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm!".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Mm-hm!".
 2 min ago: You said to Boop: "What are you doing"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mm-hm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm".
 2 min ago: claude finished turn 1 on "landing": done, a long turn, no tool calls.
   Boop's mood changed: calm → curious.
-  Boop had a happy moment (small), playing a success, and said "Haa...".
+  Boop had a happy moment (small), playing a success, and said "Heh...".
 1 min ago: You said to Boop: "nice work, thanks"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
 1 min ago: You said to Boop: "love you"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
 just now: You said to Boop: "knock knock, haha"
-  Boop had a proud moment (small), replying yes, holding up a sign: "yes yes!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Mm-hm!".
 Boop has been curious for 2 min.
 
 NOW (14:06)

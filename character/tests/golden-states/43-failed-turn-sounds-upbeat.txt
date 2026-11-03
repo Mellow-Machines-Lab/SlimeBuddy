@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -215,7 +218,7 @@ Agents: claude working on "landing" for 2 min.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 
 NOW (14:02)
 claude's tests failed on "landing".
@@ -237,7 +240,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -315,6 +318,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -417,10 +423,10 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 2 min ago: claude started turn 1 on "landing".
 2 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 just now: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Hmph Basta".
 Boop has been comfy for under a minute.
 
 NOW (14:02)
@@ -444,7 +450,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -522,6 +528,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -632,14 +641,14 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 3 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Hmph Basta".
 2 min ago: claude finished turn 1 on "landing": failed, a long turn, 1 tool call, after a failed check, saying it's done, cheerful.
   Its words: "All done", "working great".
   Boop's mood changed: comfy → calm.
-  Boop had an annoyed moment (medium), playing a failure, and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), playing a failure, and said "Broken".
 
 NOW (14:05)
 claude started turn 2 on "landing".
@@ -655,14 +664,14 @@ Today: 2 turns, 1 failed.
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: claude started turn 1 on "landing".
 7 min ago: You asked claude on "landing" about tests, in a sentence.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 5 min ago: claude's tests failed on "landing".
   Boop's mood changed: calm → comfy.
-  Boop had an annoyed moment (medium), and said "Failed".
+  Boop had an annoyed moment (medium), and said "Hmph Basta".
 4 min ago: claude finished turn 1 on "landing": failed, a long turn, 1 tool call, after a failed check, saying it's done, cheerful.
   Its words: "All done", "working great".
   Boop's mood changed: comfy → calm.
-  Boop had an annoyed moment (medium), playing a failure, and said "Uuuh... Ouch".
+  Boop had an annoyed moment (medium), playing a failure, and said "Broken".
 2 min ago: claude started turn 2 on "landing".
 
 NOW (14:07)

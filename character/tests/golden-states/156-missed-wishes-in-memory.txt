@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -216,7 +219,7 @@ Agents: claude working on "landing" for 1 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 6 min ago: Nothing has happened for 23 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Tch".
+  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Hup".
 just now: claude started turn 1 on "landing".
 
 NOW (14:30)
@@ -232,10 +235,10 @@ Today: 1 turn.
 
 HISTORY (oldest first; indented lines add to the line above)
 7 min ago: Nothing has happened for 23 min; claude sits idle on "landing".
-  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Tch".
+  Boop had an engaged moment (small), asking "fav snack?": cookie or pizza, and said "Hup".
 1 min ago: claude started turn 1 on "landing".
 1 min ago: You asked claude on "landing" in a few words.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:31)
 claude finished turn 1 on "landing": done, a long turn, no tool calls.
@@ -257,7 +260,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -335,6 +338,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.

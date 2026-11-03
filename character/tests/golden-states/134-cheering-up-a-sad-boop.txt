@@ -15,7 +15,7 @@ How to choose:
   colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
   move it. A big thing flips it at once, without flickering. Once
@@ -93,6 +93,9 @@ A finish when HISTORY shows its reaction to the fix just now is no new
 win: a small echo, never the same face bigger.
 Work still going gets a face at every check-in, never none, medium with
 a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
 An idle check-in gets a small face or nothing, never a finish; the face
 is the one MOOD leans to, rarely bored, and the longer the quiet, the
 dozier: comfy, then lazy, then tired.
@@ -213,7 +216,7 @@ Today: you talked to Boop twice.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "I had a bad day"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 
 NOW (14:00)
 You said to Boop: "why are you so sad, man"
@@ -227,9 +230,9 @@ Today: you talked to Boop 3 times.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: You said to Boop: "I had a bad day"
-  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Uh-huh".
+  Boop had a proud moment (small), replying yes, holding up a sign: "mhm!", and said "Mm-hm".
 just now: You said to Boop: "why are you so sad, man"
-  Boop had a proud moment (small), replying yes, holding up a sign: "uh-huh", and said "Mhm".
+  Boop had a proud moment (small), replying yes, holding up a sign: "yep!", and said "Uh-huh".
 
 NOW (14:00)
 You said to Boop: "no, actually be happy, you're the best"
