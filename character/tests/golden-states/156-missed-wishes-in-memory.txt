@@ -442,7 +442,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:15, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: Boop's wish: a pet, waiting 1 h while you were here.
 Agents: claude idle on "landing" for 44 min.
 Today: 1 turn.
@@ -456,7 +456,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:43, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; Boop's wish: a pet, waiting 1 h while you were here.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
