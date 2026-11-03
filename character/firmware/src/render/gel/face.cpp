@@ -372,8 +372,6 @@ void GelFace::wish(const WishShow& show) {
 
 void GelFace::growth(const GrowthShow& show) {
   growth_ = show;
-  // A stage a met wish reached waits for its heart to land.
-  if (engine_) engine_->bodyWaits = show.heartComing;
 }
 
 void GelFace::play(const rig::Clip& clip) {
@@ -481,6 +479,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   e.setMood(expressionFromName(moodName(context.mood)));
   bool timeout = source.look == SceneState::kNoApp;
   if (timeout != e.router.timedOut) e.linkTimedOut(timeout);
+  e.bodyWaits = context.growthWaits;
   e.setOccasion(context.when, context.lookMs);
   // The Mac's borrowed expression, else a gesture's or a notice's own face
   // while it plays. A low or cross mood keeps its own face through a
