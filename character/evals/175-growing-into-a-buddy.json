@@ -1,0 +1,22 @@
+{
+  "name": "Growing into a Buddy: it says what grew",
+  "case": "Boop has just grown into a Buddy, full size. A big moment, a word aloud, and a sign that says what grew.",
+  "why": "Each stage has its own lines.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "grew",
+      "at": "1m",
+      "kind": "Buddy",
+      "expect": {
+        "react": "!none",
+        "intensity": "big|huge",
+        "say": "!none",
+        "sign": "full size!|new: dance!|new: books!|i grew!|bigger!"
+      }
+    }
+  ]
+}

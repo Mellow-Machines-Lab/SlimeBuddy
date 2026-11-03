@@ -118,7 +118,7 @@ ABOUT_OF_ENTRY = {"word.success.passed": "tests",
                   "word.poke.howdy": "hello", "borrowed.salut": "hello",
                   "phrase.poke.oh-hello": "hello", "phrase.poke.hey-hey": "hello"}
 # Entries that are also a reply's own words, to what you said on
-# push-to-talk (ReactOutput's replies, and dunno, a huh to a question):
+# push-to-talk (MomentOutput's replies, and dunno, a huh to a question):
 # each of their takes counts for those replies too, in its own mood.
 REPLY_OF = {
     "word.poke.yep": ["yes"], "nonverbal.delight.mm-hm": ["yes"], "phrase.success.got-it": ["yes"],

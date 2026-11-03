@@ -9,6 +9,6 @@
     {"event": "wish", "at": "1m", "kind": "pet"},
     {"event": "turn started", "at": "30m", "prompt": "add tests"},
     {"event": "turn finished", "at": "31m"},
-    {"event": "wait", "at": "75m", "brain": {"mood": "lonely"}}
+    {"event": "wait", "at": "110m", "brain": {"mood": "lonely"}}
   ]
 }

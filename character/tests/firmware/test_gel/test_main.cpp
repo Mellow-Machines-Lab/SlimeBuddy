@@ -1683,6 +1683,7 @@ void test_the_scenes_formulas();
 void test_every_pastime_has_its_clip_and_its_turn();
 void test_each_pastime_draws_and_ends();
 void test_pastimes_are_dealt_by_tier_after_a_rest();
+void test_transitions_play_between_doings_and_anything_urgent_cuts_through();
 void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
 void test_the_kit_follows_the_tiers();
 void test_the_headphones_play_a_tune();
@@ -1834,6 +1835,10 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"night", "party"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"day", "programmers"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(outfitFor(tags({"night", "halloween", "party"}))));
+  // A Sprout's leaves stay on show on a party day; a witch hat is a costume.
+  TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(wornHat(tags({"day", "party"}))));
+  TEST_ASSERT_EQUAL(int(Outfit::kNone), int(wornHat(tags({"day", "party", "sprout"}))));
+  TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(wornHat(tags({"day", "halloween", "sprout"}))));
   // Shades on a Friday, only by day.
   TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"day", "friday"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"night", "friday"}))));
@@ -2008,8 +2013,8 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(20, tagIndex("hushed"));  // last, after sprout: the Mac's list (Occasions.board) agrees
-  TEST_ASSERT_EQUAL_INT(21, kTagCount);
+  TEST_ASSERT_EQUAL_INT(22, tagIndex("hushed"));  // last, after the stages: the Mac's list (Tags.board) agrees
+  TEST_ASSERT_EQUAL_INT(23, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -3309,6 +3314,46 @@ static void test_a_daze_ends_across_the_clock_wrap() {
   TEST_ASSERT_TRUE(e->daze() == F(0));
 }
 
+// A stage change is over once it's over, for good: `moving` going stale would
+// read a clock gone round 24.9 days later as before the change began.
+static void test_a_stage_change_ends_across_the_clock_wrap() {
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 96; t += 16) e->step(t);
+  const uint32_t day = render::tagBit("day");
+  e->setOccasion(day | render::tagBit("hatchling"), 0);
+  e->setOccasion(day | render::tagBit("sprout"), 0);
+  TEST_ASSERT_TRUE(e->bodyChange.moving);
+  uint32_t t = 112;
+  const uint32_t end = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64;
+  for (; t <= end; t += 16) e->step(t);
+  TEST_ASSERT_FALSE(e->bodyChange.moving);  // over, so no frame takes the growth path
+  e->elapsedMs = e->bodyChange.at + 0x80000000u;  // the clock half way round: now - at reads negative
+  TEST_ASSERT_EQUAL_INT(kSproutBody.size, e->body().size);
+  TEST_ASSERT_EQUAL_INT(0, e->bodyChange.glow(e->elapsedMs));
+  // And with the tags held back (Engine::bodyWaits) it still ends.
+  e->setOccasion(day | render::tagBit("chonk"), 0);
+  e->bodyWaits = true;
+  e->setOccasion(day | render::tagBit("chonk"), 0);
+  for (const uint32_t until = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64; t <= until; t += 16) e->step(t);
+  TEST_ASSERT_FALSE(e->bodyChange.moving);
+}
+
+// A small body stands up on its sign, or the card would cover its face: most
+// at a Hatchling, not at all at a Chonk, easing with the card.
+static void test_a_small_body_rises_for_its_sign() {
+  const SignShow up{"<3", kSignRiseMs, 1000};
+  TEST_ASSERT_EQUAL_INT(SignLayer::kHopPx, signHop(up, kHatchlingBody));
+  const int sprout = signHop(up, kSproutBody);
+  TEST_ASSERT_TRUE(sprout > SignLayer::kBuddyHopPx && sprout < SignLayer::kHopPx);
+  TEST_ASSERT_EQUAL_INT(SignLayer::kBuddyHopPx, signHop(up, kBuddyBody));
+  TEST_ASSERT_EQUAL_INT(0, signHop(up, kChonkBody));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 0, 1000}, kHatchlingBody));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 2000, 0}, kHatchlingBody));
+  SignShow low = up;
+  low.low = true;
+  TEST_ASSERT_EQUAL_INT(0, signHop(low, kHatchlingBody));
+}
+
 // The desk's turn clock: nothing in the first minute, minutes and seconds
 // to the hour, then hours and minutes, never wrapping (it once showed
 // "5:00" after 1 h 45 m).
@@ -3334,6 +3379,8 @@ int main() {
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
   RUN_TEST(test_a_work_act_plays_by_its_state);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
+  RUN_TEST(test_a_stage_change_ends_across_the_clock_wrap);
+  RUN_TEST(test_a_small_body_rises_for_its_sign);
   RUN_TEST(test_the_desk_clock_shows_hours_from_the_hour);
   RUN_TEST(test_software_clock_matches_binary64);
   RUN_TEST(test_a_divisor_divides_exactly);
@@ -3372,6 +3419,7 @@ int main() {
   RUN_TEST(test_every_pastime_has_its_clip_and_its_turn);
   RUN_TEST(test_each_pastime_draws_and_ends);
   RUN_TEST(test_pastimes_are_dealt_by_tier_after_a_rest);
+  RUN_TEST(test_transitions_play_between_doings_and_anything_urgent_cuts_through);
   RUN_TEST(test_a_tagged_pastime_plays_only_while_its_tag_is_on);
   RUN_TEST(test_the_kit_follows_the_tiers);
   RUN_TEST(test_the_headphones_play_a_tune);

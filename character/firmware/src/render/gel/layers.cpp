@@ -525,6 +525,7 @@ struct Look {
   int colors, swing;
   Eyewear eyes;
   bool pyjamas;
+  int size = 4096;  // the body's (BodySettings)
   uint32_t hatKey() const { return uint32_t(hat) | uint32_t(colors) << 4 | uint32_t(swing) << 8; }
 };
 // The nightcap's swing for the engine's clock.
@@ -537,7 +538,7 @@ Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
   const SceneState state = e.scenes.route.state;
   if (state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo)) return {};
-  const Outfit hat = outfitFor(when);
+  const Outfit hat = wornHat(when);
   const int colors = hasTag(when, "lunar") ? 1 : hasTag(when, "programmers") && !hasTag(when, "party") ? 2 : 0;
   const bool nightcap = hat == Outfit::kNightcap;
   const bool feeling = e.router.reacting || e.router.expression >= 0 ||
@@ -553,7 +554,10 @@ void eyewear(Raster& r, const rig::Anchors& at, Eyewear eyes) {
 }
 
 void hat(Raster& r, const rig::Anchors& at, const Look& look) {
-  const Head h = head(at, 0);
+  Head h = head(at, 0);
+  // A Chonk is wider, not taller: its hat stands as high as a Buddy's, with
+  // the same room over its head, on its wider brim.
+  if (look.size > kBuddyBody.size) h.width = h.width * kBuddyBody.size / look.size;
   switch (look.hat) {
     case Outfit::kWitchHat: witchHat(r, h); break;
     case Outfit::kPartyHat: {
@@ -571,7 +575,7 @@ void hat(Raster& r, const rig::Anchors& at, const Look& look) {
 
 // The anchors `at` moved `dx`, `dy` sixteenths.
 rig::Anchors moved(rig::Anchors at, int dx, int dy) {
-  for (Point* p : {&at.crown, &at.brimL, &at.brimF, &at.brimR, &at.handF, &at.eyeL, &at.eyeR}) p->x += dx, p->y += dy;
+  for (Point* p : {&at.crown, &at.brimL, &at.brimF, &at.brimR, &at.handF, &at.eyeL, &at.eyeR, &at.mouth}) p->x += dx, p->y += dy;
   for (int i = 0; i < rig::Anchors::kRingPoints; ++i) {
     at.lap[i].x += dx, at.lap[i].y += dy;
     at.hem[i].x += dx, at.hem[i].y += dy;
@@ -662,7 +666,7 @@ uint32_t wornOf(const Look& l) { return l.pyjamas ? kPyjamas : uint32_t(l.eyes);
 Look lookOf(uint32_t hat, uint32_t worn, const Engine& e) {
   const Outfit kind = Outfit(hat & 15);
   return {kind, int(hat >> 4 & 15), kind == Outfit::kNightcap ? swingFor(e) : 0,
-          worn == kPyjamas ? Eyewear::kNone : Eyewear(worn), worn == kPyjamas};
+          worn == kPyjamas ? Eyewear::kNone : Eyewear(worn), worn == kPyjamas, e.body().size};
 }
 
 // The pyjamas or what's over its eyes, then the hat, each at its layer's
@@ -743,40 +747,140 @@ void paintSky(Surface& s, const Engine& e, const rig::Layers* layers, uint32_t t
   if (scene == kSun) sun(behind, ms);
 }
 
+namespace {
+constexpr int kWishRadius = 26;
+// The wish bubble's middle: up and to the right of the head, held on the panel.
+Point wishCentre(const Surface& s, const rig::Anchors& at) {
+  return {std::min(s.width - kWishRadius - 8, at.brimR.x / 16 + 30), std::max(kWishRadius + 6, at.crown.y / 16 + 6)};
+}
+}  // namespace
+
 void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   if (wish.kind == WishShow::kNone || !s.pixels) return;
   Raster r{s};
-  // Up and to the right of the head, held on the panel.
-  constexpr int kRadius = 26;
-  const int cx = std::min(s.width - kRadius - 8, at.brimR.x / 16 + 30);
-  const int cy = std::max(kRadius + 6, at.crown.y / 16 + 6);
+  constexpr int kRadius = kWishRadius;
+  const Point centre = wishCentre(s, at);
+  const int cx = centre.x, cy = centre.y;
   const int age = int(wish.popAge), pop = int(WishShow::kPopMs);
-  // A wish left fades; one met fades after its heart has popped.
-  r.alpha = wish.pop == WishShow::kGone ? 255 * (pop - age) / pop
-            : wish.pop == WishShow::kMet && age > pop / 2 ? 255 * (pop - age) * 2 / pop
-                                                          : 255;
+  // A wish goes by shrinking, as a cloud thins: its disks overlap, and fading
+  // them would leave a muddy patch where they do. A wish left goes at once; one
+  // met turns white once its heart has popped, or as it flies off.
+  const int goes = wish.pop == WishShow::kGone ? 0 : wish.flies ? int(GrowthShow::kHeartWaitMs) : pop / 2;
+  const int gone = wish.pop == WishShow::kWaiting || age <= goes ? 0 : ease1000(age - goes, pop - goes);
+  const auto size = [gone](int radius) { return radius * (1000 - gone) / 1000; };
+  const uint16_t cloud = gone && wish.pop == WishShow::kMet ? rgb565(255, 255, 255) : kCream;
   // The thought's trail down to the head, then the cloud.
-  r.disk(cx - kRadius - 6, cy + kRadius + 6, 4, kCream);
-  r.disk(cx - kRadius + 4, cy + kRadius - 3, 7, kCream);
-  r.disk(cx - 10, cy + 8, kRadius - 8, kCream);
-  r.disk(cx + 10, cy + 8, kRadius - 8, kCream);
-  r.disk(cx, cy - 4, kRadius - 2, kCream);
+  r.disk(cx - kRadius - 6, cy + kRadius + 6, size(4), cloud);
+  r.disk(cx - kRadius + 4, cy + kRadius - 3, size(7), cloud);
+  r.disk(cx - 10, cy + 8, size(kRadius - 8), cloud);
+  r.disk(cx + 10, cy + 8, size(kRadius - 8), cloud);
+  r.disk(cx, cy - 4, size(kRadius - 2), cloud);
   if (wish.pop == WishShow::kMet) {
     // The icon pops into a heart, with sparks flying out from it.
     constexpr uint16_t kHeart = rgb565(226, 78, 104);
-    heart(r, cx * 16, (cy - 6) * 16, std::min(11, 4 + age / 30), kHeart);
+    if (!wish.flies || age < int(GrowthShow::kHeartWaitMs))
+      heart(r, cx * 16, (cy - 10) * 16, size(std::min(18, 4 + age / 20)), kHeart);
+    r.alpha = 255 * std::max(0, pop - age) / pop;
     for (int i = 0; i < 6; ++i) {
       const Point out = turn(i * 32 / 6);
       const int d = kRadius + age / 18;
       r.disk(cx + d * out.x / 4096, cy + d * out.y / 4096, 2, kMoonlight);
     }
   } else {
+    r.alpha = 255 * (1000 - gone) / 1000;
     wishIcon(r, wish, cx, cy, kInk);
   }
   r.alpha = 255;
 }
 
-void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at) {
+namespace {
+// A little Boop for a stage, on the bar's row: its size is the stage's, and a
+// Sprout has its leaves.
+void littleBoop(Raster& r, int cx, int cy, int stage, uint16_t ink, uint16_t eyes, uint16_t leaf) {
+  static constexpr int8_t kSizes[5][2] = {{0, 0}, {14, 10}, {22, 16}, {30, 22}, {42, 26}};
+  const int w = kSizes[stage][0], h = kSizes[stage][1], low = cy + 13 - h / 2;  // they stand on one line
+  r.round(cx - w / 2, low - h / 2, w, h, h / 2, ink);
+  r.disk(cx - w / 5, low + 1, stage > 1 ? 2 : 1, eyes);
+  r.disk(cx + w / 5, low + 1, stage > 1 ? 2 : 1, eyes);
+  if (stage == 2) {
+    const int top = low - h / 2;
+    r.line({cx, top + 1}, {cx, top - 4}, 2, leaf);
+    r.disk(cx - 4, top - 6, 3, leaf);
+    r.disk(cx + 4, top - 6, 3, leaf);
+  }
+}
+}  // namespace
+
+void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat) {
+  if (!s.pixels || !bar.opacity) return;
+  Raster r{s};
+  constexpr int kWidth = 280, kHeight = 18, kTop = 18, kSlide = 40;
+  constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
+                     kFillTop = rgb565(170, 222, 245), kFull = rgb565(242, 196, 86), kFullTop = rgb565(255, 234, 160),
+                     kHeart = rgb565(226, 78, 104), kNext = rgb565(96, 132, 160), kGlow = rgb565(255, 250, 220),
+                     kLeaf = rgb565(128, 226, 122), kNextLeaf = rgb565(96, 160, 110);
+  const int x = (s.width - kWidth) / 2, y = kTop - kSlide * (255 - bar.opacity) / 255;
+  const bool last = bar.stage >= 4;
+  // Swells as it lands, and settles.
+  const int swell = bar.gulp ? 4 * (bar.gulp < 300 ? bar.gulp : (1000 - bar.gulp) * 300 / 700) / 300 : 0;
+  const int top = y - swell / 2, height = kHeight + swell, cy = y + kHeight / 2;
+  const int tip = x + 2 + (kWidth - 4) * bar.fill / 1000;
+  r.alpha = bar.opacity;
+  // A hat reaches the bar's row: it goes behind the bar, with no scrap of its
+  // tip above it. (With the crown under the bar, so never over the body.)
+  if (hat && top > 0 && at.crown.y / 16 > y + kHeight) r.round(s.width / 2 - 110, 0, 220, top, 0, 0);
+  littleBoop(r, x - 34, cy, bar.stage, kFill, kInk, kLeaf);
+  if (!last) littleBoop(r, x + kWidth + 34, cy, bar.stage + 1, kNext, kTrack, kNextLeaf);
+  r.round(x, top, kWidth, height, height / 2, kTrack);
+  if (tip > x + 4) {
+    const int w = tip - x - 2;
+    r.round(x + 2, top + 2, w, height - 4, (height - 4) / 2, last ? kFull : kFill);
+    if (w > 12) r.round(x + 7, top + 3, w - 10, 2, 1, last ? kFullTop : kFillTop);
+  }
+  r.ring(x, top, kWidth, height, height / 2, 1, kRim);
+  if (bar.gulp) {
+    // A flash along what's filled, and sparks off the tip.
+    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000 / 2;
+    if (tip > x + 4) r.round(x + 2, top + 2, tip - x - 2, height - 4, (height - 4) / 2, kGlow);
+    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000;
+    for (int i = 0; i < 6; ++i) {
+      const Point out = turn(i * 32 / 6 + 3);
+      const int d = 8 + bar.gulp * 26 / 1000;
+      r.disk(tip + d * out.x / 4096, cy + d * out.y / 4096, 2, i % 2 ? kGlow : kHeart);
+    }
+  }
+  if (bar.flight >= 0) {
+    // Up and over from the bubble, quicker as the bar draws it in: a curve
+    // that starts out and to the side, and three fading behind it.
+    const Point centre = wishCentre(s, at), from{centre.x, centre.y - 6};  // where its heart sat
+    const auto along = [&](int k, int& px, int& py) {
+      const int e = k * k / 1000, q = 1000 - e;
+      const int midX = (from.x + tip) / 2 + 46, midY = std::max(kTop + 30, from.y - 34);
+      px = (q * q / 1000 * from.x + 2 * q * e / 1000 * midX + e * e / 1000 * tip) / 1000;
+      py = (q * q / 1000 * from.y + 2 * q * e / 1000 * midY + e * e / 1000 * cy) / 1000;
+    };
+    for (int i = 3; i >= 0; --i) {
+      const int k = std::max(0, bar.flight - i * 45);
+      int px, py;
+      along(k, px, py);
+      r.alpha = i ? 200 - i * 50 : 255;
+      heart(r, px * 16, py * 16, std::max(6, 20 - k * 10 / 1000 - i * 3), kHeart);
+    }
+  }
+  r.alpha = 255;
+}
+
+int signHop(const SignShow& sign, const BodySettings& body) {
+  if (!sign.text || sign.low || body.size >= kChonkBody.size) return 0;
+  const int most = body.size >= kBuddyBody.size
+                       ? SignLayer::kBuddyHopPx * (kChonkBody.size - body.size) / (kChonkBody.size - kBuddyBody.size)
+                       : SignLayer::kBuddyHopPx + (SignLayer::kHopPx - SignLayer::kBuddyHopPx) * (kBuddyBody.size - body.size) /
+                                                      (kBuddyBody.size - kHatchlingBody.size);
+  const int in = std::min<int>(sign.ms, kSignRiseMs) * 1000 / int(kSignRiseMs);
+  return most * ease1000(in, 1000) / 1000 * sign.opacity / 1000;
+}
+
+void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at, int hop) {
   if (!s.pixels || !sign.text) return;
   Raster r{s};
   r.fade = (sign.opacity * 255 + 500) / 1000;
@@ -785,7 +889,10 @@ void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at) {
   const int tw = stringWidth(f, sign.text), w = tw + 2 * SignLayer::kPad, h = f.h + 10;
   // Centred on its front, held at its hands' ring, never into the lane,
   // nor past the panel's sides.
-  const int y = std::min(at.handF.y / 16 - h / 2, bottom - SignLayer::kGap - h) +
+  // A card held under the mouth, which is the deepest an open one reaches, so
+  // nothing of it pokes above the card.
+  const int underMouth = (at.mouth.y + (at.eyeR.x - at.eyeL.x) / 9) / 16 + hop;
+  const int y = std::min(std::max(at.handF.y / 16 + hop - h / 2, underMouth), bottom - SignLayer::kGap - h) +
                 signLift(sign.ms, SignLayer::kRisePx, SignLayer::kBobPx);
   // (A hand's disk takes the kHand pixels either side of its middle's.)
   const int edge = s.inset(y, y + h) + SignLayer::kEdge + SignLayer::kHand, most = s.width - 1 - edge - w;

@@ -74,6 +74,47 @@ uint32_t tiers(int n) { return n ? reached(tierBit(n)) : 0; }
 // from a minute, dreams of sheep from 2, blows a snore bubble from 4,
 // snores deeper at night and dreams after half an hour. Work stretches
 // from tier4; idle yawns and sneezes from tier1.
+// The transitions (GelFace::showTransition): each between half a second and a
+// second, from one Doing to another, over the new look, which has come at once;
+// anything urgent cuts through, and none starts with it up.
+void test_transitions_play_between_doings_and_anything_urgent_cuts_through() {
+  for (const char* name : {"to-work", "to-rest", "to-sleep", "act-on", "act-off"}) {
+    const rig::Clip* clip = rig::kRig.clip(name);
+    TEST_ASSERT_NOT_NULL_MESSAGE(clip, name);
+    TEST_ASSERT_TRUE_MESSAGE(clip->ms >= 500 && clip->ms <= 1000, name);
+  }
+  Board b(SceneState::kIdle, 0);
+  b.to(2000);
+  TEST_ASSERT_NULL(b.face().transition(b.t));
+  b.m.base = SceneState::kWorking;
+  b.b.onState(b.m, b.t);
+  TEST_ASSERT_EQUAL(SceneState::kTerminal, b.b.look(b.t));  // at once
+  b.to(b.t + 32);
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("to-work"), b.face().transition(b.t));
+  b.to(b.t + rig::kRig.clip("to-work")->ms + 32);
+  TEST_ASSERT_NULL(b.face().transition(b.t));
+  b.m.base = SceneState::kIdle;
+  b.b.onState(b.m, b.t);
+  b.to(b.t + 32);
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("to-rest"), b.face().transition(b.t));
+  // A needs-you cuts through, and the clip's sound goes with it.
+  b.to(b.t + rig::kRig.clip("to-rest")->ms + 32);
+  b.m.base = SceneState::kWorking;
+  b.b.onState(b.m, b.t);
+  b.to(b.t + 32);
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("to-work"), b.face().cueing());
+  std::strcpy(b.m.agent, "claude"), std::strcpy(b.m.project, "api"), b.m.attnId = 3, b.m.attn = true;
+  b.b.onState(b.m, b.t);
+  b.to(b.t + 32);
+  TEST_ASSERT_NULL(b.face().transition(b.t));
+  TEST_ASSERT_NOT_EQUAL(rig::kRig.clip("to-work"), b.face().cueing());
+  // Going to sleep under it starts none.
+  b.m.base = SceneState::kAsleep;
+  b.b.onState(b.m, b.t);
+  b.to(b.t + 32);
+  TEST_ASSERT_NULL(b.face().transition(b.t));
+}
+
 void test_every_pastime_has_its_clip_and_its_turn() {
   int count[2][6] = {};
   for (int i = 0; i < kPastimeCount; ++i) {

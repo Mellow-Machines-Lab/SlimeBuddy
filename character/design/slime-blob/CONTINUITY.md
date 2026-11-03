@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-02. The slime's one engine is the C++ in
+Updated 2026-11-03. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -940,6 +940,19 @@ holds the hammer up, proud. Fail: the courses slide and break into rubble, the
 roof comes down on them, its hat tilts and its hammer drops. The small version
 is the hard hat and the sign over Doing; a failure after a minute gets the
 full ending.
+
+### Transitions (the board's)
+
+A short clip on the way from one Doing to another, instead of a cut
+(`GelFace::showTransition`): `to-work` (it tucks each side, as if rolling up
+its sleeves, and settles down at the keys), `to-rest` (it sits back tall and
+stretches), `act-on` and `act-off` (it springs up onto a full work act, and
+shakes as the prop goes), and `to-sleep` (a slow stretch with its eyes shutting,
+and it settles). Each is half a second to a second, on the body only, over the
+new look, which has already come, so it delays nothing. A reaction, a needs-you,
+a finger or a word forward cuts through it, and with one of those up, or the Mac
+gone, it doesn't start. The mouth is one size of "o", so `to-sleep`'s yawn is
+more stretch than mouth.
 
 ### The work stream (the board's)
 

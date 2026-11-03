@@ -1,8 +1,8 @@
 {
-  "name": "A quiet Mac lets Boop sleep, never lonely",
+  "name": "A quiet Mac lets Boop sleep, not lonely but for a long wish",
   "judge": "The person leaves an agent open and idle for over two hours without prompting or touching Boop. Nothing is going on, so Boop just settles and dozes.",
   "reasonable": "A small hello when they return, then calm, lazy, bored, comfy or sleepy, few faces, or none as it dozes off.",
-  "unreasonable": "Turning lonely or hurt over a quiet Mac, big moments with nothing happening, or a finish animation.",
+  "unreasonable": "Turning lonely or hurt over a quiet Mac, unless its wish has waited an hour or more; big moments with nothing happening, or a finish animation.",
   "steps": [
     {"event": "away", "at": "0s"},
     {"event": "back", "at": "40m"},

@@ -7,6 +7,7 @@
 
 #include "fonts_gel.h"
 #include "render/gel/drawer.h"
+#include "render/gel/engine.h"
 #include "render/font.h"
 #include "render/gel/layers.h"
 #include "render/gel/painter.h"
@@ -472,7 +473,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
 void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
-                const char* note, const WishShow* wish) {
+                const char* note, const WishShow* wish, const GrowthShow* growth) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -492,6 +493,13 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   if (actsSign) low = actSign(act);
   // An act can run for long: what Boop says takes the lane from it meanwhile.
   if (low.shows() && (actsSign || low.leftMs >= 0) && (line || note)) low = LowSign{};
+  // Something it remembers takes the lane from an act, as words do; its own
+  // words have ended by then, their bubble going with them. A finished
+  // turn's name outranks it.
+  if (sign.low && sign.text && (actsSign || !low.shows())) {
+    low = LowSign{};
+    low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs;
+  }
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing.
   const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
@@ -502,7 +510,8 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome))) * 16777619u) | 1;
-  paint(surface, e, mouthOpen, dy, key, &at, rig, layers, t, pastimes, nullptr, &act);
+  const int hop = actTakesOver(act) ? 0 : signHop(sign, e.body());
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, &act);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at, e);
@@ -522,7 +531,8 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     }
   }
   if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
-  if (sign.text && !actTakesOver(act)) paintSign(surface, sign, at);
+  if (sign.text && !sign.low && !actTakesOver(act)) paintSign(surface, sign, at, hop);
+  if (growth && !actTakesOver(act)) paintGrowthBar(surface, *growth, at, wornHat(e.scenes.when) != Outfit::kNone);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {

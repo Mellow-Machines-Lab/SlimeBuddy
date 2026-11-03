@@ -3,6 +3,7 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/raster.h"
 #include "render/gel/subpixel.h"
+#include "render/tags.h"
 namespace render::gel {
 namespace {
 // The cards, in thousandths of the surface: x, y, width, height, radius.
@@ -183,11 +184,19 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       text(deskState == SceneState::kTerminal ? "> _" : ". . .", 162, 633, green);
       for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
     }
-    round(387, 713, 258, 30, 8, rgb565(49, 88, 107));
+    // The keyboard and the paws are its size, about the desk's front under it.
+    const int size = e.body().size;
+    // They go as it melts, which would leave them lying across its face.
+    const int kit = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
+    r.alpha = kit;
+    auto scaled = [&](int v) { return v * size / 4096; };
+    auto atX = [&](int v) { return 500 + scaled(v - 500); };
+    auto atY = [&](int v) { return 749 + scaled(v - 749); };
+    round(atX(387), atY(713), scaled(258), scaled(30), scaled(8), rgb565(49, 88, 107));
     for (int row = 0; row < 2; ++row)
       for (int key = 0; key < 9; ++key) {
         bool pressed = contact > q(.35) && key == (s.hasLast && s.last.side < 0 ? 2 : 6);
-        round(397 + key * 26, 718 + row * 10, 19, 6, 2, pressed ? light : rgb565(144, 170, 176));
+        round(atX(397 + key * 26), atY(718 + row * 10), scaled(19), scaled(6), 2, pressed ? light : rgb565(144, 170, 176));
       }
     for (int side : {-1, 1}) {
       const int i = side > 0, alpha = paws ? paws->alpha[i] : 255;
@@ -195,8 +204,9 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       const int lift = std::max(tapLift(s, side), typeLift(uint32_t(F(e.timeMs()).integer()), side)) +
                        (paws ? paws->lift[i] : 0);
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
-      r.alpha = (s.desk.x * alpha).integer();
-      round(500 + side * 78 - 30 + (paws ? paws->dx[i] : 0), yy - 12, 60, 25, 13, rgb565(93, 166, 219));
+      r.alpha = kit * alpha / 255;
+      round(atX(500 + side * 78 - 30 + (paws ? paws->dx[i] : 0)), atY(yy - 12), scaled(60), scaled(25), scaled(13),
+            rgb565(93, 166, 219));
     }
   }
   // Each prop's alpha is its ramped visibility; one fading out still draws
@@ -251,5 +261,75 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   surface.cardKeyTo = cardsTo;
   std::copy(drawn, drawn + drawnCount, surface.cardBoxes);
   surface.cardBoxCount = drawnCount;
+}
+void paintSprout(Surface& surface, const Engine& e, const rig::Anchors& at, int scale) {
+  if (!surface.pixels || e.bodyChange.stage != 2 || !e.bodyChange.arrived(e.elapsedMs) ||
+      wornHat(e.scenes.when) != Outfit::kNone)
+    return;
+  Raster r{surface};
+  const uint16_t stem = rgb565(92, 190, 96), leaf = rgb565(128, 226, 122);
+  const auto px = [&](int v) { return v * scale / 4096; };
+  const int x = at.crown.x / 16, y = at.crown.y / 16 + 3, top = y - px(38);
+  r.line({x, y}, {x, top}, std::max(2, px(5)), stem);
+  // Each leaf a run of dots, widest at its middle, out and a little up.
+  for (int side : {-1, 1})
+    for (int i = 1; i <= 5; ++i) {
+      const int across = side * px(7) * i, up = px(i * (10 - i)) * 3 / 4;
+      r.disk(x + across, top + px(10) - up, std::max(1, px(9 - std::abs(3 - i) * 3)), leaf);
+    }
+}
+namespace {
+// Shapes stop at the lane: what's going to reach it fades over this many rows
+// first, so nothing is cut flat in mid-air.
+constexpr int kLaneFadeRows = 72, kLaneFadeBands = 9;
+// The share of `alpha` left `y16` down, ending at the lane.
+int laneFade(const Surface& s, int y16, int alpha) {
+  const int left = s.height * 4 / 5 * 16 - y16;
+  return left >= kLaneFadeRows * 16 ? alpha : std::max(0, alpha * left / (kLaneFadeRows * 16));
+}
+// A ring round the body, from the top to where the lane fades it away.
+void ringToTheLane(Raster& r, int cx, int cy, int radius, int width, uint16_t ink, int alpha) {
+  const int stop = r.s.height * 4 / 5, from = stop - kLaneFadeRows, band = kLaneFadeRows / kLaneFadeBands;
+  r.alpha = alpha;
+  r.bounds = Box{0, 0, r.s.width, from};
+  circle16(r, cx, cy, radius, width, ink);
+  for (int i = 0; i < kLaneFadeBands; ++i) {
+    r.alpha = alpha * (kLaneFadeBands - i) / (kLaneFadeBands + 1);
+    r.bounds = Box{0, from + i * band, r.s.width, from + (i + 1) * band};
+    circle16(r, cx, cy, radius, width, ink);
+  }
+  r.bounds = Raster::kEverywhere;
+}
+}  // namespace
+void paintGrowing(Surface& surface, const Engine& e, const rig::Anchors& at) {
+  if (!surface.pixels) return;
+  const uint32_t now = e.elapsedMs;
+  const int glow = e.bodyChange.glow(now), burst = e.bodyChange.burst(now);
+  if (!glow && !burst) return;
+  Raster r{surface};
+  const uint16_t warm = rgb565(255, 232, 150), bright = rgb565(255, 250, 220);
+  // Round the body as it is this frame, so no ring crosses it: its middle,
+  // and far enough to clear its widest and its crown.
+  int left = at.hem[0].x, right = at.hem[0].x;
+  for (const rig::Point& p : at.hem) left = std::min(left, p.x), right = std::max(right, p.x);
+  for (const rig::Point& p : at.lap) left = std::min(left, p.x), right = std::max(right, p.x);
+  const int low = at.hem[rig::Anchors::kRingPoints / 2].y, cx = at.crown.x, cy = (at.crown.y + low) / 2;
+  const int reach = std::max(160, std::max(right - left, low - at.crown.y) * 9 / 16);
+  // The glow: rings close round it, brighter as it draws in.
+  if (glow)
+    for (int i = 0; i < 3; ++i) ringToTheLane(r, cx, cy, reach + (6 + i * 12) * 16, 3 * 16, warm, glow * (3 - i) / 4);
+  // The burst: a ring and sparks flying out, fading.
+  if (burst) {
+    static constexpr int8_t kWays[10][2] = {{100, 0},  {81, 59},  {31, 95},  {-31, 95},  {-81, 59},
+                                            {-100, 0}, {-81, -59}, {-31, -95}, {31, -95}, {81, -59}};
+    const int out = reach + burst * 120 * 16 / 255, fade = 255 - burst;
+    ringToTheLane(r, cx, cy, out, 4 * 16, bright, fade);
+    for (const auto& way : kWays) {
+      const int y16 = cy + way[1] * out / 100;
+      r.alpha = laneFade(surface, y16, fade);
+      r.disk((cx + way[0] * out / 100) / 16, y16 / 16, 5 - burst * 3 / 255, bright);
+    }
+  }
+  r.alpha = 255;
 }
 }  // namespace render::gel

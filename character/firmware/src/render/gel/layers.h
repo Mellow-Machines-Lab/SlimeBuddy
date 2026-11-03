@@ -16,8 +16,9 @@
 // - beside it: Zs rising while it sleeps at night, or its coffee, steaming
 //   in a little gel hand, while it's idle or at work in the morning;
 // - the sign a reaction holds up (its `sign`): a dark card held at its
-//   front with a little gel hand at either side, the words on it, sliding
-//   up as the reaction starts and bobbing while it's held.
+//   front, under its mouth, with a little gel hand at either side, the words
+//   on it, sliding up as the reaction starts and bobbing while it's held. A
+//   small body rises to stand on it, so the card leaves its face clear (signHop).
 //
 // Each comes and goes through the rig's layer stack (render/rig/layers.h,
 // the face's), so the sky, a hat and the pyjamas at midnight, the Zs as
@@ -67,6 +68,10 @@ struct SignLayer {
   // corners, at the nearest: a lean or a finish carrying the body sideways
   // carries the sign only as far.
   static constexpr int kEdge = 8;
+  // How far a Hatchling and a Buddy rise to stand on their sign: its face is
+  // low on a small body, and the card, which can't go into the lane, would
+  // cover it. A Sprout's between them; a Chonk's mouth clears it standing.
+  static constexpr int kHopPx = 44, kBuddyHopPx = 14;
 };
 
 // How far its lids hang at night (Q12, as PaintControls::blink): 0 by day,
@@ -103,10 +108,18 @@ void paintSky(Surface& surface, const Engine& e, const rig::Layers* layers = nul
 int signOffset(uint32_t ms);
 // The sign, at the body's front (its hands' ring), over everything but
 // the lane.
-void paintSign(Surface& surface, const SignShow& sign, const rig::Anchors& at);
+void paintSign(Surface& surface, const SignShow& sign, const rig::Anchors& at, int hop = 0);
+// How far the body rises for its sign now (SignLayer::kHopPx), easing up with
+// the card and down as it fades.
+int signHop(const SignShow& sign, const BodySettings& body);
 // The wish: a small thought bubble beside the head with its icon (a hand,
 // a speech dot, a laptop); met, the icon pops into a heart with sparks; left,
 // the bubble fades.
 void paintWish(Surface& surface, const WishShow& wish, const rig::Anchors& at);
+// The growth bar along the top of the screen: this stage's little Boop, the
+// bar, and the next stage's in shadow, as the popover shows it; full and gold
+// at the last stage. A met wish's heart flies from its bubble into the bar's
+// tip, and the bar gulps. Its row is clear of Buddy's head, under what's worn.
+void paintGrowthBar(Surface& surface, const GrowthShow& bar, const rig::Anchors& at, bool hat = false);
 
 }  // namespace render::gel

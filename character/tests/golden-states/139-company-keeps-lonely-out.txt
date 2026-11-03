@@ -11,14 +11,16 @@ its emotion, its move, what it says and how big it is. Small is the
 usual.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
-  CONTEXT are background to NOW, never news of their own.
+  CONTEXT are background to NOW, never news of their own, but they
+  colour how Boop takes it.
 - Never repeat a reaction in progress; but each new thing said to Boop
   gets a face of its own.
-- Don't make the same face three times running.
+- Don't react the same way twice in a row: a streak gets bigger, then gets old.
 - Moods drift: a small thing moves the mood a step, to a mood on offer,
   when NOW is MOOD's reason to leave, and a routine turn alone doesn't
-  move it. A big thing flips it at once, without flickering. After the
-  minutes MOOD gives, it fades a step.
+  move it. A big thing flips it at once, without flickering. Once
+  HISTORY's last line says the mood has lasted MOOD's minutes, the fade
+  is due: take that step now.
 - When NOW moves the mood, react with the new mood's face.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says Boop has gone off on an act by itself (a rocket, a sled, a hard hat),
@@ -83,25 +85,40 @@ reacting in the last 3 min.
 Every turn that ends done or failed gets a face and its finish:
 success when the work is done and working, failure when it failed or
 the agent couldn't finish, reply when it only answered or asked back.
-A very short turn done is back-and-forth: its finish, small, in
-silence.
-Work still going gets a face at every check-in, never none. An idle
-check-in gets a small face or nothing, never a finish.
+A very short turn done is back-and-forth: its finish, small, in silence.
+A streak of quick wins livens it, each a step on from the last, never
+the same face twice: pleased, amused, smug, proud on top, and a word
+from the third.
+A finish when HISTORY shows its reaction to the fix just now is no new
+win: a small echo, never the same face bigger.
+Work still going gets a face at every check-in, never none, medium with
+a word about the work: hopeful early, more strained as it grinds on.
+It may bring up something it remembers about you at a quiet check-in, when
+the note fits the hour or the day and you've been around; never to scold, and
+most days not at all.
+An idle check-in gets a small face or nothing, never a finish; the face
+is the one MOOD leans to, rarely bored, and the longer the quiet, the
+dozier: comfy, then lazy, then tired.
 Talked to, it always answers with a face and a reply, never none, even
 while one is in progress: the reply answers what you meant, and it
 mostly says something back. Asked for a trick, its mood decides; it
-never does anything for an agent. Hushed, it sulks a step down.
+never does anything for an agent. Hushed, by a word or from the Mac,
+it sulks a step down, from any mood.
 Idle, it now and then muses or asks. With no agents open it has time on
 its hands: it may muse, ask for something or doze. And about once a day it wants
 something from you, a wish, once things have been quiet a good while,
 you're around and it's settled: a pet if it's gone a while untouched, a
 chat if it's been quiet between you, some work if it's bored. Not
-sooner, not while it's cross, and not again soon after one. A wish left
-waiting an hour or so with you here gets to it, and its mood moves.
+sooner, and not while it's cross. Once CONTEXT says how today's wish
+ended, met or left too long, that was today's: it lets wanting go till
+tomorrow. Once CONTEXT says its wish is waiting 1 h or more with you
+here, that gets to it, whatever its mood: at an idle check-in the mood
+moves, lonely, sad or annoyed, and not twice within a couple of hours.
+Short of that, quiet never lowers a mood: it settles and dozes.
 Touched or moved, it answers as a pet would: a stroke calms it, the
 wrong way ruffles it, a boop or tickle amuses it, a shake startles it,
-a pick-up is a hello. Pokes wear on it: a grin, then miffed, then fed
-up.
+a pick-up is a hello. Pokes wear on it, and it says so: a cheeky grin,
+then miffed, then fed up.
 You locking or unlocking the Mac always gets a moment, the Mac locking
 itself included. An unlock, or a lock within the hour of the last, is
 routine: a slight wave, small, in silence, no sign. A first lock in an
@@ -109,46 +126,26 @@ hour or more, a real wave, medium, with a word and a sign. A lock at
 night, it says good night with a word and a sign, and naps. Agents
 working at a lock, its sign says it keeps watching. Cross with you, it
 snubs you: a turned-away face or a huff, and no wave.
-On an occasion CONTEXT names (a holiday, a milestone day), it plays
-along: a gladder, bigger face than usual, never a cross one.
-A failure is bigger than the win before it, and bigger again after
-other failures. A hard-won or very long win is big.
+You coming back delights it: a happy, excited or fond face and a hello,
+bigger the longer you were gone; only after 20 to 40 hours away has it
+missed you, and it's lonely. On an occasion CONTEXT names (a holiday,
+a milestone day), it plays along, above all when you come back: excited
+or up to something, big, never cross.
+Growing a stage, as NOW says, is the biggest thing that happens to it:
+always a moment, big, delighted with itself whatever its mood, with a
+word and the sign that says what grew.
+A first failed check is no drama yet: a wince, a doubtful look or a
+huff, as MOOD would, and it climbs as they repeat. A failed turn is
+bigger than the win before it, and bigger again after other failures.
+A long turn's plain win is medium; a hard-won or very long one is big.
 Examples:
-- NOW: claude finished turn 9 on "api": done, a very long turn, 40 tool calls.
-  → excited, success, says glad, big
-- NOW: claude finished turn 3 on "api": done, a short turn, 2 tool calls.
-  → happy, success, says glad
-- NOW: claude finished turn 4 on "api": done, a short turn, no tool calls, asking you something.
-  → curious, reply, says glad
 - NOW: You asked claude on "api" for a fix, in a sentence, frustrated.
     Your words: "still broken", "keep happening".
   → determined, says retry, medium, holding up "still broken?!"
 - NOW: You asked claude on "api" for something new, in a sentence, and said Boop's name.
   → surprised, notice, says glad, holding up "me?!"
-- NOW: claude is still working on "api", a very long turn, running tests.
-  → hopeful, says tests, medium
-- NOW: claude's tests failed on "api".
-  → annoyed, says upset
-- NOW: Nothing has happened for 20 min; claude sits idle on "api".
-  → bored, says quiet
-- NOW: claude finished turn 9 on "api": failed, a very long turn, 40 tool calls.
-  → sad, failure, says upset, huge
-- NOW: You poked Boop 4 times in a row.
-  → grumpy, says upset, medium
-- NOW: You said to Boop: "you're so dumb".
-  → wounded, replies ouch, says upset
 - NOW: You said to Boop: "has codex finished yet?".
   → engaged, replies status, says work
-- NOW: You said to Boop: "rough day today".
-  → sad, replies comfort, in silence
-- NOW: You said to Boop: "tell claude yes".
-  → skeptical, replies notme, in silence
-- NOW: You came back to the Mac after 11 hours away.
-  → happy, wake up, says hello
-- NOW: You came back to the Mac after 26 hours away.
-  → lonely, wake up, says hello, small
-- NOW: You stroked Boop.
-  → comfy, says glad
 - CONTEXT: When: …; April Fools' Day.
   NOW: claude finished turn 3 on "api": done, a short turn, 2 tool calls.
   → mischievous, failure, says tickled
@@ -166,7 +163,7 @@ has a take, it shows:
 - A prompt that sounds like something gets a sign that teases the
   work, in the person's own words where it can. A plain one gets no
   more than the rules above give it.
-- A poke gets a cheeky grin before it gets cross, and a trick is turned
+- A trick is turned
   down as often as it's done, with a grin either way, unless MOOD is
   already cross or low.
 - Praise for Boop it takes as its due.
@@ -176,17 +173,9 @@ words hurt it, manners warm it, shouting makes it flinch, sad news gets
 comfort, and a very long turn failing or an agent giving up makes it
 sad.
 Examples:
-- NOW: claude finished turn 5 on "api": failed, a long turn, 15 tool calls.
-  → irritated, failure, swears, big
-- NOW: claude finished turn 3 on "api": failed, a long turn, 4 tool calls, saying it's done, cheerful.
-  → skeptical, failure, says upset
 - NOW: You asked claude on "api" for something new, in a sentence, playfully.
     Your words: "so cute", "lol".
   → mischievous, says tickled, holding up "so cute lol"
-- NOW: You poked Boop.
-  → mischievous, says tickled
-- NOW: You said to Boop: "nice work, little guy".
-  → proud, replies thanks, says glad, medium
 - NOW (Boop is grumpy): You said to Boop: "dance for me".
   → grumpy, replies no, says upset
 
@@ -203,12 +192,13 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; sad or lonely at an idle check-in when CONTEXT says its wish has waited about
-an hour while you were here; lonely too back after 20 to 40 hours away.
+at rude words to Boop; lonely, sad or annoyed at an idle check-in only when CONTEXT says its
+wish is waiting 1 h or more with you here; back from away, happy, but lonely after 20
+to 40 hours. Hushed, by a word or from the Mac, it won't stay calm: lazy or annoyed.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:01, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -221,14 +211,14 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 5 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 5 min ago: claude started turn 1 on "landing".
 5 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (14:06)
 claude is still working on "landing", a very long turn.
@@ -236,16 +226,16 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 11 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 11 min ago: claude started turn 1 on "landing".
 11 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-5 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+5 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:12)
 claude is still working on "landing", a very long turn.
@@ -254,19 +244,19 @@ Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:17, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 16 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 16 min ago: claude started turn 1 on "landing".
 16 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-11 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+11 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 5 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:17)
 claude is still working on "landing", a very long turn.
@@ -275,22 +265,22 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:22, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 21 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 21 min ago: claude started turn 1 on "landing".
 21 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-15 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+15 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 9 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 
 NOW (14:22)
 claude is still working on "landing", a very long turn.
@@ -299,25 +289,25 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:26, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 25 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 25 min ago: claude started turn 1 on "landing".
 25 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-20 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+20 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 14 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 8 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 4 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 
 NOW (14:26)
 claude is still working on "landing", a very long turn.
@@ -325,27 +315,27 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:31, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 30 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 30 min ago: claude started turn 1 on "landing".
 30 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-24 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+24 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 18 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 13 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 9 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (14:31)
 claude is still working on "landing", a very long turn, running a build.
@@ -354,30 +344,30 @@ Boop did nothing on its own.
 === pass 8
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:35, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 34 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 34 min ago: claude started turn 1 on "landing".
 34 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-29 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+29 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 23 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 17 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 13 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 9 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 4 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 
 NOW (14:35)
 claude is still working on "landing", a very long turn, running a build.
@@ -386,33 +376,33 @@ Boop did nothing on its own.
 === pass 9
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:40, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 39 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 39 min ago: claude started turn 1 on "landing".
 39 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-34 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+34 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 28 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 23 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 18 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 14 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 9 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 5 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 
 NOW (14:40)
 claude is still working on "landing", a very long turn, running a build.
@@ -421,36 +411,36 @@ Boop did nothing on its own.
 === pass 10
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:44, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 43 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 43 min ago: claude started turn 1 on "landing".
 43 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-38 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+38 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 32 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 27 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 22 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 18 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 13 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 9 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 4 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 
 NOW (14:44)
 claude is still working on "landing", a very long turn, running a build.
@@ -458,38 +448,38 @@ Boop did nothing on its own.
 === pass 11
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:50, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 49 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 49 min ago: claude started turn 1 on "landing".
 49 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-43 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+43 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 38 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 32 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 28 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 23 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 14 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 9 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 5 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 
 NOW (14:50)
 claude is still working on "landing", a very long turn, running a build.
@@ -498,41 +488,41 @@ Boop did nothing on its own.
 === pass 12
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:55, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 54 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 54 min ago: claude started turn 1 on "landing".
 54 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-48 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+48 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 43 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 37 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 33 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 28 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 14 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 10 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 4 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 
 NOW (14:55)
 claude is still working on "landing", a very long turn, running a build.
@@ -541,44 +531,44 @@ Boop did nothing on its own.
 === pass 13
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: no wish yet today.
 Agents: claude working on "landing" for 59 min.
 
 HISTORY (oldest first; indented lines add to the line above)
 59 min ago: claude started turn 1 on "landing".
 59 min ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-53 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+53 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 48 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 42 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 38 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 33 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 29 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 15 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 10 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 5 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 
 NOW (15:00)
 claude is still working on "landing", a very long turn, running a build.
@@ -587,47 +577,47 @@ Boop did nothing on its own.
 === pass 14
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-59 min ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+59 min ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 53 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 48 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 43 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 39 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 30 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 20 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 15 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 10 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 5 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 
 NOW (15:05)
 claude is still working on "landing", a very long turn, running a build.
@@ -635,49 +625,49 @@ Boop did nothing on its own.
 === pass 15
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:09, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 57 min ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 52 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 47 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 43 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 38 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 28 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 14 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 9 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 4 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 
 NOW (15:09)
 claude is still working on "landing", a very long turn, running a build.
@@ -686,49 +676,49 @@ Boop did nothing on its own.
 === pass 16
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:14, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 56 min ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 52 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 47 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 43 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 38 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 33 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 29 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 14 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 8 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 4 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
@@ -740,55 +730,55 @@ Boop did nothing on its own.
 === pass 17
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:19, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 57 min ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 52 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 47 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 43 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 38 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 28 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 23 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 18 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 13 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 9 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 
 NOW (15:19)
 claude is still working on "landing", a very long turn, running tests.
@@ -797,58 +787,58 @@ Boop did nothing on its own.
 === pass 18
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:24, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 57 min ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Hrr...".
 52 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 48 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 43 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 33 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 28 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 23 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 18 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 14 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 9 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 
 NOW (15:24)
 claude is still working on "landing", a very long turn, running tests.
@@ -856,60 +846,60 @@ Boop did nothing on its own.
 === pass 19
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:29, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 58 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 53 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 48 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 44 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 29 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 23 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 19 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 10 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 
 NOW (15:29)
 claude is still working on "landing", a very long turn, running tests.
@@ -918,63 +908,63 @@ Boop did nothing on its own.
 === pass 20
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:34, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 58 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 53 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 49 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 44 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 28 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 24 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 19 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 10 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 
 NOW (15:34)
 claude is still working on "landing", a very long turn, running tests.
@@ -983,66 +973,66 @@ Boop did nothing on its own.
 === pass 21
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:40, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Nnh".
 59 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
+  Boop had an engaged moment (small), and said "Hup".
 55 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Ngh".
 49 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 44 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 34 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 30 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 25 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 21 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 16 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 10 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 
 NOW (15:40)
 claude is still working on "landing", a very long turn, running tests.
@@ -1051,69 +1041,69 @@ Boop did nothing on its own.
 === pass 22
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:45, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Nnh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Ngh".
 55 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 50 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 45 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 35 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 30 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 26 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 21 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 11 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 
 NOW (15:45)
 claude is still working on "landing", a very long turn, running tests.
@@ -1121,69 +1111,69 @@ Boop did nothing on its own.
 === pass 23
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:49, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Nnh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Ngh".
 59 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 54 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 49 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 44 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 39 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 35 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 30 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 25 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 20 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 9 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 
@@ -1194,74 +1184,74 @@ Boop did nothing on its own.
 === pass 24
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:55, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Nnh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Rrr...".
 55 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 49 min ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 45 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 40 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 36 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 31 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 25 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 20 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 9 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 
 NOW (15:55)
 claude is still working on "landing", a very long turn, running tests.
@@ -1270,77 +1260,77 @@ Boop did nothing on its own.
 === pass 25
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:00, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 1 h ago: claude started turn 1 on "landing".
 1 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Nnh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
-55 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+55 min ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Hrr...".
 51 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 46 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 41 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 36 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 31 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 26 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 20 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 11 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 
 NOW (16:00)
 claude is still working on "landing", a very long turn, running tests.
@@ -1349,80 +1339,80 @@ Boop did nothing on its own.
 === pass 26
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:05, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 h ago: claude started turn 1 on "landing".
 2 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Ngh".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Nnh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Hrr...".
 55 min ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 51 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 46 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 41 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 36 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 31 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 25 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 20 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 16 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 10 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Validate".
 
 NOW (16:05)
 claude is still working on "landing", a very long turn, running tests.
@@ -1430,82 +1420,82 @@ Boop did nothing on its own.
 === pass 27
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:11, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 h ago: claude started turn 1 on "landing".
 2 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-2 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
+2 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Nnh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 56 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 52 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 47 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 41 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 36 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 31 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 25 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 21 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 15 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 10 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Validate".
 5 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 
 NOW (16:11)
 claude is still working on "landing", a very long turn, running tests.
@@ -1514,85 +1504,85 @@ Boop did nothing on its own.
 === pass 28
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:15, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 h ago: claude started turn 1 on "landing".
 2 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-2 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 2 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+2 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Nnh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr... tik".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Rrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Tch".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 56 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 51 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 46 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 41 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 35 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 30 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 26 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 20 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 14 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Validate".
 9 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 
 NOW (16:15)
 claude is still working on "landing", a very long turn, running tests.
@@ -1601,88 +1591,88 @@ Boop did nothing on its own.
 === pass 29
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:20, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 h ago: claude started turn 1 on "landing".
 2 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-2 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 2 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+2 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 2 h ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 1 h ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Krr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Nnh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
+  Boop had an engaged moment (small), and said "Testing".
 1 h ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Validate".
 56 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 50 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 45 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Checking".
 39 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Test".
 34 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 30 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 24 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 19 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Validate".
 14 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 8 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Checking".
 
 NOW (16:20)
 claude is still working on "landing", a very long turn, running tests.
@@ -1691,91 +1681,91 @@ Boop did nothing on its own.
 === pass 30
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:25, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude working on "landing" for 2 h.
 
 HISTORY (oldest first; indented lines add to the line above)
 2 h ago: claude started turn 1 on "landing".
 2 h ago: You asked claude on "landing" in a sentence.
-  Boop had an engaged moment (small), and said "Tch".
-2 h ago: claude is still working on "landing", a very long turn.
   Boop had an engaged moment (small), and said "Hup".
 2 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Ngh".
+2 h ago: claude is still working on "landing", a very long turn.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Nnh".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 2 h ago: claude is still working on "landing", a very long turn.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hrr...".
+  Boop had an engaged moment (small), and said "Rrr...".
 2 h ago: claude is still working on "landing", a very long turn.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
+  Boop had an engaged moment (small), and said "Tch".
 1 h ago: claude is still working on "landing", a very long turn.
+  Boop had an engaged moment (small), and said "Hrr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Krr...".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Nnh".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Hup".
+1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop had an engaged moment (small), and said "Ngh".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Tch".
+  Boop had an engaged moment (small), and said "Rrr... tik".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Hup".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Krr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hrr...".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Rrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Rrr... tik".
-1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Ngh".
+  Boop had an engaged moment (small), and said "Tch".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
-  Boop had an engaged moment (small), and said "Hup".
+  Boop had an engaged moment (small), and said "Hrr...".
 1 h ago: claude is still working on "landing", a very long turn, running a build.
   Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Krr...".
 1 h ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Probe".
-1 h ago: claude is still working on "landing", a very long turn, running tests.
-  Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
-1 h ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
-55 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop's 2nd check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Testing".
-50 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Verify".
-44 min ago: claude is still working on "landing", a very long turn, running tests.
+1 h ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
   Boop had an engaged moment (small), and said "Validate".
+1 h ago: claude is still working on "landing", a very long turn, running tests.
+  Boop had an engaged moment (small), and said "Measure".
+55 min ago: claude is still working on "landing", a very long turn, running tests.
+  Boop's 2nd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Verify".
+50 min ago: claude is still working on "landing", a very long turn, running tests.
+  Boop's 3rd check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Checking".
+44 min ago: claude is still working on "landing", a very long turn, running tests.
+  Boop's 4th check-in of a round on this turn.
+  Boop had an engaged moment (small), and said "Test".
 39 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop had an engaged moment (small), and said "Probe".
 35 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Trial".
 29 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Test".
+  Boop had an engaged moment (small), and said "Testing".
 24 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Checking".
+  Boop had an engaged moment (small), and said "Validate".
 19 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Trial".
+  Boop had an engaged moment (small), and said "Measure".
 13 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 2nd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Testing".
+  Boop had an engaged moment (small), and said "Verify".
 9 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 3rd check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Validate".
+  Boop had an engaged moment (small), and said "Checking".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 
 NOW (16:25)
 claude is still working on "landing", a very long turn, running tests.
@@ -1783,7 +1773,7 @@ Boop did nothing on its own.
 === pass 31
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:30, Wednesday, day.
-Boop: a Hatchling.
+Boop: a Buddy.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -1791,9 +1781,9 @@ Today: 1 turn.
 HISTORY (oldest first; indented lines add to the line above)
 9 min ago: claude is still working on "landing", a very long turn, running tests.
   Boop's 4th check-in of a round on this turn.
-  Boop had an engaged moment (small), and said "Measure".
+  Boop had an engaged moment (small), and said "Test".
 4 min ago: claude is still working on "landing", a very long turn, running tests.
-  Boop had an engaged moment (small), and said "Verify".
+  Boop had an engaged moment (small), and said "Probe".
 
 NOW (16:30)
 claude finished turn 1 on "landing": done, a very long turn, 3 tool calls.

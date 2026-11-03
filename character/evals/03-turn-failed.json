@@ -1,10 +1,10 @@
 {
-  "name": "A failed turn puts Boop out, and shows it",
-  "case": "The agent's turn fails after a couple of minutes (it hit a rate limit). Boop is put out at once and lets you hear it: a grumpy, annoyed or irritated face, played as a failure and held twice or more, with a word, a grumbling phrase or a swear. Its mood turns annoyed. It isn't sad, since the turn wasn't a long one.",
+  "name": "A failed turn is never celebrated",
+  "case": "The agent's turn fails after a couple of minutes (it hit a rate limit). A failed turn is never celebrated: Boop has a face that isn't glad, plays a failure, says nothing glad, and its mood doesn't lift. Which unhappy face, how big and whether it says anything are its own to choose.",
   "always": true,
-  "why": "character/steering/mood/calm.md: calm leaves for annoyed when a turn fails (grumpy is further along the mood graph); PERSONALITY: a failure is bigger than the win before it, and its Examples make a long failed turn irritated, failure, says upset, medium; and at heart it's cheeky, so it swears at it sooner than it sulks (irritated, failure, swears, medium). A turn of two minutes failing is no reason to be sad",
+  "why": "react.move: a turn that finished failed is a failure, and success isn't for one; PERSONALITY: a failed turn gets a face and its finish. How cross it is, is for the judge, not for this must",
   "steps": [
     {"event": "turn started", "at": "0s"},
-    {"event": "turn failed", "at": "2m", "error": "rate_limit", "expect": {"react": "grumpy|annoyed|irritated", "move": "failure", "say": "upset|swear", "intensity": "medium|big", "said": "some", "mood": "annoyed"}}
+    {"event": "turn failed", "at": "2m", "error": "rate_limit", "expect": {"react": "!none|happy|excited|proud|pleased|amused|mischievous|relieved|hopeful|affectionate", "move": "failure", "say": "!glad|tickled|done", "mood": "!happy|excited|proud"}}
   ]
 }

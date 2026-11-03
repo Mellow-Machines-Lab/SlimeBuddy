@@ -300,7 +300,7 @@ The repository evolved after the earlier transcript examples:
   device's turn/lifecycle. Do not bypass it or put rendering into Jev.
 - Boop's `app/BoopKit/Core/Activity.swift` classifies work; `Core` owns
   factual priority; `Outputs/MoodOutput.swift` and `MoodGraph.swift` own
-  Boop's emotional choices; `Outputs/ReactOutput.swift` owns reactions.
+  Boop's emotional choices; `Outputs/MomentOutput.swift` owns reactions.
 - `StateSnapshot.swift` and `DeviceLink/BoopDevice.swift` express Boop's
   vocabulary over LinkKit. Existing `state.base` is asleep/idle/working;
   `act`, `attn` and `do` select the other visuals. The design's `state`

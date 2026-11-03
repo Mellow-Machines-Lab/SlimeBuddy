@@ -1,0 +1,15 @@
+{
+  "name": "At a quiet check-in Boop may bring up something it remembers about you",
+  "judge": "A Friday evening, Boop remembers you stay up late on Fridays, and nothing is going on. It may hold up what it remembers if it fits; a quiet check-in with none is fine too.",
+  "reasonable": "A small, warm or cheeky face. The Friday line, or no line at all. A word or none.",
+  "unreasonable": "A line that doesn't fit the hour, a scolding face, a big moment, or a finish.",
+  "start": "2026-10-30T20:00",
+  "memory": {"notes": ["you · 2026-10-23 · You stay up late on Fridays.", "work · 2026-10-29 · \"cli\" is where your days have been going."]},
+  "signs": {"You stay up late on Fridays.": "u stay up late fridays", "\"cli\" is where your days have been going.": "cli, cli, cli"},
+  "steps": [
+    {"event": "session started", "at": "0s"},
+    {"event": "turn started", "at": "1m", "prompt": "add a search bar"},
+    {"event": "turn finished", "at": "2m"},
+    {"event": "wait", "at": "47m", "brain": {"react.sign": "u stay up late fridays"}}
+  ]
+}

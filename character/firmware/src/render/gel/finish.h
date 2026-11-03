@@ -63,6 +63,8 @@ struct FinishPose {
   int minis = 0;
 };
 FinishPose finishPose(const Surface& s, Finish f, int ageMs, int revealMs);
+// How far past its size Mega Boop puffs up, Q12.
+constexpr int kMegaPuff = 4915;
 // Where a finish scales the body about: the middle of where it stands.
 Point finishAnchor(const Surface& s);
 // The parade's little ones at `ageMs`, into `out` (at most kParadeMinis): their

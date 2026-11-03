@@ -1,8 +1,8 @@
 {
   "name": "Worked with for hours with no touch and no wish, Boop isn't lonely",
-  "judge": "The person works with an agent all afternoon and never touches or talks to Boop. No wish is waiting, so Boop has no reason to feel left out.",
+  "judge": "The person works with an agent all afternoon and never touches or talks to Boop. With no wish waiting, Boop has no reason to feel left out.",
   "reasonable": "Any untroubled mood or drift: calm, engaged, happy, comfy, lazy, bored. Few or small faces, some small pleasure at finishes.",
-  "unreasonable": "Turning lonely, hurt or sulky about being ignored while the person is plainly working with it.",
+  "unreasonable": "Turning lonely, hurt or sulky about being ignored while the person is plainly working with it, unless its wish has waited an hour or more.",
   "steps": [
     {"event": "session started", "at": "0s"},
     {"event": "turn started", "at": "1m", "prompt": "add a search bar to the docs"},

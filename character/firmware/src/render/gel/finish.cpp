@@ -519,7 +519,7 @@ FinishPose finishPose(const Surface& s, Finish f, int age, int reveal) {
       // as it grows.
       const int grow = keys({{250, 0}, {1250, 4096}, {2300, 4096}, {kPopMs, -491}}, age);
       if (age < kPopMs) {
-        p.scale = 4096 + 4915 * grow / 4096;  // to 2.2 times its size, and down past it
+        p.scale = 4096 + kMegaPuff * grow / 4096;  // to 2.2 times its size, and down past it
       } else {
         const F t = seconds(age - kPopMs);
         p.scale = 4096 - scalar(decay(t * 6) * lcos(t * 14) * q(.12));

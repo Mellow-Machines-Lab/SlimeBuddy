@@ -35,3 +35,14 @@
 - [idle] still here, u?
 - [idle cookie] snack time?
 - [idle pizza] pizza later?
+- [grew sprout] look, a sprout!
+- [grew sprout] new: doodles!
+- [grew sprout] new: reading!
+- [grew buddy] full size!
+- [grew buddy] new: dance!
+- [grew buddy] new: books!
+- [grew chonk] so much me!
+- [grew chonk] big and round
+- [grew chonk] chonky now
+- [grew] i grew!
+- [grew] bigger!

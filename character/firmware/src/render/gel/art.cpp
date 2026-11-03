@@ -103,8 +103,8 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
       x = side * eyeX + c.gaze + int(int64_t(x - side * l.baseX) * c.eyeSize / 4096);
       y = eyeY + c.gazeUp + int(int64_t(y - l.baseY) * l.eye * (4096 - c.blink) / (4096 * 4096) * c.eyeSize / 4096);
     } else if (group == 3) {
-      x = x * l.mouthWidth / 4096;
-      y = mouthY + (y - l.baseM) * l.mouthHeight / 4096;
+      x = int(int64_t(x) * l.mouthWidth / 4096 * c.mouthSize / 4096);
+      y = mouthY + int(int64_t(y - l.baseM) * l.mouthHeight / 4096 * c.mouthSize / 4096);
     }
     return Point{x, y};
   };
@@ -112,6 +112,7 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
     const Point l = projection.face(-eyeX + c.gaze, eyeY + c.gazeUp),
                 r = projection.face(eyeX + c.gaze, eyeY + c.gazeUp);
     anchors->eyeL = l, anchors->eyeR = r;
+    anchors->mouth = projection.face(0, mouthY);
   }
   Point vertices[kMaxPoints], clip[kMaxPoints];
   // The layers whose art has the group of layer i's path k in its shape,

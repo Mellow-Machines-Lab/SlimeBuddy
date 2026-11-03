@@ -38,6 +38,7 @@ const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, O
   return take(profileFor(mood), row, std::max(0, std::min(takes(row) - 1, variant)));
 }
 
+int GelFace::noseDrop() const { return engine_ ? noseDropFor(engine_->body()) : 0; }
 void GelFace::reset(uint32_t t, linkkit::Rng&) {
   engine_ = std::make_unique<Engine>(kSeed);
   engine_->step(0);
@@ -60,6 +61,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   pastimeLook_ = dealtLook_ = SceneState::kNone;
   stopped_ = false;
   dice_ = kSeed;
+  transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, lastFullAct_ = alone_ = false;
   mug_ = headphones_ = zone_ = plant_ = rig::Ramp{};
   grown_ = 1;
 }
@@ -105,6 +107,7 @@ void GelFace::advanceTo(uint32_t t) {
   lastTick_ = t;
   passTime(t);
   showBase();
+  showTransition(t);
   showLayers(t);
   showKit(t);
   int kept = 0;
@@ -169,6 +172,42 @@ void GelFace::showBase() {
   if (clip != base_) mixer_.setLook(base_ = clip);
 }
 
+// A clip for the way from one Doing to another, or into and out of a full work
+// act: half a second to a second, over the new look, which has already come,
+// so it delays nothing. Whatever takes the face (a reaction, a needs-you, a
+// finger, a word forward) cuts through it, and with one of those already up it
+// doesn't start; nor with the Mac gone, which is no Doing changing.
+void GelFace::showTransition(uint32_t t) {
+  const Engine& e = *engine_;
+  const auto& facts = e.router.facts;
+  const SceneState base = facts.base;
+  const bool act = stream_ && actTakesOver(stream_->actNow(t));
+  const bool taken = finger_ || facts.attention.on || e.scenes.route.reaction || e.router.reacting || e.router.expression >= 0 ||
+                     source_.anim != SceneState::kNone || alone_ || (stream_ && stream_->call.live);
+  const char* name = nullptr;
+  if (lastBase_ != SceneState::kNone) {
+    if (act != lastFullAct_) name = act ? "act-on" : "act-off";
+    else if (base != lastBase_ && base == SceneState::kAsleep) name = "to-sleep";
+    else if (base != lastBase_ && base == SceneState::kWorking && lastBase_ == SceneState::kIdle) name = "to-work";
+    else if (base != lastBase_ && base == SceneState::kIdle && lastBase_ == SceneState::kWorking) name = "to-rest";
+  }
+  lastBase_ = base, lastFullAct_ = act;
+  if (transition_ && (taken || !after(transitionEnds_, t))) {
+    if (taken) {
+      if (cueing_ == transition_) cueing_ = nullptr;
+      mixer_.stop(*transition_);
+    }
+    transition_ = nullptr;
+  }
+  if (!name || taken) return;
+  if (const rig::Clip* clip = rig::kRig.clip(name)) {
+    if (transition_) mixer_.stop(*transition_);
+    transition_ = clip, transitionEnds_ = t + clip->ms;
+    play(*clip);
+    holdGestures(*clip);
+  }
+}
+
 void GelFace::passTime(uint32_t t) {
   if (stopped_ && !within(t, stoppedAt_, rig::kFadeMs)) stopped_ = false, pastime_ = Pastime::kNone;
   if (playing() && !after(pastimeEnds_, t)) endPastime(t, false);
@@ -198,12 +237,12 @@ void GelFace::deal(SceneState look, uint32_t t) {
   // on the desk, so no sip, reach or refill from one. A move waits its gap.
   const bool morning = hasTag(when, "morning"), moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
   // Nor a melt in a hat, which has no head to sit on then.
-  const bool hatted = outfitFor(when) != Outfit::kNone;
+  const bool hatted = wornHat(when) != Outfit::kNone;
   // A take at work only while it types.
   const SceneState desk = e.scenes.route.state;
   const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
   for (const auto& p : kPastimes) {
-    if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
+    if (p.look != look || p.stage > growthStage(when) || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
     if (morning && (p.id == Pastime::kSip || p.id == Pastime::kReach || p.id == Pastime::kRefill)) continue;
     if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
       continue;
@@ -276,6 +315,11 @@ void GelFace::playPastime(Pastime p, uint32_t t) {
 void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
   SceneState look;
   const Pastime p = pastimeFor(name);
+  // A trick it doesn't know yet: it tries, and flops.
+  if (p != Pastime::kNone && info(p).stage > growthStage(engine_->scenes.when)) {
+    engine_->jolt(q(4), q(-6), 0, 1, kFlopMs);
+    return;
+  }
   if (p != Pastime::kNone && hasBody(info(p)) && showsLook(anim, look) &&
       (look == SceneState::kIdle || look == SceneState::kAsleep)) {
     start(info(p), look, t);
@@ -305,7 +349,7 @@ void GelFace::showKit(uint32_t t) {
   const bool working = base == SceneState::kWorking, idle = base == SceneState::kIdle;
   // The hat wins the head; and peekaboo's gesture takes it all off, as it
   // does the hat.
-  const bool head = outfitFor(when) == Outfit::kNone &&
+  const bool head = wornHat(when) == Outfit::kNone &&
                     !(e.scenes.route.state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo));
   auto show = [t](rig::Ramp& ramp, bool on) {
     if (ramp.target() != (on ? 1000 : 0)) ramp.retarget(on ? 1000 : 0, t);
@@ -362,6 +406,10 @@ void GelFace::wish(const WishShow& show) {
   if (show.pop == WishShow::kGone && wish_.pop != WishShow::kGone)
     if (const rig::Clip* c = rig::kRig.clip("wish-gone")) play(*c);
   wish_ = show;
+}
+
+void GelFace::growth(const GrowthShow& show) {
+  growth_ = show;
 }
 
 void GelFace::play(const rig::Clip& clip) {
@@ -450,6 +498,7 @@ bool GelFace::factsChanged(const FaceContext& c) const {
 void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_t t) {
   advanceTo(t);
   pace_ = context.pace;
+  alone_ = context.alone;
   Measure measure(gel::profile.sync);
   auto& e = *engine_;
   if (factsChanged(context)) {
@@ -469,6 +518,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   e.setMood(expressionFromName(moodName(context.mood)));
   bool timeout = source.look == SceneState::kNoApp;
   if (timeout != e.router.timedOut) e.linkTimedOut(timeout);
+  e.bodyWaits = context.growthWaits;
   e.setOccasion(context.when, context.lookMs);
   // The Mac's borrowed expression, else a gesture's or a notice's own face
   // while it plays. A low or cross mood keeps its own face through a
@@ -592,7 +642,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow kit = stream_ && actTakesOver(stream_->actNow(t)) ? PastimeShow{} : pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &kit, drawer_, caption, &wish_);
+             lastTick_, stream_, t, &kit, drawer_, caption, &wish_, &growth_);
   return true;
 }
 

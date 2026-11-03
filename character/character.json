@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "default_mood": "calm",
   "startup_mood": "happy",
+  "claims_a_fix": ["Fixed"],
+  "remember_word": "Hey",
   "faces": {
     "amoled206": "gel"
   },
@@ -86,7 +88,7 @@
       "id": "bored",
       "family": "settled",
       "settles": "lazy",
-      "face": "A bored face: nothing to see."
+      "face": "A bored face: nothing to see.", "face_not_for": "Most idle check-ins: they get MOOD's own face."
     },
     {
       "id": "pleased",
@@ -258,7 +260,7 @@
           "wounded"
         ]
       },
-      "face": "An annoyed face: a small failure, or poked twice in a row, a little miffed."
+      "face": "An annoyed face: a small failure, or poked twice in a row, a little miffed.", "face_not_for": "A win."
     },
     {
       "id": "irritated",
@@ -279,7 +281,7 @@
         ]
       },
       "face": "An irritated face: a turn that failed, or failures or pokes that keep coming.",
-      "face_not_for": "An agent giving up: that's sad."
+      "face_not_for": "An agent giving up: that's sad. A win."
     },
     {
       "id": "grumpy",
@@ -460,8 +462,8 @@
     },
     {
       "id": "lonely",
-      "meaning": "Rare. Missing you, only at an idle check-in after you've worked 2 hours or more without a touch or a word, or when you come back after 20 to 40 hours away.",
-      "not_for": "A finish, a check, a prompt, a heartbeat, a quiet spell with no work (that's rest: Boop dozes), a night away, days away.",
+      "meaning": "Rare. Missing you, only at an idle check-in when CONTEXT says its wish is waiting 1 h or more, or when you come back after 20 to 40 hours away.",
+      "not_for": "A finish, a check, a prompt, a heartbeat, a quiet spell (that's rest: Boop dozes), a night away, days away.",
       "family": "social",
       "moves": {
         "ordinary": [
@@ -473,8 +475,7 @@
           "happy"
         ]
       },
-      "face": "A lonely face: small, looking for you.",
-      "face_not_for": "A quiet spell or a long idle stretch on its own: Boop isn't lonely then."
+      "face": "Rare. A lonely face, only when CONTEXT says its wish is waiting 1 h or more, or you're back after 20 to 40 hours."
     },
     {
       "id": "tired",

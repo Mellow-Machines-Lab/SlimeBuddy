@@ -1,0 +1,23 @@
+{
+  "name": "Growing lifts even a cross Boop",
+  "case": "Boop is grumpy when it grows into a Sprout. It's still delighted with itself, whatever its mood: a big moment with a word and a sign, in its own cross way or not.",
+  "why": "Personality says whatever its mood.",
+  "mood": "grumpy",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "grew",
+      "at": "1m",
+      "kind": "Sprout",
+      "expect": {
+        "react": "!none",
+        "intensity": "big|huge",
+        "say": "!none",
+        "sign": "look, a sprout!|new: doodles!|new: reading!|i grew!|bigger!"
+      }
+    }
+  ]
+}

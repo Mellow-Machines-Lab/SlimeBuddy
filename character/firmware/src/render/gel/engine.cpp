@@ -42,6 +42,7 @@ void Engine::step(uint32_t ms) {
   stamped_ = true;
   cues.clear();
   elapsedMs += delta;
+  bodyChange.settle(elapsedMs);
   if (dazed_ && int32_t(dazeEnd_ - elapsedMs) <= 0) dazed_ = false;
   T dt = T::ratio(delta, 1000);
   motion.advance(dt, motion.time + dt, random);

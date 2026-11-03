@@ -1,0 +1,11 @@
+{
+  "about": "Into a work act: it looks up at what's coming, crouches and springs a little, climbing on.",
+  "ms": 650,
+  "tracks": {
+    "gazeY": [[0, 0], [120, -600], [420, -600], [650, 0]],
+    "squash": [[0, 0], [180, 110], [320, -120, "out"], [500, 50], [650, 0]],
+    "lift": [[0, 0], [180, 0], [320, 10, "out"], [500, 0, "in"], [650, 0]],
+    "eyeSize": [[0, 0], [120, 180], [420, 180], [650, 0]]
+  },
+  "cues": [[500, "body_contact"]]
+}

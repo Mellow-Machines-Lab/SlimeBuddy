@@ -4,11 +4,13 @@
 #include "render/gel/engine.h"
 #include "render/gel/act.h"
 #include "render/gel/finish.h"
+#include "render/gel/frame.h"
 #include "render/gel/geometry.h"
 #include "render/gel/layers.h"
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
 #include "render/helper.h"
+#include "render/tags.h"
 #include "slime_mesh.h"
 #include <algorithm>
 #include <array>
@@ -561,6 +563,61 @@ void applyMove(PaintControls& c, const Surface& s, const FinishPose& move) {
   c.lean = std::clamp(c.lean + move.lean, -5120, 5120);
 }
 
+BodySettings bodySettings(uint32_t when) {
+  static constexpr BodySettings kBodies[] = {kHatchlingBody, kSproutBody, kBuddyBody, kChonkBody};
+  return kBodies[growthStage(when) - 1];
+}
+Outfit wornHat(uint32_t when) {
+  const Outfit hat = outfitFor(when);
+  return hat == Outfit::kPartyHat && growthStage(when) == 2 ? Outfit::kNone : hat;
+}
+namespace {
+constexpr int easeQ(int age, int ms) {
+  const int t = age >= ms ? 4096 : 4096 * age / ms;
+  return t * t / 4096 * (3 * 4096 - 2 * t) / 4096;
+}
+BodySettings between(const BodySettings& a, const BodySettings& b, int k) {
+  return {lerp(a.size, b.size, k), lerp(a.eyes, b.eyes, k), lerp(a.squash, b.squash, k), lerp(a.mouth, b.mouth, k)};
+}
+}  // namespace
+void BodyChange::see(uint32_t when, uint32_t now) {
+  constexpr uint32_t parts = 1u << tagIndex("morning") | 1u << tagIndex("day") | 1u << tagIndex("evening") | 1u << tagIndex("night");
+  const int next = growthStage(when);
+  if (!told) {
+    stage = next;
+    to = bodySettings(when);
+    told = when & parts;
+    return;
+  }
+  if (next == stage) return;
+  from = shown(now);
+  growing = next > stage;
+  stage = next;
+  to = bodySettings(when);
+  at = now, moving = true;
+}
+BodySettings BodyChange::shown(uint32_t now) const {
+  if (!moving) return to;
+  const int age = int32_t(now - at);
+  if (!growing) return age >= kShrinkMs ? to : between(from, to, easeQ(age, kShrinkMs));
+  BodySettings drawn = from, past = to;
+  drawn.size = from.size * kGrowDraw / 4096;
+  past.size = to.size * kGrowPast / 4096;
+  if (age < kGrowGlowMs) return between(from, drawn, easeQ(age, kGrowGlowMs));
+  if (age < kGrowGlowMs + kGrowPopMs) return between(drawn, past, easeQ(age - kGrowGlowMs, kGrowPopMs));
+  const int settle = age - kGrowGlowMs - kGrowPopMs;
+  return settle >= kGrowSettleMs ? to : between(past, to, easeQ(settle, kGrowSettleMs));
+}
+int BodyChange::glow(uint32_t now) const {
+  const int age = int32_t(now - at);
+  if (!moving || !growing || age >= kGrowGlowMs + kGrowPopMs) return 0;
+  return age < kGrowGlowMs ? 255 * age / kGrowGlowMs : 255 - 255 * (age - kGrowGlowMs) / kGrowPopMs;
+}
+int BodyChange::burst(uint32_t now) const {
+  const int age = int32_t(now - at) - kGrowGlowMs;
+  if (!moving || !growing || age <= 0 || age >= kGrowPopMs + kGrowSettleMs) return 0;
+  return 255 * age / (kGrowPopMs + kGrowSettleMs);
+}
 void applyRig(PaintControls& c, const rig::Channels& rig) {
   using rig::Channel;
   const auto off = [&](Channel ch) { return rig[ch] - rig::kRest[ch]; };
@@ -616,6 +673,29 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     actMove = actPose(surface, *act);
     applyMove(c, surface, actMove);
   }
+  // The stage's body, within what a finish or an act does to it: the one
+  // scale about where it stands, and what the other's anchor moved kept as
+  // an offset, so what's drawn on the anchors follows.
+  const int finishX = c.anchorX, finishY = c.anchorY;
+  BodySettings grown = e.body();
+  // Mega Boop fills the board the same at every stage: as it puffs up it comes
+  // to Buddy's own proportions, which its zoom is laid out for.
+  if (finish.on && finish.finish == Finish::kMegaBoop && move.scale > 4096)
+    grown = between(grown, kBuddyBody, std::min(4096, (move.scale - 4096) * 4096 / kMegaPuff));
+  // A melted Chonk spreads no further than a Buddy, which is the board's width.
+  if (c.melt && grown.size > kBuddyBody.size) grown = between(grown, kBuddyBody, c.melt);
+  if (grown.size != 4096) {
+    const int standX = surface.width * 8, standY = restBodyBottom(surface.height) * 16;
+    if (c.scale != 4096) {
+      c.offsetX += int(int64_t(c.anchorX - standX) * (4096 - c.scale) / 4096);
+      c.offsetY += int(int64_t(c.anchorY - standY) * (4096 - c.scale) / 4096);
+    }
+    c.anchorX = standX, c.anchorY = standY;
+    c.scale = c.scale * grown.size / 4096;
+  }
+  c.eyeSize = c.eyeSize * grown.eyes / 4096;
+  c.mouthSize = grown.mouth;
+  c.squash = std::clamp(c.squash + grown.squash, -5407, 5407);
   const bool body = !move.minis && !actMove.away;  // it's on the screen, itself
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
@@ -654,6 +734,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     const int n = finishMinis(surface, finish.ageMs, minis);
     for (int i = 0; i < n; ++i) {
       PaintControls m = c;
+      m.anchorX = finishX, m.anchorY = finishY;
       m.offsetX = minis[i].dx16, m.offsetY = minis[i].dy16, m.scale = minis[i].scale;
       m.squash = std::clamp(c.squash + minis[i].squash, -5407, 5407);
       m.lean = std::clamp(c.lean + minis[i].lean, -5120, 5120);
@@ -668,13 +749,16 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
     if (pastimes) paintWorn(surface, *pastimes, *anchors);
+    if (!act || !act->shows()) paintSprout(surface, e, *anchors, c.scale);
+    paintGrowing(surface, e, *anchors);
   }
   if (finish.on)
     paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
   if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
   {
     Measure measure(profile.props);
-    const Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};
+    Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};
+    paws.melted = c.melt;
     paintProps(surface, e, &paws);
   }
 }

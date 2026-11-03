@@ -53,6 +53,7 @@ class GelFace final : public Face {
   // A swipe flings the dome on, and plays nothing else.
   bool playsSwipe() const override { return false; }
   bool holdsUpFinish() const override { return true; }
+  int noseDrop() const override;
   // The agents' drawer, up from the strip (render/gel/drawer.h).
   bool hasDrawer() const override { return true; }
   void drawer(const Drawer* drawer) override { drawer_ = drawer; }
@@ -86,6 +87,7 @@ class GelFace final : public Face {
   bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const char*, const SignShow&, const DoneShow&,
             const Strip&, bool) override;
   void wish(const WishShow& show) override;
+  void growth(const GrowthShow& show) override;
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
   int profile(char* out, size_t n, uint32_t frames) override;
   const Engine& engine() const { return *engine_; }
@@ -94,6 +96,9 @@ class GelFace final : public Face {
   // A pastime, from t, whoever's turn it would be (the face deals the rest
   // itself): for tests and pictures of each.
   void playPastime(Pastime p, uint32_t t);
+  // The transition playing at t, or null.
+  const rig::Clip* transition(uint32_t t) const { return transition_ && after(transitionEnds_, t) ? transition_ : nullptr; }
+  const rig::Clip* cueing() const { return cueing_; }
   bool playPastime(const char* name, uint32_t t) override;
   // What it shows of the pastimes at t: the one playing, and the kit.
   PastimeShow pastimes(uint32_t t) const;
@@ -110,6 +115,14 @@ class GelFace final : public Face {
   // What it wears, the air and the Zs, as the engine's tags and state call
   // for them (layerContents), each fading in and out.
   rig::Layers layers_;
+  // The transition playing (GelFace::showTransition), and until when, and
+  // what it last saw: it plays once on the way from one Doing to another,
+  // over what's already there, delaying nothing.
+  const rig::Clip* transition_ = nullptr;
+  uint32_t transitionEnds_ = 0;
+  SceneState lastBase_ = SceneState::kNone;
+  bool lastFullAct_ = false, alone_ = false;
+  void showTransition(uint32_t t);
   // The pastime playing, its clip on the mixer (none for a bit's or a
   // take's, which the engine plays), from when until when, and the look
   // it's for; the one stopped early, fading out from stoppedAt_; the one
@@ -205,6 +218,8 @@ class GelFace final : public Face {
   void land(CallStyle style);
   // The wish to show, the device's, set before each frame.
   WishShow wish_;
+  // The growth bar to show, the device's, set before each frame.
+  GrowthShow growth_;
   // A new revision: the sounds already queued belong to what came before.
   void restartCues();
   bool factsChanged(const FaceContext& context) const;

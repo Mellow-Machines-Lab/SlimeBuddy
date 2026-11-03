@@ -1,0 +1,22 @@
+{
+  "name": "Growing into a Sprout: it says what grew",
+  "case": "Boop has just grown into a Sprout. It's the biggest thing that happens to it: a big moment, a word aloud, and a sign that says what grew.",
+  "why": "Growing's voice is Jev's, not the rule's.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "grew",
+      "at": "1m",
+      "kind": "Sprout",
+      "expect": {
+        "react": "!none",
+        "intensity": "big|huge",
+        "say": "!none",
+        "sign": "look, a sprout!|new: doodles!|new: reading!|i grew!|bigger!"
+      }
+    }
+  ]
+}

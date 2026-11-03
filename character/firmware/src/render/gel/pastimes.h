@@ -28,6 +28,10 @@
 // its head, spread as it melts, away with it), they're where it puts them
 // (pawsFor).
 //
+// Each row has the growth stage that first knows it: nothing a pastime does is
+// useful, so nothing useful waits on one. Asked for one it doesn't know yet (a
+// reply's), a small Boop tries and flops (GelFace::reply).
+//
 // The kit stays out while its tier lasts, fading in and out on the rig's
 // fade: at work a mug on the desk (tier1; in the morning its coffee is in
 // its hand instead, so neither the mug nor a sip or refill from it), a
@@ -123,6 +127,7 @@ struct PastimeInfo {
   SceneState look;
   uint8_t tier;
   uint16_t afterS;
+  uint8_t stage;  // the growth stage that knows it, from then on (growthStage)
   const char* tag = nullptr;
   bool move = false;
 };
@@ -152,6 +157,8 @@ struct ReplyPastime {
   const char* reply;
   Pastime pastime;
 };
+// How long a small Boop's lids stay shut after it tries a trick it doesn't know.
+constexpr uint32_t kFlopMs = 700;
 constexpr ReplyPastime kReplyPastimes[] = {{"nap", Pastime::kSnuggle}, {"dance", Pastime::kDance}};
 // The pastime a reply asks for, kNone for one that asks for none.
 Pastime pastimeFor(const char* reply);
@@ -210,6 +217,7 @@ struct PastimeShow {
 // and at an opacity (0 … 255). At rest, typing as they do.
 struct Paws {
   int lift[2] = {0, 0}, dx[2] = {0, 0}, alpha[2] = {255, 255};
+  int melted = 0;  // how far it's melted, Q12 (PaintControls::melt): they fade with it, and the keyboard
 };
 Paws pawsFor(const PastimeShow& show);
 
