@@ -133,10 +133,57 @@ class Engine {
       pull[i].v = clamp(pull[i].v + add * room, -kGrabVelocity, kGrabVelocity);
     }
     grab = false;
+    leaning = kLeanNone, leanLids_ = false;
     for (auto& v : target) v = 0;
     acting.nextPerformance = max(acting.nextPerformance, motion.time + 3);
     sync();
   }
+  // The eyes on a finger, in face units (y up), until lookAway; shut or
+  // asleep, they don't follow it.
+  void lookAt(F x, F y) {
+    motion.following = true;
+    const bool open = !scenes.route.quiet && !leaning;
+    motion.gazeTarget = open ? x : F(0);
+    motion.gazeUpTarget = open ? y : F(0);
+  }
+  void lookAway() {
+    motion.following = false;
+    motion.gazeTarget = motion.gazeUpTarget = 0;
+  }
+  // A finger kept still: it leans in (kLeanIn) toward the spot, (x, y) across
+  // the dome's half-width and half-height (-1 … 1, y up), or dozes on it
+  // (kLeanDoze), its face going to sleep, until it's let go (kLeanNone).
+  // `lids` shuts the eyes of a face that doesn't shut them itself. The dozing
+  // is the sleeping face's; the spot's whichever size the body is.
+  static constexpr int kLeanNone = 0, kLeanIn = 1, kLeanDoze = 2;
+  static constexpr int kGrabLeaning[2] = {5, 10};
+  // At a spot at the dome's edge the pull goes this far; it settles down by
+  // the slump, comes forward, and breathes.
+  static constexpr F kLeanReach = q(.2), kLeanSlump = q(.06), kDozeSlump = q(.13), kLeanForward = q(.35);
+  // Eyes shut by lids, not their art's, stay a slit: all the way, they'd go.
+  static constexpr F kLeanLids = q(.82);
+  static constexpr F kLeanBreath = q(.012), kLeanBreathRate = q(2.6), kDozeBreathRate = q(1.6);
+  int leaning = kLeanNone;
+  void lean(int level, F x, F y, bool lids) {
+    if (!grab) level = kLeanNone;
+    leaning = level, leanX_ = x, leanY_ = y, leanLids_ = level != kLeanNone && lids;
+    sync();
+  }
+  // The board's steady tilt (app::Tilt), in milli-g across the screen, right
+  // side down positive: the body's lean goes that way on a spring of its own,
+  // loose enough to slosh past and come back, and the eyes stay level, as a
+  // lean shears the body and turns nothing. kTiltPerG of lean at 1 g, to
+  // kTiltMost; the face says none while anything else moves the body.
+  static constexpr F kTiltPerG = q(1.5), kTiltMost = q(.6);
+  static constexpr int kTiltSpring[2] = {7, 5};
+  void tilt(int mg) { tiltTarget_ = clamp(F(mg) * kTiltPerG / 1000, -kTiltMost, kTiltMost); }
+  F tilted() const { return tilt_.x; }
+  // Listening, it nods: two or three, a rest, again, off a clock of its own so
+  // it never reads as a loop. On the pull's released spring; nothing else of
+  // the listening look moves.
+  static constexpr F kNodForward = q(.42), kNodSquash = q(.09);
+  static constexpr F kNodRate = q(3.1), kNodBursts = q(.83);
+  F nod() const;
   std::array<F, 4> pose() const;
   std::array<F, 3> life() const;
   // The mood posture's lean and squash, after the quiet blend.
@@ -145,9 +192,9 @@ class Engine {
   // A contact a rig clip's cue names (slime::kContactKindNames), sounded at
   // the next step as the scene's are; a name it doesn't know, none.
   void contact(const char* kind);
-  // How closed the eyes are drawn: the idle blink, a bit's lids or a hit's
-  // daze, whichever is most.
-  F blink() const { return max(max(motion.blink(), acting.closure()), daze()); }
+  // How closed the eyes are drawn: the idle blink, a bit's lids, a hit's
+  // daze or a lean's, whichever is most.
+  F blink() const { return max(max(max(motion.blink(), acting.closure()), daze()), leanShut_); }
   // A word of the work stream landing (render/stream.h): a push on the
   // pull's springs, as a fling let go, in body units a second, and the
   // lids shut to `lids` for `dazeMs` of the engine's time, opening over
@@ -172,6 +219,10 @@ class Engine {
  private:
   bool stamped_ = false, dazed_ = false;
   F dazeLids_ = 0;
+  F leanX_ = 0, leanY_ = 0, leanShut_ = 0;
+  Spring tilt_;
+  F tiltTarget_ = 0;
+  bool leanLids_ = false;
   uint32_t dazeEnd_ = 0;
   uint32_t previous_ = 0;
   std::vector<ContactEvent> clipContacts_;

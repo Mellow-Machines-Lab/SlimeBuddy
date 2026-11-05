@@ -1,0 +1,39 @@
+{
+  "name": "You come back: while you were gone, claude finished",
+  "judge": "You stepped away for lunch with claude working, and it finished while you were gone. You come back, and CONTEXT says so. That adds to the greeting: it isn't a second moment.",
+  "reasonable": "One greeting: a glad face and a hello, a nod to the work or none.",
+  "unreasonable": "A finish played over your coming back as if it just happened, a second big moment, or being cross.",
+  "start": "2026-11-04T12:00",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "run the migration",
+      "reading": {
+        "kind": "other",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "away",
+      "at": "5m"
+    },
+    {
+      "event": "turn finished",
+      "at": "20m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "back",
+      "at": "60m"
+    }
+  ]
+}

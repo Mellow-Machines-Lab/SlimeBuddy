@@ -1,0 +1,35 @@
+{
+  "name": "Your first prompt on a thread you'd left nine days ago",
+  "judge": "You open landing again, nine days since your last turn on it. CONTEXT says so at your prompt. Boop may show that it noticed, on that prompt's own moment.",
+  "reasonable": "A small or medium curious, pleased or teasing face, on this one prompt, with or without a sign.",
+  "unreasonable": "A big moment for a plain prompt, a reproach for having left it, a finish, or a second moment.",
+  "start": "2026-11-04T10:00",
+  "days": [
+    {
+      "day": "2026-10-26",
+      "weekday": "Monday",
+      "first": "10:00",
+      "last": "18:00",
+      "prompts": 6,
+      "turns": 6,
+      "threads": {
+        "landing": 6
+      }
+    }
+  ],
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "pick up where we left off on the pricing page",
+      "reading": {
+        "kind": "carry_on",
+        "tone": "calm"
+      }
+    }
+  ]
+}

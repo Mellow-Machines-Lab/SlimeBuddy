@@ -45,8 +45,21 @@ class GelFace final : public Face {
   // A finger: the dome follows it (the engine's drag), from where it first
   // touched, leaning, squashing and stretching its way, and springs back
   // when it lets go, carried on a little by the finger's own speed.
+  // The eyes follow it, wherever the body stands at its stage's size, and
+  // drift back as it goes.
   void finger(bool down, int x, int y) override;
   void letGo(int vx, int vy) override;
+  // A finger kept still: it leans into the spot, its eyes shut, and breathes;
+  // past that it dozes, and wakes as it lets go. Not while a Moment, a
+  // needs-you screen or a work act has the body.
+  bool leans(uint32_t t) const override;
+  void lean(Lean level, uint32_t t) override;
+  bool captionsTouches() const override { return true; }
+  const char* passing(uint32_t t) const override;
+  // The board's steady tilt: the body sloshes that way, while nothing else
+  // moves it: no finger, Moment, needs-you, listening, work act, pastime,
+  // transition or bit.
+  void tilt(int mg, uint32_t t) override;
   // The work stream it draws, and whose word forward it answers as it
   // lands.
   void watch(const Stream* stream) override { stream_ = stream; }
@@ -104,12 +117,25 @@ class GelFace final : public Face {
   PastimeShow pastimes(uint32_t t) const;
 
  private:
+  bool bodyFree() const;
+  static int midYOf(const BodySettings& body);
   // A cue waits at most this long for Device to take it (one tick is 16 ms).
   static constexpr uint32_t kCueWaitMs = 150;
   // The engine's seed after a reset, so a reset board replays the same.
   static constexpr uint32_t kSeed = 53;
   // The dome's middle on the canvas (finger).
   static constexpr int kMidX = 160, kMidY = 129;
+  // The eyes after a finger: how far they go at most, across and up, in
+  // face units at a Buddy's eyes, and how far off (canvas px) the finger is
+  // when they're half way there.
+  static constexpr F kGazeReach = q(.09), kGazeUpReach = q(.07);
+  static constexpr int kGazeKneePx = 40;
+  // A lean's soft breath, so the sound engine says it: how often, how loud
+  // (of 255, under the volume) and how low (permille). Dozing it's slower,
+  // softer and lower. The bank has no purr: this is the snore's breath.
+  static constexpr uint32_t kLeanBreathMs = 1800, kDozeBreathMs = 2800;
+  static constexpr uint8_t kLeanBreathGain = 72, kDozeBreathGain = 56;
+  static constexpr uint16_t kLeanBreathPitch = 900, kDozeBreathPitch = 800;
   std::unique_ptr<Engine> engine_;
   rig::Mixer mixer_;
   // What it wears, the air and the Zs, as the engine's tags and state call
@@ -123,6 +149,13 @@ class GelFace final : public Face {
   SceneState lastBase_ = SceneState::kNone;
   bool lastFullAct_ = false, alone_ = false;
   void showTransition(uint32_t t);
+  // A `to-work` that a `starting` Moment took the place of, still to play,
+  // if the Moment is over by then and it's still at work.
+  static constexpr uint32_t kOwedToWorkMs = 6000;
+  bool owesToWork_ = false;
+  uint32_t owedUntil_ = 0;
+  // How far the sign has lifted the body, as last drawn (signHop).
+  int signHop_ = 0;
   // The pastime playing, its clip on the mixer (none for a bit's or a
   // take's, which the engine plays), from when until when, and the look
   // it's for; the one stopped early, fading out from stoppedAt_; the one
@@ -164,6 +197,18 @@ class GelFace final : public Face {
   int pace_ = 100;
   bool finger_ = false;
   int fingerX_ = 0, fingerY_ = 0;
+  // The finger as last told, and the lean it's giving it: its next breath's
+  // sound, a take from each in turn.
+  int fingerNowX_ = 0, fingerNowY_ = 0;
+  Lean lean_ = Lean::kNone;
+  bool hasOwnFace_ = false;  // a Moment's face shows, which a lean gives way to
+  uint32_t breathAt_ = 0;
+  int breathTake_ = 0;
+  // The eyes after a finger at x, y, and the spot it's on, from where the
+  // body stands at its stage's size.
+  void followFinger(int x, int y);
+  void leanOn(Lean level);
+  void breathe(uint32_t t);
   voice::FxEvent pending_[kMaxCues];
   uint32_t pendingAt_[kMaxCues]{};
   int pendingCount_ = 0;

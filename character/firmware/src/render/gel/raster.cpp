@@ -223,6 +223,10 @@ void Raster::composite(int y, int x0, int x1, const uint16_t* row, uint16_t ink)
   // A shape's inside is a run of whole pixels, all blended alike.
   const Blender whole(ink, shown(alpha));
   for (int x = x0; x <= x1;) {
+    if (!row[x]) {  // the gap between a ring's two sides
+      ++x;
+      continue;
+    }
     if (row[x] >= 256) {
       int end = x + 1;
       while (end <= x1 && row[end] >= 256) ++end;
@@ -332,6 +336,10 @@ void Raster::polygon16(const Point* v, int n, uint16_t ink, const Point* clip, i
   }
 }
 
+// How many columns wide a segment's box is before a row works out where on it
+// the segment really is, which costs a division or two.
+constexpr int kSlantColumns = 8;
+
 void Raster::stroke16(const Point* v, int n, int width16, uint16_t ink) {
   if (off() || n < 1 || alpha <= 2) return;
   const int radius = std::max(4, width16 / 2), outer = radius + 8;
@@ -357,8 +365,20 @@ void Raster::stroke16(const Point* v, int n, int width16, uint16_t ink) {
       const Segment& segment = segments[i];
       const Point a = segment.a, b = segment.b;
       if (cy < std::min(a.y, b.y) - outer || cy > std::max(a.y, b.y) + outer) continue;
-      const int from = std::max(x0, floor16(std::min(a.x, b.x) - outer)),
-                to = std::min(x1, floor16(std::max(a.x, b.x) + outer));
+      int from = std::max(x0, floor16(std::min(a.x, b.x) - outer)),
+          to = std::min(x1, floor16(std::max(a.x, b.x) + outer));
+      // A long slanted segment's box is mostly nowhere near it: on this row
+      // it reaches only as far as its own part within `outer` of the row (a
+      // sixteenth more each way, for the divisions' rounding).
+      if (to - from > kSlantColumns && a.y != b.y) {
+        const int dy = b.y - a.y;
+        auto along = [&](int y) {
+          return a.x + (b.x - a.x) * (std::clamp(y, std::min(a.y, b.y), std::max(a.y, b.y)) - a.y) / dy;
+        };
+        const int one = along(cy - outer), other = along(cy + outer);
+        from = std::max(from, floor16(std::min(one, other) - outer - 2));
+        to = std::min(to, floor16(std::max(one, other) + outer + 2));
+      }
       for (int x = from; x <= to; ++x) {
         if (coverage[x] >= 256) continue;
         if (n == 1 && whole2) {
@@ -680,18 +700,38 @@ void Raster::replay16(const Recording& r, int dx16, int dy16) {
   uint16_t ink = 0;
   bool gathering = false, hasAbove = false;
   const bool wholeShows = shown(255) >= 253;
-  const int wx = 16 - fx, wy = 16 - fy;
-  // Kept row y's pixel at x on the surface: the bilinear sample of its
-  // four kept pixels around it, from `lower` and `upper` (the row before).
-  auto sample = [&](uint16_t* out, int x, const uint8_t* lower, const uint8_t* upper) {
-    const int k = x - dx + 1;  // the kept column, plus one
-    const int l1 = lower[k], l0 = lower[k - 1], u1 = upper[k], u0 = upper[k - 1];
-    if (!(l1 | l0 | u1 | u0)) return;
-    const int alpha = shown(((wx * l1 + fx * l0) * wy + (wx * u1 + fx * u0) * fy + 128) >> 8);
-    if (alpha >= 253)
-      out[x] = ink;
-    else if (alpha > 2)
-      out[x] = mix565(out[x], ink, alpha);
+  // Each kept pixel's share of the sample, in 256ths.
+  const int here1 = (16 - fx) * (16 - fy), here0 = fx * (16 - fy), up1 = (16 - fx) * fy, up0 = fx * fy;
+  // Kept row y's pixels [x0, x1) on the surface: each the bilinear sample of
+  // its four kept pixels around it, from `lower` and `upper` (the row
+  // before). The most of a frame's outfit that isn't a fill: a column's
+  // right pixels are the next's left, and the ink's share is worked out once
+  // a row.
+  auto samples = [&](uint16_t* out, int x0, int x1, const uint8_t* lower, const uint8_t* upper) {
+    if (x0 >= x1) return;
+    const uint32_t inkPair = uint32_t(ink & 31) | (uint32_t(ink & 0xf800) << 5), inkGreen = (ink >> 5) & 63;
+    const uint8_t* l = lower + (x0 - dx + 1);  // at the kept column, plus one
+    const uint8_t* u = upper + (x0 - dx + 1);
+    int l0 = l[-1], u0 = u[-1];
+    for (int x = x0; x < x1; ++x, ++l, ++u) {
+      const int l1 = *l, u1 = *u;
+      const int any = l1 | l0 | u1 | u0;
+      if (any) {
+        const int alpha = shown((here1 * l1 + here0 * l0 + up1 * u1 + up0 * u0 + 128) >> 8);
+        if (alpha >= 253) {
+          out[x] = ink;
+        } else if (alpha > 2) {
+          // As mix565, with the ink's channels kept.
+          const uint32_t old = out[x], a = alpha, b = 255 - a;
+          uint32_t pair = (uint32_t(old & 31) | (uint32_t(old & 0xf800) << 5)) * b + inkPair * a + 0x00800080;
+          pair = ((pair + ((pair >> 8) & 0x00ff00ff)) >> 8) & 0x001f001f;
+          uint32_t green = ((old >> 5) & 63) * b + inkGreen * a + 128;
+          green = (green + (green >> 8)) >> 8;
+          out[x] = uint16_t((pair & 31) | ((pair >> 5) & 0xf800) | (green << 5));
+        }
+      }
+      l0 = l1, u0 = u1;
+    }
   };
   // Blends kept row y into the surface: where the four samples are all
   // wholly opaque (both rows' runs, and the column before when fx), a fill;
@@ -716,12 +756,12 @@ void Raster::replay16(const Recording& r, int dx16, int dy16) {
           ++j;
         const int runFrom = std::max(a + dx, x), runTo = std::min(b + dx, to + 1);
         if (!same || runFrom >= runTo || (v && !wholeShows)) continue;
-        for (; x < runFrom; ++x) sample(row, x, lower.alpha, upper.alpha);
+        samples(row, x, runFrom, lower.alpha, upper.alpha);
         if (v) std::fill(row + runFrom, row + runTo, ink);
         x = runTo;
       }
     }
-    for (; x <= to; ++x) sample(row, x, lower.alpha, upper.alpha);
+    samples(row, x, to + 1, lower.alpha, upper.alpha);
   };
   auto clear = [](Row* row) {
     if (row->hi >= row->lo) std::fill(row->alpha + row->lo, row->alpha + row->hi + 2, 0);

@@ -6,110 +6,110 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.002,
+      "at": 0.001,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.002,
-      "line": "{\"t\":\"do\",\"id\":246547805,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 0.001,
+      "line": "{\"t\":\"do\",\"id\":1216326539,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
-      "at": 1.011,
+      "at": 1.012,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.013,
+      "at": 1.015,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Rewrite the search index so it updates as you type”"
       }
     },
     {
-      "at": 1.336,
-      "effect": "Boop makes a curious face and says “Dai”",
-      "line": "{\"t\":\"do\",\"id\":246547806,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.borrowed.dai__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "at": 1.342,
+      "effect": "Boop makes a curious face and says “Launch”",
+      "line": "{\"t\":\"do\",\"id\":1216326540,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.launch__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
     },
     {
-      "at": 2.402,
+      "at": 2.408,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 4.535,
+      "at": 4.542,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/search/index.js"
       }
     },
     {
-      "at": 5.603,
+      "at": 5.609,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"running tests\",1]}"
     },
     {
-      "at": 8.801,
+      "at": 8.81,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"PASS\",1,\"p\"]}"
     },
     {
-      "at": 8.801,
+      "at": 8.81,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the search tests"
       }
     },
     {
-      "at": 9.124,
-      "effect": "Boop makes a hopeful face and says “Testing”",
-      "line": "{\"t\":\"do\",\"id\":246547807,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.test.testing__determined__contained\"},\"mood\":\"hopeful\",\"loops\":2}}"
+      "at": 9.133,
+      "effect": "Boop makes a hopeful face and says “Probe”",
+      "line": "{\"t\":\"do\",\"id\":1216326541,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass\",\"say\":{\"take\":\"phase1.word.test.probe__determined__contained\"},\"mood\":\"hopeful\",\"loops\":2}}"
     },
     {
-      "at": 9.125,
+      "at": 9.135,
       "effect": "Boop's mood is now engaged",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"engaged\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"PASS\",1,\"p\"]}"
     },
     {
-      "at": 10.189,
+      "at": 10.199,
       "cause": {
         "kind": "wait",
         "text": "Sixteen minutes in: the fifth tier"
       }
     },
     {
-      "at": 10.19,
+      "at": 10.2,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"engaged\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"],\"calls\":[[0,2,\"npm test\"]]}"
     },
     {
-      "at": 12.962,
+      "at": 12.973,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"engaged\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 12.962,
-      "line": "{\"t\":\"do\",\"id\":246547808,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.973,
+      "line": "{\"t\":\"do\",\"id\":1216326542,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.963,
+      "at": 12.974,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 13.285,
-      "effect": "Boop celebrates and says “Oh yeah”",
-      "line": "{\"t\":\"do\",\"id\":246547809,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":5,\"who\":{\"agent\":\"claude\",\"thread\":\"the-new-search-index\"},\"say\":{\"take\":\"phase1.phrase.celebrate.oh-yeah__excited__contained\"},\"mood\":\"excited\",\"loops\":4}}"
+      "at": 13.296,
+      "effect": "Boop celebrates and says “Winner winner”",
+      "line": "{\"t\":\"do\",\"id\":1216326543,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":5,\"who\":{\"agent\":\"claude\",\"thread\":\"the-new-search-index\"},\"say\":{\"take\":\"phase1.phrase.celebrate.winner-winner__excited__contained\"},\"mood\":\"excited\",\"loops\":4}}"
     },
     {
-      "at": 13.286,
+      "at": 13.297,
       "effect": "Boop's mood is now excited",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"excited\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 19.68,
+  "length": 19.7,
   "name": "Boop",
   "script": "7eb9d580e3b639d1ce62a56185a10cd8c1d5484c28d9446ebab8886198ac93ee",
   "takes": [
-    "phase1.borrowed.dai__curious__contained",
-    "phase1.word.test.testing__determined__contained",
-    "phase1.phrase.celebrate.oh-yeah__excited__contained"
+    "phase1.word.begin.launch__curious__contained",
+    "phase1.word.test.probe__determined__contained",
+    "phase1.phrase.celebrate.winner-winner__excited__contained"
   ],
   "version": 1
 }

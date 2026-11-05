@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-02. What checks the gel slime, and which rule each check
+Updated 2026-11-04. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -81,6 +81,18 @@ ramps and springs can, and no jolt at an event. By file:
   moment, the look), a request's identity, cues sparse and quiet, a
   request sounding once whatever changes, and sound's randomness changing
   nothing drawn.
+- `test_hand.cpp`: your hand on the whole board, the device with the gel's
+  face. A finger: the eyes following it and a drag at every stage's size; at
+  rest the lean, then the doze, and lifting it
+  (`test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes`,
+  `test_lifting_a_doze_wakes_it_with_a_start`), which allocates nothing. What
+  a hold leaves alone: a short one stays a tap, a stroke and a tickle stay
+  theirs, the needs-you screen's only dismisses, the strip's is the drawer's,
+  a finish's and an ask's keep their touches. What ends a lean: a needs-you,
+  listening, a Moment. Its breath minding the volume, and a touch saying why
+  itself, with the Mac's reason not doubling it. Tilt: the slosh and how it
+  settles, giving way to whatever else moves the body, with no allocation.
+  And the listening nod.
 - `test_main.cpp`: the rest: arithmetic (a `Divisor`'s quotients exactly
   `/`'s), the binary64 clock's rounding, every expression's bounds,
   deterministic pixels, the body's outline soft with no seam inside, over
@@ -161,7 +173,7 @@ ramps and springs can, and no jolt at an event. By file:
   clearing and kept cards and lanes matching a fresh frame, a finished
   turn's low sign and glow coming and going over them, a word falling over
   a kept card not staying in it
-  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
+  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), an act's still part kept the same (`test_a_kept_act_matches_a_fresh_frame`), steady frames
   allocating nothing, and the work stream
   (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
   lanes' columns behind the body, a hit's knock and daze and its lids

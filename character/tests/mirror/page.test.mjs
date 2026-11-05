@@ -187,6 +187,24 @@ test("a snapshot is a frozen board's frame, and says what it shows", async () =>
   assert.deepEqual({...shows}, {screen: 'needs_you', base: 'idle', act: null, mood: 'proud'});
 });
 
+// The popover's words for what the face is doing come from here, by a name
+// mac/passing.tsv has: none at first, then a pastime dealt within its rest.
+test('says what its face is doing to pass the time, by a name the pack has words for', async () => {
+  const p = await page();
+  const known = new Set(fs.readFileSync(new URL('../passing.tsv', mirror), 'utf8').split('\n')
+    .filter(l => l && !l.startsWith('#')).map(l => l.split('\t')[1]));
+  await p.mirror.send('{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"when":["tier3"]}');
+  p.mirror.shown(true);
+  const seen = new Set();
+  for (let i = 0; i < 40; i++) {
+    p.run(1, 20);
+    const now = p.mirror.passing();
+    if (now) seen.add(now);
+  }
+  assert.ok(seen.size > 0, 'a pastime in 40 s');
+  for (const name of seen) assert.ok(known.has(name), name);
+});
+
 test('makes no sound, and nothing it says leaves the page', () => {
   const html = read('index.html'), script = read('mirror.js');
   for (const rule of ["connect-src 'none'", "media-src 'none'", "script-src 'self' 'wasm-unsafe-eval'"]) assert.ok(html.includes(rule), rule);

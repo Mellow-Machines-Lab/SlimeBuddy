@@ -6,12 +6,12 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
+      "at": 0,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
-      "line": "{\"t\":\"do\",\"id\":142118189,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 0,
+      "line": "{\"t\":\"do\",\"id\":1913452791,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
       "at": 1.008,
@@ -25,114 +25,114 @@
       }
     },
     {
-      "at": 1.332,
-      "effect": "Boop makes a calm face and says “Rolling”",
-      "line": "{\"t\":\"do\",\"id\":142118190,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.begin.rolling__calm__contained\"},\"mood\":\"calm\",\"loops\":2}}"
+      "at": 1.334,
+      "effect": "Boop makes a calm face and says “Launch”",
+      "line": "{\"t\":\"do\",\"id\":1913452792,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.launch__calm__contained\"},\"mood\":\"calm\",\"loops\":2}}"
     },
     {
-      "at": 2.398,
+      "at": 2.401,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"running tests\",1]}"
     },
     {
-      "at": 4.538,
+      "at": 4.535,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"FAIL\",1,\"f\"]}"
     },
     {
-      "at": 4.538,
+      "at": 4.535,
       "cause": {
         "kind": "tool_failed",
         "text": "Claude: run the checkout tests, and it fails"
       }
     },
     {
-      "at": 4.859,
-      "effect": "Boop makes an annoyed face and says “Grr...”",
-      "line": "{\"t\":\"do\",\"id\":142118191,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.nonverbal.frustration.grr__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
+      "at": 4.856,
+      "effect": "Boop makes an annoyed face and says “Argh”",
+      "line": "{\"t\":\"do\",\"id\":1913452793,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.nonverbal.frustration.argh__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
     },
     {
-      "at": 4.86,
+      "at": 4.856,
       "effect": "Boop's mood is now annoyed",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"FAIL\",1,\"f\"]}"
     },
     {
-      "at": 5.928,
+      "at": 5.924,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"FAIL\",1,\"f\"]}"
     },
     {
-      "at": 6.568,
+      "at": 6.563,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"FAIL\",1,\"f\"]}"
     },
     {
-      "at": 6.568,
+      "at": 6.563,
       "cause": {
         "kind": "tool",
         "text": "Claude edits test/checkout.test.js"
       }
     },
     {
-      "at": 7.635,
+      "at": 7.63,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"npm test\"]],\"wact\":[\"tests\",\"running tests\",0]}"
     },
     {
-      "at": 9.774,
+      "at": 9.764,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"npm test\"]],\"wact\":[\"tests\",\"FAIL\",0,\"f\"]}"
     },
     {
-      "at": 9.775,
+      "at": 9.764,
       "cause": {
         "kind": "tool_failed",
         "text": "Failed again"
       }
     },
     {
-      "at": 10.095,
-      "effect": "Boop makes a determined face and says “Failed”",
-      "line": "{\"t\":\"do\",\"id\":142118192,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.setback.failed__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
+      "at": 10.085,
+      "effect": "Boop makes a determined face and says “Oops”",
+      "line": "{\"t\":\"do\",\"id\":1913452794,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.word.setback.oops__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
     },
     {
-      "at": 10.096,
+      "at": 10.086,
       "effect": "Boop's mood is now determined",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"npm test\"]],\"wact\":[\"tests\",\"FAIL\",0,\"f\"]}"
     },
     {
-      "at": 12.008,
+      "at": 12.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"npm test\"]],\"wact\":[\"tests\",\"FAIL\",0,\"f\"]}"
     },
     {
-      "at": 12.87,
+      "at": 12.859,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"determined\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 12.87,
-      "line": "{\"t\":\"do\",\"id\":142118193,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.859,
+      "line": "{\"t\":\"do\",\"id\":1913452795,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.87,
+      "at": 12.859,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 13.193,
-      "effect": "Boop slumps and says “Shit”",
-      "line": "{\"t\":\"do\",\"id\":142118194,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"failure\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-flaky-checkout-test\"},\"say\":{\"take\":\"previous.shit\"},\"mood\":\"grumpy\",\"loops\":2}}"
+      "at": 13.182,
+      "effect": "Boop slumps and says “Crap”",
+      "line": "{\"t\":\"do\",\"id\":1913452796,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"failure\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-flaky-checkout-test\"},\"say\":{\"take\":\"phase1.explicit.crap__grumpy__contained\"},\"mood\":\"grumpy\",\"loops\":2}}"
     },
     {
-      "at": 13.194,
+      "at": 13.183,
       "effect": "Boop's mood is now grumpy",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"grumpy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 19.59,
+  "length": 19.58,
   "name": "Boop",
   "script": "3c46eb0a25c4105516f4e5005820a5e8532cf3b77eeea9cbcbbf264f3fd1c821",
   "takes": [
-    "phase1.word.begin.rolling__calm__contained",
-    "phase1.nonverbal.frustration.grr__annoyed__contained",
-    "phase1.word.setback.failed__determined__contained",
-    "previous.shit"
+    "phase1.word.begin.launch__calm__contained",
+    "phase1.nonverbal.frustration.argh__annoyed__contained",
+    "phase1.word.setback.oops__determined__contained",
+    "phase1.explicit.crap__grumpy__contained"
   ],
   "version": 1
 }

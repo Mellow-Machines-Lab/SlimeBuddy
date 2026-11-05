@@ -1,4 +1,4 @@
-<!-- Boop's signs: what it may hold up on a sign when it reacts to your prompt (Signs, the react.sign question), and, tagged [idle], its idle musings: held up now and then at an idle check-in, at most once an hour, never on Quiet, asking nothing; {turns} is today's turns and {thread} the busiest thread, and a line may need a kept answer's tag ([cookie]). A line may start with tags in brackets, every one of which the prompt's reading must have: its kind (fix, feature, cleanup, refactor, tests, deploy, docs, question, carry_on, other), its tone (calm, frustrated, rushed, polite, playful, shouting, careful), its length (words, sentence, paragraph, essay), named (you said its name, the one you gave it), and the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9). {words} is one of your phrases as you wrote it, {WORDS} the same in capitals: such a line is offered once for each. Your words come first, at most three, then tagged captions, then the rest; at most six, each at most 18 characters, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
+<!-- Boop's signs: what it may hold up on a sign when it reacts to your prompt (Signs, the react.sign question), and, tagged [idle], its idle musings: held up now and then at an idle check-in, at most once an hour, never on Quiet, asking nothing; {turns} is today's turns and {thread} the busiest thread, and a line may need a kept answer's tag ([cookie]). Tagged [notice waiting], [notice stretch], [notice rough] or [notice late], what it may hold up for something it noticed (Notices): at an idle check-in, by name, {agent} being the agent's name. A line may start with tags in brackets, every one of which the prompt's reading must have: its kind (fix, feature, cleanup, refactor, tests, deploy, docs, question, carry_on, other), its tone (calm, frustrated, rushed, polite, playful, shouting, careful), its length (words, sentence, paragraph, essay), named (you said its name, the one you gave it), and the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9). {words} is one of your phrases as you wrote it, {WORDS} the same in capitals: such a line is offered once for each. Your words come first, at most three, then tagged captions, then the rest; at most six, each at most 18 characters, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
 - [frustrated] {words} :(
 - [frustrated] {words}?!
 - [frustrated] {words}. again.
@@ -35,6 +35,18 @@
 - [idle] still here, u?
 - [idle cookie] snack time?
 - [idle pizza] pizza later?
+- [notice waiting] {agent}'s waiting
+- [notice waiting] {agent} sits idle
+- [notice waiting] {agent}'s done
+- [notice stretch] stretch?
+- [notice stretch] legs ok?
+- [notice stretch] water break?
+- [notice rough] i'm here
+- [notice rough] *hug*
+- [notice rough] rough one
+- [notice late] bed?
+- [notice late] still up?
+- [notice late] getting late...
 - [grew sprout] look, a sprout!
 - [grew sprout] new: doodles!
 - [grew sprout] new: reading!

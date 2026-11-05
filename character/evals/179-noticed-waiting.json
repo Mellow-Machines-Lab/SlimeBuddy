@@ -1,0 +1,39 @@
+{
+  "name": "Quiet check-in: claude has sat idle a while, and Boop may notice",
+  "judge": "Today's wish is met. Claude finished on landing 20 minutes ago and has sat idle since; you're at the Mac. CONTEXT notices it. Boop may let it show, mostly in a face; now and then a sign that says so.",
+  "reasonable": "A small face, with or without a sign that claude's waiting. Nothing but a small face is fine too.",
+  "unreasonable": "A big moment, a word that scolds, a sign that tells you what to do, or a finish.",
+  "start": "2026-11-04T14:00",
+  "wish_today": "met",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "tidy the readme",
+      "reading": {
+        "kind": "docs",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "3m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "35m",
+      "brain": {
+        "react.sign": "claude's waiting"
+      }
+    }
+  ]
+}

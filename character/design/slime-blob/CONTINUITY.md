@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-03. The slime's one engine is the C++ in
+Updated 2026-11-04. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -664,6 +664,29 @@ draws its own face (`> <`, pink cheeks, a wobbly mouth), and once it has
 sprung open a paw drops over the sheet's edge. Shut again, it stands
 back up as it was. `tests/scenarios-gel/drawer.jsonl` pulls it.
 
+## A finger at rest
+
+While a finger is down the eyes go toward it (`GelFace::finger`,
+`Motion::gazeTarget`, `gazeUpTarget`): measured from where the eyes are at the
+stage's height, by the eyes' size, half way there at 40 canvas px off and never
+past `kGazeReach`. They don't follow with the eyes shut or asleep. When it
+goes, they drift back at the wander's rate, and the wander's dice go on as
+before under a finger.
+
+A finger at rest a second (`app::TouchGesture`'s `kLeanMs`, staying inside 16 px
+each way) leans the body in: the pull's target is toward the spot in the body's
+own half-widths, so at any size a finger on its edge pulls as far, up to
+`kLeanReach`, on a slow spring (`kGrabLeaning`), forward, slumped, and
+breathing. It wears a stroke's shut eyes, or, in a mood that keeps its face
+through a touch, its own eyes under lids (`kLeanLids`). Past `kDozeMs` (5 s) it
+slumps further under the sleeping face. Lifting wakes it, with a small start up
+if it dozed. A Moment, the needs-you screen, a finish, listening or a work act
+takes the body from it at once, and the finger drags as any finger does.
+
+The bank has no purr. A lean's sound is the snore's soft `breath` (every 1.8 s,
+gain 72/255, pitch 0.9; dozing every 2.8 s, 56/255, 0.8), through the same queue
+as the contacts, at the state's volume, and none at 0 or face down.
+
 ## Notice
 
 The brain's Moment when you name it in your prompt: it heard its name and
@@ -951,7 +974,9 @@ shakes as the prop goes), and `to-sleep` (a slow stretch with its eyes shutting,
 and it settles). Each is half a second to a second, on the body only, over the
 new look, which has already come, so it delays nothing. A reaction, a needs-you,
 a finger or a word forward cuts through it, and with one of those up, or the Mac
-gone, it doesn't start. The mouth is one size of "o", so `to-sleep`'s yawn is
+gone, it doesn't start. Only `to-work` waits: a turn's start comes with its
+`starting` Moment, so it's owed until the Moment is over, for 6 s at most, if it's
+still at work. The mouth is one size of "o", so `to-sleep`'s yawn is
 more stretch than mouth.
 
 ### The work stream (the board's)

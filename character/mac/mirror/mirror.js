@@ -177,6 +177,12 @@
       if (!powered) power(state);
       debug(button ? PRESS : TAP);
     },
+    // What the face is doing to pass the time, by its row in ../passing.tsv.
+    passing() {
+      if (!powered || still) return null;
+      const at = core._mirror_passing();
+      return at ? core.UTF8ToString(at) : null;
+    },
     // Shown again, it draws where the board is now at once, not the
     // frame it last drew before it was hidden.
     shown(on) {

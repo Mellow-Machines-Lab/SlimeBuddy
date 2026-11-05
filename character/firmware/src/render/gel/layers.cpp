@@ -136,6 +136,7 @@ void partyHat(Raster& r, const Head& h, uint16_t a, uint16_t b) {
   r.disk16(tip.x, tip.y, w / 16, b);
 }
 
+constexpr int kWitchTallMost = 80 * 16;
 void witchHat(Raster& r, const Head& h) {
   const int w = h.width;
   const uint16_t felt = rgb565(52, 34, 70);
@@ -145,9 +146,11 @@ void witchHat(Raster& r, const Head& h) {
   Point v[16];
   int n = 0;
   for (int i = 1; i < 8; ++i) v[n++] = {h.cx + (h.band[i].x - h.cx) * 3 / 4, h.band[i].y};
-  v[n++] = {h.cx + w / 6, h.top - w * 7 / 20};
-  v[n++] = {h.cx + w * 2 / 5, h.top - w * 3 / 5};  // the bent tip
-  v[n++] = {h.cx - w / 20, h.top - w * 3 / 10};
+  // A big head's stops short of the screen's top, so the tip stays on it.
+  const int tall = std::min(w * 3 / 5, kWitchTallMost);
+  v[n++] = {h.cx + w / 6, h.top - tall * 7 / 12};
+  v[n++] = {h.cx + w * 2 / 5, h.top - tall};  // the bent tip
+  v[n++] = {h.cx - w / 20, h.top - tall / 2};
   r.polygon16(v, n, felt);
   Point band[7];
   for (int i = 0; i < 7; ++i) band[i] = {v[i].x, v[i].y - w / 14};
@@ -337,24 +340,29 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
 struct Behind {
   Surface& s;
   int fade, bottom = s.height * 4 / 5;
-  int x0 = s.width, y0 = bottom, x1 = -1, y1 = -1;
-  void dot(int x, int y, uint16_t ink, int alpha) {
-    if (x < 0 || y < 0 || x >= s.width || y >= bottom || alpha * fade < 255 * 3) return;
+  bool plot(int x, int y, uint16_t ink, int alpha) {
+    if (x < 0 || y < 0 || x >= s.width || y >= bottom || alpha * fade < 255 * 3) return false;
     uint16_t& p = s.pixels[y * s.width + x];
-    if (p) return;
+    if (p) return false;
     p = mix565(0, ink, alpha * fade / 255);
-    x0 = std::min(x0, x), x1 = std::max(x1, x), y0 = std::min(y0, y), y1 = std::max(y1, y);
+    return true;
+  }
+  void dot(int x, int y, uint16_t ink, int alpha) {
+    if (plot(x, y, ink, alpha)) s.touch(x, y, x + 1, y + 1);  // its own row's span, so a star far off widens only its row
   }
   // Each pixel in the box (sixteenths) at `cover`'s coverage of its middle,
   // 0 … 256.
   template <typename Cover>
   void fill(int bx0, int by0, int bx1, int by1, uint16_t ink, Cover cover) {
-    for (int y = by0 / 16; y <= by1 / 16; ++y)
+    for (int y = by0 / 16; y <= by1 / 16; ++y) {
+      int first = -1, last = -1;
       for (int x = bx0 / 16; x <= bx1 / 16; ++x)
-        if (const int a = cover(x * 16 + 8, y * 16 + 8)) dot(x, y, ink, a * 255 / 256);
-  }
-  ~Behind() {
-    if (x1 >= 0) s.touch(x0, y0, x1 + 1, y1 + 1);
+        if (const int a = cover(x * 16 + 8, y * 16 + 8); a && plot(x, y, ink, a * 255 / 256)) {
+          if (first < 0) first = x;
+          last = x;
+        }
+      if (first >= 0) s.touch(first, y, last + 1, y + 1);
+    }
   }
 };
 // How far inside a circle about the origin a point is, as coverage: 0 … 16.
@@ -855,7 +863,8 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
     const Point centre = wishCentre(s, at), from{centre.x, centre.y - 6};  // where its heart sat
     const auto along = [&](int k, int& px, int& py) {
       const int e = k * k / 1000, q = 1000 - e;
-      const int midX = (from.x + tip) / 2 + 46, midY = std::max(kTop + 30, from.y - 34);
+      // Over anything under the bar (a LISTENING word), along its row.
+      const int midX = from.x + 60, midY = cy;
       px = (q * q / 1000 * from.x + 2 * q * e / 1000 * midX + e * e / 1000 * tip) / 1000;
       py = (q * q / 1000 * from.y + 2 * q * e / 1000 * midY + e * e / 1000 * cy) / 1000;
     };

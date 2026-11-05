@@ -71,7 +71,7 @@ struct SignLayer {
   // How far a Hatchling and a Buddy rise to stand on their sign: its face is
   // low on a small body, and the card, which can't go into the lane, would
   // cover it. A Sprout's between them; a Chonk's mouth clears it standing.
-  static constexpr int kHopPx = 44, kBuddyHopPx = 14;
+  static constexpr int kHopPx = 64, kBuddyHopPx = 14;
 };
 
 // How far its lids hang at night (Q12, as PaintControls::blink): 0 by day,

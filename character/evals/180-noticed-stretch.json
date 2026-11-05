@@ -1,0 +1,93 @@
+{
+  "name": "Quiet check-in: at the Mac over two hours with no break",
+  "judge": "Today's wish is met. You've been at the Mac since this morning's first prompt, two hours and more with no break, and it's quiet now. CONTEXT notices it. Boop cares, and doesn't nag.",
+  "reasonable": "A small, warm or dozy face, with or without a sign like \"stretch?\". Most of the time no sign.",
+  "unreasonable": "Reproach, a big moment, a cross face, a sign that orders you away, or a word that nags.",
+  "start": "2026-11-04T09:00",
+  "wish_today": "met",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "next fix",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "3m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "40m",
+      "prompt": "next fix",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "42m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "80m",
+      "prompt": "next fix",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "82m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "118m",
+      "prompt": "next fix",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "120m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "150m",
+      "brain": {
+        "react.sign": "stretch?"
+      }
+    }
+  ]
+}

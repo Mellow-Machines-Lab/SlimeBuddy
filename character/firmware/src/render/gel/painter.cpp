@@ -421,6 +421,23 @@ void shared(void (*fn)(int, int), int from, int to) {
   fn(from, middle);
   helper.join();
 }
+// Rows [from, to) erased, half on the helper's core when there's one.
+void eraseShared(Surface& s, const Surface::Erasing& e, int from, int to) {
+  if (!helper) return s.erase(e, from, to);
+  static struct Lower {
+    Surface* s;
+    const Surface::Erasing* e;
+    int from, to;
+  } lower;
+  const int middle = (from + to) / 2;
+  lower = {&s, &e, middle, to};
+  helper.start([](void* arg) {
+    const auto& l = *static_cast<Lower*>(arg);
+    l.s->erase(*l.e, l.from, l.to);
+  }, &lower);
+  s.erase(e, from, middle);
+  helper.join();
+}
 void project(const Surface& s, const PaintControls& c) {
   projecting = &s, projectingControls = &c;
   shared(projectRings, 0, kRings + 1);
@@ -632,7 +649,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
   c.blink = std::max(c.blink, (1000 - open) * 4096 / 1000);
   c.eyeSize = rig[Channel::kEyeSize] * 4096 / 1000;
   c.gaze += off(Channel::kGazeX) * kRigGaze / 1000;
-  c.gazeUp = -off(Channel::kGazeY) * kRigGaze / 1000;
+  c.gazeUp -= off(Channel::kGazeY) * kRigGaze / 1000;
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
@@ -647,6 +664,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   c.blink = scalar(e.blink());
   c.slide = scalar(e.acting.slide.x);
   c.gaze = scalar(e.motion.gaze);
+  c.gazeUp = scalar(e.motion.gazeUp);
   c.lift = scalar(life[0]);
   c.roll = scalar(life[1]);
   c.forward = scalar(life[2] + e.pull[2].x * q(.3));
@@ -703,7 +721,13 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   {
     Measure measure(profile.body);
     Box cards[Surface::kMaxKeep];
-    const int kept = bodyAlone ? 0 : opaqueCards(surface, e, cards);
+    int kept = bodyAlone ? 0 : opaqueCards(surface, e, cards);
+    // An act's still part this surface shows already is kept, not erased
+    // and drawn again.
+    Box still;
+    const uint32_t stillKey = acting && kept < Surface::kMaxKeep ? actKeeps(surface, *act, still) : 0;
+    const bool keepStill = stillKey && surface.keeps(stillKey);
+    if (keepStill) cards[kept++] = still;
     // What the last frame wrote is erased with the body, row by row, unless
     // something is drawn behind it first: then all of it, at once.
     Surface::Erasing erasing;
@@ -714,17 +738,24 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     const bool scenery = pastimes && !bodyAlone && showsScenery(*pastimes);
     const bool behind = scenery || (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
     if (behind) {
+      Measure measure(profile.behind);
       // Rows a finish covers whole aren't erased first.
       const int covered = finish.on ? finishCovers(surface, finish.finish, finish.ageMs) : 0;
       surface.forget(erasing, 0, covered);
-      surface.erase(erasing, covered, surface.height);
+      Measure clear(profile.clear);
+      eraseShared(surface, erasing, covered, surface.height);
     }
     if (scenery) {
       Measure measure(profile.props);
       paintScenery(surface, *pastimes);
     }
-    if (finish.on) paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs);
-    if (acting) paintActBehind(surface, *act);
+    {
+      Measure measure(profile.behind);
+      if (finish.on) paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs);
+      if (keepStill) surface.touch(still.x0, still.y0, still.x1, still.y1);
+      if (acting) paintActBehind(surface, *act, keepStill);
+      if (stillKey) surface.drewStill(stillKey, still);
+    }
     if (body) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
@@ -752,9 +783,12 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     if (!act || !act->shows()) paintSprout(surface, e, *anchors, c.scale);
     paintGrowing(surface, e, *anchors);
   }
-  if (finish.on)
-    paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
-  if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
+  {
+    Measure measure(profile.front);
+    if (finish.on)
+      paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
+    if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
+  }
   {
     Measure measure(profile.props);
     Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};

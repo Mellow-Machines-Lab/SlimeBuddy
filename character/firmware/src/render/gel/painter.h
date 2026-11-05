@@ -49,9 +49,12 @@ Outfit wornHat(uint32_t when);
 // How far the nose sinks at these settings, on the canvas's 240 rows: it
 // stands this far above where the body stands at Buddy's height.
 constexpr int kNoseOverDesk = 54;
-constexpr int noseDropFor(const BodySettings& b) {
-  return kNoseOverDesk - kNoseOverDesk * (b.size * (4096 + b.squash * 2130 / 4096) / 4096) / 4096;
-}
+// How tall it stands at these settings, Q12 of Buddy's.
+constexpr int heightOf(const BodySettings& b) { return b.size * (4096 + b.squash * 2130 / 4096) / 4096; }
+constexpr int noseDropFor(const BodySettings& b) { return kNoseOverDesk - kNoseOverDesk * heightOf(b) / 4096; }
+// The canvas row the body stands on (restBodyBottom), and how far above it
+// its eyes are, at Buddy's height.
+constexpr int kDeskRow = 188, kEyesOverDesk = 50;
 // Changing stage. Growing: it glows and draws in, pops past its new size and
 // settles. Shrinking: it sinks, with no show. The first tags it's told only
 // say what it is: it isn't growing up every time the Mac connects. A

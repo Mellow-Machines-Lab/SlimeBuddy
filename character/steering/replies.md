@@ -27,6 +27,7 @@
 - [bye] see ya!
 - [bye] {words} 2 u!
 - [bye night] nite nite
+- [bye night] {turns} turns today
 - [bye working] i got this
 - [thanks] i know ;)
 - [thanks] hehe thx

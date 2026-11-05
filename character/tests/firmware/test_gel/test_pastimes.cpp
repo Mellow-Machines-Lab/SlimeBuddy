@@ -115,6 +115,46 @@ void test_transitions_play_between_doings_and_anything_urgent_cuts_through() {
   TEST_ASSERT_NULL(b.face().transition(b.t));
 }
 
+// A turn's start comes with its `starting`, which would cut nearly every
+// `to-work`: that one waits for the Moment, and plays only if it's still at work.
+void test_to_work_waits_for_a_turns_starting() {
+  const rig::Clip* toWork = rig::kRig.clip("to-work");
+  for (bool stateFirst : {true, false}) {
+    Board b(SceneState::kIdle, 0);
+    b.to(2000);
+    auto starting = [&] {
+      app::ReactionIn in;
+      in.anim = SceneState::kStarting;
+      in.id = 9;
+      b.b.play(in, b.t);
+    };
+    if (!stateFirst) starting();
+    b.m.base = SceneState::kWorking;
+    b.b.onState(b.m, b.t);
+    if (stateFirst) b.to(b.t + 32), starting();
+    b.to(b.t + 32);
+    TEST_ASSERT_NULL(b.face().transition(b.t));
+    bool played = false;
+    b.to(b.t + 5900, [&] { played = played || b.face().transition(b.t) == toWork; });
+    TEST_ASSERT_TRUE_MESSAGE(played, stateFirst ? "the state first" : "the Moment first");
+  }
+  // At rest again by the time it's over: nothing's owed.
+  Board b(SceneState::kIdle, 0);
+  b.to(2000);
+  app::ReactionIn in;
+  in.anim = SceneState::kStarting;
+  in.id = 9;
+  b.b.play(in, b.t);
+  b.m.base = SceneState::kWorking;
+  b.b.onState(b.m, b.t);
+  b.to(b.t + 32);
+  b.m.base = SceneState::kIdle;
+  b.b.onState(b.m, b.t);
+  bool played = false;
+  b.to(b.t + 6000, [&] { played = played || b.face().transition(b.t) == toWork; });
+  TEST_ASSERT_FALSE(played);
+}
+
 void test_every_pastime_has_its_clip_and_its_turn() {
   int count[2][6] = {};
   for (int i = 0; i < kPastimeCount; ++i) {

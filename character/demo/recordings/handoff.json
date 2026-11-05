@@ -6,130 +6,130 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
+      "at": 0,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
       "at": 0.001,
-      "line": "{\"t\":\"do\",\"id\":1524233850,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
-    },
-    {
-      "at": 1.007,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"do\",\"id\":1621003552,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
       "at": 1.008,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
+    },
+    {
+      "at": 1.01,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Tidy the settings page”"
       }
     },
     {
-      "at": 2.075,
+      "at": 2.078,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.075,
-      "line": "{\"t\":\"do\",\"id\":1524233851,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 2.078,
+      "line": "{\"t\":\"do\",\"id\":1621003553,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
-      "at": 2.076,
+      "at": 2.079,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.076,
+      "at": 2.08,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Write the changelog for 2.4”"
       }
     },
     {
-      "at": 3.141,
+      "at": 3.147,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 3.141,
-      "line": "{\"t\":\"do\",\"id\":1524233852,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "at": 3.147,
+      "line": "{\"t\":\"do\",\"id\":1621003554,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
-      "at": 3.142,
+      "at": 3.148,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 3.142,
+      "at": 3.149,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Find why the build is slow”"
       }
     },
     {
-      "at": 4.208,
+      "at": 4.216,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 6.342,
+      "at": 6.348,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/settings.js"
       }
     },
     {
-      "at": 8.006,
+      "at": 8.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 8.045,
+      "at": 8.054,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 8.045,
-      "line": "{\"t\":\"do\",\"id\":1524233853,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 8.054,
+      "line": "{\"t\":\"do\",\"id\":1621003555,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 8.045,
+      "at": 8.055,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 8.368,
-      "effect": "Boop celebrates and says “Nice”",
-      "line": "{\"t\":\"do\",\"id\":1524233854,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off\"},\"say\":{\"take\":\"phase1.word.celebrate.nice__happy__contained\"},\"mood\":\"pleased\",\"loops\":2}}"
+      "at": 8.38,
+      "effect": "Boop celebrates and says “Mwahaha... Yatta”",
+      "line": "{\"t\":\"do\",\"id\":1621003556,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off\"},\"say\":{\"take\":\"phase1.nonverbal.delight.mwahaha__happy__contained\",\"then\":\"previous.yatta\"},\"mood\":\"pleased\",\"loops\":2}}"
     },
     {
-      "at": 9.436,
+      "at": 9.448,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +4\"]]}"
     },
     {
-      "at": 11.569,
+      "at": 11.582,
       "cause": {
         "kind": "tool",
         "text": "Claude edits CHANGELOG.md"
       }
     },
     {
-      "at": 13.274,
+      "at": 13.285,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.274,
-      "line": "{\"t\":\"do\",\"id\":1524233855,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 13.285,
+      "line": "{\"t\":\"do\",\"id\":1621003557,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 13.274,
+      "at": 13.286,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 13.597,
-      "effect": "Boop celebrates and says “Eureka”",
-      "line": "{\"t\":\"do\",\"id\":1524233856,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-notes\"},\"say\":{\"take\":\"phase1.borrowed.eureka__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
+      "at": 13.607,
+      "effect": "Boop celebrates and says “Heh... Bravo”",
+      "line": "{\"t\":\"do\",\"id\":1621003558,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-notes\"},\"say\":{\"take\":\"previous.heh\",\"then\":\"phase1.word.celebrate.bravo__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
     },
     {
-      "at": 15.73,
+      "at": 15.738,
       "cause": {
         "kind": "press",
         "text": "BOOT: the changelog opens"
@@ -137,7 +137,7 @@
       "input": "press"
     },
     {
-      "at": 17.863,
+      "at": 17.871,
       "cause": {
         "kind": "press",
         "text": "BOOT again: the settings page opens"
@@ -145,43 +145,43 @@
       "input": "press"
     },
     {
-      "at": 18.931,
+      "at": 18.939,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"idle\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm run\"]],\"wact\":[\"build\",\"building\",1]}"
     },
     {
-      "at": 21.998,
+      "at": 21.996,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"idle\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm run\"]],\"wact\":[\"build\",\"BUILT\",1,\"p\"]}"
     },
     {
-      "at": 21.998,
+      "at": 21.996,
       "cause": {
         "kind": "tool",
         "text": "Claude: time the build"
       }
     },
     {
-      "at": 23.645,
+      "at": 23.643,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"],\"wact\":[\"build\",\"BUILT\",1,\"p\"]}"
     },
     {
-      "at": 23.645,
+      "at": 23.644,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 23.967,
-      "effect": "Boop celebrates and says “Naturally, naturally”",
-      "line": "{\"t\":\"do\",\"id\":1524233857,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-build\"},\"say\":{\"take\":\"phase1.phrase.pride.naturally-naturally__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
+      "at": 23.966,
+      "effect": "Boop celebrates and says “Heh, obviously”",
+      "line": "{\"t\":\"do\",\"id\":1621003559,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-build\"},\"say\":{\"take\":\"phase1.phrase.pride.heh-obviously__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
     },
     {
-      "at": 23.967,
+      "at": 23.966,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"],\"wact\":[\"build\",\"BUILT\",1,\"p\"]}"
     },
     {
-      "at": 28.008,
+      "at": 28.007,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
@@ -190,9 +190,11 @@
   "name": "Boop",
   "script": "8a9729449445f64694f71a08a4c39572d3a26eb4db4e77abdfc63b561c0affe8",
   "takes": [
-    "phase1.word.celebrate.nice__happy__contained",
-    "phase1.borrowed.eureka__happy__contained",
-    "phase1.phrase.pride.naturally-naturally__proud__contained"
+    "phase1.nonverbal.delight.mwahaha__happy__contained",
+    "previous.yatta",
+    "previous.heh",
+    "phase1.word.celebrate.bravo__happy__contained",
+    "phase1.phrase.pride.heh-obviously__proud__contained"
   ],
   "version": 1
 }

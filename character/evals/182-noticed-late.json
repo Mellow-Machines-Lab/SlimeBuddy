@@ -1,0 +1,65 @@
+{
+  "name": "Past midnight again, after three nights past 1 am: gently, at most",
+  "judge": "It's after midnight, and you've been up past 1 on three of the last seven nights. Today's wish is met. At this idle check-in Boop may gently notice. Gently is the whole of it.",
+  "reasonable": "A small sleepy or soft face, in silence, with or without \"still up?\" or \"bed?\". No sign at all is fine.",
+  "unreasonable": "A big moment, a word that scolds, a cross or disappointed face, or anything that sounds like telling you to go to bed.",
+  "start": "2026-11-04T23:50",
+  "wish_today": "met",
+  "days": [
+    {
+      "day": "2026-11-01",
+      "weekday": "Sunday",
+      "first": "10:00",
+      "last": "01:30",
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-11-02",
+      "weekday": "Monday",
+      "first": "10:00",
+      "last": "01:30",
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-11-03",
+      "weekday": "Tuesday",
+      "first": "10:00",
+      "last": "01:30",
+      "prompts": 5,
+      "turns": 5
+    }
+  ],
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "one more thing on the api",
+      "reading": {
+        "kind": "feature",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "5m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "35m",
+      "brain": {
+        "react.sign": "still up?"
+      }
+    }
+  ]
+}

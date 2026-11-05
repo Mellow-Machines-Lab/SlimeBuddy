@@ -456,14 +456,14 @@ ActPose testsPose(const Surface& s, const ActShow& act) {
   return pose;
 }
 
-void testsBehind(Raster& r, const Surface& s, const ActShow& act) {
+void testsBehind(Raster& r, const Surface& s, const ActShow& act, bool wallKept) {
   const int age = act.ageMs;
   const int in = easeOut12(rampIn(age, 0, kTestsSetMs));
   const bool failing = act.result == ActResult::kFail, passing = act.result == ActResult::kPass;
   const int hit = failing ? act.resultMs - kSplatMs : -1;
   int shake = 0;
   if (hit >= 0 && hit < 360) shake = sn(hit * 24) * 5 * (360 - hit) / (360 * 4096);
-  paintWall(r, s, lerp(560, kWallX, in), shake);
+  if (!wallKept) paintWall(r, s, lerp(560, kWallX, in), shake);
   if (hit >= 0) {
     const Frame p = artPlace(s);
     const Shape a{p, r};
@@ -948,10 +948,21 @@ ActPose actPose(const Surface& s, const ActShow& act) {
   return pose;
 }
 
-void paintActBehind(Surface& s, const ActShow& act) {
+// The wall, all but when it's coming or being hit: on whole pixels, and in
+// opaque ink, so the frame before's is the same pixels.
+uint32_t actKeeps(const Surface& s, const ActShow& act, Box& box) {
+  if (act.kind != ActKind::kTests || !act.full || act.result == ActResult::kFail || act.ageMs < kTestsSetMs) return 0;
+  const Frame p = artPlace(s);
+  const Point from = p.at(kWallX, 6), to = p.at(502, kTrackY);
+  if ((from.x | from.y | to.x | to.y) & 15) return 0;
+  box = {from.x / 16, from.y / 16, s.width, to.y / 16};
+  return 1;
+}
+
+void paintActBehind(Surface& s, const ActShow& act, bool kept) {
   if (!s.pixels) return;
   Raster r{s};
-  if (act.kind == ActKind::kTests) return testsBehind(r, s, act);
+  if (act.kind == ActKind::kTests) return testsBehind(r, s, act, kept);
   if (act.kind == ActKind::kBuild) return buildBehind(r, s, act);
   if (act.result == ActResult::kPass) {
     const int ms = act.resultMs;

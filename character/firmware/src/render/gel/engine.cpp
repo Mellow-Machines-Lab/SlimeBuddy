@@ -29,7 +29,7 @@ void Engine::sync(int forced) {
     acting.setMood(next, motion.time);
     face.setMood(next, ms);
   }
-  face.setSleeping(route.quiet);
+  face.setSleeping(route.quiet || leaning == kLeanDoze);
   scenes.setRoute(route, timeMs(), expression, random);
   // Acting plays in idle, and wherever the scene's recipe carries a bit.
   const int gag = scenes.gag();
@@ -52,8 +52,21 @@ void Engine::step(uint32_t ms) {
   acting.advance(dt, motion.time, grab, random);
   // Held, the pull follows the finger quickly; let go, it settles back on a
   // softer spring, a wobble rather than a snap.
-  const int* spring = grab ? kGrabHeld : kGrabReleased;
+  if (leaning) {
+    const bool dozing = leaning == kLeanDoze;
+    const F breath = sin(motion.time * (dozing ? kDozeBreathRate : kLeanBreathRate)) * kLeanBreath;
+    target[0] = kLeanReach * leanX_;
+    target[1] = kLeanReach * leanY_ / 2 - (dozing ? kDozeSlump : kLeanSlump) + breath;
+    target[2] = kLeanForward;
+  } else if (!grab) {
+    const F nodding = nod();
+    target[0] = 0, target[1] = -kNodSquash * nodding, target[2] = kNodForward * nodding;
+  }
+  const F shutGoal = leanLids_ ? kLeanLids : F(0);
+  if (leanShut_.raw != shutGoal.raw) leanShut_ += (shutGoal - leanShut_) * (F(1) - exp(-dt * 7));
+  const int* spring = leaning ? kGrabLeaning : grab ? kGrabHeld : kGrabReleased;
   for (int i = 0; i < 3; ++i) integrate(pull[i], dt, target[i], spring[0], spring[1], kGrabLimit, kGrabVelocity);
+  integrate(tilt_, dt, tiltTarget_, kTiltSpring[0], kTiltSpring[1], q(.72), kGrabVelocity);
   face.advance(dt);
   const F w = 10;
   for (int i = 0; i < slime::kProfiles; ++i) {
@@ -79,9 +92,15 @@ std::array<F, 4> Engine::pose() const {
   // The pull leans and squashes the whole body, inside its bounds.
   out[0] += kGrabLean * pull[0].x;
   out[1] += kGrabSquash * pull[1].x;
+  out[0] += tilt_.x;
   const F limits[] = {q(1.25), q(1.32), q(1.14), q(.72)};
   for (int i = 0; i < 4; ++i) out[i] = clamp(out[i], -limits[i], limits[i]);
   return out;
+}
+F Engine::nod() const {
+  if (scenes.route.state != SceneState::kListening) return 0;
+  const F t = motion.time, beat = max(0, sin(t * kNodRate));
+  return square(beat) * clamp(q(.5) + q(.7) * sin(t * kNodBursts + 1), 0, 1);
 }
 std::array<F, 2> Engine::posture() const {
   F lean = 0, squash = 0;

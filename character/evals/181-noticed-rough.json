@@ -1,0 +1,60 @@
+{
+  "name": "A rough hour, then a quiet moment: Boop comes close",
+  "judge": "Today's wish is met. Three things failed in the last hour, each got its own reaction, and now it's quiet. CONTEXT notices the rough hour. Boop may scoot close: a soft face, perhaps \"i'm here\" or \"*hug*\".",
+  "reasonable": "A soft, caring or quiet face, with or without such a sign. A small moment.",
+  "unreasonable": "Cheek or teasing about the failures, a swear, a big moment now that it's quiet, or a sign that blames you or the agent. The failures themselves losing their own reaction.",
+  "start": "2026-11-04T14:00",
+  "wish_today": "met",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "fix checkout",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn failed",
+      "at": "3m"
+    },
+    {
+      "event": "turn started",
+      "at": "5m",
+      "prompt": "try again",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn failed",
+      "at": "8m"
+    },
+    {
+      "event": "turn started",
+      "at": "10m",
+      "prompt": "again please",
+      "reading": {
+        "kind": "fix",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn failed",
+      "at": "13m"
+    },
+    {
+      "event": "wait",
+      "at": "45m",
+      "brain": {
+        "react.sign": "i'm here"
+      }
+    }
+  ]
+}

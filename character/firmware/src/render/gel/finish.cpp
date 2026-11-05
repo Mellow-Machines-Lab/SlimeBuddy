@@ -608,7 +608,10 @@ void goldBurst(Raster& r, int cx16, int cy16, int radius16, int turn) {
     int at[kEdges], edge[kEdges], n = 0;
     for (int j = 0; j < kEdges; ++j) {
       if ((sn[j] > 0) != (dy > 0) || !sn[j]) continue;
-      const int x = int(std::clamp<int64_t>(cx16 + int64_t(dy) * cs[j] / sn[j], -(1 << 24), 1 << 24));
+      // A row's offset is under 2^14 and a Q12 cosine at most 2^12, so this
+      // fits an int: a 64-bit division here is 18 a row, in software on the
+      // board.
+      const int x = std::clamp(cx16 + dy * cs[j] / sn[j], -(1 << 24), 1 << 24);
       int k = n++;
       for (; k > 0 && at[k - 1] > x; --k) at[k] = at[k - 1], edge[k] = edge[k - 1];
       at[k] = x, edge[k] = j;

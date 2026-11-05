@@ -153,7 +153,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Excited (`excited`)
 
-**Meaning:** Thrilled: a big piece of work just finished well.
+**Meaning:** Thrilled: a big piece of work just finished well, or NOW says you came back after days.
 
 **Strength / activation / persistence:** strong / high / sustained expressive mood.
 
@@ -363,7 +363,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Lonely (`lonely`)
 
-**Meaning:** Rare. Missing you, only at an idle check-in when CONTEXT says its wish is waiting 1 h or more, or when you come back after 20 to 40 hours away.
+**Meaning:** Rare. Missing you: at an idle check-in when CONTEXT says its wish is "waiting 1 h" or more, in hours (its "waiting 40 min" is too soon), or when NOW says you came back after 20 to 40 hours.
 
 **Strength / activation / persistence:** mild to moderate / low / sustained expressive mood.
 
@@ -383,7 +383,7 @@ Faces are V3 review candidates; body descriptions below are choreography targets
 
 ### Annoyed (`annoyed`)
 
-**Meaning:** A little put out: a small failure, or an interruption.
+**Meaning:** A little put out: a small failure, an interruption, or being hushed.
 
 **Strength / activation / persistence:** mild / medium / sustained expressive mood.
 

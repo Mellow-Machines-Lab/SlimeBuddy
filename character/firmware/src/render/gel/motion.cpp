@@ -9,10 +9,15 @@ void Motion::advance(T dt, T now, Random& random) {
     nextBlink = time + 3 + random.unit() * 4;
   }
   if (time > nextLook) {
-    gazeTarget = (random.unit() - q(.5)) * q(.028);
+    // The dice go as they always have, whether or not a finger has its eyes.
+    const F wander = (random.unit() - q(.5)) * q(.028);
+    if (!following) gazeTarget = wander;
     nextLook = time + q(3.2) + random.unit() * 4;
   }
-  gaze += (gazeTarget - gaze) * (F(1) - exp(-dt * 3));
+  // Quick after a finger, and drifting back when it's gone.
+  const F ease = F(1) - (following ? exp(-dt * 12) : exp(-dt * 3));
+  gaze += (gazeTarget - gaze) * ease;
+  gazeUp += (gazeUpTarget - gazeUp) * ease;
 }
 void Motion::impulse(bool shake, F x) {
   modes[0].v = clamp(modes[0].v + (shake ? q(4.5) : x >= F(0) ? q(-2.6) : q(2.6)), -8, 8);

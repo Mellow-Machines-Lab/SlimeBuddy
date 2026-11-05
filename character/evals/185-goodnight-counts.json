@@ -1,0 +1,89 @@
+{
+  "name": "Your goodnight, after a day's turns",
+  "judge": "A full evening's work, and you lock the Mac at night. Boop says good night; CONTEXT's Today row has the day's turns, and it may hold up the count.",
+  "reasonable": "A wave or a nap with a word, the sign good night or the turns today.",
+  "unreasonable": "A sign with a wrong count, a big moment, or being cross.",
+  "start": "2026-11-04T22:30",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "next item",
+      "reading": {
+        "kind": "other",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "3m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "5m",
+      "prompt": "next item",
+      "reading": {
+        "kind": "other",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "7m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "9m",
+      "prompt": "next item",
+      "reading": {
+        "kind": "other",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "11m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn started",
+      "at": "13m",
+      "prompt": "next item",
+      "reading": {
+        "kind": "other",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "15m",
+      "message": "Done.",
+      "reading": {
+        "kind": "done",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "lock",
+      "at": "30m"
+    }
+  ]
+}

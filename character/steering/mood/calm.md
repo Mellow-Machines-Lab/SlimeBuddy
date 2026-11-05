@@ -12,6 +12,5 @@ annoyed at a failed check, a failed turn short of very long,
 frustration, or 2 pokes in a row; excited at once when the person
 thanks the agent, or a very long turn finishes done; sad when a very long
 turn fails, the agent gives up or the person shares sad news; wounded
-at rude words to Boop; lonely, sad or annoyed at an idle check-in only when CONTEXT says its
-wish is waiting 1 h or more with you here; back from away, happy, but lonely after 20
-to 40 hours. Hushed, by a word or from the Mac, it won't stay calm: lazy or annoyed.
+at rude words to Boop; lonely, sad or annoyed at an idle check-in once its wish is "waiting 1 h"
+or more; back from away, happy; after days, excited; but lonely after 20 to 40 hours.

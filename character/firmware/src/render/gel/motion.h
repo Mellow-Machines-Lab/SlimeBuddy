@@ -8,7 +8,10 @@ struct Motion {
   Spring modes[4];  // lean, squash, ripple, dent
   int emotion = slime::kCalm;
   T time, nextBlink = T::literal(2.8), blinkAt = -10, nextLook = T::literal(4.5);
-  F gaze, gazeTarget;
+  // Where the eyes look, across and up, in face units: a wander of their
+  // own, or a finger while one's down (`following`), and back once it's gone.
+  F gaze, gazeTarget, gazeUp, gazeUpTarget;
+  bool following = false;
   void advance(T dt, T now, Random& random);
   // A poke (at x across the dome: it leans away from where it's poked) or a shake.
   void impulse(bool shake, F x = 0);

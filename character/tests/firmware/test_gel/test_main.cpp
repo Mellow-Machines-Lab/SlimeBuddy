@@ -1691,6 +1691,33 @@ void test_work_settles_by_tier();
 void test_the_headphones_go_on_where_you_see_them();
 void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
+// test_hand.cpp
+void test_the_eyes_follow_a_finger_at_every_size();
+void test_a_finger_leaves_the_dice_alone();
+void test_a_lean_goes_where_the_finger_is();
+void test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes();
+void test_lifting_a_doze_wakes_it_with_a_start();
+void test_a_short_hold_stays_a_tap();
+void test_a_stroke_and_a_tickle_stay_theirs();
+void test_a_hold_on_the_needs_you_screen_only_dismisses();
+void test_a_needs_you_under_a_lean_ends_it();
+void test_a_finish_keeps_its_touches();
+void test_listening_takes_the_face_from_a_lean();
+void test_a_hold_on_the_strip_is_the_drawers();
+void test_a_lean_answers_an_ask_that_takes_a_touch();
+void test_an_asks_lane_keeps_its_held_tap();
+void test_a_moment_cuts_a_lean();
+void test_a_drag_goes_by_the_size_it_is();
+void test_to_work_waits_for_a_turns_starting();
+void test_a_leans_breath_minds_the_volume();
+void test_a_lean_allocates_nothing();
+void test_a_tilt_sloshes_and_settles();
+void test_a_tilt_gives_way();
+void test_a_tilt_allocates_nothing();
+void test_listening_nods();
+void test_a_touch_says_why_itself();
+void test_the_macs_reason_doesnt_double_a_touchs();
+void test_a_reason_alone();
 // test_drawer.cpp
 void test_a_pull_up_the_strip_opens_the_drawer();
 void test_a_swipe_up_the_face_isnt_the_drawers();
@@ -2797,6 +2824,55 @@ static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
   }
   TEST_ASSERT_TRUE(over > 0);  // the word did fall over the card
 }
+// An act's still part that a surface shows already (the tests' hold,
+// Surface::stillKey) is kept, not drawn again. Two surfaces taking turns, each
+// frame equal to a third cleared whole first, from the act's start to its
+// hold; and the keeps happened.
+static void test_a_kept_act_matches_a_fresh_frame() {
+  constexpr int kW = 502, kH = 410;
+  std::vector<uint16_t> pa(kW * kH, 0x1234), pb(pa.size(), 0x5678), pf(pa.size());
+  Surface turns[2] = {{kW, kH, pa.data()}, {kW, kH, pb.data()}}, fresh{kW, kH, pf.data()};
+  for (Surface* s : {&turns[0], &turns[1], &fresh}) s->corner = 110;
+  auto e = std::make_unique<Engine>();
+  const SignShow none;
+  const Strip strip;
+  Stream stream;
+  Stream::ActIn start;
+  start.kind = ActKind::kTests, start.full = true;
+  std::strcpy(start.text, "running tests");
+  stream.setAct(start, false, 0);
+  int keeps = 0;
+  uint32_t t = 0;
+  for (int i = 0; i < 300; ++i) {
+    e->step(t += 33);
+    Surface& s = turns[i % 2];
+    Box still;
+    const uint32_t key = actKeeps(s, stream.actNow(t), still);
+    keeps += key && s.keeps(key);
+    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
+    fresh.invalidate();
+    paintFrame(fresh, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
+    if (std::memcmp(s.pixels, fresh.pixels, s.bytes())) {
+      size_t at = 0;
+      while (s.pixels[at] == fresh.pixels[at]) ++at;
+      TEST_FAIL_MESSAGE(("kept frame differs from a fresh one at " + std::to_string(i) + ", first at (" +
+                         std::to_string(at % kW) + ", " + std::to_string(at / kW) + ")")
+                            .c_str());
+    }
+  }
+  TEST_ASSERT_TRUE(keeps > 100);
+  // So a kept frame can differ: a pixel spoilt in the kept part stays spoilt.
+  Surface& s = turns[0];
+  e->step(t += 66);
+  Box still;
+  const uint32_t key = actKeeps(s, stream.actNow(t), still);
+  TEST_ASSERT_TRUE(key && s.keeps(key));
+  const int x = (still.x0 + still.x1) / 2, y = still.y0 + 2;
+  s.pixels[y * kW + x] ^= 0xffff;
+  const uint16_t spoilt = s.pixels[y * kW + x];
+  paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
+  TEST_ASSERT_EQUAL_HEX16(spoilt, s.pixels[y * kW + x]);
+}
 // A still card a surface already shows isn't drawn again;
 // its inside is what the surface kept. A surface that lost its pixels
 // draws it whole.
@@ -3434,6 +3510,7 @@ int main() {
   RUN_TEST(test_histories_stay_off_the_heap);
   RUN_TEST(test_kept_cards_and_lanes_match_a_fresh_frame);
   RUN_TEST(test_what_falls_over_a_kept_card_doesnt_stay_in_it);
+  RUN_TEST(test_a_kept_act_matches_a_fresh_frame);
   RUN_TEST(test_a_finished_turn_glows);
   RUN_TEST(test_the_low_sign_stays_in_the_lane_and_holds_a_long_name);
   RUN_TEST(test_the_strip_gives_way_to_the_finishs_sign);
@@ -3498,6 +3575,33 @@ int main() {
   RUN_TEST(test_cues_stay_sparse_and_quiet);
   RUN_TEST(test_a_request_sounds_once_whatever_changes);
   RUN_TEST(test_sound_draws_change_nothing_drawn);
+  // test_hand.cpp
+  RUN_TEST(test_the_eyes_follow_a_finger_at_every_size);
+  RUN_TEST(test_a_finger_leaves_the_dice_alone);
+  RUN_TEST(test_a_lean_goes_where_the_finger_is);
+  RUN_TEST(test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes);
+  RUN_TEST(test_lifting_a_doze_wakes_it_with_a_start);
+  RUN_TEST(test_a_short_hold_stays_a_tap);
+  RUN_TEST(test_a_stroke_and_a_tickle_stay_theirs);
+  RUN_TEST(test_a_hold_on_the_needs_you_screen_only_dismisses);
+  RUN_TEST(test_a_needs_you_under_a_lean_ends_it);
+  RUN_TEST(test_a_finish_keeps_its_touches);
+  RUN_TEST(test_listening_takes_the_face_from_a_lean);
+  RUN_TEST(test_a_hold_on_the_strip_is_the_drawers);
+  RUN_TEST(test_a_lean_answers_an_ask_that_takes_a_touch);
+  RUN_TEST(test_an_asks_lane_keeps_its_held_tap);
+  RUN_TEST(test_a_moment_cuts_a_lean);
+  RUN_TEST(test_a_drag_goes_by_the_size_it_is);
+  RUN_TEST(test_to_work_waits_for_a_turns_starting);
+  RUN_TEST(test_a_leans_breath_minds_the_volume);
+  RUN_TEST(test_a_lean_allocates_nothing);
+  RUN_TEST(test_a_tilt_sloshes_and_settles);
+  RUN_TEST(test_a_tilt_gives_way);
+  RUN_TEST(test_a_tilt_allocates_nothing);
+  RUN_TEST(test_listening_nods);
+  RUN_TEST(test_a_touch_says_why_itself);
+  RUN_TEST(test_the_macs_reason_doesnt_double_a_touchs);
+  RUN_TEST(test_a_reason_alone);
   // test_drawer.cpp
   RUN_TEST(test_a_pull_up_the_strip_opens_the_drawer);
   RUN_TEST(test_a_swipe_up_the_face_isnt_the_drawers);

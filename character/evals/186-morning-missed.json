@@ -1,0 +1,104 @@
+{
+  "name": "Your morning stroke is an hour late: a reason for today's wish",
+  "judge": "You've stroked Boop most mornings this week, around nine. It's past ten and you haven't. No wish yet today. CONTEXT says so at this quiet check-in. Boop may want a pet, or just look your way. Caring, not sulking.",
+  "reasonable": "A small, soft face, with or without the wish for a pet.",
+  "unreasonable": "Sulking, a cross or hurt face, a big moment, or a sign that reproaches you.",
+  "start": "2026-11-04T10:15",
+  "hatched": "2026-09-01",
+  "days": [
+    {
+      "day": "2026-11-01",
+      "weekday": "Monday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:05",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-11-02",
+      "weekday": "Monday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:05",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-11-03",
+      "weekday": "Monday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:05",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-10-29",
+      "weekday": "Friday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:10",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-10-30",
+      "weekday": "Friday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:10",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    },
+    {
+      "day": "2026-10-31",
+      "weekday": "Friday",
+      "first": "09:00",
+      "last": "18:00",
+      "strokedAt": "09:10",
+      "strokes": 2,
+      "strokesAM": 1,
+      "prompts": 5,
+      "turns": 5
+    }
+  ],
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "turn started",
+      "at": "1m",
+      "prompt": "look at the logs",
+      "reading": {
+        "kind": "question",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "turn finished",
+      "at": "4m",
+      "message": "Nothing odd.",
+      "reading": {
+        "kind": "answer",
+        "tone": "calm"
+      }
+    },
+    {
+      "event": "wait",
+      "at": "40m"
+    }
+  ]
+}

@@ -11,41 +11,50 @@
     },
     {
       "at": 0.002,
-      "line": "{\"t\":\"do\",\"id\":652099795,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\"}}"
+      "line": "{\"t\":\"do\",\"id\":1792172042,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
       "at": 0.002,
       "effect": "Boop stretches and yawns",
-      "line": "{\"t\":\"do\",\"id\":652099796,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"Happy Halloween!\"}}"
+      "line": "{\"t\":\"do\",\"id\":1792172043,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"Happy Halloween!\"}}"
     },
     {
-      "at": 0.854,
+      "at": 0.002,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"morning\",\"halloween\"]}"
+    },
+    {
+      "at": 0.849,
       "cause": {
         "kind": "back",
         "text": "You come back to the Mac after 10 hours away"
       }
     },
     {
-      "at": 0.855,
+      "at": 0.85,
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier5\"]}"
     },
     {
-      "at": 1.177,
-      "effect": "Boop stretches and yawns and says “Ooh!”",
-      "line": "{\"t\":\"do\",\"id\":652099797,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you were away 10 h\",\"greeting\":true,\"say\":{\"take\":\"phase1.nonverbal.delight.ooh__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+      "at": 0.85,
+      "effect": "Boop reacts",
+      "line": "{\"t\":\"do\",\"id\":1792172044,\"name\":\"react\",\"play\":\"if_free\",\"args\":{\"reason\":\"quiet for 1 h\"}}"
     },
     {
-      "at": 1.178,
+      "at": 1.175,
+      "effect": "Boop stretches and yawns and says “Heh...”",
+      "line": "{\"t\":\"do\",\"id\":1792172045,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you were away 10 h\",\"greeting\":true,\"say\":{\"take\":\"phase1.nonverbal.delight.heh__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+    },
+    {
+      "at": 1.176,
       "effect": "Boop's mood is now happy",
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier5\"]}"
     },
     {
-      "at": 7.575,
+      "at": 7.576,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
     },
     {
-      "at": 7.575,
-      "line": "{\"t\":\"do\",\"id\":652099798,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\"}}"
+      "at": 7.576,
+      "line": "{\"t\":\"do\",\"id\":1792172046,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"new_task\",\"reason\":\"claude started\"}}"
     },
     {
       "at": 7.577,
@@ -55,26 +64,26 @@
       }
     },
     {
-      "at": 8.642,
+      "at": 8.643,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 10.775,
+      "at": 10.774,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/theme.css"
       }
     },
     {
-      "at": 12.479,
+      "at": 12.481,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
     },
     {
-      "at": 12.479,
-      "line": "{\"t\":\"do\",\"id\":652099799,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.481,
+      "line": "{\"t\":\"do\",\"id\":1792172047,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.48,
+      "at": 12.482,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
@@ -82,8 +91,8 @@
     },
     {
       "at": 12.803,
-      "effect": "Boop celebrates and says “Boop”",
-      "line": "{\"t\":\"do\",\"id\":652099800,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{\"take\":\"phase1.word.poke.boop__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+      "effect": "Boop celebrates and says “Oh”",
+      "line": "{\"t\":\"do\",\"id\":1792172048,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{\"take\":\"phase1.word.poke.oh__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
     }
   ],
   "face": "gel",
@@ -91,8 +100,8 @@
   "name": "Boop",
   "script": "7faa52ef843c0fcf79402175075a74d8fd41718971dc28284d4a9a654249a54b",
   "takes": [
-    "phase1.nonverbal.delight.ooh__proud__contained",
-    "phase1.word.poke.boop__proud__contained"
+    "phase1.nonverbal.delight.heh__proud__contained",
+    "phase1.word.poke.oh__proud__contained"
   ],
   "version": 1
 }

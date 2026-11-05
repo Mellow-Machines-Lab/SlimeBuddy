@@ -53,7 +53,11 @@ ActPose actPose(const Surface& s, const ActShow& act);
 inline bool actTakesOver(const ActShow& act) { return act.shows() && act.full; }
 // What the act draws behind the body and over it, at the body's anchors. The
 // small version draws only its prop, over it, as it does its Doing.
-void paintActBehind(Surface& s, const ActShow& act);
+// What an act draws behind the body, or its still part kept (`kept`): a
+// box of it that holds the same opaque pixels from frame to frame, if there
+// is one, and a key to say so (Surface::stillKey), else 0.
+uint32_t actKeeps(const Surface& s, const ActShow& act, Box& box);
+void paintActBehind(Surface& s, const ActShow& act, bool kept);
 void paintActFront(Surface& s, const ActShow& act, const rig::Anchors& at);
 // The face it wears now, or -1 for its mood's. A cross or low mood keeps its
 // own (`mood`, the engine's emotion).

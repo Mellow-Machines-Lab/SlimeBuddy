@@ -120,7 +120,7 @@
     },
     {
       "id": "excited",
-      "meaning": "Thrilled: a big piece of work just finished well.",
+      "meaning": "Thrilled: a big piece of work just finished well, or NOW says you came back after days.",
       "family": "joy",
       "moves": {
         "ordinary": [
@@ -136,7 +136,7 @@
           "sad"
         ]
       },
-      "face": "An excited face: something big just went right."
+      "face": "An excited face: something big just went right, or NOW says you came back after days."
     },
     {
       "id": "curious",
@@ -244,7 +244,7 @@
     },
     {
       "id": "annoyed",
-      "meaning": "A little put out: a small failure, or an interruption.",
+      "meaning": "A little put out: a small failure, an interruption, or being hushed.",
       "family": "frustration",
       "moves": {
         "ordinary": [
@@ -462,8 +462,8 @@
     },
     {
       "id": "lonely",
-      "meaning": "Rare. Missing you, only at an idle check-in when CONTEXT says its wish is waiting 1 h or more, or when you come back after 20 to 40 hours away.",
-      "not_for": "A finish, a check, a prompt, a heartbeat, a quiet spell (that's rest: Boop dozes), a night away, days away.",
+      "meaning": "Rare. Missing you: at an idle check-in when CONTEXT says its wish is \"waiting 1 h\" or more, in hours (its \"waiting 40 min\" is too soon), or when NOW says you came back after 20 to 40 hours.",
+      "not_for": "A finish, a check, a prompt, a quiet spell (that's rest: Boop dozes).",
       "family": "social",
       "moves": {
         "ordinary": [
@@ -475,7 +475,7 @@
           "happy"
         ]
       },
-      "face": "Rare. A lonely face, only when CONTEXT says its wish is waiting 1 h or more, or you're back after 20 to 40 hours."
+      "face": "Rare. A lonely face: when CONTEXT says its wish is \"waiting 1 h\" or more, in hours, or NOW says you came back after 20 to 40 hours."
     },
     {
       "id": "tired",
