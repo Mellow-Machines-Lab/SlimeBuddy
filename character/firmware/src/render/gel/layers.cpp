@@ -4,6 +4,7 @@
 #include <climits>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <initializer_list>
 
 #include "render/font.h"
@@ -805,7 +806,9 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
 void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat) {
   if (!s.pixels || !bar.opacity) return;
   Raster r{s};
-  constexpr int kWidth = 280, kHeight = 18, kTop = 18, kSlide = 40;
+  // Narrow enough that its label fits beside it inside the panel's rounded
+  // corners.
+  constexpr int kWidth = 232, kHeight = 18, kTop = 18, kSlide = 40, kCornerGap = 4;
   constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
                      kFillTop = rgb565(170, 222, 245), kFull = rgb565(242, 196, 86), kFullTop = rgb565(255, 234, 160),
                      kHeart = rgb565(226, 78, 104), kGlow = rgb565(255, 250, 220), kLabel = rgb565(173, 163, 150);
@@ -828,10 +831,14 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
   }
   r.ring(x, top, kWidth, height, height / 2, 1, kRim);
   // How much today, beside it, counting up as it fills: under it is the
-  // LISTENING word's row.
+  // LISTENING word's row. Its right end stays where the panel's corner
+  // leaves the bar's rows whole, by its resting rows, so it doesn't drift as
+  // it slides.
   char today[16];
   snprintf(today, sizeof today, "%d today", (bar.fill + 5) / 10);
-  r.text(today, (x + kWidth + s.width) / 2, cy, kLabel);
+  const int glyph = std::max(1, int(kSmall.w) * s.width / 502), len = int(std::strlen(today));
+  const int right = s.width - s.inset(kTop, kTop + kHeight) - kCornerGap;
+  r.text(today, right - len * glyph / 2, cy, kLabel);
   if (bar.sparkle) {
     // Full: stars burst off along the bar, and fade.
     const int age = bar.sparkle;
