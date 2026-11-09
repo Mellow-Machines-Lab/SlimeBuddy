@@ -1,0 +1,21 @@
+{
+  "name": "A boop from the world: a warm little moment, and a sign that answers it",
+  "case": "Someone in another buddy's world booped Boop. It's a small, warm moment between you and Boop: always a face, not a big one, and a sign that answers the boop.",
+  "why": "Personality: another buddy reaching out from the world always gets a face, small or medium, and a sign that answers it.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "world",
+      "at": "1m",
+      "kind": "boop",
+      "expect": {
+        "react": "!none",
+        "intensity": "small|medium",
+        "sign": "boop back!|who was that?|hi, world!|a friend!"
+      }
+    }
+  ]
+}

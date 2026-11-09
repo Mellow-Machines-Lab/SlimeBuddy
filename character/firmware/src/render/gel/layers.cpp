@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdio>
 #include <cstdlib>
 #include <initializer_list>
 
@@ -801,34 +802,16 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   r.alpha = 255;
 }
 
-namespace {
-// A little Boop for a stage, on the bar's row: its size is the stage's, and a
-// Sprout has its leaves.
-void littleBoop(Raster& r, int cx, int cy, int stage, uint16_t ink, uint16_t eyes, uint16_t leaf) {
-  static constexpr int8_t kSizes[5][2] = {{0, 0}, {14, 10}, {22, 16}, {30, 22}, {42, 26}};
-  const int w = kSizes[stage][0], h = kSizes[stage][1], low = cy + 13 - h / 2;  // they stand on one line
-  r.round(cx - w / 2, low - h / 2, w, h, h / 2, ink);
-  r.disk(cx - w / 5, low + 1, stage > 1 ? 2 : 1, eyes);
-  r.disk(cx + w / 5, low + 1, stage > 1 ? 2 : 1, eyes);
-  if (stage == 2) {
-    const int top = low - h / 2;
-    r.line({cx, top + 1}, {cx, top - 4}, 2, leaf);
-    r.disk(cx - 4, top - 6, 3, leaf);
-    r.disk(cx + 4, top - 6, 3, leaf);
-  }
-}
-}  // namespace
-
 void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat) {
   if (!s.pixels || !bar.opacity) return;
   Raster r{s};
   constexpr int kWidth = 280, kHeight = 18, kTop = 18, kSlide = 40;
   constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
                      kFillTop = rgb565(170, 222, 245), kFull = rgb565(242, 196, 86), kFullTop = rgb565(255, 234, 160),
-                     kHeart = rgb565(226, 78, 104), kNext = rgb565(96, 132, 160), kGlow = rgb565(255, 250, 220),
-                     kLeaf = rgb565(128, 226, 122), kNextLeaf = rgb565(96, 160, 110);
+                     kHeart = rgb565(226, 78, 104), kGlow = rgb565(255, 250, 220), kLabel = rgb565(173, 163, 150);
   const int x = (s.width - kWidth) / 2, y = kTop - kSlide * (255 - bar.opacity) / 255;
-  const bool last = bar.stage >= 4;
+  // Today's ring, full: gold, and nothing more counts today.
+  const bool last = bar.fill >= 1000;
   // Swells as it lands, and settles.
   const int swell = bar.gulp ? 4 * (bar.gulp < 300 ? bar.gulp : (1000 - bar.gulp) * 300 / 700) / 300 : 0;
   const int top = y - swell / 2, height = kHeight + swell, cy = y + kHeight / 2;
@@ -837,8 +820,6 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
   // A hat reaches the bar's row: it goes behind the bar, with no scrap of its
   // tip above it. (With the crown under the bar, so never over the body.)
   if (hat && top > 0 && at.crown.y / 16 > y + kHeight) r.round(s.width / 2 - 110, 0, 220, top, 0, 0);
-  littleBoop(r, x - 34, cy, bar.stage, kFill, kInk, kLeaf);
-  if (!last) littleBoop(r, x + kWidth + 34, cy, bar.stage + 1, kNext, kTrack, kNextLeaf);
   r.round(x, top, kWidth, height, height / 2, kTrack);
   if (tip > x + 4) {
     const int w = tip - x - 2;
@@ -846,6 +827,21 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
     if (w > 12) r.round(x + 7, top + 3, w - 10, 2, 1, last ? kFullTop : kFillTop);
   }
   r.ring(x, top, kWidth, height, height / 2, 1, kRim);
+  // How much today, beside it, counting up as it fills: under it is the
+  // LISTENING word's row.
+  char today[16];
+  snprintf(today, sizeof today, "%d today", (bar.fill + 5) / 10);
+  r.text(today, (x + kWidth + s.width) / 2, cy, kLabel);
+  if (bar.sparkle) {
+    // Full: stars burst off along the bar, and fade.
+    const int age = bar.sparkle;
+    r.alpha = bar.opacity * (1000 - age) / 1000;
+    for (int i = 0; i < 7; ++i) {
+      const int sx = x + 20 + i * (kWidth - 40) / 6, rise = 4 + age * (10 + (i % 3) * 6) / 1000;
+      const int sy = i % 2 ? top - rise : top + height + rise;
+      r.disk(sx, sy, 3 - age * 2 / 1000, i % 3 ? kGlow : kFullTop);
+    }
+  }
   if (bar.gulp) {
     // A flash along what's filled, and sparks off the tip.
     r.alpha = bar.opacity * (1000 - bar.gulp) / 1000 / 2;

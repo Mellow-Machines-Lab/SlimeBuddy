@@ -1,0 +1,23 @@
+{
+  "name": "Cheers for your ship: Boop is proud, with a word",
+  "case": "Three buddies in the world cheered the ship you just pushed, all in one moment. Boop is proud of it: a face, not small, a word aloud, and a sign that thanks them or says you shipped.",
+  "why": "Personality: cheers for your ship make it proud, bigger, with a word.",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "world",
+      "at": "1m",
+      "kind": "cheer",
+      "count": 3,
+      "expect": {
+        "react": "!none",
+        "intensity": "medium|big|huge",
+        "say": "!none",
+        "sign": "we shipped!|thanks, all!|hi, world!|a friend!"
+      }
+    }
+  ]
+}

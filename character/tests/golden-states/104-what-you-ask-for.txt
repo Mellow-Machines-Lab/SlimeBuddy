@@ -138,9 +138,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -201,7 +203,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -214,7 +216,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:03, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 3 min; claude working on "landing" for 1 min.
 
@@ -230,7 +232,7 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:06, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 6 min; claude working on "landing" for 3 min; claude working on "landing" for 1 min.
 
@@ -249,7 +251,7 @@ Boop did nothing on its own.
 === pass 4
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:09, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 9 min; claude working on "landing" for 6 min; claude working on "landing" for 3 min; and 1 more.
 
@@ -271,7 +273,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:12, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 12 min; claude working on "landing" for 9 min; claude working on "landing" for 6 min; and 2 more.
 
@@ -297,7 +299,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:15, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 15 min; claude working on "landing" for 12 min; claude working on "landing" for 9 min; and 3 more.
 
@@ -326,7 +328,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:18, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 18 min; claude working on "landing" for 15 min; claude working on "landing" for 12 min; and 4 more.
 
@@ -359,7 +361,7 @@ Boop did nothing on its own.
 === pass 8
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:21, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 21 min; claude working on "landing" for 18 min; claude working on "landing" for 15 min; and 5 more.
 
@@ -396,7 +398,7 @@ Boop did nothing on its own.
 === pass 9
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:24, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 24 min; claude working on "landing" for 21 min; claude working on "landing" for 18 min; and 6 more.
 
@@ -437,7 +439,7 @@ Boop did nothing on its own.
 === pass 10
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:27, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 27 min; claude working on "landing" for 24 min; claude working on "landing" for 21 min; and 7 more.
 

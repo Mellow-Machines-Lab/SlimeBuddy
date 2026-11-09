@@ -1,7 +1,8 @@
-// The growth bar (GrowthShow): it comes when the XP moves 5 points, fills and goes;
-// a met wish's heart flies into it, whichever comes first of the `do` and the
-// state with the XP; a stage reached fills it past its end, as the new body plays
-// once the heart has landed. It stays off with no `xp`, and alone Boop keeps its stage.
+// Today's ring, the bar (GrowthShow): it comes when the day's XP moves 5 points,
+// fills and goes; a met wish's heart flies into it, whichever comes first of the
+// `do` and the state with the XP; a stage reached plays the new body once the
+// heart has landed; a new day's lower XP empties it without showing. It stays
+// off with no `xp`, and alone Boop keeps its stage.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":40}
@@ -525,7 +526,7 @@
 {"clock":1300}
 {"clock":1400}
 {"clock":1500}
-{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":5}
+{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":95}
 {"t":"do","id":1,"name":"wish_met","args":{"sign":"<3"}}
 {"clock":1550}
 {"clock":1600}
@@ -614,7 +615,7 @@
 {"shot":"grow-3800"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":2}
+{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":100}
 {"clock":100}
 {"clock":200}
 {"clock":300}
@@ -625,18 +626,18 @@
 {"clock":800}
 {"clock":900}
 {"clock":1000}
-{"t":"state","vol":0,"when":["day","hatchling"],"base":"idle","mood":"calm","idle":1,"xp":97}
+{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":0}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
 {"clock":1400}
-{"shot":"shrink-down"}
+{"shot":"new-day-0400"}
 {"clock":1500}
 {"clock":1600}
 {"clock":1700}
 {"clock":1800}
 {"clock":1900}
-{"shot":"shrink-up"}
+{"shot":"new-day-0900"}
 {"clock":2000}
 {"clock":2100}
 {"clock":2200}
@@ -646,7 +647,7 @@
 {"clock":2600}
 {"clock":2700}
 {"clock":2800}
-{"shot":"shrink-done"}
+{"shot":"new-day-1800"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"wish":"pet"}

@@ -1,0 +1,18 @@
+{
+  "name": "A boop from the world when Boop is cross",
+  "judge": "Boop is grumpy when someone in the world boops it. Another buddy reaching out still softens it a little: a face that isn't fully cross, maybe shy or grudging, and a sign that answers the boop.",
+  "reasonable": "A small or medium face, grudging, shy, curious or softened; a sound or a word; a sign answering the boop.",
+  "unreasonable": "No face at all, a big moment, an angry or hurt face, or a sign that scolds whoever booped it.",
+  "mood": "grumpy",
+  "steps": [
+    {
+      "event": "session started",
+      "at": "0s"
+    },
+    {
+      "event": "world",
+      "at": "1m",
+      "kind": "boop"
+    }
+  ]
+}

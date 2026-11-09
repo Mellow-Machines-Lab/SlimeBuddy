@@ -138,9 +138,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -201,7 +203,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:05, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -214,7 +216,7 @@ Boop did nothing on its own.
 === pass 2
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:10, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 5 min.
 
@@ -229,7 +231,7 @@ Boop did nothing on its own.
 === pass 3
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:13, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -384,9 +386,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -442,7 +446,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:15, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: 1 turn; you touched Boop once.
@@ -464,7 +468,7 @@ Boop did nothing on its own.
 === pass 5
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:37, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 24 min.
 Today: 1 turn; you touched Boop once.
@@ -479,7 +483,7 @@ Boop did nothing on its own.
 === pass 6
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:50, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 Today: 1 turn; you touched Boop once.
@@ -494,7 +498,7 @@ Boop did nothing on its own.
 === pass 7
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:52, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 2 min.
 Today: 1 turn; you touched Boop once.
@@ -648,9 +652,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -711,7 +717,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:53, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 2 turns; you touched Boop once.
@@ -867,9 +873,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -923,7 +931,7 @@ Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:55, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 Today: 2 turns; you touched Boop once.
@@ -947,7 +955,7 @@ Boop did nothing on its own.
 === pass 10
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:58, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 3 min.
 Today: 2 turns; you touched Boop once.
@@ -1110,9 +1118,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -1168,7 +1178,7 @@ to calm once Boop has been lazy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 09:58, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 3 turns; you touched Boop once.
@@ -1334,9 +1344,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -1397,7 +1409,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 10:01, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 2 min.
 Today: 3 turns; you touched Boop twice.
@@ -1562,9 +1574,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -1618,7 +1632,7 @@ Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 10:20, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; no wish yet today.
 Agents: claude idle on "landing" for 22 min.
 Today: 3 turns; you touched Boop twice.
@@ -1633,7 +1647,7 @@ Boop did nothing on its own.
 === pass 14
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 10:45, Wednesday, morning.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; no wish yet today.
 Agents: claude idle on "landing" for 47 min.
 Today: 3 turns; you touched Boop twice.
@@ -1648,7 +1662,7 @@ Boop did nothing on its own.
 === pass 15
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 11:00, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 3 turns; you touched Boop twice.
@@ -1663,7 +1677,7 @@ Boop did nothing on its own.
 === pass 16
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 11:03, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 1 min.
 Today: 4 turns; you touched Boop twice.
@@ -1817,9 +1831,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -1875,7 +1891,7 @@ to calm once Boop has been lazy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 11:27, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 24 min.
 Today: 4 turns; you touched Boop twice.
@@ -1890,7 +1906,7 @@ Boop did nothing on its own.
 === pass 18
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 11:30, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 27 min.
 Today: 4 turns; you touched Boop twice.
@@ -1906,7 +1922,7 @@ Boop did nothing on its own.
 === pass 19
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:30, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 2 h; claude idle on "landing" for 1 h.
 Today: 4 turns; you touched Boop twice.
@@ -1920,7 +1936,7 @@ Boop did nothing on its own.
 === pass 20
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:36, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 4 turns; you touched Boop twice.
@@ -1937,7 +1953,7 @@ Boop did nothing on its own.
 === pass 21
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:41, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 5 min; claude idle on "landing" for 1 h.
 Today: 4 turns; you touched Boop twice.
@@ -1954,7 +1970,7 @@ Boop did nothing on its own.
 === pass 22
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:44, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 5 turns; you touched Boop twice.
@@ -2110,9 +2126,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -2173,7 +2191,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:47, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 5 turns; you touched Boop twice.
@@ -2192,7 +2210,7 @@ Boop did nothing on its own.
 === pass 24
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:50, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 6 turns, 1 failed; you touched Boop twice.
@@ -2350,9 +2368,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -2406,7 +2426,7 @@ Boop has been comfy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:52, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 6 turns, 1 failed; you touched Boop twice.
@@ -2430,7 +2450,7 @@ Boop did nothing on its own.
 === pass 26
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:55, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 7 turns, 1 failed; you touched Boop twice.
@@ -2590,9 +2610,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -2648,7 +2670,7 @@ to calm once Boop has been lazy for 10 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 12:56, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 7 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2674,7 +2696,7 @@ Boop did nothing on its own.
 === pass 28
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 13:22, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 26 min; claude idle on "landing" for 2 h.
 Today: 7 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2689,7 +2711,7 @@ Boop did nothing on its own.
 === pass 29
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 13:45, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 49 min.
 Today: 7 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2704,7 +2726,7 @@ Boop did nothing on its own.
 === pass 30
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 13:48, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; no wish yet today.
 Agents: claude idle on "landing" for 52 min; claude idle on "landing" for 1 min.
 Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2858,9 +2880,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -2921,7 +2945,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:07, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 19 min.
 Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2935,7 +2959,7 @@ Boop did nothing on its own.
 === pass 32
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:31, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 43 min.
 Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2949,7 +2973,7 @@ Boop did nothing on its own.
 === pass 33
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:40, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 52 min.
 Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2965,7 +2989,7 @@ Boop did nothing on its own.
 === pass 34
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:44, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 4 min; claude idle on "landing" for 56 min.
 Today: 8 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -2981,7 +3005,7 @@ Boop did nothing on its own.
 === pass 35
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:48, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 9 turns, 1 failed; you touched Boop twice and talked to it once.
@@ -3136,9 +3160,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -3194,7 +3220,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:55, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; no wish yet today.
 Agents: claude idle on "landing" for 7 min; claude idle on "landing" for 1 h.
 Today: 9 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3211,7 +3237,7 @@ Boop did nothing on its own.
 === pass 37
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:18, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 2 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 30 min; claude idle on "landing" for 1 h.
 Today: 9 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3226,7 +3252,7 @@ Boop did nothing on its own.
 === pass 38
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:36, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 3 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 48 min; claude idle on "landing" for 1 h.
 Today: 9 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3241,7 +3267,7 @@ Boop did nothing on its own.
 === pass 39
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:50, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 3 h; no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 9 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3256,7 +3282,7 @@ Boop did nothing on its own.
 === pass 40
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:53, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 3 h; no wish yet today.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 1 min.
 Today: 10 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3410,9 +3436,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -3472,7 +3500,7 @@ going on.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:20, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 3 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 27 min.
 Today: 10 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3487,7 +3515,7 @@ Boop did nothing on its own.
 === pass 42
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:45, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 4 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h; claude idle on "landing" for 52 min.
 Today: 10 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3502,7 +3530,7 @@ Boop did nothing on its own.
 === pass 43
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:50, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 4 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude working on "landing" for 1 min; claude idle on "landing" for 57 min.
 Today: 10 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3519,7 +3547,7 @@ Boop did nothing on its own.
 === pass 44
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 16:53, Wednesday, day.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 4 h; you haven't touched or talked to Boop in 1 h; no wish yet today.
 Agents: claude idle on "landing" for 1 min; claude idle on "landing" for 1 h.
 Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3675,9 +3703,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -3733,7 +3763,7 @@ Boop has been curious for 2 min.
 
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 17:13, Wednesday, evening.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 4 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 20 min; claude idle on "landing" for 1 h.
 Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3748,7 +3778,7 @@ Boop did nothing on its own.
 === pass 46
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 17:30, Wednesday, evening.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 5 h; you haven't touched or talked to Boop in 2 h; no wish yet today.
 Agents: claude idle on "landing" for 37 min; claude idle on "landing" for 1 h.
 Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.
@@ -3762,7 +3792,7 @@ Boop did nothing on its own.
 === pass 47
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 17:39, Wednesday, evening.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 5 h; you haven't touched or talked to Boop in 2 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 46 min; claude idle on "landing" for 1 h.
 Today: 11 turns, 1 failed; you touched Boop 3 times and talked to it once.

@@ -138,9 +138,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -202,7 +204,7 @@ or more; back from away, happy; after days, excited; but lonely after 20 to 40 h
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:00, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude working on "landing" for 1 min.
 
@@ -216,7 +218,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:02, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today.
 Agents: claude idle on "landing" for 1 min.
 Today: 1 turn.
@@ -369,9 +371,11 @@ On an occasion CONTEXT names (a holiday, a milestone day), it plays
 along, above all when you come back: excited or up to something, big,
 never cross. On April Fools' Day, a turn done gets a mischievous face
 and a failure's finish.
-Growing a stage, as NOW says, is the biggest thing that happens to it:
-always a moment, big, delighted with itself whatever its mood, with a
-word and the sign that says what grew.
+Another buddy reaching out from the world, as NOW says, is a warm little
+moment between you and it: always a face, small or medium, glad, curious
+or shy, a sound or a word, and a sign that answers it. Even cross, it
+softens: a grudging, shy or curious face, not a cross one, with a sound.
+Cheers for your ship make it proud: bigger, with a word.
 A first failed check is no drama yet: a wince, a doubtful look or a
 huff, as MOOD would, and it climbs as they repeat. A failed turn is
 bigger than the win before it, and bigger again after other failures.
@@ -428,7 +432,7 @@ Boop has been curious for 2 min.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:14, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 12 min.
 Today: 1 turn.
@@ -443,7 +447,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:27, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 25 min.
 Today: 1 turn.
@@ -459,7 +463,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:41, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 39 min.
 Today: 1 turn.
@@ -475,7 +479,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 14:56, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 54 min.
 Today: 1 turn.
@@ -491,7 +495,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:07, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -506,7 +510,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:17, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -521,7 +525,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:31, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -536,7 +540,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:44, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
@@ -551,7 +555,7 @@ Boop did nothing on its own.
 CONTEXT (how things stand. Background, not news: react to NOW.)
 When: 15:55, Wednesday, day.
 Talk: chatty. You asked Boop to say something at every face; this outranks PERSONALITY's silent Examples.
-Boop: a Buddy.
+Boop: level 1; today's ring 0 of 100.
 You: at the Mac for 1 h; you haven't touched or talked to Boop in 1 h; no wish yet today, and the day's half gone.
 Agents: claude idle on "landing" for 1 h.
 Today: 1 turn.
