@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-04. What checks the gel slime, and which rule each check
+Updated 2026-11-14. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -196,10 +196,13 @@ ramps and springs can, and no jolt at an event. By file:
 - `internal/tools/boopctl sim --face gel` plays the pack's
   `tests/scenarios-gel/` against its `tests/golden-gel/`: every canonical
   mood and factual state, failure and neutral-finish frames, the host lane
-  at the panel's size (`lane.jsonl`: the working count in its chip, a long name that
-  needs you, cut with no chips, a short one whole with them and no helpers
-  or to-do list, the finish's marks, one with no thread, and the bubble in
-  each of its fonts), the
+  at the panel's size (`lane.jsonl`: the counts in words and as marks, a
+  long name that needs you, cut with its "…" and how many more in a pill, a
+  short one whole with the marks and no helpers or to-do list, the
+  finish's marks, one with no thread, the bubble in its fonts, the
+  caption after the words, an ask's answers, needs you with today's ring
+  up, a finish with words and a caption, and the needs-you card for each
+  kind and for none), the
   comedy (`comedy.jsonl`: the yawn and the sneeze's wind-up, asked for, the
   long yawn, the zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT handing you an agent, a stroke, a boop
@@ -229,7 +232,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   moments: a compaction's cube, a freeze, a drop, buried, and a turn's
   end gathering its words after the stream goes), and
   a finger in idle (`swipes.jsonl`), and the agents' drawer
-  (`drawer.jsonl`: shut with the strip's chevron, pulled part way, open
+  (`drawer.jsonl`: shut with the strip's grabber, pulled part way, open
   with the body squeezed flat and its paw over the edge, a row picked,
   handed over, and a long list scrolled, a row still coming as it
   scrolls). `--accept` updates only the gel

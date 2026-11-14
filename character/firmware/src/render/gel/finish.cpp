@@ -14,7 +14,12 @@ namespace render::gel {
 namespace {
 // Colours: the finish's golds and its outline, cream, the confetti's six
 // and the jelly's blue.
+// The flood's two golds are at 70% of the trophy's: it fills most of the
+// panel, and at full strength it's a flash in a dark room (and at night,
+// half of that). On it the trophy takes a darker, wider outline.
 constexpr uint16_t kGold = rgb565(255, 201, 60), kGoldDeep = rgb565(255, 176, 32), kOutline = rgb565(122, 74, 0),
+                   kFloodGold = rgb565(178, 140, 42), kFloodGoldDeep = rgb565(178, 123, 22),
+                   kNightGold = rgb565(89, 70, 21), kNightGoldDeep = rgb565(89, 62, 11), kOutlineOnGold = rgb565(90, 51, 0),
                    kCream = rgb565(255, 244, 199), kJelly = rgb565(61, 155, 230), kJellyShine = rgb565(191, 230, 255),
                    kWhite = rgb565(255, 255, 255);
 constexpr uint16_t kConfettiInk[] = {rgb565(255, 213, 74),  rgb565(255, 122, 182), rgb565(92, 225, 230),
@@ -222,7 +227,9 @@ void star(Raster& r, const Frame& f, int R, int rIn, uint16_t ink, int outline =
 }
 // The trophy: a gold cup with its handles, stem and foot, a star on it,
 // standing on its foot's middle.
-void trophy(Raster& r, const Frame& f) {
+void trophy(Raster& r, const Frame& f, bool onGold = false) {
+  const uint16_t outline = onGold ? kOutlineOnGold : kOutline;
+  const int line = onGold ? f.size16(5) / 2 : f.size16(3) / 2;
   static constexpr int kCup[][2] = {{-30, -62}, {30, -62}, {29, -48},  {25, -36},  {18, -26}, {9, -19},
                                     {0, -16},   {-9, -19}, {-18, -26}, {-25, -36}, {-29, -48}};
   constexpr int n = int(std::size(kCup));
@@ -230,7 +237,7 @@ void trophy(Raster& r, const Frame& f) {
   for (int i = 0; i < n; ++i) cup[i] = f.at(kCup[i][0], kCup[i][1]);
   // Each handle a band round its arc: outlined, then gold.
   for (int side : {-1, 1})
-    for (const auto [half, ink] : {std::pair{4, kOutline}, std::pair{2, kGoldDeep}}) {
+    for (const auto [half, ink] : {std::pair{4, outline}, std::pair{2, kGoldDeep}}) {
       Point band[14];
       for (int k = 0; k < 7; ++k) {
         const int a = -1024 + 2048 * k / 6, c = sinTurn(a + 1024), sn = sinTurn(a);
@@ -239,10 +246,10 @@ void trophy(Raster& r, const Frame& f) {
       }
       r.polygon16(band, 14, ink);
     }
-  outlined(r, cup, n, kGold, kOutline, f.size16(3) / 2, true);
+  outlined(r, cup, n, kGold, outline, line, true);
   const Point stem[] = {f.at(-6, -17), f.at(6, -17), f.at(6, -8), f.at(-6, -8)};
   const Point foot[] = {f.at(-20, -9), f.at(20, -9), f.at(20, 1), f.at(-20, 1)};
-  for (const auto* part : {stem, foot}) outlined(r, part, 4, kGoldDeep, kOutline, f.size16(3) / 2, true);
+  for (const auto* part : {stem, foot}) outlined(r, part, 4, kGoldDeep, outline, line, true);
   Point shine[6];
   for (int k = 0; k < 6; ++k) {
     const F a = pi * k / 3;
@@ -586,11 +593,12 @@ int goldRadius(int age) { return keys({{300, 0}, {750, 430}, {3900, 430}, {4400,
 // from `turn` (a turn's 4096ths). Each row's ray edges are where the lines
 // from the middle at their angles cross it; between them it's one gold or
 // the other, and the disk's own ends are blended by how much they cover.
-void goldBurst(Raster& r, int cx16, int cy16, int radius16, int turn) {
+void goldBurst(Raster& r, int cx16, int cy16, int radius16, int turn, bool night) {
   if (!r.s.pixels || radius16 <= 0) return;
   constexpr int kRays = 18, kEdges = 2 * kRays, kStep = 4096 / kEdges;
+  const uint16_t kGold = night ? kNightGold : kFloodGold, kGoldDeep = night ? kNightGoldDeep : kFloodGoldDeep;
   // Edge j starts wedge j: deep when j is even.
-  auto ink = [](int j) { return ((j % kEdges) + kEdges) % 2 ? kGold : kGoldDeep; };
+  auto ink = [&](int j) { return ((j % kEdges) + kEdges) % 2 ? kGold : kGoldDeep; };
   int sn[kEdges], cs[kEdges];
   for (int j = 0; j < kEdges; ++j) sn[j] = sinTurn(turn + j * kStep), cs[j] = sinTurn(turn + j * kStep + 1024);
   const int w = r.s.width, y0 = std::max(0, (cy16 - radius16) >> 4),
@@ -645,7 +653,7 @@ int finishCovers(const Surface& s, Finish f, int age) {
   return goldRadius(age) >= reach ? bottom : 0;
 }
 
-void paintFinishBehind(Surface& s, Finish f, int age, int reveal) {
+void paintFinishBehind(Surface& s, Finish f, int age, int reveal, bool night) {
   (void)reveal;
   Raster r{s};
   if (f == Finish::kGoldRush) {
@@ -654,7 +662,7 @@ void paintFinishBehind(Surface& s, Finish f, int age, int reveal) {
     const int radius = goldRadius(age);
     if (radius <= 0) return;
     const int cx = s.width * 8, cy = s.height * 560 / 1000 * 16;
-    goldBurst(r, cx, cy, radius * 16, turnOf(seconds(age) * q(.35)));
+    goldBurst(r, cx, cy, radius * 16, turnOf(seconds(age) * q(.35)), night);
   } else if (f == Finish::kSpotlight) {
     const int light = keys({{200, 0}, {550, 4096}, {4400, 4096}, {4900, 0}}, age);
     if (!light) return;
@@ -728,8 +736,10 @@ void paintFinishFront(Surface& s, Finish f, int age, int reveal, const rig::Anch
                              ? -150 + 150 * ease(age, 700, 1000) / 4096
                              : scalar(decay(seconds(age - 1000) * 6) * lsin(seconds(age - 1000) * 20) * 6) / 4096;
         const int shrink = 4096 - ease(age, 3900, 4300);
-        trophy(r, turned(at.crown.x, at.crown.y + (8 + drop) * 16 * scale / 4096, 3700 * scale / 4096 * shrink / 4096,
-                         lsin(seconds(age) * 6) / 16));
+        trophy(r,
+               turned(at.crown.x, at.crown.y + (8 + drop) * 16 * scale / 4096, 3700 * scale / 4096 * shrink / 4096,
+                      lsin(seconds(age) * 6) / 16),
+               true);
       }
       confetti(r, age, 700, 0, h, 24, 3, -q(1.0), q(.7), 620);
       confetti(r, age, 700, w, h, 24, 4, -pi + q(1.0), q(.7), 620);

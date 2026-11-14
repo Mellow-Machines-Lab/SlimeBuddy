@@ -3,14 +3,28 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/raster.h"
 #include "render/gel/subpixel.h"
+#include "render/gel/lane.h"
 #include "render/tags.h"
 namespace render::gel {
 namespace {
+// What a request asks of you, as the needs-you card says it after
+// "NEEDS YOU": short enough for its second line (16 glyphs at most).
+const char* attnKindWords(AttnKind k) {
+  switch (k) {
+    case AttnKind::kApprove: return "a yes or no";
+    case AttnKind::kQuestion: return "a question";
+    case AttnKind::kPlan: return "a plan to read";
+    case AttnKind::kNone: break;
+  }
+  return "";
+}
 // The cards, in thousandths of the surface: x, y, width, height, radius.
 struct Card {
   int x, y, w, h, radius;
 };
-constexpr Card kAlertCard{180, 75, 640, 215, 32}, kStartCard{280, 85, 440, 132, 30};
+// The needs-you card stands in the top band, 344 × 76 px on the AMOLED from
+// y 16, clear of the crown, which ducks under it (paintFrame's duck).
+constexpr Card kAlertCard{158, 40, 685, 186, 40}, kStartCard{280, 85, 440, 132, 30};
 // A card on a surface, in pixels, with its corners' radius as Raster::round
 // clamps it.
 struct Placed {
@@ -145,7 +159,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     r.text(label, x(a), y(b), ink, font);
   };
   const uint16_t dark = rgb565(20, 55, 72), green = rgb565(140, 223, 203), light = rgb565(184, 233, 245),
-                 blue = rgb565(100, 184, 207), amber = rgb565(239, 189, 103);
+                 blue = rgb565(100, 184, 207);
   F contact = s.envelope(e.timeMs(), kKey), progress = clamp(s.ageMs / s.recipe.duration, 0, 1);
   if (s.desk.x > q(.001)) {
     r.alpha = (s.desk.x * 255).integer();
@@ -239,20 +253,49 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   r.alpha = 255;
   if (F alert = s.visible(Scenes::kAlertProp, now); alert > F(0)) {
     r.alpha = (alert * 255).integer();
-    // A knock's disk reaches a row above its radius (Raster::disk).
+    // A knock's ring round the kind's mark reaches a row above its radius.
     const F knock = state == SceneState::kNeedsYou ? s.envelope(now, kKnock) : F(0);
-    const int knockY = y(246), knockRadius = 6 + (knock * 4).integer();
+    const Placed c = place(surface, kAlertCard);
+    const AttnKind kind = e.router.facts.attention.kind;
+    const uint16_t fill = rgb565(kAmberRgb), ink = rgb565(kNeedsYouInkRgb), soft = mix565(fill, ink, 204);
+    // The kind's mark in its column on the left, the two lines after it,
+    // left-aligned, so the card scans as a mark and two lines; with no kind
+    // the two centred, the second the old one.
+    const int markX = c.x + 36, markY = c.y + c.h / 2, lines = c.x + 64;
+    const int knockRadius = 22 + (knock * 5).integer();
     drawCard(
-        kAlertCard, amber, rgb565(0xf8, 0xd2, 0x94),
+        kAlertCard, fill, fill,
         [&] {
-          // Sized to read at arm's length on the 2.06" panel.
-          text("NEEDS YOU", 500, 133, rgb565(44, 37, 29), kSign);
-          text("Continue on your Mac", 500, 227, rgb565(0x3d, 0x2f, 0x1f), kLarge);
+          const int top = c.y + 4, second = top + 30;
+          if (kind == AttnKind::kNone) {
+            const char* more = "Continue on your Mac";
+            render::gel::text(r, kSign, c.x + (c.w - 9 * kSign.w) / 2, top, "NEEDS YOU", ink);
+            render::gel::text(r, kLarge, c.x + (c.w - glyphCount(more) * kLarge.w) / 2, second + 4, more, soft);
+            return;
+          }
+          if (kind == AttnKind::kPlan) {
+            // A page, three lines on it.
+            r.round(markX - 14, markY - 18, 28, 36, 4, ink);
+            for (int i = 0; i < 3; ++i) r.round(markX - 9, markY - 10 + i * 8, i == 2 ? 11 : 18, 3, 1, fill);
+          } else {
+            r.disk(markX, markY, 18, ink);
+            if (kind == AttnKind::kQuestion) {
+              render::gel::text(r, kSign, markX - kSign.w / 2, markY - 25, "?", fill);
+            } else {
+              // A yes and a no, split: a tick on the left half, a cross on the right.
+              r.line({markX - 12, markY}, {markX - 8, markY + 5}, 3, fill);
+              r.line({markX - 8, markY + 5}, {markX - 2, markY - 6}, 3, fill);
+              r.line({markX + 3, markY - 5}, {markX + 11, markY + 5}, 3, fill);
+              r.line({markX + 11, markY - 5}, {markX + 3, markY + 5}, 3, fill);
+            }
+          }
+          render::gel::text(r, kSign, lines, top, "NEEDS YOU", ink);
+          render::gel::text(r, kSign, lines, second, attnKindWords(kind), soft, c.x + c.w - 12 - lines);
         },
-        knock > 0 ? knockY - knockRadius - 1 : 1 << 30);
-    if (knock > 0) {
+        knock > 0 && kind != AttnKind::kNone ? markY - knockRadius - 1 : 1 << 30);
+    if (knock > 0 && kind != AttnKind::kNone) {
       r.alpha = (knock * 255).integer();
-      r.disk(x(280), knockY, knockRadius, light);
+      circle16(r, markX * 16 + 8, markY * 16 + 8, knockRadius * 16, 2 * 16, ink);
     }
   }
   // What's drawn over the cards after them, as the frame goes on, lowers

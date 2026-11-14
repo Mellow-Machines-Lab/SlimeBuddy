@@ -322,20 +322,23 @@ void test_boot_shuts_it() {
   TEST_ASSERT_EQUAL_INT(0, b.open());
 }
 
-// Its rows on the AMOLED: a screenful of five, each whole inside the
-// panel's rounded corners, and the Mac's six, the sixth peeking under
-// them; the second where the panel reads a finger at canvas (160, 112),
-// and none under one beside them; the sheet shut is the strip's rule.
+// Its rows on the AMOLED: a screenful of four, 66 px tall, a finger's,
+// inside the panel's rounded corners down to where they fade into the
+// sheet, and the Mac's six more than fill them; the second where the panel
+// reads a finger at canvas (160, 112), which falls in the gap between the
+// first two, nearer the second, and none under one beside them; the sheet
+// shut is the strip's rule.
 void test_the_drawers_rows_on_the_panel() {
   const DrawerLayout l(502, 410, 110);
   TEST_ASSERT_EQUAL_INT(410 * kStripTop / kHeight, l.top(0));
   TEST_ASSERT_EQUAL_INT(66, l.top(1000));
-  TEST_ASSERT_EQUAL_INT(5, l.fits());
-  TEST_ASSERT_EQUAL_INT(l.fits() + 1, Drawer::kRows);
-  const int last = l.rowTop(1000, l.fits() - 1);
+  TEST_ASSERT_EQUAL_INT(66, l.rowH());
+  TEST_ASSERT_EQUAL_INT(72, l.pitch());
+  TEST_ASSERT_EQUAL_INT(4, l.fits());
+  TEST_ASSERT_TRUE(l.fits() + 1 <= Drawer::kRows);
+  const int last = l.rowTop(1000, l.fits() - 1), foot = 410 - DrawerLayout::kFadeRows;
   TEST_ASSERT_TRUE(last + l.rowH() <= 410 - 4);
-  TEST_ASSERT_TRUE(l.rowTop(1000, l.fits()) < 410);
-  TEST_ASSERT_TRUE(l.margin() >= Surface::insetOf(502, 410, 110, last, last + l.rowH(), 10));
+  TEST_ASSERT_TRUE(l.margin() >= Surface::insetOf(502, 410, 110, foot - 1, foot, 10));
   Drawer d;
   d.open = 1000, d.count = 3;
   TEST_ASSERT_EQUAL_INT(1, l.rowAt(d, 160, 112));
@@ -354,8 +357,8 @@ void test_the_drawers_rows_on_the_panel() {
 // whether or not its row has come, and none over the lid.
 void test_a_long_drawers_rows_scroll() {
   const DrawerLayout l(502, 410, 110);
-  TEST_ASSERT_EQUAL_INT(0, l.scrollMax(5));
-  TEST_ASSERT_EQUAL_INT(7 * l.pitch() * 2 / 3, l.scrollMax(12));
+  TEST_ASSERT_EQUAL_INT(0, l.scrollMax(4));
+  TEST_ASSERT_EQUAL_INT(8 * l.pitch() * 2 / 3, l.scrollMax(12));
   TEST_ASSERT_EQUAL_INT(l.scrolledBy(3), l.snap(l.scrolledBy(3) + l.pitch() / 3 - 1));
   TEST_ASSERT_EQUAL_INT(l.scrolledBy(4), l.snap(l.scrolledBy(3) + l.pitch() / 3 + 1));
   Drawer d;
@@ -363,12 +366,12 @@ void test_a_long_drawers_rows_scroll() {
   int first, last;
   l.shown(d, first, last);
   TEST_ASSERT_EQUAL_INT(0, first);
-  TEST_ASSERT_EQUAL_INT(5, last);
+  TEST_ASSERT_EQUAL_INT(3, last);
   d.scroll = l.pitch() * 2 / 3 * 3;  // three rows up, near enough
   l.shown(d, first, last);
   TEST_ASSERT_EQUAL_INT(3, first);
-  TEST_ASSERT_EQUAL_INT(8, last);
-  TEST_ASSERT_NULL(d.at(8));
+  TEST_ASSERT_EQUAL_INT(6, last);
+  TEST_ASSERT_NULL(d.at(6));
   TEST_ASSERT_EQUAL_INT(3, l.rowAt(d, 160, 82));
   TEST_ASSERT_EQUAL_INT(-1, l.rowAt(d, 160, 60));
   d.scroll = l.scrollMax(12);
@@ -407,7 +410,7 @@ void test_a_finger_scrolls_a_long_drawer() {
   d.open = 1000, d.count = 12, d.scroll = slow;
   int first, last;
   l.shown(d, first, last);
-  TEST_ASSERT_EQUAL_INT(Drawer::kRows - 1, last - first);
+  TEST_ASSERT_EQUAL_INT(l.fits() - 1, last - first);  // a screenful, which the Mac's rows fill
   char asked[64];
   std::snprintf(asked, sizeof(asked), "\"did\":\"open\",\"data\":{\"from\":%d}", first);
   TEST_ASSERT_EQUAL_INT(1, b.count(asked));

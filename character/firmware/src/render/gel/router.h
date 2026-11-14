@@ -11,6 +11,7 @@ struct Attention {
   bool on = false;
   std::string id = "0", agent, project, name;
   int more = 0;
+  AttnKind kind = AttnKind::kNone;  // what it asks of you: the card says
 };
 struct Facts {
   SceneState base = SceneState::kIdle, act = SceneState::kWorking;

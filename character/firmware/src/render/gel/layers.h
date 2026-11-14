@@ -64,6 +64,7 @@ struct SignLayer {
   static constexpr int kGap = 4;                  // the card's bottom over the lane, at the lowest
   static constexpr int kRisePx = 90, kBobPx = 3;  // its signLift
   static constexpr int kHand = 12;                // the radius of the hand gripping either side
+  static constexpr int kMinWide = 120;            // the narrowest card, hands' middles to middles
   // The hands' outer edges from the panel's sides, and clear of its rounded
   // corners, at the nearest: a lean or a finish carrying the body sideways
   // carries the sign only as far.
@@ -120,6 +121,7 @@ void paintWish(Surface& surface, const WishShow& wish, const rig::Anchors& at);
 // bar, and the next stage's in shadow, as the popover shows it; full and gold
 // at the last stage. A met wish's heart flies from its bubble into the bar's
 // tip, and the bar gulps. Its row is clear of Buddy's head, under what's worn.
-void paintGrowthBar(Surface& surface, const GrowthShow& bar, const rig::Anchors& at, bool hat = false);
+// `yield` (0–255): how far it has given way to what else holds the top band.
+void paintGrowthBar(Surface& surface, const GrowthShow& bar, const rig::Anchors& at, bool hat = false, int yield = 255);
 
 }  // namespace render::gel

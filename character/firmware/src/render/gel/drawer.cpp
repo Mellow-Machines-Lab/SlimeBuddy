@@ -14,14 +14,19 @@ namespace render::gel {
 
 namespace {
 
-constexpr uint16_t kSheet = rgb565(13, 16, 21), kRow = rgb565(20, 25, 32), kRowNeedsYou = rgb565(42, 31, 0),
-                   kRowPicked = rgb565(44, 57, 70), kTitle = rgb565(238, 242, 245), kResting = rgb565(154, 163, 173),
+// The sheet black, as the lane is; rows a touch lighter. Warm greys, as the
+// lane's.
+constexpr uint16_t kSheet = rgb565(0, 0, 0), kRow = rgb565(22, 28, 36), kRowNeedsYou = rgb565(42, 31, 0),
+                   kRowPicked = rgb565(44, 57, 70), kTitle = rgb565(kEyeRgb), kResting = rgb565(kNarrationRgb),
                    kWorkingBar = rgb565(89, 97, 107), kIdleBar = rgb565(58, 65, 75), kEyes = rgb565(8, 36, 72),
                    kCheeks = rgb565(255, 140, 200), kGel = rgb565(89, 169, 224), kToes = rgb565(66, 140, 210),
                    kShine = rgb565(184, 233, 245);
 constexpr int kRowRadius = 10, kBar = 6, kCornerGap = 4, kMargin = 18;
 // How far the sheet's corners round as it opens, at its whole.
 constexpr int kSheetRadius = 20;
+// A thumb kThumbW × kThumbH beside the rows says how far down the list is.
+constexpr int kThumbW = 3, kThumbH = 40;
+constexpr int kFadeRows = DrawerLayout::kFadeRows;
 
 uint16_t barInk(const Drawer::Row& row) {
   switch (row.status) {
@@ -31,9 +36,10 @@ uint16_t barInk(const Drawer::Row& row) {
   }
 }
 
-// One row: its bar in the session's colour, the thread's name, the agent
-// and project under it, and what it's doing in a chip at its end.
-void row(Raster& r, const DrawerLayout& l, const Drawer::Row& row, int y, bool picked) {
+// One row: its bar in the session's colour, the thread's name in the
+// sign's font, the agent and project under it in the large one, grey, and
+// at its end what it's doing as the strip's mark says it.
+void row(Raster& r, const DrawerLayout& l, const Drawer::Row& row, int y, bool picked, int spin) {
   const int x = l.margin(), w = l.w - 2 * l.margin(), h = l.rowH();
   const bool needs = row.status == Drawer::Status::kNeedsYou, idle = row.status == Drawer::Status::kIdle;
   r.round(x, y, w, h, kRowRadius, picked ? kRowPicked : needs ? kRowNeedsYou : kRow);
@@ -41,26 +47,20 @@ void row(Raster& r, const DrawerLayout& l, const Drawer::Row& row, int y, bool p
   r.bounds = {x, std::max(y, list.y0), x + kBar, std::min(y + h, list.y1)};
   r.round(x, y, kRowRadius * 2, h, kRowRadius, barInk(row));
   r.bounds = list;
-  // The chip: filled amber for needs you, else an outline in the strip's
-  // working or idle count's inks.
-  const char* label = needs ? "NEEDS YOU" : idle ? "IDLE" : "WORKING";
-  const int chipW = glyphCount(label) * kSmall.w + 14, chipH = kSmall.h + 6;
-  const int chipX = x + w - 10 - chipW, chipY = y + (h - chipH) / 2;
-  const uint16_t amber = rgb565(kAmberRgb);
-  if (needs)
-    r.round(chipX, chipY, chipW, chipH, 6, amber);
-  else
-    r.ring(chipX, chipY, chipW, chipH, 6, 2, idle ? kIdleRing : kWorkingRing);
-  text(r, kSmall, chipX + 7, chipY + 3, label, needs ? rgb565(0, 0, 0) : idle ? kIdleInk : kWorkingInk);
+  constexpr int kMarkBox = 18, kMarkPad = 14;
+  const int markX = x + w - kMarkPad - kMarkBox;
+  paintStatusMark(r, needs ? StatusMark::kNeedsYou : idle ? StatusMark::kIdle : StatusMark::kWorking, markX,
+                  y + h / 2, spin);
   // The thread's name, and under it the agent and its project.
-  const int tx = x + kBar + 14, room = chipX - 12 - tx;
-  text(r, kLarge, tx, y + 1, row.title[0] ? row.title : "Untitled", needs ? amber : idle ? kResting : kTitle, room);
+  const int tx = x + kBar + 14, room = markX - 12 - tx;
+  text(r, kSign, tx, y + 3, row.title[0] ? row.title : "Untitled", needs ? rgb565(kAmberRgb) : idle ? kResting : kTitle,
+       room);
   char under[48];
   if (row.project[0])
     std::snprintf(under, sizeof(under), "%s \xC2\xB7 %s", row.agent, row.project);
   else
     std::snprintf(under, sizeof(under), "%s", row.agent);
-  text(r, kSmall, tx, y + h - kSmall.h - 3, under, paletteAt(inkAt(kInkGrey, kLevels)), room);
+  text(r, kLarge, tx, y + 35, under, kResting, room);
 }
 
 }  // namespace
@@ -70,8 +70,10 @@ DrawerLayout::DrawerLayout(int width, int height, int cornerRadius) : w(width), 
 int DrawerLayout::restTop() const { return h * kStripTop / kHeight; }
 
 int DrawerLayout::margin() const {
-  const int last = rowTop(1000, fits() - 1);
-  return std::max(kMargin, Surface::insetOf(w, h, corner, last, last + rowH(), kRowRadius) + kCornerGap);
+  // Clear of the panel's corners down to where the rows fade out: the last
+  // row's foot, under that, is mostly gone.
+  const int foot = h - kFadeRows;
+  return std::max(kMargin, Surface::insetOf(w, h, corner, foot - 1, foot, kRowRadius) + kCornerGap);
 }
 
 void DrawerLayout::shown(const Drawer& d, int& first, int& last) const {
@@ -83,10 +85,12 @@ void DrawerLayout::shown(const Drawer& d, int& first, int& last) const {
 int DrawerLayout::rowAt(const Drawer& d, int canvasX, int canvasY) const {
   const int x = nativeX(canvasX), y = nativeY(canvasY);
   if (x < margin() || x >= w - margin() || y < listTop(1000)) return -1;
-  const int top = listTop(1000) - d.scroll * 3 / 2;
-  if (y < top) return -1;
-  const int i = (y - top) / pitch();
-  return i < d.total() && y - top - i * pitch() < rowH() ? i : -1;
+  // The gap between two rows is the nearer one's: every pixel of the
+  // list hits a row, each a pitch tall.
+  const int top = listTop(1000) - d.scroll * 3 / 2, gap = pitch() - rowH();
+  if (y < top - gap / 2) return -1;
+  const int i = (y - top + gap / 2) / pitch();
+  return i < d.total() ? i : -1;
 }
 
 DrawerPose drawerPose(const Surface& s, const Drawer& d) {
@@ -138,9 +142,10 @@ void paintDrawer(Surface& s, const Drawer& d, const Strip& strip, const rig::Anc
   // Its lid: the strip's rule and counts, riding up, clear of the
   // panel's corners where they are.
   const int cy = top + l.u(31);
-  const int lid = std::max(kMargin, s.inset(cy - 12, cy + 12) + kCornerGap);
-  paintRule(r, lid, s.width - lid, top, open > 500, paletteAt(inkAt(kInkDim, kLevels)));
-  paintCounts(r, strip, lid, cy, spin);
+  // On the rows' margin, or clear of the panel's corners where the lid is.
+  const int lid = std::max(l.margin(), s.inset(cy - 19, cy + 19) + kCornerGap);
+  paintRule(r, lid, s.width - lid, top, true);
+  paintCounts(r, strip, lid, s.width - lid, cy, spin);
   // The rows, scrolled under the lid; a session whose row hasn't come
   // yet is an empty one till it does.
   int first, last;
@@ -149,11 +154,24 @@ void paintDrawer(Surface& s, const Drawer& d, const Strip& strip, const rig::Anc
   for (int i = first; i <= last; ++i) {
     const int y = l.rowTop(d.open, i) - d.scroll * 3 / 2;
     if (const Drawer::Row* at = d.at(i))
-      row(r, l, *at, y, i == d.picked);
+      row(r, l, *at, y, i == d.picked, spin);
     else
       r.round(l.margin(), y, l.w - 2 * l.margin(), l.rowH(), kRowRadius, kRow);
   }
   r.bounds = Raster::kEverywhere;
+  // The rows fade into the sheet at the panel's foot, and with more than a
+  // screenful, a thumb beside them says where the list is.
+  for (int y = std::max(l.listTop(d.open), s.height - kFadeRows); y < s.height; ++y) {
+    const int alpha = 255 * (s.height - y) / (kFadeRows + 1);
+    uint16_t* line = s.pixels + y * s.width;
+    for (int x = 0; x < s.width; ++x)
+      if (line[x]) line[x] = mix565(0, line[x], alpha);
+  }
+  if (d.total() > l.fits() && open > 500) {
+    const int most = l.scrollMax(d.total()), span = s.height - kFadeRows - l.listTop(d.open) - kThumbH;
+    const int ty = l.listTop(d.open) + (most > 0 ? span * std::clamp(d.scroll, 0, most) / most : 0);
+    r.round(s.width - l.margin() + 5, ty, kThumbW, kThumbH, 1, rgb565(kGrabberRgb));
+  }
   // The paw, hung over the edge once it's open, dropping into place.
   if (d.paw > 0) {
     // Off to the side of its face, hanging down the sheet's edge.

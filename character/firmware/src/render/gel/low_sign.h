@@ -13,12 +13,15 @@
 namespace render::gel {
 
 struct LowSign {
-  enum class Mark : uint8_t { kNone, kTick, kCross, kDots };
+  enum class Mark : uint8_t { kNone, kTick, kCross, kDots, kStar };
   const char* text = nullptr;  // none: no sign
   Mark mark = Mark::kNone;     // before the words, in `ink`
   uint16_t ink = 0;            // its rim, its mark and its words
   uint32_t ms = 0;             // how long since it began to rise
   int32_t leftMs = -1;         // how long until it has fallen away, -1 for no end yet
+  // One line at most, cut: under the rim's glow, a second line would run
+  // into it at the panel's foot.
+  bool oneLine = false;
   bool shows() const { return text && *text; }
 };
 
@@ -37,10 +40,13 @@ struct LowSignLayout {
   char line[2][kLineBytes] = {};
   int x = 0, y = 0, w = 0, h = 0;
 };
-LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked);
+LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked, bool oneLine = false);
 
 // How far below its place it is now: 0 at rest.
 int lowSignDrop(const LowSign& sign, int height);
+// How far up it has come, 0 (none of it) to 255 (at rest): the strip
+// under it fades by as much.
+int lowSignRisen(const LowSign& sign, int height);
 // What it shows, as a key that's the same exactly when its pixels are, never 0.
 uint32_t lowSignKey(const LowSign& sign);
 // The sign, over whatever the lane drew.

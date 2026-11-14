@@ -40,8 +40,8 @@
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0,"when":["day","halloween"]}
 {"clock":1000}
-{"t":"do","name":"wake_up","play":"now","args":{"sign":"Happy Halloween!"}}
-{"expect":{"moment":{"anim":"wake_up"},"sign":"Happy Halloween!"}}
+{"t":"do","name":"wake_up","play":"now","args":{"sign":"happy halloween!"}}
+{"expect":{"moment":{"anim":"wake_up"},"sign":"happy halloween!"}}
 {"clock":2200}
 {"shot":"greeting"}
 // Something it remembers, held low in the lane, its face clear: the look, then

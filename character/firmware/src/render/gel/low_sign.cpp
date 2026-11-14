@@ -42,13 +42,28 @@ void paintMark(Raster& r, LowSign::Mark mark, int x, int cy, uint16_t ink) {
     case LowSign::Mark::kDots:
       for (int i = 0; i < 3; ++i) r.disk16((x + 3 + 6 * i) * 16, cy * 16, 40, ink);
       break;
+    case LowSign::Mark::kStar: {
+      // Five points, 18 px across, its middle on the line's.
+      // Each tenth of a turn clockwise from twelve o'clock, as sine and
+      // minus cosine (Q12): the points out, the notches between them in.
+      static constexpr int16_t kWay[10][2] = {{0, -4096},    {2408, -3314}, {3896, -1266}, {3896, 1266},
+                                              {2408, 3314},  {0, 4096},     {-2408, 3314}, {-3896, 1266},
+                                              {-3896, -1266}, {-2408, -3314}};
+      Point v[10];
+      for (int i = 0; i < 10; ++i) {
+        const int reach = i % 2 ? 4 * 16 : 10 * 16;
+        v[i] = {(x + 9) * 16 + 8 + reach * kWay[i][0] / 4096, (cy + 1) * 16 + 8 + reach * kWay[i][1] / 4096};
+      }
+      r.polygon16(v, 10, ink);
+      break;
+    }
     case LowSign::Mark::kNone: break;
   }
 }
 
 }  // namespace
 
-LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked) {
+LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked, bool oneLine) {
   LowSignLayout l;
   char folded[LowSignLayout::kLineBytes];
   foldText(text, kLowSignMostGlyphs, folded, sizeof folded);
@@ -69,6 +84,17 @@ LowSignLayout lowSignLayout(int width, int height, int corner, const char* text,
   } else if (glyphs * kLarge.w <= room(tallSmall)) {
     l.lines = 1, tall = tallSmall;
     std::strcpy(l.line[0], folded);
+  } else if (oneLine) {
+    // One line, cut where render::cutAt cuts it, ending "…".
+    tall = tallSmall, l.lines = 1;
+    const int most = room(tallSmall) / kLarge.w;
+    const char* p = folded;
+    int keep = cutAt(folded, most - 1), at = 0;
+    for (int i = 0; i < keep && nextGlyph(p) >= 0; ++i) {
+    }
+    at = int(p - folded);
+    std::memcpy(l.line[0], folded, size_t(at));
+    std::memcpy(l.line[0] + at, "\xE2\x80\xA6", 4);
   } else {
     tall = tallTwo;
     l.lines = wrapText(folded, room(tallTwo) / kLarge.w, 2, l.line[0], LowSignLayout::kLineBytes);
@@ -90,6 +116,11 @@ int lowSignDrop(const LowSign& sign, int height) {
   return drop;
 }
 
+int lowSignRisen(const LowSign& sign, int height) {
+  const int most = height - topOf(height);
+  return most > 0 ? 255 * (most - lowSignDrop(sign, height)) / most : 255;
+}
+
 uint32_t lowSignKey(const LowSign& sign) {
   uint32_t h = 2166136261u;
   auto add = [&](const void* data, size_t n) {
@@ -97,7 +128,7 @@ uint32_t lowSignKey(const LowSign& sign) {
   };
   if (sign.text) add(sign.text, std::strlen(sign.text));
   // The height doesn't matter here: any drop but 0 changes as it moves.
-  const int numbers[] = {int(sign.mark), int(sign.ink), lowSignDrop(sign, kHeight * 16)};
+  const int numbers[] = {int(sign.mark), int(sign.ink), lowSignDrop(sign, kHeight * 16), int(sign.oneLine)};
   add(numbers, sizeof numbers);
   return h ? h : 1;
 }
@@ -105,7 +136,7 @@ uint32_t lowSignKey(const LowSign& sign) {
 void paintLowSign(Surface& s, const LowSign& sign) {
   if (!s.pixels || !sign.shows()) return;
   const bool marked = sign.mark != LowSign::Mark::kNone;
-  const LowSignLayout l = lowSignLayout(s.width, s.height, s.corner, sign.text, marked);
+  const LowSignLayout l = lowSignLayout(s.width, s.height, s.corner, sign.text, marked, sign.oneLine);
   const Font& f = l.large ? kSign : kLarge;
   Raster r{s};
   r.limit = s.height;

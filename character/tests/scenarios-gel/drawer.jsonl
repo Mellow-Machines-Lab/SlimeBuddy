@@ -70,7 +70,7 @@
 {"clock":10900}
 {"clock":11000}
 {"shot":"scrolled"}
-{"expect":{"drawer":{"open":1000,"rows":6,"skip":1,"scroll":70}}}
+{"expect":{"drawer":{"open":1000,"rows":6,"skip":1,"scroll":96}}}
 {"clock":25000}
 {"expect":{"drawer":{"open":1000}}}
 {"clock":25300}

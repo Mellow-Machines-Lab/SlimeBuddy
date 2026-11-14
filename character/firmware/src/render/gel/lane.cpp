@@ -32,30 +32,38 @@ struct Lane {
 
 uint16_t inkRgb565(int ink) { return paletteAt(inkAt(ink, kLevels)); }
 
+// How far the body ducks under the needs-you card, at its whole.
+constexpr int kAlertDuckPx = 12;
 constexpr int kMargin = 18;  // from the panel's edges, as the canvas's 12 px
-constexpr int kIcon = 18;    // the strip's round icons, and the gap after them
+constexpr int kIcon = 18;    // the strip's marks, and the gap after them
 // How far what's laid out by the panel's rounded corners keeps from them
 // (Surface::inset), as their very edge may show dim.
 constexpr int kCornerGap = 4;
-constexpr int kBubbleMargin = 10;
 constexpr int kBubblePad = 12;  // from the outline to the text, left and right
 constexpr int kBubbleLine = 2;
 constexpr int kBubbleRadius = 14;
-// The caption's line sits this far below the bubble's usual foot, into
-// the rounded corners' rows its narrow centred text clears, and the bubble
-// over it stops this far above it.
-constexpr int kCaptionDrop = 10, kCaptionGap = 4;
+// The bubble's box: from just under the rule, as tall as the sign's font
+// and its outline, a pixel either side.
+constexpr int kBubbleUnderRule = 4, kBubbleTall = 44;
+// The drawer's grabber, in the rule's middle: its size, and the rule's gap
+// either side of it.
+constexpr int kGrabberW = 44, kGrabberH = 5, kGrabberGap = 10;
+// The marks' numbers, and the gap after a mark and its number before the next.
+constexpr int kMarkGap = 4, kMarkAfter = 14;
 
-// The bubble's rows, and how far in from either side it stands:
-// kBubbleMargin, or clear of the panel's rounded corners, its own corners
-// cut away like theirs. Its foot stands off the panel's, where the
-// corners take the most.
+// The lane's rows on a surface: the rule (the strip's top), and the one
+// row everything else takes, by its middle.
+int ruleRow(int height) { return height * kStripTop / kHeight; }
+int rowMiddle(int height) { return height * ((kStripTop + kHeight) / 2) / kHeight; }
+
+// The bubble's rows, and how far in from either side it stands: clear of
+// the panel's rounded corners, its own corners cut away like theirs.
 struct BubbleBox {
   int top, bottom, margin;
   explicit BubbleBox(const Surface& s)
-      : top(s.height * (kLaneTop + 4) / kHeight),
-        bottom(s.height * (kHeight - 9) / kHeight),
-        margin(std::max(kBubbleMargin, s.inset(top, bottom, kBubbleRadius) + kCornerGap)) {}
+      : top(ruleRow(s.height) + kBubbleUnderRule),
+        bottom(top + kBubbleTall),
+        margin(std::max(kMargin, s.inset(top, bottom, kBubbleRadius) + kCornerGap)) {}
   int room(int width) const { return width - 2 * (margin + kBubblePad + kBubbleLine); }
 };
 
@@ -81,10 +89,10 @@ const Font& bubbleFont() { return kFontBubble; }
 int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, int room) {
   const int n = glyphCount(s);
   const bool fits = n * f.w <= room;
-  for (int left = fits ? n : cutAt(s, room / f.w - 2), g; left > 0 && (g = nextGlyph(s)) >= 0; --left, x += f.w)
+  for (int left = fits ? n : cutAt(s, room / f.w - 1), g; left > 0 && (g = nextGlyph(s)) >= 0; --left, x += f.w)
     glyph(r, f, x, y, g, ink);
-  if (!fits)
-    for (int i = 0; i < 2; ++i, x += f.w) glyph(r, f, x, y, '.' - 0x20, ink);
+  // Cut, it ends in one cell's "…", where the canvas's ".." takes two.
+  if (!fits && f.count > kEllipsis) glyph(r, f, x, y, kEllipsis, ink), x += f.w;
   return x;
 }
 
@@ -173,39 +181,27 @@ void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t 
 
 namespace {
 
-// The caption's line, the lane's last: kSmall's height and a gap above it,
-// which a bubble over it gives up from its foot.
-int captionTop(const BubbleBox& box) { return box.bottom - kSmall.h + kCaptionDrop; }
-
-// The line in its bubble, which takes the whole lane but for the caption's
-// line under it when there is one: a box with round corners and a short
-// tail up to the face, the text centred in the bubble's font, or the
-// sign's, the large or the small one when it doesn't fit its width or,
-// over a caption, its height (on the AMOLED, the longest take, 22, fits
-// the sign's; a line of 34, the small), cut to fit.
-void bubble(Lane& l, const char* line, bool captioned) {
-  const uint16_t dim = inkRgb565(kInkDim);
+// The line in its bubble, on the lane's one row under the rule: a box with
+// round corners, the text centred in the sign's font, or the large one
+// when it doesn't fit its width (on the AMOLED, the longest take, 22, fits
+// the sign's), cut to fit, in warm white: amber is needs you's alone.
+void bubble(Lane& l, const char* line) {
   const BubbleBox box(l.r.s);
   const int room = box.room(l.w);
-  const int top = box.top, bottom = captioned ? captionTop(box) - kCaptionGap : box.bottom, cx = l.w / 2;
-  const Font* f = &kFontBubble;
-  for (const Font* smaller : {&kSign, &kLarge, &kSmall})
-    if (glyphCount(line) * f->w > room || f->h > bottom - top - 2 * kBubbleLine) f = smaller;
-  const int tw = std::min(glyphCount(line) * f->w, room);
+  const Font& f = glyphCount(line) * kSign.w <= room ? kSign : kLarge;
+  const int tw = std::min(glyphCount(line) * f.w, room);
   const int bw = tw + 2 * (kBubblePad + kBubbleLine), left = (l.w - bw) / 2;
-  l.r.ring(left, top, bw, bottom - top, kBubbleRadius, kBubbleLine, dim);
-  const Point tail[] = {{cx - 9, top + kBubbleLine}, {cx + 9, top + kBubbleLine}, {cx, l.y(kLaneTop)}};
-  l.r.polygon(tail, 3, dim);
-  text(l.r, *f, (l.w - tw) / 2, (top + bottom) / 2 - f->h / 2, line, inkRgb565(kInkAmber), room);
+  l.r.ring(left, box.top, bw, box.bottom - box.top, kBubbleRadius, kBubbleLine, rgb565(kGrabberRgb));
+  text(l.r, f, (l.w - tw) / 2, (box.top + box.bottom) / 2 - f.h / 2, line, rgb565(kEyeRgb), room);
 }
 
 // The caption: the reaction's reason, the app's narration of why, in the
-// strip's small type and its secondary grey, with no box, centred on the
-// lane's last line, so it reads as a note, not as something said.
+// large font and a light grey with no box, on the lane's row, so it reads
+// as a note, not as something said.
 void caption(Lane& l, const char* line) {
   const BubbleBox box(l.r.s);
-  const int room = box.room(l.w), tw = std::min(glyphCount(line) * kSmall.w, room);
-  text(l.r, kSmall, (l.w - tw) / 2, captionTop(box), line, inkRgb565(kInkGrey), room);
+  const int room = box.room(l.w), tw = std::min(glyphCount(line) * kLarge.w, room);
+  text(l.r, kLarge, (l.w - tw) / 2, rowMiddle(l.h) - kLarge.h / 2, line, rgb565(kNarrationRgb), room);
 }
 
 // The strip's marks, each in a kIcon box with its middle at (x + 9, cy).
@@ -243,131 +239,181 @@ namespace {
 void dots(Raster& r, int x, int cy, uint16_t ink) {
   for (int i = 0; i < 3; ++i) r.disk(x + 3 + 6 * i, cy + 5, 2, ink);
 }
-void plug(Raster& r, int x, int cy, uint16_t ink) {  // a plug on its cord, pointing at nothing
-  r.round(x, cy - 2, 8, 4, 2, ink);                  // cord
-  r.round(x + 7, cy - 9, 10, 18, 3, ink);            // body
-  r.round(x + 17, cy - 6, 7, 3, 1, ink);             // prongs
-  r.round(x + 17, cy + 3, 7, 3, 1, ink);
+// A plug on its cord, pointing at nothing, 48 × 36 px, its left at x.
+void plug(Raster& r, int x, int cy, uint16_t ink) {
+  r.round(x, cy - 4, 16, 8, 4, ink);         // cord
+  r.round(x + 14, cy - 18, 20, 36, 6, ink);  // body
+  r.round(x + 34, cy - 12, 14, 6, 2, ink);   // prongs
+  r.round(x + 34, cy + 6, 14, 6, 2, ink);
 }
-
-// The working and idle counts' chip, as the drawer's rows have theirs: a
-// box with round corners outlined in `ring` round a mark and the number
-// in `ink`.
-// Its padding before the mark, and after the number (less, as a digit's
-// cell has room either side of it), the gap between the two, and after
-// it, before the next count: less than a mark's, as its outline parts
-// them.
-constexpr int kChipH = 36, kChipRadius = 9, kChipPad = 8, kChipEnd = 7, kChipGap = 4, kChipAfter = 12;
 
 // Which of the counts the strip shows (counts()'s `shown`).
 enum : unsigned { kShowBusy = 1, kShowHelpers = 2, kShowIdle = 4, kShowTodo = 8, kShowAll = 15 };
 
-// The counts after the names: how many sessions work, by a spinner on
-// `spin`, the helpers at work (a mini each, a little droplet of the gel
-// with two eyes), the agents idle, by a sleeper's z, the two in chips, and
-// last, as Pixel's strip has it, how far down its to-do list the longest
-// turn with one is ("3/7"), from x, each with the gap after it, those in
-// `shown` alone. Drawn when r is given; either way, the x after them, so
-// the names leave them the room they take.
-int counts(Raster* r, const Strip& s, int x, int cy, int spin, unsigned shown = kShowAll) {
+// The counts as marks, when a name takes the room: how many sessions
+// work, by a spinner on `spin`, the helpers at work as "+N" after them,
+// the agents idle, by a sleeper's z, and last how far down its to-do
+// list the longest turn with one is ("3/7"), from x, each with the gap
+// after it, those in `shown` alone. Drawn when r is given; either way, the
+// x after them, so the names leave them the room they take.
+int marks(Raster* r, const Strip& s, int x, int cy, int spin, unsigned shown) {
   const Font& f = kSign;
   const int ty = cy - f.h / 2;
-  const uint16_t grey = inkRgb565(kInkGrey), eye = inkRgb565(kInkEye);
+  const uint16_t white = rgb565(kEyeRgb), grey = rgb565(kNarrationRgb);
   char n[24];
   auto number = [&](int at, uint16_t ink) { return r ? text(*r, f, at, ty, n, ink) : at + glyphCount(n) * f.w; };
-  // The chip from x round its mark and count; the x after it, with the gap.
-  auto chip = [&](int count, uint16_t ring, uint16_t ink, auto mark) {
-    std::snprintf(n, sizeof(n), "%d", count);
-    const int w = kChipPad + kIcon + kChipGap + glyphCount(n) * f.w + kChipEnd;
-    if (r) {
-      r->ring(x, cy - kChipH / 2, w, kChipH, kChipRadius, 2, ring);
-      mark(x + kChipPad);
-      number(x + kChipPad + kIcon + kChipGap, ink);
-    }
-    return x + w + kChipAfter;
+  auto count = [&](int value, auto mark) {
+    std::snprintf(n, sizeof(n), "%d", value);
+    if (r) mark(x);
+    return number(x + kIcon + kMarkGap, white) + kMarkAfter;
   };
-  if (s.busy > 0 && shown & kShowBusy)
-    x = chip(s.busy, kWorkingRing, kWorkingInk, [&](int at) { spinner(*r, at, cy, spin, kWorkingInk); });
+  if (s.busy > 0 && shown & kShowBusy) x = count(s.busy, [&](int at) { spinner(*r, at, cy, spin, white); });
   if (s.helpers > 0 && shown & kShowHelpers) {
-    const int minis = std::min(s.helpers, kMinis), miniW = 20;
-    const uint16_t gel = 0x75BE, ink = 0x0000;
-    for (int i = 0; r && i < minis; ++i) {
-      const int mx = x + i * miniW;
-      r->round(mx, cy - 7, 16, 15, 7, gel);
-      r->round(mx + 4, cy - 2, 3, 3, 1, ink);
-      r->round(mx + 9, cy - 2, 3, 3, 1, ink);
-    }
-    x += minis * miniW;
-    if (s.helpers > minis) {
-      std::snprintf(n, sizeof(n), "+%d", s.helpers - minis);
-      x = number(x + 2, grey);
-    }
-    x += kIcon;
+    std::snprintf(n, sizeof(n), "+%d", s.helpers);
+    x = number(x, grey) + kMarkAfter;
   }
-  if (s.idle > 0 && shown & kShowIdle)
-    x = chip(s.idle, kIdleRing, kIdleInk, [&](int at) { sleeper(*r, at, cy, kIdleInk); });
+  if (s.idle > 0 && shown & kShowIdle) x = count(s.idle, [&](int at) { sleeper(*r, at, cy, grey); });
   if (s.todoTotal > 0 && shown & kShowTodo) {
     std::snprintf(n, sizeof(n), "%d/%d", s.todoDone, s.todoTotal);
-    x = number(x, eye) + kIcon;
+    x = number(x, white) + kMarkAfter;
   }
   return x;
 }
 
+// The counts in words, when there's room: "2 working +4 helpers · 1 idle",
+// the numbers in warm white and the words in grey, from x; `helpers` says
+// how the helpers show: 2 with their word, 1 as "+4" alone, 0 not at all,
+// as the room gets tighter. The to-do list isn't
+// in it: it stands at the strip's right end. Drawn when r is given; either
+// way, the x after them.
+int words(Raster* r, const Strip& s, int x, int cy, int helpers) {
+  const Font& f = kSign;
+  const int ty = cy - f.h / 2;
+  const uint16_t white = rgb565(kEyeRgb), grey = rgb565(kNarrationRgb);
+  auto put = [&](const char* v, uint16_t ink) { x = r ? text(*r, f, x, ty, v, ink) : x + glyphCount(v) * f.w; };
+  char n[16];
+  if (s.busy > 0) {
+    std::snprintf(n, sizeof(n), "%d", s.busy);
+    put(n, white), put(" working", grey);
+    if (s.helpers > 0 && helpers > 0) {
+      std::snprintf(n, sizeof(n), " +%d", s.helpers);
+      put(n, white);
+      if (helpers > 1) put(s.helpers == 1 ? " helper" : " helpers", grey);
+    }
+  }
+  if (s.idle > 0) {
+    if (s.busy > 0) put(" \xC2\xB7 ", grey);
+    std::snprintf(n, sizeof(n), "%d", s.idle);
+    put(n, white), put(" idle", grey);
+  }
+  return x;
+}
+
+// The to-do list's "3/7", in warm white, its right end at `right`; the x
+// it starts at, or `right` with none.
+int todo(Raster* r, const Strip& s, int right, int cy) {
+  if (s.todoTotal <= 0) return right;
+  char n[16];
+  std::snprintf(n, sizeof(n), "%d/%d", s.todoDone, s.todoTotal);
+  const int x = right - glyphCount(n) * kSign.w;
+  if (r) text(*r, kSign, x, cy - kSign.h / 2, n, rgb565(kEyeRgb));
+  return x;
+}
+
+// The counts from x to `right`: in words if they fit, the to-do list at
+// the right end, else as marks. Drawn when r is given; the x after them.
+int counts(Raster* r, const Strip& s, int x, int right, int cy, int spin) {
+  const int list = todo(nullptr, s, right, cy);
+  const int room = list - (s.todoTotal > 0 ? kMarkAfter : 0) - x;
+  for (int helpers : {2, 1, 0})
+    if (words(nullptr, s, 0, cy, helpers) <= room) {
+      todo(r, s, right, cy);
+      return std::max(words(r, s, x, cy, helpers), s.todoTotal > 0 ? right : 0);
+    }
+  return marks(r, s, x, cy, spin, kShowAll);
+}
+
 }  // namespace
 
-int paintCounts(Raster& r, const Strip& s, int x, int cy, int spin) { return counts(&r, s, x, cy, spin); }
+int paintCounts(Raster& r, const Strip& s, int x, int right, int cy, int spin) {
+  return counts(&r, s, x, right, cy, spin);
+}
 
-void paintRule(Raster& r, int x0, int x1, int y, bool down, uint16_t ink) {
-  const int cx = (x0 + x1) / 2, tip = down ? y + 6 : y - 5, foot = down ? y - 3 : y + 4;
-  r.round(x0, y, cx - 18 - x0, 2, 1, ink);
-  r.round(cx + 18, y, x1 - cx - 18, 2, 1, ink);
-  r.line({cx - 10, foot}, {cx, tip}, 3, ink);
-  r.line({cx, tip}, {cx + 10, foot}, 3, ink);
+void paintStatusMark(Raster& r, StatusMark mark, int x, int cy, int spin) {
+  switch (mark) {
+    case StatusMark::kWorking: spinner(r, x, cy, spin, kWorkingInk); break;
+    case StatusMark::kIdle: sleeper(r, x, cy, kIdleInk); break;
+    case StatusMark::kNeedsYou: dot(r, x, cy, rgb565(kAmberRgb)); break;
+  }
+}
+
+void paintRule(Raster& r, int x0, int x1, int y, bool grabber) {
+  const uint16_t rule = rgb565(kRuleRgb);
+  if (!grabber) {
+    r.round(x0, y, x1 - x0, 2, 1, rule);
+    return;
+  }
+  const int cx = (x0 + x1) / 2, gap = kGrabberW / 2 + kGrabberGap;
+  r.round(x0, y, cx - gap - x0, 2, 1, rule);
+  r.round(cx + gap, y, x1 - cx - gap, 2, 1, rule);
+  r.round(cx - kGrabberW / 2, y + 1 - kGrabberH / 2, kGrabberW, kGrabberH, kGrabberH / 2, rgb565(kGrabberRgb));
 }
 
 namespace {
 
-// The status strip: who needs you, or whose turn the finish was, then how
-// many sessions work, and the plug with no app (render/screens.h's Strip).
+// How far in from the panel's sides the strip's row stands: in from the
+// sides, and clear of the panel's rounded corners on the row's rows.
+int stripMargin(const Surface& panel, int cy) {
+  return std::max(kMargin, panel.inset(cy - kSign.h / 2, cy + kSign.h / 2) + kCornerGap);
+}
+
+// The rule along the lane's top, the drawer's grabber in its middle while
+// the drawer has rows to show: there whatever the lane's row holds.
+void rule(Lane& l, const Strip& s) {
+  const int y = ruleRow(l.h), margin = std::max(kMargin, l.r.s.inset(y, y + 2) + kCornerGap);
+  paintRule(l.r, margin, l.w - margin, y, s.agent || s.busy > 0 || s.idle > 0);
+}
+
+// The status strip's row: who needs you, or whose turn the finish was,
+// then how many sessions work; with no app, the plug and "no Mac" in the
+// middle (render/screens.h's Strip).
 void strip(Lane& l, const Strip& s, int spin) {
   if (!s.shows()) return;
   Raster& r = l.r;
-  const uint16_t dim = inkRgb565(kInkDim), grey = inkRgb565(kInkGrey);
   const Font& f = kSign;
-  const int cy = l.y((kStripTop + kHeight) / 2), ty = cy - f.h / 2;
-  // In from the sides, and clear of the panel's rounded corners on the
-  // rows of the marks and the digits, and of the chips, whose round
-  // corners may stand nearer.
-  const Surface& panel = l.r.s;
-  const int margin = std::max(
-      kMargin,
-      std::max(panel.inset(cy - 12, cy + 12), panel.inset(cy - kChipH / 2, cy + kChipH / 2, kChipRadius)) + kCornerGap);
-  // Its rule, with a chevron for the agents' drawer under it while there
-  // are any (render/gel/drawer.h).
-  if (s.agent || s.busy > 0 || s.idle > 0)
-    paintRule(r, margin, l.w - margin, l.y(kStripTop), false, dim);
-  else
-    r.round(margin, l.y(kStripTop), l.w - 2 * margin, 2, 1, dim);
-  // The room the counts in `shown` take after the names: the gap before
+  const int cy = rowMiddle(l.h), ty = cy - f.h / 2;
+  const int margin = stripMargin(r.s, cy), right = l.w - margin, names = margin + 2 * kIcon;
+  const uint16_t grey = rgb565(kNarrationRgb);
+  if (s.noApp) {
+    // No Mac: the plug, twice the strip's marks, and the words beside it.
+    constexpr int kPlug = 48, kGap = 16;
+    const char* words = "no Mac";
+    const int w = kPlug + kGap + glyphCount(words) * f.w, x = (l.w - w) / 2;
+    plug(r, x, cy, grey);
+    text(r, f, x + kPlug + kGap, ty, words, grey);
+    return;
+  }
+  // The room the marks in `shown` take after the names: the gap before
   // them, and up to the last one's end, so they stop at the margin.
-  auto countsRoom = [&](unsigned shown) {
-    const int w = counts(nullptr, s, 0, cy, spin, shown);
-    return w ? kIcon + w - kChipAfter : 0;
+  auto marksRoom = [&](unsigned shown) {
+    const int w = marks(nullptr, s, 0, cy, spin, shown);
+    return w ? kIcon + w - kMarkAfter : 0;
   };
-  const int right = l.w - margin, names = margin + 2 * kIcon;
-  int x = margin;
-  unsigned shown = kShowAll;
   if (s.agent) {
     // Who's asking, which the needs-you card doesn't say: its thread (or
     // project) first, whole if it can be, then the agent before it, and
-    // only then the working and idle chips, while there's room for them;
+    // only then the working and idle counts, while there's room for them;
     // the helpers and the to-do list wait until nothing needs you. The
     // first of these that fits, else the thread cut to the room there is.
-    const uint16_t amber = inkRgb565(kInkAmber);
-    dot(r, x, cy, amber);
+    // How many more wait stands apart at the right end, in a pill.
+    const uint16_t amber = rgb565(kAmberRgb);
+    // On the name's lower case's middle, a little under the cell's.
+    dot(r, margin, cy + 3, amber);
     char more[12] = "";
     if (s.more > 0) std::snprintf(more, sizeof(more), "+%d", s.more);
-    const int moreRoom = more[0] ? glyphCount(more) * f.w + 12 : 0;
+    constexpr int kPillPad = 9, kPillGap = 12, kPillH = 30;
+    const int pillW = more[0] ? glyphCount(more) * kLarge.w + 2 * kPillPad : 0;
+    const int pillRoom = pillW ? pillW + kPillGap : 0;
     const char* what = s.name && *s.name ? s.name : s.project;
     const bool named = what && *what;
     char both[48];
@@ -375,26 +421,32 @@ void strip(Lane& l, const Strip& s, int spin) {
     const char* const tries[] = {both, named ? what : s.agent};
     const unsigned chips[] = {kShowBusy | kShowIdle, kShowBusy, 0};
     const char* who = tries[1];
-    shown = 0;
+    unsigned shown = 0;
     bool whole = false;
     for (const char* name : tries)
       for (unsigned c : chips)
-        if (!whole && glyphCount(name) * f.w <= right - names - moreRoom - countsRoom(c))
+        if (!whole && glyphCount(name) * f.w <= right - names - pillRoom - marksRoom(c))
           who = name, shown = c, whole = true;
-    x = text(r, f, names, ty, who, amber, right - names - moreRoom - countsRoom(shown));
-    if (more[0]) x = text(r, f, x + 12, ty, more, grey);
-    x += kIcon;
-  } else if (s.doneAgent) {
-    const uint16_t eye = inkRgb565(kInkEye);
+    const int x = text(r, f, names, ty, who, amber, right - names - pillRoom - marksRoom(shown));
+    marks(&r, s, x + kIcon, cy, spin, shown);
+    if (pillW) {
+      const int px = right - pillW;
+      r.ring(px, cy - kPillH / 2, pillW, kPillH, kPillH / 2, 2, amber);
+      text(r, kLarge, px + kPillPad, cy - kLarge.h / 2, more, amber);
+    }
+    return;
+  }
+  if (s.doneAgent) {
+    const uint16_t eye = rgb565(kEyeRgb);
     if (s.doneOutcome == Outcome::kSuccess)
-      tick(r, x, cy, rgb565(kSageRgb));
+      tick(r, margin, cy, rgb565(kSageRgb));
     else if (s.doneOutcome == Outcome::kFailure)
-      cross(r, x, cy, rgb565(kClayRgb));
+      cross(r, margin, cy, rgb565(kClayRgb));
     else
-      dots(r, x, cy, eye);
+      dots(r, margin, cy, eye);
     // Whose turn it was, and its thread after a dot if it has one, cut to
-    // what the counts leave; fewer counts, the chips last, if they'd leave
-    // less than the agent's name.
+    // what the counts leave; fewer counts if they'd leave less than the
+    // agent's name.
     char who[48];
     if (s.doneThread && *s.doneThread)
       std::snprintf(who, sizeof(who), "%s \xC2\xB7 %s", s.doneAgent, s.doneThread);
@@ -402,18 +454,18 @@ void strip(Lane& l, const Strip& s, int spin) {
       std::snprintf(who, sizeof(who), "%s", s.doneAgent);
     const int least = (glyphCount(s.doneAgent) + 2) * f.w;
     const unsigned fewer[] = {kShowAll, kShowBusy | kShowIdle, kShowBusy, 0};
-    shown = 0;
+    unsigned shown = 0;
     for (unsigned c : fewer)
-      if (right - names - countsRoom(c) >= least) {
+      if (right - names - marksRoom(c) >= least) {
         shown = c;
         break;
       }
-    x = text(r, f, names, ty, who, eye, right - names - countsRoom(shown)) + kIcon;
+    const int x = text(r, f, names, ty, who, eye, right - names - marksRoom(shown));
+    marks(&r, s, x + kIcon, cy, spin, shown);
+    return;
   }
-  // Then how many work, the helpers at work, and the agents idle, waiting
-  // for you.
-  counts(&r, s, x, cy, spin, shown);
-  if (s.noApp) plug(r, l.w - margin - 24, cy, grey);
+  // Nothing named: the counts, in words when they fit.
+  counts(&r, s, margin, right, cy, spin);
 }
 
 // The strip, drawn at full strength, blended once at its opacity (0–255):
@@ -436,18 +488,21 @@ void fade(Surface& s, int from, int alpha) {
 // are (FNV-1a over the line or the strip's fields; never 0).
 }  // namespace
 
-uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption) {
+uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption, int rowAlpha) {
   uint32_t h = 2166136261u;
   auto add = [&](const void* data, size_t n) {
     for (size_t i = 0; i < n; ++i) h = (h ^ static_cast<const uint8_t*>(data)[i]) * 16777619u;
   };
   auto str = [&](const char* v) { add(v ? v : "\x01", v ? std::strlen(v) + 1 : 1); };
   str(line);
-  str(caption);
+  str(line ? nullptr : caption);
+  const int grabber = s.agent || s.busy > 0 || s.idle > 0, shows = s.shows();
+  add(&grabber, sizeof grabber), add(&shows, sizeof shows);
   if (!line && !caption) {
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
-    const int numbers[] = {s.more,     int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
-                           s.todoDone, s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0};
+    const int numbers[] = {s.more,      int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
+                           s.todoDone,  s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0,
+                           rowAlpha};
     add(numbers, sizeof(numbers));
   }
   return h ? h : 1;
@@ -455,18 +510,23 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
 
 int bubbleRoom(const Surface& surface) { return BubbleBox(surface).room(surface.width); }
 
-void paintLane(Surface& surface, const char* line, const Strip& s, int spin, const char* note) {
+void paintLane(Surface& surface, const char* line, const Strip& s, int spin, const char* note, int rowAlpha) {
   if (!surface.pixels) return;
   Lane l{Raster{surface}, surface.width, surface.height};
   l.r.limit = surface.height;
-  if (line || note) {
-    if (line) bubble(l, line, note != nullptr);
-    if (note) caption(l, note);
+  // One row under the rule: the bubble while Boop speaks, else the
+  // caption, else the strip, which a low sign rising fades (rowAlpha).
+  if (line || note || s.shows()) rule(l, s);
+  if (line) {
+    bubble(l, line);
+  } else if (note) {
+    caption(l, note);
   } else {
     strip(l, s, spin);
+    fade(surface, ruleRow(l.h) + kGrabberH, rowAlpha);
     fade(surface, l.y(kLaneTop), (s.opacity * 255 + 500) / 1000);
   }
-  surface.laneKey = laneKey(line, s, spin, note);
+  surface.laneKey = laneKey(line, s, spin, note, rowAlpha);
   surface.laneKeyFrom = l.y(kLaneTop);
 }
 
@@ -500,18 +560,27 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     low = LowSign{};
     low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs;
   }
+  // A celebration's gold, a little after the sign it may come with: it
+  // takes the lane from all of these, its rim glowing gold.
+  const GoldShow gold = goldShow(sign);
+  if (gold.sign.shows()) low = gold.sign;
   if (low.shows()) line = note = nullptr;
-  // At rest it covers what's under it, so the strip's changes change nothing.
+  // At rest it covers what's under it, so the strip's changes change nothing;
+  // rising, the strip's row fades as it comes.
   const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
+  const int rowAlpha = low.shows() ? 255 - lowSignRisen(low, surface.height) : 255;
   // A lane that shows what this surface's already shows is kept, not
   // erased and drawn again (Surface::clear): the glow over it too.
-  const int glow = doneGlow(done);
+  const int doneGlowPeak = doneGlow(done), glow = doneGlowPeak ? doneGlowPeak : gold.glow;
+  const uint16_t glowInk = doneGlowPeak ? 0 : rgb565(kGoldRgb);
   const int spin = spinStep(now);
-  uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note);
+  uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note, rowAlpha);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
-  if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome))) * 16777619u) | 1;
+  if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome) | (doneGlowPeak ? 0 : 0x80))) * 16777619u) | 1;
   const int hop = actTakesOver(act) ? 0 : signHop(sign, e.body());
-  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, &act);
+  // The needs-you card stands in the top band: the body ducks under it.
+  const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, &act, duck);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at, e);
@@ -532,20 +601,29 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
   if (sign.text && !sign.low && !actTakesOver(act)) paintSign(surface, sign, at, hop);
-  if (growth && !actTakesOver(act)) paintGrowthBar(surface, *growth, at, wornHat(e.scenes.when) != Outfit::kNone);
+  if (growth && !actTakesOver(act)) {
+    // The top band holds one thing at a time: while LISTENING shows there,
+    // the bar gives way to it (a heart flying still flies).
+    const int listening = (e.scenes.visible(Scenes::kListeningProp, e.timeMs()) * 255).integer();
+    paintGrowthBar(surface, *growth, at, wornHat(e.scenes.when) != Outfit::kNone, 255 - listening);
+  }
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {
     if (laneAtRest) {
       surface.laneKeyFrom = surface.height * kLaneTop / kHeight;
     } else {
-      paintLane(surface, line, s, spin, note);
+      paintLane(surface, line, s, spin, note, rowAlpha);
     }
     paintLowSign(surface, low);
     surface.laneKey = key;
   }
   // A kept lane keeps its glow.
-  paintGlow(surface, done, 0, lane ? surface.height : surface.laneKeyFrom);
+  const int glowTo = lane ? surface.height : surface.laneKeyFrom;
+  if (doneGlowPeak)
+    paintGlow(surface, done, 0, glowTo);
+  else if (gold.glow)
+    paintGlow(surface, gold.glow, glowInk, 0, glowTo);
 }
 
 }  // namespace render::gel

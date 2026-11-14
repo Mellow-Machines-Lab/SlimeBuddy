@@ -1,6 +1,7 @@
-// v1: today's ring closing (the bar fills gold and sparkles, Boop happy, the
-// reason in the lane), a level-up (proud, "Level 12!" on the low sign), and a
-// boop from the world (Jev's small face, its sign and the reason).
+// v1: today's ring closing (the bar fills gold and sparkles, Boop happy,
+// holding up "today's done!"), a level-up (proud, "level 12!" held low in
+// gold, the rim glowing gold), both at once as one moment, and a boop from
+// the world (Jev's small face, its sign and the reason).
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":90}
@@ -15,7 +16,7 @@
 {"clock":900}
 {"clock":1000}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":100}
-{"t":"do","id":1,"name":"react","args":{"reason":"Today's done!","mood":"happy","loops":2}}
+{"t":"do","id":1,"name":"react","args":{"sign":"today's done!","mood":"happy","loops":2}}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
@@ -52,7 +53,7 @@
 {"clock":800}
 {"clock":900}
 {"clock":1000}
-{"t":"do","id":1,"name":"react","args":{"sign":"Level 12!","reason":"level 12!","low":true,"mood":"proud","loops":2}}
+{"t":"do","id":1,"name":"react","args":{"gold":"level 12!","reason":"level 12!","mood":"proud","loops":2}}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
@@ -85,6 +86,55 @@
 {"clock":3800}
 {"clock":3900}
 {"clock":4000}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":90}
+{"clock":100}
+{"clock":200}
+{"clock":300}
+{"clock":400}
+{"clock":500}
+{"clock":600}
+{"clock":700}
+{"clock":800}
+{"clock":900}
+{"clock":1000}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":100}
+{"t":"do","id":1,"name":"react","args":{"sign":"today's done!","gold":"level 13!","reason":"level 13!","mood":"proud","loops":2}}
+{"clock":1100}
+{"clock":1200}
+{"clock":1300}
+{"shot":"ring-and-level-sign"}
+{"expect":{"sign":"today's done!","gold":"level 13!"}}
+{"clock":1400}
+{"clock":1500}
+{"clock":1600}
+{"clock":1700}
+{"clock":1800}
+{"clock":1900}
+{"clock":2000}
+{"shot":"ring-and-level"}
+{"clock":2100}
+{"clock":2200}
+{"clock":2300}
+{"clock":2400}
+{"clock":2500}
+{"clock":2600}
+{"clock":2700}
+{"clock":2800}
+{"clock":2900}
+{"clock":3000}
+{"clock":3100}
+{"clock":3200}
+{"clock":3300}
+{"clock":3400}
+{"clock":3500}
+{"clock":3600}
+{"clock":3700}
+{"clock":3800}
+{"clock":3900}
+{"clock":4000}
+{"shot":"ring-and-level-later"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}

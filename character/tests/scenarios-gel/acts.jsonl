@@ -746,7 +746,7 @@
 {"clock": 35900}
 {"clock": 35950}
 {"clock": 36000}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["push", "FAIL", 1, "f"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["push", "fail", 1, "f"]}
 {"clock": 36050}
 {"clock": 36100}
 {"clock": 36150}
@@ -1333,8 +1333,8 @@
 {"clock": 63900}
 {"clock": 63950}
 {"clock": 64000}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "PASS", 1, "p"]}
-{"expect": {"wact": "PASS"}}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "pass", 1, "p"]}
+{"expect": {"wact": "pass"}}
 {"clock": 64050}
 {"clock": 64100}
 {"clock": 64150}
@@ -1581,7 +1581,7 @@
 {"clock": 75900}
 {"clock": 75950}
 {"clock": 76000}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "FAIL", 1, "f"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "fail", 1, "f"]}
 {"clock": 76050}
 {"clock": 76100}
 {"clock": 76150}
@@ -1759,7 +1759,7 @@
 {"clock": 84450}
 {"clock": 84500}
 {"shot": "tests-small"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "PASS", 0, "p"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "pass", 0, "p"]}
 {"clock": 84550}
 {"clock": 84600}
 {"clock": 84650}
@@ -3227,8 +3227,8 @@
 {"clock": 156950}
 {"clock": 157000}
 {"shot": "build-roof"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "BUILT", 1, "p"]}
-{"expect": {"wact": "BUILT"}}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "built", 1, "p"]}
+{"expect": {"wact": "built"}}
 {"clock": 157050}
 {"clock": 157100}
 {"clock": 157150}
@@ -4761,7 +4761,7 @@
 {"clock": 232950}
 {"clock": 233000}
 {"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "building", 1]}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "FAIL", 1, "f"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "fail", 1, "f"]}
 {"clock": 233050}
 {"clock": 233100}
 {"clock": 233150}
@@ -4919,7 +4919,7 @@
 {"clock": 240450}
 {"clock": 240500}
 {"shot": "build-small"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "BUILT", 0, "p"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["build", "built", 0, "p"]}
 {"clock": 240550}
 {"clock": 240600}
 {"clock": 240650}

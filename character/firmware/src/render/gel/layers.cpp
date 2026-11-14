@@ -803,15 +803,15 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   r.alpha = 255;
 }
 
-void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat) {
+void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat, int yield) {
   if (!s.pixels || !bar.opacity) return;
   Raster r{s};
-  // Narrow enough that its label fits beside it inside the panel's rounded
-  // corners.
-  constexpr int kWidth = 232, kHeight = 18, kTop = 18, kSlide = 40, kCornerGap = 4;
+  // The bar centred over the body, and how much today straight after it,
+  // the number alone in the large font: the bar is today.
+  constexpr int kWidth = 200, kHeight = 18, kTop = 18, kSlide = 40, kNumberGap = 10;
   constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
-                     kFillTop = rgb565(170, 222, 245), kFull = rgb565(242, 196, 86), kFullTop = rgb565(255, 234, 160),
-                     kHeart = rgb565(226, 78, 104), kGlow = rgb565(255, 250, 220), kLabel = rgb565(173, 163, 150);
+                     kFillTop = rgb565(170, 222, 245), kFull = rgb565(kGoldRgb), kFullTop = rgb565(255, 234, 160),
+                     kHeart = rgb565(226, 78, 104), kGlow = rgb565(255, 250, 220), kNumber = rgb565(kEyeRgb);
   const int x = (s.width - kWidth) / 2, y = kTop - kSlide * (255 - bar.opacity) / 255;
   // Today's ring, full: gold, and nothing more counts today.
   const bool last = bar.fill >= 1000;
@@ -819,10 +819,12 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
   const int swell = bar.gulp ? 4 * (bar.gulp < 300 ? bar.gulp : (1000 - bar.gulp) * 300 / 700) / 300 : 0;
   const int top = y - swell / 2, height = kHeight + swell, cy = y + kHeight / 2;
   const int tip = x + 2 + (kWidth - 4) * bar.fill / 1000;
-  r.alpha = bar.opacity;
+  // What else holds the top band (LISTENING) takes it: the bar gives way.
+  const int shown = bar.opacity * std::clamp(yield, 0, 255) / 255;
+  r.alpha = shown;
   // A hat reaches the bar's row: it goes behind the bar, with no scrap of its
   // tip above it. (With the crown under the bar, so never over the body.)
-  if (hat && top > 0 && at.crown.y / 16 > y + kHeight) r.round(s.width / 2 - 110, 0, 220, top, 0, 0);
+  if (hat && top > 0 && at.crown.y / 16 > y + kHeight && shown > 2) r.round(s.width / 2 - 110, 0, 220, top, 0, 0);
   r.round(x, top, kWidth, height, height / 2, kTrack);
   if (tip > x + 4) {
     const int w = tip - x - 2;
@@ -830,30 +832,26 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
     if (w > 12) r.round(x + 7, top + 3, w - 10, 2, 1, last ? kFullTop : kFillTop);
   }
   r.ring(x, top, kWidth, height, height / 2, 1, kRim);
-  // How much today, beside it, counting up as it fills: under it is the
-  // LISTENING word's row. Its right end stays where the panel's corner
-  // leaves the bar's rows whole, by its resting rows, so it doesn't drift as
-  // it slides.
-  char today[16];
-  snprintf(today, sizeof today, "%d today", (bar.fill + 5) / 10);
-  const int glyph = std::max(1, int(kSmall.w) * s.width / 502), len = int(std::strlen(today));
-  const int right = s.width - s.inset(kTop, kTop + kHeight) - kCornerGap;
-  r.text(today, right - len * glyph / 2, cy, kLabel);
+  // How much today, counting up as it fills.
+  char today[8];
+  snprintf(today, sizeof today, "%d", (bar.fill + 5) / 10);
+  if (shown > 2) text(r, kLarge, x + kWidth + kNumberGap, cy - kLarge.h / 2, today, kNumber);
   if (bar.sparkle) {
-    // Full: stars burst off along the bar, and fade.
+    // Full: stars burst off along the bar, and fade, rising no more than
+    // 12 px, so the panel's top edge never cuts them.
     const int age = bar.sparkle;
-    r.alpha = bar.opacity * (1000 - age) / 1000;
+    r.alpha = shown * (1000 - age) / 1000;
     for (int i = 0; i < 7; ++i) {
-      const int sx = x + 20 + i * (kWidth - 40) / 6, rise = 4 + age * (10 + (i % 3) * 6) / 1000;
+      const int sx = x + 20 + i * (kWidth - 40) / 6, rise = 4 + age * (4 + (i % 3) * 2) / 1000;
       const int sy = i % 2 ? top - rise : top + height + rise;
       r.disk(sx, sy, 3 - age * 2 / 1000, i % 3 ? kGlow : kFullTop);
     }
   }
   if (bar.gulp) {
     // A flash along what's filled, and sparks off the tip.
-    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000 / 2;
+    r.alpha = shown * (1000 - bar.gulp) / 1000 / 2;
     if (tip > x + 4) r.round(x + 2, top + 2, tip - x - 2, height - 4, (height - 4) / 2, kGlow);
-    r.alpha = bar.opacity * (1000 - bar.gulp) / 1000;
+    r.alpha = shown * (1000 - bar.gulp) / 1000;
     for (int i = 0; i < 6; ++i) {
       const Point out = turn(i * 32 / 6 + 3);
       const int d = 8 + bar.gulp * 26 / 1000;
@@ -898,12 +896,16 @@ void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at, int hop
   r.fade = (sign.opacity * 255 + 500) / 1000;
   const int bottom = s.height * 4 / 5;  // the lane's top: shapes stop there
   const Font& f = kSign;
-  const int tw = stringWidth(f, sign.text), w = tw + 2 * SignLayer::kPad, h = f.h + 10;
+  // Never narrower than kMinWide, so a short one ("<3") isn't smaller than
+  // the hands that hold it.
+  const int tw = stringWidth(f, sign.text), w = std::max(tw + 2 * SignLayer::kPad, SignLayer::kMinWide), h = f.h + 10;
   // Centred on its front, held at its hands' ring, never into the lane,
   // nor past the panel's sides.
   // A card held under the mouth, which is the deepest an open one reaches, so
   // nothing of it pokes above the card.
-  const int underMouth = (at.mouth.y + (at.eyeR.x - at.eyeL.x) / 9) / 16 + hop;
+  // (A wide laugh's open mouth reaches a sixth of the eyes' spacing under its
+  // middle.)
+  const int underMouth = (at.mouth.y + (at.eyeR.x - at.eyeL.x) / 6) / 16 + hop;
   const int y = std::min(std::max(at.handF.y / 16 + hop - h / 2, underMouth), bottom - SignLayer::kGap - h) +
                 signLift(sign.ms, SignLayer::kRisePx, SignLayer::kBobPx);
   // (A hand's disk takes the kHand pixels either side of its middle's.)
@@ -911,7 +913,7 @@ void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at, int hop
   const int x = most < edge ? (s.width - w) / 2 : std::clamp(at.handF.x / 16 - w / 2, edge, most);
   r.round(x, y, w, h, 12, kCardInk);
   r.ring(x, y, w, h, 12, 2, kCardRim);
-  text(r, f, x + SignLayer::kPad, y + 5, sign.text, kWords);
+  text(r, f, x + (w - tw) / 2, y + 5, sign.text, kWords);
   // A little gel hand at either side, gripping it.
   for (int side : {-1, 1}) {
     const int hx = side < 0 ? x : x + w, hy = y + h / 2;

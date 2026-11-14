@@ -653,7 +653,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
-           const DrawerPose* squeeze, const Stream::ActNow* act) {
+           const DrawerPose* squeeze, const Stream::ActNow* act, int duck) {
   auto pose = e.pose();
   auto life = e.life();
   PaintControls c;
@@ -673,7 +673,13 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   c.dy = dy;
   c.blink = std::max(c.blink, sleepyLids(e));
   applyRig(c, rig);
-  if (squeeze) c.squeezeTop = squeeze->top, c.squeezeBottom = squeeze->bottom, c.widen = squeeze->widen;
+  if (squeeze) {
+    c.squeezeTop = squeeze->top, c.squeezeBottom = squeeze->bottom, c.widen = squeeze->widen;
+  } else if (duck > 0) {
+    // Crouched: the rest's rows pressed into fewer, a little wider for it.
+    const int top = restBodyTop(surface.height), bottom = restBodyBottom(surface.height);
+    c.squeezeTop = top + duck, c.squeezeBottom = bottom, c.widen = 4096 + duck * 4096 / (bottom - top) / 2;
+  }
   const bool bodyAlone = squeeze && squeeze->squint;
   // A finish moves, scales and squashes the body, its face with it; under
   // the drawer it waits.
@@ -751,7 +757,8 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     }
     {
       Measure measure(profile.behind);
-      if (finish.on) paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs);
+      if (finish.on)
+        paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs, hasTag(e.scenes.when, "night"));
       if (keepStill) surface.touch(still.x0, still.y0, still.x1, still.y1);
       if (acting) paintActBehind(surface, *act, keepStill);
       if (stillKey) surface.drewStill(stillKey, still);

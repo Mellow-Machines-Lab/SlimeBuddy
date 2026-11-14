@@ -2449,13 +2449,12 @@ static void test_steady_frames_allocate_nothing() {
 // double buffer's tracking clears it as it clears the rest: frame after
 // frame of the strip, the bubble and neither, a tracked clear leaves the
 // surface as a full one does. On a square panel the bubble holds the
-// longest take in its own font and a line of 34 in the large one.
+// longest take in the sign's font.
 static void test_the_lane_is_native_and_tracked() {
   constexpr int kW = 502, kH = 410, kLane = kH * 4 / 5;
   {
     Surface square{kW, kH, nullptr};
-    TEST_ASSERT_TRUE(22 * kFontBubble.w <= bubbleRoom(square));
-    TEST_ASSERT_TRUE(34 * kLarge.w <= bubbleRoom(square));
+    TEST_ASSERT_TRUE(22 * kSign.w <= bubbleRoom(square));
   }
   std::vector<uint16_t> a(kW * kH, 0xffff), b(a.size(), 0xffff), lane(a.size(), 0);
   Surface tracked{kW, kH, a.data()}, full{kW, kH, b.data()}, alone{kW, kH, lane.data()};
@@ -2546,11 +2545,11 @@ static void test_the_strip_fades_as_one() {
   }
 }
 // The lane's text is cut by the rule every face's is (render::cutAt): a
-// line too long for its room draws as the words cutAt keeps and "..". The
-// working count is a spinner and its number in a chip outlined as the
-// drawer's working rows' chips are, and the idle count a sleeper's z in
-// the idle rows' dimmer one; a finished turn's tick is sage and its cross
-// clay.
+// line too long for its room draws as the words cutAt keeps and one cell's
+// "…". With room, the counts are words, from the margin: "2 working", the
+// number in warm white and the word in grey; a needs-you name leaves the
+// working count only its mark, a spinner in warm white; a finished turn's
+// tick is sage and its cross clay.
 static void test_the_lane_cuts_and_marks_as_the_canvas_does() {
   constexpr int kW = 502, kH = 410;
   std::vector<uint16_t> a(kW * kH), b(a.size());
@@ -2558,24 +2557,29 @@ static void test_the_lane_cuts_and_marks_as_the_canvas_does() {
   Raster rc{cut}, rw{whole};
   rc.limit = rw.limit = kH;
   text(rc, kSign, 0, 0, "claude \xC2\xB7 what does the turn do", 0xffff, 24 * kSign.w);
-  text(rw, kSign, 0, 0, "claude \xC2\xB7 what does the..", 0xffff);
+  text(rw, kSign, 0, 0, "claude \xC2\xB7 what does the\xE2\x80\xA6", 0xffff);
   TEST_ASSERT_EQUAL_MEMORY(b.data(), a.data(), cut.bytes());
-  // With no names, the counts start at the margin: the chip's edge there,
-  // its inside bare glass, and the spinner's top spoke, lit on step 0, in
-  // the chip's ink, 8 px further in and 9 more to its middle.
+  const int cy = kH * ((kStripTop + kHeight) / 2) / kHeight, ty = cy - kSign.h / 2;
+  auto inked = [&](int x0, int x1, uint16_t ink) {
+    int n = 0;
+    for (int y = ty; y < ty + kSign.h; ++y)
+      for (int x = x0; x < x1; ++x) n += a[size_t(y) * kW + x] == ink;
+    return n;
+  };
   Strip s;
   s.busy = 2;
   cut.invalidate(), cut.clear();
   paintLane(cut, nullptr, s);
-  const int cy = kH * ((kStripTop + kHeight) / 2) / kHeight;
-  TEST_ASSERT_EQUAL_HEX16(kWorkingRing, a[size_t(cy) * kW + 18]);
-  TEST_ASSERT_EQUAL_HEX16(0, a[size_t(cy) * kW + 18 + 4]);
-  TEST_ASSERT_EQUAL_HEX16(kWorkingInk, a[size_t(cy - 6) * kW + 18 + 8 + 9]);
-  Strip idle;
-  idle.idle = 1;
+  TEST_ASSERT_TRUE(inked(18, 18 + kSign.w, rgb565(kEyeRgb)) > 10);                         // "2"
+  TEST_ASSERT_TRUE(inked(18 + 2 * kSign.w, 18 + 9 * kSign.w, rgb565(kNarrationRgb)) > 40);  // "working"
+  Strip asks = s;
+  asks.agent = "claude", asks.name = "fix-nav";
   cut.invalidate(), cut.clear();
-  paintLane(cut, nullptr, idle);
-  TEST_ASSERT_EQUAL_HEX16(kIdleRing, a[size_t(cy) * kW + 18]);
+  paintLane(cut, nullptr, asks);
+  int spokes = 0;
+  for (int y = cy - 9; y <= cy + 9; ++y)
+    for (int x = kW / 2; x < kW; ++x) spokes += a[size_t(y) * kW + x] == kWorkingInk;
+  TEST_ASSERT_TRUE(spokes > 4);
   for (auto [outcome, ink] :
        {std::pair{Outcome::kSuccess, rgb565(kSageRgb)}, std::pair{Outcome::kFailure, rgb565(kClayRgb)}}) {
     Strip done;
@@ -2673,7 +2677,7 @@ static void test_the_strip_gives_way_to_the_finishs_sign() {
   TEST_ASSERT_NULL(finishSign(agentOnly).text);
 }
 
-// The working count's spinner turns clockwise a spoke every kSpinStepMs,
+// The working mark's spinner turns clockwise a spoke every kSpinStepMs,
 // kSpinSteps spokes, a turn a second, the one it's on lit and the one it
 // left a step dimmer. The lane's key follows the step only while sessions
 // work, so a strip with none working is kept, not drawn again.
@@ -2690,10 +2694,12 @@ static void test_the_working_spinner_turns_once_a_second() {
   Strip working, resting;
   working.busy = 1;
   resting.idle = 2;
-  const int cy = kH * ((kStripTop + kHeight) / 2) / kHeight, mx = 18 + 8 + 9;
+  const int cy = 200, mx = 18 + 9;
   auto at = [&](int spin, int x, int y) {
     lane.invalidate(), lane.clear();
-    paintLane(lane, nullptr, working, spin);
+    Raster r{lane};
+    r.limit = kH;
+    paintStatusMark(r, StatusMark::kWorking, 18, cy, spin);
     return a[size_t(y) * kW + x];
   };
   TEST_ASSERT_EQUAL_HEX16(kWorkingInk, at(0, mx, cy - 6));  // twelve o'clock

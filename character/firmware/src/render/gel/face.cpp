@@ -607,7 +607,7 @@ bool GelFace::factsChanged(const FaceContext& c) const {
   std::snprintf(id, sizeof id, "%lu", (unsigned long)c.attentionId);
   return old.base != c.base || old.act != c.act || old.attention.on != c.attention || old.attention.id != id ||
          old.attention.agent != c.agent || old.attention.project != c.project || old.attention.name != c.thread ||
-         old.attention.more != c.more;
+         old.attention.more != c.more || old.attention.kind != c.attentionKind;
 }
 
 void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_t t) {
@@ -622,7 +622,8 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     f.act = context.act;
     f.attention = {context.attention, std::to_string(context.attentionId),
                    context.agent,     context.project,
-                   context.thread,    context.more};
+                   context.thread,    context.more,
+                   context.attentionKind};
     const auto& old = e.router.facts.attention;
     // A request the alert hasn't shown: its knocks and ding are new.
     bool freshAttention = f.attention.on && (!old.on || old.id != f.attention.id || old.agent != f.attention.agent ||

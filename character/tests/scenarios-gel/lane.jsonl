@@ -75,15 +75,18 @@
 {"t":"do","id":14,"name":"task_complete","args":{"outcome":"success","who":{"agent":"claude"}}}
 {"clock":504}
 {"shot":"finish-no-thread"}
-// The caption, the reaction's reason: under a spoken reaction's bubble,
-// which is shorter for it; alone, on the same line, for a silent one,
-// never as a bubble; and the strip, as ever, with nothing playing.
+// The caption, the reaction's reason: on the lane's one row, after a spoken
+// reaction's bubble, which has the row while Boop speaks; alone, for a
+// silent one, never as a bubble; and the strip, as ever, with nothing
+// playing.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
 {"t":"do","name":"react","args":{"say":{"take":"previous.yay"},"reason":"you picked Boop up","mood":"excited","loops":1}}
 {"clock":400}
 {"shot":"caption-spoken"}
+{"clock":2500}
+{"shot":"caption-after-words"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
@@ -95,3 +98,55 @@
 {"t":"state","base":"idle","mood":"happy","idle":1,"vol":0}
 {"clock":1504}
 {"shot":"strip-resting"}
+// The lane's hardest cases. An ask: its question on the sign, its two
+// answers on the lane's row.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"curious","idle":1,"vol":0}
+{"t":"do","id":21,"name":"react","args":{"sign":"tea or coffee?","ask":{"q":"drink","a":"tea","b":"coffee"},"mood":"curious","loops":1}}
+{"clock":800}
+{"shot":"ask"}
+// Needs you while today's ring is up: the card has the top band, the bar
+// waits.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"xp":40}
+{"clock":500}
+{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"xp":60}
+{"clock":700}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"xp":60,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":9,"kind":"approve"}}
+{"clock":1504}
+{"shot":"needs-you-with-ring"}
+// A finish with a bubble and a caption: the bubble has the row while Boop
+// speaks, then the finished turn's name rises on the low sign.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"happy","busy":1,"vol":0}
+{"t":"do","id":22,"name":"task_complete","args":{"outcome":"success","who":{"agent":"claude","thread":"fix-nav"},"say":{"take":"previous.yay"},"reason":"tests pass"}}
+{"clock":1500}
+{"shot":"finish-bubble-caption"}
+{"clock":4000}
+{"shot":"finish-bubble-caption-later"}
+// The needs-you card says what's asked: a yes or no, a question, a plan to
+// read; with no kind (an older app), the old second line.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":10,"kind":"approve"}}
+{"clock":1504}
+{"shot":"needs-you-approve"}
+{"expect":{"attn":{"kind":"approve"}}}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":11,"kind":"question"}}
+{"clock":1504}
+{"shot":"needs-you-question"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":12,"kind":"plan"}}
+{"clock":1504}
+{"shot":"needs-you-plan"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":13}}
+{"clock":1504}
+{"shot":"needs-you-no-kind"}

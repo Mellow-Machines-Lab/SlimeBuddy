@@ -15,6 +15,8 @@ namespace render::gel {
 // Where things are, on a surface w × h (the AMOLED's 502 × 410, its
 // corners rounded by `corner`), in its pixels.
 struct DrawerLayout {
+  // The rows fade into the sheet over the panel's last kFadeRows.
+  static constexpr int kFadeRows = 24;
   int w, h, corner;
   DrawerLayout(int width, int height, int cornerRadius);
   // A length laid out for the 410 rows of the AMOLED, on this surface.
@@ -28,13 +30,15 @@ struct DrawerLayout {
   // corners.
   int listTop(int open) const { return top(open) + u(56); }
   int rowTop(int open, int i) const { return listTop(open) + i * pitch(); }
-  int rowH() const { return u(48); }
-  int pitch() const { return rowH() + u(5); }
+  // A row a finger hits: 66 px (5.3 mm) tall, 72 from one to the next, so
+  // four show.
+  int rowH() const { return u(66); }
+  int pitch() const { return rowH() + u(6); }
   int margin() const;
   // How many rows the glass shows whole, open: a screenful, and how far a
   // list of `total` scrolls, canvas px, to bring its last row to the
   // screenful's last place.
-  int fits() const { return (h - listTop(1000) + u(5)) / pitch(); }
+  int fits() const { return (h - listTop(1000) + u(6)) / pitch(); }
   int scrollMax(int total) const { return scrolledBy(std::max(0, total - fits())); }
   // The scroll, canvas px, that brings row i to the top, and the nearest
   // such to `scroll`.
@@ -50,7 +54,8 @@ struct DrawerLayout {
   // How far a finger moves, canvas px, to pull the sheet from shut to open.
   int travel() const { return (restTop() - openTop()) * 2 / 3; }
   // The session under the canvas point x, y with the drawer open, by its
-  // place in the list (whether or not its row has come), or -1.
+  // place in the list (whether or not its row has come), or -1. A gap
+  // between rows counts to the nearer.
   int rowAt(const Drawer& d, int canvasX, int canvasY) const;
 };
 

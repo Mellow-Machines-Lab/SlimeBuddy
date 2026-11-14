@@ -75,7 +75,8 @@ int finishMinis(const Surface& s, int ageMs, FinishPose* out);
 // fireworks), and over it (the trophy, the crown, the podium, confetti,
 // sparkles, jelly drops, the star eyes, the words), at the body's anchors.
 // `gift`: proud's bug beside its trophy.
-void paintFinishBehind(Surface& s, Finish f, int ageMs, int revealMs);
+// At night, Gold Rush's flood is half as bright.
+void paintFinishBehind(Surface& s, Finish f, int ageMs, int revealMs, bool night = false);
 void paintFinishFront(Surface& s, Finish f, int ageMs, int revealMs, const rig::Anchors& at, int scale, bool gift);
 // The finish playing, if one is: which, how far into it and its reveal's
 // time (ms), and whether proud's bug comes too (Scenes::finishShow).

@@ -243,11 +243,13 @@ void test_gold_rush_floods_and_little_win_shows_its_trophy() {
   constexpr int kW = 502, kH = 410;
   std::vector<uint16_t> px(kW * kH);
   Surface s{kW, kH, px.data()};
-  const uint16_t gold = rgb565(255, 201, 60), deep = rgb565(255, 176, 32);
+  // The trophy's golds, and the flood's at 70% of them (at night, half that).
+  const uint16_t golds[] = {rgb565(255, 201, 60), rgb565(255, 176, 32), rgb565(178, 140, 42), rgb565(178, 123, 22)};
   auto golden = [&](int y0, int y1) {
     int n = 0;
     for (int y = y0; y < y1; ++y)
-      for (int x = 0; x < kW; ++x) n += px[size_t(y) * kW + x] == gold || px[size_t(y) * kW + x] == deep;
+      for (int x = 0; x < kW; ++x)
+        for (uint16_t g : golds) n += px[size_t(y) * kW + x] == g;
     return n;
   };
   auto e = finishing(finishVariant(Finish::kGoldRush));

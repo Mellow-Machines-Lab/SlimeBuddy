@@ -18,7 +18,8 @@ namespace render::gel {
 struct Raster;
 // Text in the fonts' glyphs (render::nextGlyph), its cells' top left at
 // (x, y): at most `room` px of it, cut as render::cutAt cuts it, as the
-// canvas's drawStringFit. Returns the x after it.
+// canvas's drawStringFit, but ending in one cell's "…". Returns the x after
+// it.
 int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, int room = 1 << 20);
 // The same text, its cells' top left at (x16, y16), sixteenths of a pixel,
 // so a word that moves glides rather than steps: on a whole pixel it's
@@ -27,38 +28,45 @@ int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, in
 // black, as words behind the body are. It touches only the pixels it
 // draws.
 void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink, bool behind = false);
-// The bubble's font, the gel's largest (fonts_gel.h, which only lane.cpp
-// holds).
+// The gel's largest font (fonts_gel.h, which only lane.cpp holds): the
+// work stream's word forward.
 const Font& bubbleFont();
 
-// The chips' inks, the strip's working and idle counts' as the drawer's
-// rows' (render/gel/drawer.h): the working one's bright, the idle one's
-// resting.
-constexpr uint16_t kWorkingRing = rgb565(89, 97, 107), kWorkingInk = rgb565(238, 242, 245),
-                   kIdleRing = rgb565(51, 58, 66), kIdleInk = rgb565(154, 163, 173);
+// The strip's marks' inks, as the drawer's rows' (render/gel/drawer.h):
+// the working spinner and the numbers in warm white, the idle z in grey.
+constexpr uint16_t kWorkingInk = rgb565(kEyeRgb), kIdleInk = rgb565(kNarrationRgb);
 // The working count's spinner: kSpinSteps spokes, the lit one a step on
 // every kSpinStepMs, a turn a second, and the step it's on at the
 // device's time `now`.
 constexpr int kSpinSteps = 8, kSpinStepMs = 125;
 inline int spinStep(uint32_t now) { return int(now / kSpinStepMs % kSpinSteps); }
 
-// The strip's counts (how many work, the helpers, the idle and the to-do
-// list), from x, their middle on row cy, the working spinner on `spin`:
-// the agents' drawer carries them up as its lid (render/gel/drawer.h).
-// Returns the x after them.
-int paintCounts(Raster& r, const Strip& strip, int x, int cy, int spin = 0);
-// The strip's rule from x0 to x1 on row y, broken in its middle by a
-// chevron, pointing up (the drawer under it) or down (it shuts).
-void paintRule(Raster& r, int x0, int x1, int y, bool down, uint16_t ink);
-// The bubble, or else the strip at its opacity, its spinner on `spin`;
-// and the caption, the reaction's reason, small and dim on the lane's
-// last line: under a bubble that leaves it room, or alone in the strip's
-// place, never as a bubble.
-void paintLane(Surface& surface, const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr);
+// The strip's counts from x to `right`, their middle on row cy: in words
+// ("2 working · 1 idle", the to-do list's "3/7" at the right end) when
+// they fit, else as marks (a spinner on `spin` and a number, a sleeper's z
+// and a number). The agents' drawer carries them up as its lid
+// (render/gel/drawer.h). Returns the x after them.
+int paintCounts(Raster& r, const Strip& strip, int x, int right, int cy, int spin = 0);
+// A session's mark, as the strip shows its count's: the working spinner
+// on `spin`, the idle sleeper's z, or needs you's amber dot, in an 18 px box
+// from x, its middle on cy.
+enum class StatusMark : uint8_t { kWorking, kIdle, kNeedsYou };
+void paintStatusMark(Raster& r, StatusMark mark, int x, int cy, int spin = 0);
+// The lane's rule from x0 to x1 on row y, with the agents' drawer's
+// grabber in its middle when there's a drawer to pull.
+void paintRule(Raster& r, int x0, int x1, int y, bool grabber);
+// The lane: the rule, and under it one row, which shows the bubble while
+// Boop speaks, else the caption (the reaction's reason, the narration, in
+// the large font and a light grey), else the strip at its opacity, its
+// spinner on `spin`, and at `rowAlpha` (0–255) while a low sign rises over
+// it.
+void paintLane(Surface& surface, const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr,
+               int rowAlpha = 255);
 // What a lane shows, as a key that's the same exactly when its pixels are
 // (never 0): what paintLane records as the surface's laneKey. The spinner
 // only turns while sessions work, so only then does its step change it.
-uint32_t laneKey(const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr);
+uint32_t laneKey(const char* bubble, const Strip& strip, int spin = 0, const char* caption = nullptr,
+                 int rowAlpha = 255);
 class Engine;
 struct PastimeShow;
 // A whole frame, as GelFace::draw draws it: the body, with the rig's
@@ -81,7 +89,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
                 const WishShow* wish = nullptr, const GrowthShow* growth = nullptr);
 // The widest line the bubble holds on a surface, in px, clear of its
 // rounded corners: on the AMOLED's, the longest take (22 glyphs) in the
-// sign's font, a line of 34 in the small one (pinned by test_gel).
+// sign's font (pinned by test_gel).
 int bubbleRoom(const Surface& surface);
 
 }  // namespace render::gel
