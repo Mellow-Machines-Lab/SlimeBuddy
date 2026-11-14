@@ -11,87 +11,87 @@
     },
     {
       "at": 0,
-      "line": "{\"t\":\"do\",\"id\":1799032379,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
+      "line": "{\"t\":\"do\",\"id\":1412922410,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
     },
     {
-      "at": 1.008,
+      "at": 1.005,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.009,
+      "at": 1.007,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Review the payments change from three sides”"
       }
     },
     {
-      "at": 2.072,
+      "at": 2.075,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"helper\"]]}"
     },
     {
-      "at": 2.072,
-      "line": "{\"t\":\"do\",\"id\":1799032380,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"helper\",\"as\":\"helper\"}}"
+      "at": 2.075,
+      "line": "{\"t\":\"do\",\"id\":1412922411,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"helper\",\"as\":\"helper\"}}"
     },
     {
-      "at": 2.28,
+      "at": 2.289,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"helper\"]]}"
     },
     {
-      "at": 2.28,
+      "at": 2.291,
       "cause": {
         "kind": "tool",
         "text": "Claude sends a reviewer: Check the API"
       }
     },
     {
-      "at": 2.815,
+      "at": 2.824,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"helper\"]]}"
     },
     {
-      "at": 3.029,
+      "at": 3.036,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"helper\"]]}"
     },
     {
-      "at": 3.03,
+      "at": 3.037,
       "cause": {
         "kind": "tool",
         "text": "Claude sends a reviewer: Check the tests"
       }
     },
     {
-      "at": 3.564,
+      "at": 3.571,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"helper\"]]}"
     },
     {
-      "at": 3.564,
-      "line": "{\"t\":\"do\",\"id\":1799032381,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"helper\",\"as\":\"helper\"}}"
+      "at": 3.571,
+      "line": "{\"t\":\"do\",\"id\":1412922412,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"helper\",\"as\":\"helper\"}}"
     },
     {
-      "at": 3.773,
+      "at": 3.784,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":3,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"helper\"]]}"
     },
     {
-      "at": 3.774,
+      "at": 3.785,
       "cause": {
         "kind": "tool",
         "text": "Claude sends a reviewer: Check the docs"
       }
     },
     {
-      "at": 4.097,
-      "effect": "Boop makes an excited face and says “Assemble”",
-      "line": "{\"t\":\"do\",\"id\":1799032382,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.delegate.assemble__excited__contained\"},\"mood\":\"excited\",\"loops\":2}}"
+      "at": 4.108,
+      "effect": "Boop makes an excited face and says “Backup”",
+      "line": "{\"t\":\"do\",\"id\":1412922413,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.word.delegate.backup__excited__contained\"},\"mood\":\"excited\",\"loops\":2}}"
     },
     {
-      "at": 7.933,
+      "at": 7.949,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"helpers\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"helper\"]]}"
     },
     {
-      "at": 7.933,
-      "line": "{\"t\":\"do\",\"id\":1799032383,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
+      "at": 7.949,
+      "line": "{\"t\":\"do\",\"id\":1412922414,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
     },
     {
-      "at": 7.933,
+      "at": 7.949,
       "cause": {
         "kind": "tool",
         "text": "The reviewer reports back"
@@ -103,53 +103,53 @@
     },
     {
       "at": 10.637,
-      "line": "{\"t\":\"do\",\"id\":1799032384,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
+      "line": "{\"t\":\"do\",\"id\":1412922415,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
     },
     {
-      "at": 10.637,
+      "at": 10.638,
       "cause": {
         "kind": "tool",
         "text": "The reviewer reports back"
       }
     },
     {
-      "at": 13.405,
+      "at": 13.412,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"delegating\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"helper\"]]}"
     },
     {
-      "at": 13.405,
-      "line": "{\"t\":\"do\",\"id\":1799032385,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
+      "at": 13.412,
+      "line": "{\"t\":\"do\",\"id\":1412922416,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"back\",\"as\":\"back\"}}"
     },
     {
-      "at": 13.405,
+      "at": 13.413,
       "cause": {
         "kind": "tool",
         "text": "The reviewer reports back"
       }
     },
     {
-      "at": 15.008,
+      "at": 15.003,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"helper\"]]}"
     },
     {
-      "at": 15.111,
+      "at": 15.12,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 15.111,
-      "line": "{\"t\":\"do\",\"id\":1799032386,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 15.12,
+      "line": "{\"t\":\"do\",\"id\":1412922417,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 15.112,
+      "at": 15.121,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 15.435,
-      "effect": "Boop celebrates and says “Sweet”",
-      "line": "{\"t\":\"do\",\"id\":1799032387,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"three-reviewers\"},\"say\":{\"take\":\"phase1.word.celebrate.sweet__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
+      "at": 15.445,
+      "effect": "Boop celebrates and says “Eep! Bingo”",
+      "line": "{\"t\":\"do\",\"id\":1412922418,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"three-reviewers\"},\"say\":{\"take\":\"phase1.nonverbal.delight.eep__proud__contained\",\"then\":\"phase1.word.celebrate.bingo__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
     }
   ],
   "face": "gel",
@@ -157,8 +157,9 @@
   "name": "Boop",
   "script": "078c05be30de30814dbd8df7955aef51354ba9ace130462839ce0c9b99c8cce2",
   "takes": [
-    "phase1.word.delegate.assemble__excited__contained",
-    "phase1.word.celebrate.sweet__proud__contained"
+    "phase1.word.delegate.backup__excited__contained",
+    "phase1.nonverbal.delight.eep__proud__contained",
+    "phase1.word.celebrate.bingo__proud__contained"
   ],
   "version": 1
 }

@@ -222,7 +222,7 @@ Today: 1 turn.
 
 HISTORY (oldest first; indented lines add to the line above)
 just now: claude started turn 1 on "api" (landing).
-  Boop greeted the day, holding up a sign: "April Fools'!".
+  Boop greeted the day, holding up a sign: "april fools'!".
 
 NOW (11:00)
 claude finished turn 1 on "api" (landing): done, a short turn, no tool calls.
