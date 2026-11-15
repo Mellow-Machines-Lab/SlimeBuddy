@@ -1,8 +1,9 @@
 // Typing along with you (render/gel/face.h), each on a frozen clock after a
 // reset. Idle and your hands busy (the `typing` tag): its keyboard out, its
 // paws tapping, its eyes down on the keys. You stop: the keyboard stays,
-// its paws at rest; four seconds on it's gone. At work the tag changes
-// nothing: its desk is the agents'. Asleep, nothing. A Moment takes the
+// its paws at rest; four seconds on it's gone. At work its desk is out
+// already: its paws type briskly with you, its eyes on the keys, and go
+// back to the agents' soft typing when you stop. Asleep, nothing. A Moment takes the
 // face at once, the keys gone under it.
 {"t":"dbg.reset"}
 {"clock":0}
@@ -25,7 +26,12 @@
 {"clock":0}
 {"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day","typing"],"calls":[[0,1,"grep"]]}
 {"clock":1500}
-{"shot":"at-work-unchanged"}
+{"shot":"at-work-with-you"}
+{"clock":1670}
+{"shot":"at-work-other-paw"}
+{"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day"],"calls":[[0,1,"grep"]]}
+{"clock":3200}
+{"shot":"at-work-you-stopped"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"asleep","mood":"calm","vol":0,"when":["day","typing"]}

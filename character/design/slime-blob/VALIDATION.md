@@ -219,7 +219,7 @@ ramps and springs can, and no jolt at an event. By file:
   (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
   through a giggle that opens the mouth, the hush reply's squeeze and
   nod, and unhush's perk-up with its own mouth back), the
-  gaze (`gaze.jsonl`: at work forward, a glance at a word and down it, forward again and no glance inside its rest; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, nothing at work or asleep, a Chonk's), the
+  gaze (`gaze.jsonl`: at work forward, a glance at a word and down it, forward again and no glance inside its rest; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, nothing asleep, a Chonk's), the
   layers (`layers.jsonl`: each outfit by its tags, Zs asleep at
   night, a morning and a Valentine's Day with nothing behind or round
   it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished

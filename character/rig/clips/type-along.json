@@ -1,0 +1,10 @@
+{
+  "about": "Typing along with you (GelFace::showAlong), looped while your hands are busy: hunched over its keys, eyes lowered, its whole body bouncing with each key, side to side by the paw, so you can see it from across a desk.",
+  "ms": 680,
+  "loop": true,
+  "tracks": {
+    "squash": [[0, 50], [85, 125], [170, 50], [255, 125], [340, 50], [425, 125], [510, 50], [595, 125], [680, 50]],
+    "lean": [[0, -45], [170, 45], [340, -45], [510, 45], [680, -45]],
+    "eyeOpen": [[0, -200], [680, -200]]
+  }
+}

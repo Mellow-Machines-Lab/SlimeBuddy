@@ -166,8 +166,11 @@ int tapLift(const Scenes& scenes, int side);
 // Between them it types on softly, without a sound: a tap every kTypeMs,
 // the paws by turns, each lifting kTypeLift over kTapMs, at `ms` of the
 // engine's clock.
-constexpr int kTypeMs = 340, kTypeLift = 12;
-int typeLift(uint32_t ms, int side);
+// `brisk`, while you type and it types with you (GelFace::showAlong): a tap
+// every kBriskMs, each paw hammering kBriskLift high and its key lit as it
+// lands, so you can tell its typing from the agents' across a desk.
+constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 170, kBriskLift = 44;
+int typeLift(uint32_t ms, int side, bool brisk = false);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.
 int opaqueCards(const Surface&, const Engine&, Box* out);

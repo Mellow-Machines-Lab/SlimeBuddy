@@ -879,7 +879,7 @@ quick as they follow a finger, so a look is a turn and never a dart.
 | When | It looks | For how long |
 | --- | --- | --- |
 | Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag; forward with neither) | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
-| Typing along, its paws tapping | Down at its keys | While they tap |
+| Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
 | At work, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
 | Otherwise | Forward, with the engine's own small wander | |
 
@@ -887,16 +887,23 @@ Nothing of it applies while anything else has the eyes: a finger, a
 Moment, a pastime, a transition, a word forward, a work act, listening or
 sleep. A minute of the busiest stream has at most seven glances.
 
-**Typing along** (`GelFace::showAlong`): idle, while your hands are busy at
-the Mac (the `typing` tag), its keyboard comes out over the rig's fade and
-its paws tap by turns as they do at the desk. You stop, and they rest; the
-keyboard stays `kAlongLingerMs` (4 s) more, so a pause doesn't put it away
-and bring it back, and then goes, with a pastime's rest before the next
-pastime. It is the lowest thing there is: it waits for a pastime or a
-transition to end and never cuts one, no pastime is dealt over it, and it
-goes at once with the idle look, for a finger, a Moment, needs you, work
-or sleep. At work the tag changes nothing: the desk is the agents'. The
-Mac says only that your hands are busy, never what they type.
+**Typing along** (`GelFace::showAlong`): while your hands are busy at the
+Mac (the `typing` tag), it types with you, and so that you can see it on a
+small screen across a desk: its paws hammer, a tap every 170 ms lifting 44
+(`kBriskMs`, `kBriskLift`), against the agents' soft 340 and 12, the keys
+under them light as they land, and its whole body hunches over the keys
+and bounces with each one, side to side by the paw (the rig's looping
+`type-along` clip). At work that's at its desk, which
+is out already, and its eyes drop to the keys in place of the glances; you
+stop, and it's back to the soft typing. Idle, its keyboard comes out for
+it over the rig's fade; you stop, and its paws rest; the keyboard stays
+`kAlongLingerMs` (4 s) more, so a pause doesn't put it away and bring it
+back, and then goes, with a pastime's rest before the next pastime. It is
+the lowest thing there is: it waits for a pastime or a transition to end
+and never cuts one, and it goes at once for a finger, a Moment, a word
+forward, a work act, needs you or sleep. No pastime is dealt over the
+keyboard alone; at work they're dealt as ever. The Mac says only that your
+hands are busy, never what they type.
 
 ### Layers over the body (the board's)
 

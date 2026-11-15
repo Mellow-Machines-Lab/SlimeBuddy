@@ -2,6 +2,8 @@
 // you (render/gel/face.h): the rules, their times, and how each gives way.
 #include <unity.h>
 
+#include <algorithm>
+#include <cstdlib>
 #include <cstring>
 #include <memory>
 
@@ -161,11 +163,12 @@ void test_a_look_is_a_turn_not_a_dart() {
   TEST_ASSERT_TRUE(abs(e->motion.gaze) < q(.02) && abs(e->motion.gazeUp) < q(.005));
 }
 
-// Pins typing along and kAlongLingerMs: idle with your hands busy, its
-// keyboard comes out over the rig's fade and its paws tap; you stop, they
-// rest and the keyboard stays 4 s, then goes; no pastime is dealt while
-// it's out. Something needs you, or work, or sleep: gone, and not at all in
-// those looks. It waits for a pastime playing to end, and never cuts one.
+// Pins typing along, kAlongLingerMs and the brisk paws: idle with your
+// hands busy, its keyboard comes out over the rig's fade and its paws tap;
+// you stop, they rest and the keyboard stays 4 s, then goes; no pastime is
+// dealt while it's out. Something needs you: gone. At work its paws type
+// briskly with you at its desk; asleep, nothing. It waits for a pastime
+// playing to end, and never cuts one.
 void test_it_types_along_with_you() {
   static_assert(GelFace::kAlongLingerMs == 4000, "the linger this test pins");
   const uint32_t day = tagBit("day"), typing = tagBit("typing");
@@ -177,6 +180,13 @@ void test_it_types_along_with_you() {
   board.to(board.t + rig::kFadeMs + 48);
   PastimeShow s = face.pastimes(board.t);
   TEST_ASSERT_TRUE(s.keys == 255 && s.tapping);
+  // Its body in it too: hunched and bouncing (the rig's `type-along`).
+  int low = 1 << 30, high = 0;
+  board.to(board.t + 700, [&] {
+    const int squash = face.mixer().channels()[rig::Channel::kSquash];
+    low = std::min(low, squash), high = std::max(high, squash);
+  });
+  TEST_ASSERT_TRUE(low > 20 && high - low > 40);
   TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
   TEST_ASSERT_TRUE(face.engine().motion.attending);  // its eyes on the keys
   // Two minutes of your typing: never a pastime over the keys.
@@ -187,6 +197,8 @@ void test_it_types_along_with_you() {
   board.to(stopped + 64);
   s = face.pastimes(board.t);
   TEST_ASSERT_TRUE(s.keys == 255 && !s.tapping);
+  board.to(board.t + 600);
+  TEST_ASSERT_TRUE(std::abs(face.mixer().channels()[rig::Channel::kSquash]) < 10);  // and it sits up again
   TEST_ASSERT_FALSE(face.engine().motion.attending);  // and its eyes come back up
   board.to(stopped + GelFace::kAlongLingerMs - 64);
   TEST_ASSERT_EQUAL_INT(255, face.pastimes(board.t).keys);
@@ -207,12 +219,26 @@ void test_it_types_along_with_you() {
   board.to(board.t + rig::kFadeMs + 64);
   TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping);
   board.m.attn = false;
-  // At work and asleep: none, your typing or not.
-  for (SceneState look : {SceneState::kWorking, SceneState::kAsleep}) {
-    board.m.base = look;
-    board.state();
-    board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
-  }
+  // At work its desk is out already: no keyboard of its own, and its paws
+  // type with you, briskly, its eyes on the keys; you stop, and they don't.
+  board.m.base = SceneState::kWorking;
+  board.tags(day | typing);
+  board.to(board.t + 1000);
+  s = face.pastimes(board.t);
+  TEST_ASSERT_TRUE(s.keys == 0 && s.tapping);
+  TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
+  TEST_ASSERT_TRUE(face.engine().motion.attending);
+  board.tags(day);
+  board.to(board.t + 64);
+  TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
+  // Asleep: nothing, your typing or not.
+  board.m.base = SceneState::kAsleep;
+  board.tags(day | typing);
+  board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
+  // Brisk is twice as often and higher than the agents' soft typing.
+  static_assert(kBriskMs * 2 == kTypeMs && kBriskLift > 3 * kTypeLift, "brisk against soft");
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kTapMs / 2, -1, true));
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kTapMs / 2, 1, true));
   // A pastime playing as you start: it plays out first.
   Board playing(SceneState::kIdle, day | tierBit(2));
   playing.to(1000);

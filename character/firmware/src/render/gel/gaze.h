@@ -6,8 +6,8 @@
 // 1. Something needs you: it looks up at you for kNoticeMs, then turns to
 //    the Mac, on the side the Mac says it's on (the `macleft` or `macright`
 //    tag), and stays turned while it waits. With no side told, it rests.
-// 2. Typing along with you (render/gel/face.h), while its paws tap: down
-//    at the keys.
+// 2. Typing along with you (render/gel/face.h), idle or at work, while its
+//    paws tap: down at the keys, so no glances then: heads down, as you are.
 // 3. At work: a glance at a word as it starts to fall, followed down for
 //    kGlanceMs, then forward again for at least kRestMs before the next;
 //    kWatchRestMs while you're at the Mac with your hands still (the

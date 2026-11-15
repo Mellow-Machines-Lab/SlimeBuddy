@@ -377,20 +377,33 @@ void GelFace::showKit(uint32_t t) {
   show(headphones_, phonesWanted_ && phonesOn_);
 }
 
-// Typing along with you (face.h): the keys out while it's idle, shows its
-// own look and nothing else has it, and your hands are busy; out a little
-// longer after they stop, its paws at rest, so a pause in your typing
-// doesn't put the keyboard away and bring it back.
+// Typing along with you (face.h): while your hands are busy and it shows
+// its own look, idle or at work, with nothing else having it, its paws
+// type briskly with you. Idle, its keyboard comes out for it, and stays a
+// little longer after you stop, its paws at rest, so a pause in your
+// typing doesn't put the keyboard away and bring it back; at work the desk
+// is out already, and its paws go back to the agents' soft typing.
 void GelFace::showAlong(uint32_t t) {
   const Engine& e = *engine_;
   SceneState look;
-  const bool idle = showsLook(source_.anim, look) && look == SceneState::kIdle && !finger_ && !alone_ && !transition(t);
+  const bool free = showsLook(source_.anim, look) && !finger_ && !alone_ && !transition(t);
+  const bool idle = free && look == SceneState::kIdle;
+  // At work its desk is out already: there your typing makes its paws
+  // brisk, unless a work act or a word forward has the screen.
+  const bool working = free && look == SceneState::kWorking &&
+                       !(stream_ && (actTakesOver(stream_->actNow(t)) || stream_->call.live));
   const bool typing = hasTag(e.scenes.when, "typing");
   // It never cuts a pastime to start: it waits for it to end.
-  tapping_ = idle && typing && !playing();
-  if (tapping_) typed_ = true, typedAt_ = t;
-  const bool out = idle && typed_ && (tapping_ || (!playing() && within(t, typedAt_, kAlongLingerMs)));
-  if (!out) typed_ = tapping_;
+  const bool was = tapping_;
+  tapping_ = (idle || working) && typing && !playing();
+  // Its whole body types with you: hunched over the keys and bouncing with
+  // each one (the rig's `type-along`), so it shows from across a desk.
+  if (tapping_ != was)
+    if (const rig::Clip* clip = rig::kRig.clip("type-along")) tapping_ ? mixer_.play(*clip) : mixer_.stop(*clip);
+  const bool alone = tapping_ && idle;  // with its keyboard alone
+  if (alone) typed_ = true, typedAt_ = t;
+  const bool out = idle && typed_ && (alone || (!playing() && within(t, typedAt_, kAlongLingerMs)));
+  if (!out) typed_ = alone;
   if (along_.target() != (out ? 1000 : 0)) {
     along_.retarget(out ? 1000 : 0, t);
     // Put away: a rest before the next pastime, as a new look has.
