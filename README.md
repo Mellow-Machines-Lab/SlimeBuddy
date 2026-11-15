@@ -29,8 +29,8 @@ every turn your agents take.
 
 - 💤 **Naps** while no agent is open. Idle, it blows bubbles, reads and counts sheep.
 - ⌨️ **Works along** while they do: every command an agent runs falls
-  past it as a word, and some of them hit it. On a long stretch it sips
-  its coffee, puts its headphones on and writes itself a sticky note.
+  past it as a word, and some of them hit it. On a long stretch it puts
+  its headphones on and writes itself a sticky note.
 - 🟧 **Glows amber and knocks** when an agent needs your approval, and
   says who. Hold a finger on it to put the request away.
 - 🏆 **Celebrates** a finish that earns it, bigger the longer the work,
@@ -39,8 +39,7 @@ every turn your agents take.
   way and it ruffles, boop it and it's tickled, shake it and it gets dizzy.
   Hold its button and talk to it: it answers.
 - 📔 **Keeps a diary**, a line a day about the one before, and dresses for
-  the day: coffee in the morning, a nightcap at night, a costume on
-  Halloween.
+  the day: a nightcap at night, a hat on a holiday.
 
 It's cheeky: it teases the agents and the work, never you, and it's
 always on your side. It has moods of its own, 42 of them, and there's no

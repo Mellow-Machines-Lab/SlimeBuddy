@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-14. What checks the gel slime, and which rule each check
+Updated 2026-11-15. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -135,18 +135,18 @@ ramps and springs can, and no jolt at an event. By file:
   over its pose, and on Pixel's rig face, faded out by a Moment), the
   pastimes (`test_pastimes.cpp`: each row's body in the pack and its
   turn, each with a clip drawing above the lane and over at its clip's
-  end, half an hour at `tier2` dealing only working ones of `tier1` and
-  `tier2`, after a rest of 4 to 10 s, never the same twice running, the
+  end, 45 minutes at `tier2` dealing only working ones of `tier1` and
+  `tier2`, after a rest of 20 to 45 s, never the same twice running, the
   newest tier's about 60% of the time, and none with no tier nor tag; the
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
   bit and work's and asleep's as the scene's take, busier typing only
-  while busy and the dream after half an hour; the kit by the tiers, the
-  hat winning the head, none while something needs you; the headphones'
-  tune, a note from each cup in turn every 3 s, out past the band's ends,
-  and none while bopping; the headphones put on first, coming down over
+  while busy and the dream after half an hour; the kit, the headphones
+  alone, by the tiers, the hat winning the head, none while something
+  needs you, drawn the same at every moment (nothing floats off them);
+  the headphones put on first, coming down over
   its ears with its paws away, and on again after a needs-you; the moves
-  at least 90 s apart over half an hour at `tier5`, the paws theirs while
+  at least 5 minutes apart over two hours at `tier5`, the paws theirs while
   they play; working's base by tier, its lids lower the further in and
   faded out under a Moment or while something needs you; and the paws
   lifting before each key contact and tapping softly between), the rig's
@@ -209,19 +209,19 @@ ramps and springs can, and no jolt at an event. By file:
   on the nose, a shake and peekaboo, each by the board's own input, its
   variation expected), the tagged pastimes (`occasions.jsonl`: asked for by name, a
   party's bounce, a night's drowse, frantic typing, in a nightcap and a party hat, and
-  `tier4`'s kit), the pastimes (`pastimes.jsonl`: the working kit at
-  `tier5` and a pastime over it, the done beat's tick, reading closely
-  with the glass fogged, the headphones coming down, the coffee reach's
-  sip, a puddle mid-melt, a stretch break's empty desk and its stretch,
-  the idle plant and a pastime beside it, and needs you's wave), the
+  `tier4`'s bare desk), the pastimes (`pastimes.jsonl`: the bare desk at
+  `tier5` and the headphones on it later, the done beat's tick, reading closely
+  with the glass fogged, the headphones coming down, a puddle mid-melt,
+  a stretch break's empty desk and its stretch, idle with nothing beside
+  it and a pastime beside it, and needs you's wave), the
   replies (`replies.jsonl`: each reply's clip partway through under its
   face and sign, and a nap and a dance idle, asleep and at work), hushed
   (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
   through a giggle that opens the mouth, the hush reply's squeeze and
   nod, and unhush's perk-up with its own mouth back), the
-  layers (`layers.jsonl`: each outfit and air by its tags, Zs asleep at
-  night, the morning's coffee at its side, at a sip and on the desk, a
-  sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
+  layers (`layers.jsonl`: each outfit by its tags, Zs asleep at
+  night, a morning and a Valentine's Day with nothing behind or round
+  it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
   work acts (`acts.jsonl`: each act's opening, its middle, its pass, its

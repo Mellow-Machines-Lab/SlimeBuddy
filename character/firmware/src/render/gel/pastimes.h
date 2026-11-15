@@ -32,16 +32,18 @@
 // useful, so nothing useful waits on one. Asked for one it doesn't know yet (a
 // reply's), a small Boop tries and flops (GelFace::reply).
 //
-// The kit stays out while its tier lasts, fading in and out on the rig's
-// fade: at work a mug on the desk (tier1; in the morning its coffee is in
-// its hand instead, so neither the mug nor a sip or refill from it), a
-// mug more stacked on it every kMugEveryMs from tier5, and headphones
-// from tier3, the hat winning where it has one: put on where you can see
-// it (kPhonesOn, the first pastime dealt once they're wanted), so they
-// say it has settled in, and on from then while they're wanted; and in
-// the zone (tier5) a few motes drifting up beside it, kMotes of them, each
-// over kMoteMs. Idle, a plant that grows (tier3 to tier5). Behind the
-// body: the plant. In front: everything else, at the body's anchors.
+// THE SCREEN'S RULE, part two (part one is render/gel/layers.h): beside
+// the face, at most one thing moves at a time, and nothing stands about
+// for no reason. So the kit is one thing, worn: headphones at work from
+// tier3, the hat winning where it has one, put on where you can see it
+// (kPhonesOn, the first pastime dealt once they're wanted), so they say it
+// has settled in, and on from then while they're wanted. No mug on the
+// desk or stack of them, no motes "in the zone", no plant, and no notes
+// floating off the headphones: each was a second or third thing beside
+// the face that had to be explained. A pastime brings what it holds and
+// takes it away again, and they're dealt one at a time with a long rest
+// between (kRestMinMs), never while a word of the work stream is forward,
+// a work act plays or a finger is on it (GelFace::passTime).
 #pragma once
 #include <cstdint>
 
@@ -56,7 +58,6 @@ class Engine;
 enum class Pastime : uint8_t {
   kNone,
   // At work.
-  kSip,
   kPeek,
   kHum,
   kDone,
@@ -67,8 +68,6 @@ enum class Pastime : uint8_t {
   kDrum,
   kSticky,
   kPhonesOn,
-  kReach,
-  kRefill,
   kSnack,
   kMelt,
   kStretch,
@@ -83,7 +82,6 @@ enum class Pastime : uint8_t {
   kDoodle,
   kBook,
   kGame,
-  kWater,
   kBrb,
   kTower,
   kDance,
@@ -165,16 +163,10 @@ Pastime pastimeFor(const char* reply);
 
 // The rest between two, in ms of the device's clock, and how often the
 // newest tier's are dealt while an older one's fit too, in percent.
-constexpr uint32_t kRestMinMs = 4000, kRestMaxMs = 10000;
+constexpr uint32_t kRestMinMs = 20000, kRestMaxMs = 45000;
 constexpr int kNewestPct = 60;
 // A move starts at least this long after the last one did.
-constexpr uint32_t kMoveGapMs = 90000;
-// From tier5, a mug more on the desk's stack every this long, up to kMostMugs.
-constexpr uint32_t kMugEveryMs = 10 * 60 * 1000;
-constexpr int kMostMugs = 4;
-// In the zone, this many motes beside it, each drifting up over this long.
-constexpr int kMotes = 5;
-constexpr uint32_t kMoteMs = 4500;
+constexpr uint32_t kMoveGapMs = 300000;
 // Putting the headphones on: they come down from kPhonesDropPx above its
 // ears, held by a hand at each, and are on kPhonesOnMs in. While it melts
 // they're off its head (it has none to hold them): gone over kMeltOffMs
@@ -183,15 +175,6 @@ constexpr int kPhonesDropPx = 120;
 constexpr uint32_t kPhonesOnMs = 1300;
 constexpr int kMeltOffAt = 600, kMeltOffMs = 600, kMeltOnBy = 5400, kMeltOnMs = 500;
 
-// While the headphones are on, a note floats up from each cup in turn: a
-// pair every kTuneEveryMs, the right's kTuneGapMs after the left's, each
-// up for kTuneNoteMs, then a rest; none while bopping, whose notes are its
-// own.
-constexpr uint32_t kTuneEveryMs = 3000, kTuneGapMs = 600, kTuneNoteMs = 1600;
-// How far, in ms, the note from cup `side` (0 left, 1 right) is into its
-// flight at the device's time `t`, or -1 while it's not out.
-int tuneNoteAge(uint32_t t, int side);
-
 // The tier `when` has reached (render/tags.h's tier1 to tier5), 0 for none.
 int tierOf(uint32_t when);
 // The tag bit of tier `n` (1 to 5).
@@ -199,15 +182,14 @@ uint32_t tierBit(int n);
 
 // What the face shows of them at the device's time `t`, with the tags on:
 // the pastime playing (or a look's occasion, with no drawing of its own)
-// and how far in, at `fade` (0 … 255), and the kit, each at its opacity
-// (0 … 255): the desk's mug and how many are stacked, the headphones, the
-// zone's motes, and the plant and how far it has grown (1 to 3).
+// and how far in, at `fade` (0 … 255), and the kit, the headphones, at
+// their opacity (0 … 255).
 struct PastimeShow {
   Pastime playing = Pastime::kNone;
   uint32_t age = 0, ms = 1;
   int fade = 0;
   uint32_t t = 0, when = 0;
-  int mug = 0, mugs = 1, headphones = 0, zone = 0, plant = 0, grown = 1;
+  int headphones = 0;
   // How far above its ears the headphones are, in px: coming down while
   // they're put on.
   int drop = 0;
@@ -221,18 +203,11 @@ struct Paws {
 };
 Paws pawsFor(const PastimeShow& show);
 
-// The plant: drawn after the clear and before the body, so the body
-// covers it.
-void paintScenery(Surface& surface, const PastimeShow& show);
-// Whether paintScenery draws anything: only then is the whole surface
-// erased before the body (render/gel/painter.cpp), rather than a band at
-// a time as the body draws.
-bool showsScenery(const PastimeShow& show);
-// The kit it wears, the headphones and their tune, after what it wears
+// The kit it wears, the headphones, after what it wears
 // for the tags (render/gel/layers.h) and before the cards.
 void paintWorn(Surface& surface, const PastimeShow& show, const rig::Anchors& at);
-// In front: the desk's mugs and the zone's motes, then what the pastime
-// playing holds, throws, blows or dreams, at the body's anchors.
+// In front: what the pastime playing holds, throws, blows or dreams, at
+// the body's anchors.
 void paintPastimes(Surface& surface, const PastimeShow& show, const rig::Anchors& at, const Engine& e);
 
 }  // namespace render::gel

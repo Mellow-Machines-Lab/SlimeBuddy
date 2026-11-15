@@ -94,11 +94,9 @@ inline int restBodyBottom(int height) { return height * 322 / 410; }
 constexpr int kBrimRing = 6, kHandRing = 15, kLapRing = 14, kHemRing = 17;
 struct PastimeShow;
 // The body; the surface's clear first keeps what this frame covers again
-// (Surface::clear), and the pastimes' scenery goes behind it
-// (render/gel/pastimes.h), when given. Its anchors into `anchors`, when
-// given.
+// (Surface::clear). Its anchors into `anchors`, when given.
 void paint(Surface& surface, const PaintControls& controls, const Box* keep = nullptr, int keepCount = 0,
-           uint32_t keepLane = 0, rig::Anchors* anchors = nullptr, const PastimeShow* scenery = nullptr);
+           uint32_t keepLane = 0, rig::Anchors* anchors = nullptr);
 // The body alone, over what the surface holds.
 void paintBody(Surface& surface, const PaintControls& controls, rig::Anchors* anchors = nullptr);
 // The body's material, the texels it's drawn from, as linked: and a copy
@@ -125,8 +123,8 @@ class Engine;
 // The body, the face art, what it wears and the air around it
 // (render/gel/layers.h) as the layer stack shows them at t (whole in the
 // engine's tags and state with none), the pastimes' kit it wears, then the
-// props, with the rig's channels on the engine's controls, and the
-// pastimes' scenery behind it all; a lane that shows `keepLane` is kept
+// props, with the rig's channels on the engine's controls; a lane that
+// shows `keepLane` is kept
 // from this surface's last frame. Its anchors into `anchors`.
 // Pressed under the agents' drawer (`squeeze`, render/gel/drawer.h), it
 // draws flattened, and with its eyes squeezed shut it draws the body alone.

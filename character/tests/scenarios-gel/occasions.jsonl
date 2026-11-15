@@ -2,8 +2,8 @@
 // Occasions), each on a frozen clock after a reset and asked for by name:
 // a party day's idle bounces (lifted mid-hop, eyes squinting), a night's
 // idle drowses (lids heavy, sunk a little), five agents at work type
-// frantically, and five minutes into the agents' work (tier4) it has its
-// mug and headphones out (the other pastimes' pictures: pastimes.jsonl).
+// frantically, and five minutes into the agents' work (tier4) the desk has
+// nothing on it but the work (the pastimes' pictures: pastimes.jsonl).
 // A state every 20 s keeps the link alive.
 {"t":"dbg.reset"}
 {"clock":0}

@@ -193,15 +193,17 @@ test('says what its face is doing to pass the time, by a name the pack has words
   const p = await page();
   const known = new Set(fs.readFileSync(new URL('../passing.tsv', mirror), 'utf8').split('\n')
     .filter(l => l && !l.startsWith('#')).map(l => l.split('\t')[1]));
-  await p.mirror.send('{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"when":["tier3"]}');
+  const state = '{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"when":["tier3"]}';
+  await p.mirror.send(state);
   p.mirror.shown(true);
   const seen = new Set();
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 120; i++) {  // a rest is 20 to 45 s (kRestMinMs, kRestMaxMs)
+    if (i % 10 === 9) await p.mirror.send(state);  // the Mac's keepalive: the board gives up on it after 30 s
     p.run(1, 20);
     const now = p.mirror.passing();
     if (now) seen.add(now);
   }
-  assert.ok(seen.size > 0, 'a pastime in 40 s');
+  assert.ok(seen.size > 0, 'a pastime in 2 minutes');
   for (const name of seen) assert.ok(known.has(name), name);
 });
 

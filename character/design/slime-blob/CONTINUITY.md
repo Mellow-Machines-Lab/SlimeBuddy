@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-04. The slime's one engine is the C++ in
+Updated 2026-11-15. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -796,7 +796,7 @@ gel loops the rig's base for the last tier reached (`looks.json`'s
 (`work-easy`), leaning in toward the monitor with its lids a little
 lower at `tier2`, focused at `tier3`, settled with a slower sway at
 `tier4`, and at `tier5`, in the zone, low calm lids, a slow wide sway
-and a deep breath, with a few motes drifting up beside it. Under a
+and a deep breath. Under a
 Moment, or while something needs you, the base fades out over the
 mixer's 150 ms, and back after. The desk's paws type: before each key
 contact of the recipe (its keyboard click) a paw lifts and lands on it
@@ -806,19 +806,24 @@ even between the recipe's bursts. A pastime may take them (below).
 
 ### Pastimes (the board's)
 
-Something new at every glance, however long the agents work or you're
+A little something now and then, however long the agents work or you're
 away (`render/gel/pastimes.h`): the pastimes are one table, a row each.
+Calm comes first: beside the face at most one thing moves at a time, and
+nothing stands about for no reason (the screen's rule, in `layers.h` and
+`pastimes.h`).
 A row's body is a clip of the pack's rig (`rig/clips/`, the body: a sip,
 a hop, a lean to look, the eyes following something round) and what the
 board draws with it, in time with it; or a bit or a take of the engine's
-(the comedy every mood shares, and the tagged ones, above). The kit the
-tiers put out stays while they last, apart from the table, as the
+(the comedy every mood shares, and the tagged ones, above). The kit, the
+headphones alone, stays while its tiers last, apart from the table, as the
 outfits do. The tiers
 are the Mac's (`tier1` from 30 seconds, `tier2` from a minute, `tier3`
 from 2, `tier4` from 5, `tier5` from 10): of the agents' working stretch
 at work, of their rest idle. The face (`GelFace`) deals one at a time,
 while the engine shows the look itself and nothing holds the body (a
-finger, a word of the work stream in flight), after a rest of 4 to 10 s,
+finger, a word of the work stream in flight), after a rest of 20 to 45 s
+(`kRestMinMs`, `kRestMaxMs`; it was 4 to 10 s until 2026-11-15, which kept
+something moving beside the face nearly all the time),
 the newest 60% of the time (the highest tier, then the longest wait, and
 a tagged one above any) and an older one's the rest, never the same twice
 running; and holds the engine's own idle gestures off while a clip plays.
@@ -826,25 +831,25 @@ Work's stretch from `tier4` (eyes squeezed, up tall, a lean each way) is
 the rig's `stretch`, a row like the rest (`kLimber`), over whatever desk
 take plays; the gel's `looks.json` has no `occasions`. The one playing
 fades out when the look gives way. A reply may ask for the snuggle or the
-dance outside the deal (Replies, above). Three of work's are **moves**,
-the whole body going somewhere on the rig's `x`, `reach` or `melt`, and
-none starts within 90 s of the last (`kMoveGapMs`). While a pastime uses
+dance outside the deal (Replies, above). Two of work's are **moves**,
+the whole body going somewhere on the rig's `x` or `melt`, and
+none starts within 5 minutes of the last (`kMoveGapMs`). While a pastime uses
 the desk's paws they're where it puts them (`pawsFor`): the right one up
-for Enter, both up at its head with the headphones, the right holding
-the mug, spread out flat in the puddle, away on a stretch break.
+for Enter, both up at its head with the headphones, spread out flat in
+the puddle, away on a stretch break.
 
 | Look | From | Kit | Pastimes |
 | --- | --- | --- | --- |
-| working | tier1 | A mug on the desk, steaming (not in the morning, when its coffee is in its hand, nor a sip, a reach or a refill) | A sip, eyes shut, "ahh"; a peek up at you and a heart; humming, notes floating up; the done beat: a paw up, Enter, a tick on the monitor with a sparkle off its corner, and a sit back, eyes shut, nodding |
+| working | tier1 | | A peek up at you and a heart; humming, notes floating up; the done beat: a paw up, Enter, a tick on the monitor with a sparkle off its corner, and a sit back, eyes shut, nodding |
 | working | tier2 | | Wondering, a "?" cloud, then a lightbulb and a hop; reading closely: it leans over the monitor and up, reads line by line, each lit as its eyes reach it, and sits back with a nod; nodding along as ticks pop from the monitor |
-| working | tier3 | Headphones over its ears, cups side-on, a note floating up from each in turn every 3 s, put on first: it looks up as they come down from 120 px above its ears, a hand at each cup and the desk's paws away, on in 1.3 s, and they're on from then while it wants them | Bopping to the music, eyes shut, the notes off the cups; drumming on the desk; a sticky note slapped on the monitor; **the coffee reach** (a move): it squeezes in on one side and stretches out the other to the top mug, brings it in, sips with its eyes shut, "ahh", and puts it back |
-| working | tier4 | | The rig's stretch; a coffee pot pouring a refill; a cookie in three bites; reading closely fogs the glass now; **the melt** (a move): eyes shut, it melts down into a puddle as drips run down its sides, its headphones off its head, peeks round with bubbles rising in it, then pulls itself back up tall, overshoots and wobbles into shape (not in a hat) |
-| working | tier5 | A mug more on the stack every 10 minutes, up to 4; a few motes drifting up beside it | **The stretch break** (a move): it gets up, walks off the screen's right edge, the desk empty while the screen works on, walks back, squeezes down, stretches up tall with its hands high and its mouth open in a yawn, bends each way, and boings back to work |
+| working | tier3 | Headphones over its ears, cups side-on, put on first: it looks up as they come down from 120 px above its ears, a hand at each cup and the desk's paws away, on in 1.3 s, and they're on from then while it wants them | Bopping to the music, eyes shut, notes off the cups; drumming on the desk; a sticky note slapped on the monitor |
+| working | tier4 | | The rig's stretch; a cookie in three bites; reading closely fogs the glass now; **the melt** (a move): eyes shut, it melts down into a puddle as drips run down its sides, its headphones off its head, peeks round with bubbles rising in it, then pulls itself back up tall, overshoots and wobbles into shape (not in a hat) |
+| working | tier5 | | **The stretch break** (a move): it gets up, walks off the screen's right edge, the desk empty while the screen works on, walks back, squeezes down, stretches up tall with its hands high and its mouth open in a yawn, bends each way, and boings back to work |
 | idle | tier1 | | Looking round; looking up at you, "...?"; three hops; a yawn; a sneeze |
 | idle | tier2 | | A bubble blown and popped; a heart drawn on the glass |
-| idle | tier3 | A plant that grows, a sprout | A book, its page turning; a handheld game, WIN; watering the plant |
-| idle | tier4 | The plant in leaf | A "brb" sign, peeking over it; a tower of blocks that topples; a dance under a disco ball; a paper plane that bonks its head |
-| idle | tier5 | The plant in flower | Snoozing, a snore bubble; counting sheep; a nap tucked in, a plaid blanket pulled up from the floor to near the top of its head, a sheet turned down over it, never over its head, where it reads as a hat; and a daydream of sheep |
+| idle | tier3 | | A book, its page turning; a handheld game, WIN |
+| idle | tier4 | | A "brb" sign, peeking over it; a tower of blocks that topples; a dance under a disco ball; a paper plane that bonks its head |
+| idle | tier5 | | Snoozing, a snore bubble; counting sheep; a nap tucked in, a plaid blanket pulled up from the floor to near the top of its head, a sheet turned down over it, never over its head, where it reads as a hat; and a daydream of sheep |
 | needs you | 30 s, 2, 5, 10 minutes | | A wave; tapping on the glass; checking its watch and sighing; nodding off and jerking awake |
 | asleep | 1, 2, 4 minutes | | Rolling over, mumbling; counting sheep; a snore bubble |
 
@@ -853,9 +858,12 @@ peekaboo's gesture takes them off as it does the hat.
 The headphones sit low, their cups on its sides between its eyes and its
 brim, so a card over its head hides only the top of the band and they
 still read as headphones.
-The plant goes behind the body; what it holds, throws, blows and dreams
-goes in front, at the body's anchors, and the headphones over what it
-wears, before the cards. No sounds
+What it holds, throws, blows and dreams goes in front, at the body's
+anchors, and the headphones over what it wears, before the cards. Cut
+on 2026-11-15, each a second or third thing beside the face that needed
+explaining: the mug on the desk and its stack, the motes in the zone, the
+plant, the notes floating off the headphones, and the pastimes that used
+them (the sip, the refill, the coffee reach, watering the plant). No sounds
 of their own but a few landings (`body_contact`), and none while
 something needs you or asleep.
 
@@ -866,21 +874,17 @@ the same tags, after the face art and before the props
 (`gel/layers.h`): a hat by the first tag that has one (Halloween's witch
 hat; a party hat for party, New Year's, Lunar New Year and Programmers'
 Day; a striped nightcap at night, flopping down its left side to a
-tassel by its cheek, with pyjamas to match; a bobble hat in winter), shades on a Friday from noon to
+tassel by its cheek, and no pyjamas with it; a bobble hat in winter), shades on a Friday from noon to
 night, off while it shows a feeling (a Moment, a face the Mac lends
-it, needs you, listening) so its eyes are seen, and the air
-(snow, confetti, hearts, Zs asleep at night), and last the sign a
-Moment holds up. In the morning, while it's idle or at work, it
-holds a mug of coffee at its side in a little gel hand, steam curling up
-off it, and now and then lifts it to its mouth for a sip
-(`OutfitLayer::kSipMs`). At night a
-crescent moon and twinkling stars sit behind everything, and in the
-morning the sun up in the sky on its left where the moon is, glowing,
-its rays turning and breathing, drawn after the body and its props onto
-only the background's black, so the body and its outfit stay in front,
-and before the stream's words, which fall behind it as they do behind
-the body (drawn after them, the sky left their dim pixels as holes in
-the moon), and the sign, which stays in front. Each sits on anchors the painter takes from
+it, needs you, listening) so its eyes are seen, Zs beside it asleep at
+night, and last the sign a Moment holds up. That's all: the face comes
+first, and a time of day, a season or a holiday shows as one thing worn.
+Nothing hangs in the sky behind it (no sun, moon or stars), nothing
+drifts through the air (no snow, confetti or hearts; a finish keeps its
+own confetti) and it holds no morning coffee: each was scenery that said
+nothing you act on, and up to four of them shared the screen with the
+face (cut 2026-11-15; `test_nothing_hangs_in_the_sky_or_the_air` pins
+it). Each sits on anchors the painter takes from
 the very vertices it projects for the body (the rig's `Anchors`, both
 faces' one type: the dome's apex, ring 6's sides and front for a brim,
 ring 15's front for the hands) and the face art's eye centres, so a layer
@@ -890,12 +894,11 @@ night the lids hang a little lower (`kNightLids`) on the awake face,
 easing out as it squashes shut, gone by when it's a line, and back as it
 wakes. Each part comes and goes through the rig's layer stack
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §15, The layer stack), which the
-face keeps: the sky, what's worn over the eyes or on the body, the hat,
-the air and what's beside it (the Zs, the coffee) each fade in and out over 200 ms, a new one only once the old
+face keeps: what's worn over the eyes, the hat
+and what's beside it (the Zs) each fade in and out over 200 ms, a new one only once the old
 has gone (a winter evening's bobble fades out at night, then the
-nightcap in, while the sky and the pyjamas fade in at once), each on its own, so falling
-asleep on a winter night brings the Zs while the nightcap, the pyjamas
-and the snow stay. The
+nightcap in), each on its own, so falling
+asleep at night brings the Zs while the nightcap stays. The
 sign fades out over 200 ms once it's down, at the opacity Behaviour
 gives it. It's held at the body's front, but a lean or a finish carrying
 the body sideways carries it only as far as keeps it whole on the

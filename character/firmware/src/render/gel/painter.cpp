@@ -330,25 +330,16 @@ void drawBody(Surface& s, const PaintControls& c, rig::Anchors* anchors, const S
 void project(const Surface& s, const PaintControls& c);
 void chooseSizes(const Surface& s);
 }  // namespace
-void paint(Surface& s, const PaintControls& c, const Box* keep, int keepCount, uint32_t keepLane, rig::Anchors* anchors,
-           const PastimeShow* scenery) {
+void paint(Surface& s, const PaintControls& c, const Box* keep, int keepCount, uint32_t keepLane, rig::Anchors* anchors) {
   if (!s.pixels) return;
   // What the last frame wrote is erased with the body, row by row (draw):
-  // the clear's own time is only its books. Scenery behind the body needs
-  // the whole surface erased before it's drawn.
+  // the clear's own time is only its books.
   Surface::Erasing erasing;
   {
     Measure measure(profile.clear);
     erasing = s.beginClear(keep, keepCount, keepLane);
   }
-  // The pastimes' scenery, behind the body.
-  const bool behind = scenery && showsScenery(*scenery);
-  if (behind) {
-    Measure measure(profile.props);
-    s.erase(erasing, 0, s.height);
-    paintScenery(s, *scenery);
-  }
-  drawBody(s, c, anchors, behind ? nullptr : &erasing);
+  drawBody(s, c, anchors, &erasing);
 }
 void paintBody(Surface& s, const PaintControls& c, rig::Anchors* anchors) { drawBody(s, c, anchors, nullptr); }
 const void* materialTexels(size_t& bytes) {
@@ -741,8 +732,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       Measure clear(profile.clear);
       erasing = surface.beginClear(cards, kept, keepLane);
     }
-    const bool scenery = pastimes && !bodyAlone && showsScenery(*pastimes);
-    const bool behind = scenery || (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
+    const bool behind = (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
     if (behind) {
       Measure measure(profile.behind);
       // Rows a finish covers whole aren't erased first.
@@ -750,10 +740,6 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       surface.forget(erasing, 0, covered);
       Measure clear(profile.clear);
       eraseShared(surface, erasing, covered, surface.height);
-    }
-    if (scenery) {
-      Measure measure(profile.props);
-      paintScenery(surface, *pastimes);
     }
     {
       Measure measure(profile.behind);
