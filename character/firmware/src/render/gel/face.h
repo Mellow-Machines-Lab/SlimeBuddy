@@ -99,6 +99,8 @@ class GelFace final : public Face {
   bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const char*, const SignShow&, const DoneShow&,
             const Strip&, bool) override;
   void wish(const WishShow& show) override;
+  void card(const CardShow& show) override { card_ = show; }
+  bool cardAt(int x, int y) const override;
   void growth(const GrowthShow& show) override;
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
   int profile(char* out, size_t n, uint32_t frames) override;
@@ -270,6 +272,8 @@ class GelFace final : public Face {
   void land(CallStyle style);
   // The wish to show, the device's, set before each frame.
   WishShow wish_;
+  // The card it holds (render/gel/card.h), as last given.
+  CardShow card_;
   // The growth bar to show, the device's, set before each frame.
   GrowthShow growth_;
   // A new revision: the sounds already queued belong to what came before.

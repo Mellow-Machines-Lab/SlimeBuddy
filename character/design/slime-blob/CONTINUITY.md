@@ -958,6 +958,20 @@ a finger or a word forward cuts through it, and with one of those up, or the Mac
 gone, it doesn't start. The mouth is one size of "o", so `to-sleep`'s yawn is
 more stretch than mouth.
 
+### An agent's card (the board's)
+
+While an agent has handed Boop a card and nothing above Doing has the
+screen, Boop holds it (`gel/card.h`): a dark card across its front, rimmed
+in its agent's lane colour, a gel hand at either side. The main thing is in
+the sign's font and the small line under it in the large one; a guess that
+has run out turns the small line red. With more than one card, dots under
+it say how many and which. Boop stands up on the card (`cardHop`), so its
+face stays clear at every stage; the desk is put away and no pastime is
+dealt, since its hands are full; the work stream's words still fall behind.
+The card rises over 220 ms as it comes. A sign, a low sign, an ask, a work
+act, the needs-you screen and the drawer each take its place, and it comes
+back after.
+
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's
