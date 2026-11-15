@@ -166,8 +166,13 @@ int tapLift(const Scenes& scenes, int side);
 // Between them it types on softly, without a sound: a tap every kTypeMs,
 // the paws by turns, each lifting kTypeLift over kTapMs, at `ms` of the
 // engine's clock.
-constexpr int kTypeMs = 340, kTypeLift = 12;
-int typeLift(uint32_t ms, int side);
+// `brisk`, while you type and it types with you (GelFace::showAlong): size,
+// not speed. A paw comes down every kBriskMs, a little slower than the soft
+// typing, swinging kBriskLift high over kBriskTapMs, and its key lights as
+// it lands; and the keyboard and paws are drawn no smaller than kAlongSize
+// of a Buddy's (Q12), however small the body, so a Hatchling's show too.
+constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 70, kBriskTapMs = 280, kAlongSize = 3891;
+int typeLift(uint32_t ms, int side, bool brisk = false);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.
 int opaqueCards(const Surface&, const Engine&, Box* out);

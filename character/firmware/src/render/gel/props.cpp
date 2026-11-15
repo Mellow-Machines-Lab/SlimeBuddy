@@ -82,10 +82,11 @@ int tapLift(const Scenes& s, int side) {
   return 0;
 }
 
-int typeLift(uint32_t ms, int side) {
-  // Each paw taps every other kTypeMs, the right's between the left's.
-  const int period = 2 * kTypeMs, p = int((ms + (side > 0 ? kTypeMs : 0)) % period), d = (period - p) % period;
-  return d < kTapMs ? kTypeLift * 4 * d * (kTapMs - d) / (kTapMs * kTapMs) : 0;
+int typeLift(uint32_t ms, int side, bool brisk) {
+  // Each paw taps every other kTypeMs (kBriskMs, brisk), the right's between the left's.
+  const int every = brisk ? kBriskMs : kTypeMs, most = brisk ? kBriskLift : kTypeLift, tap = brisk ? kBriskTapMs : kTapMs;
+  const int period = 2 * every, p = int((ms + (side > 0 ? every : 0)) % period), d = (period - p) % period;
+  return d < tap ? most * 4 * d * (tap - d) / (tap * tap) : 0;
 }
 
 int opaqueCards(const Surface& surface, const Engine& e, Box* out) {
@@ -198,10 +199,21 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       text(deskState == SceneState::kTerminal ? "> _" : ". . .", 162, 633, green);
       for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
     }
-    // The keyboard and the paws are its size, about the desk's front under it.
-    const int size = e.body().size;
+  }
+  // The keyboard and the paws are its size, about the desk's front under it:
+  // out with the desk, or alone while it types along with you (Paws::keys).
+  const int deskAlpha = (s.desk.x * 255).integer(), alongAlpha = paws ? paws->keys : 0;
+  if (std::max(deskAlpha, alongAlpha) > 0) {
+    // Typing with you, they're no smaller than kAlongSize, eased in and out
+    // with it (Paws::with).
+    const int own = e.body().size, with = paws ? paws->with : 0;
+    const int size = own + (std::max(own, kAlongSize) - own) * with / 255;
     // They go as it melts, which would leave them lying across its face.
-    const int kit = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
+    const int kit = std::max(deskAlpha, alongAlpha) * (4096 - (paws ? paws->melted : 0)) / 4096;
+    // At the desk the paws type on softly between its keys; while you type
+    // they type with you, briskly, at the desk or with the keyboard alone;
+    // the keyboard alone and you still, they rest.
+    const bool brisk = paws && paws->tapping, soft = brisk || deskAlpha >= alongAlpha;
     r.alpha = kit;
     auto scaled = [&](int v) { return v * size / 4096; };
     auto atX = [&](int v) { return 500 + scaled(v - 500); };
@@ -210,12 +222,15 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     for (int row = 0; row < 2; ++row)
       for (int key = 0; key < 9; ++key) {
         bool pressed = contact > q(.35) && key == (s.hasLast && s.last.side < 0 ? 2 : 6);
+        // Typing with you: the keys under a paw light as it comes down.
+        if (brisk && (key == 1 || key == 2 || key == 6 || key == 7))
+          pressed = pressed || typeLift(uint32_t(F(e.timeMs()).integer()), key < 4 ? -1 : 1, true) < kBriskLift / 3;
         round(atX(397 + key * 26), atY(718 + row * 10), scaled(19), scaled(6), 2, pressed ? light : rgb565(144, 170, 176));
       }
     for (int side : {-1, 1}) {
       const int i = side > 0, alpha = paws ? paws->alpha[i] : 255;
       if (alpha < 3) continue;
-      const int lift = std::max(tapLift(s, side), typeLift(uint32_t(F(e.timeMs()).integer()), side)) +
+      const int lift = std::max(tapLift(s, side), soft ? typeLift(uint32_t(F(e.timeMs()).integer()), side, brisk) : 0) +
                        (paws ? paws->lift[i] : 0);
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
       r.alpha = kit * alpha / 255;

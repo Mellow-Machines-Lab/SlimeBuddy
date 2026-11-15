@@ -150,6 +150,18 @@ class Engine {
     motion.following = false;
     motion.gazeTarget = motion.gazeUpTarget = 0;
   }
+  // The eyes on something it looks at by itself (render/gel/gaze.h), in face
+  // units (y up), until unattend; a finger has them first, and shut or
+  // asleep they don't look.
+  void attend(F x, F y) {
+    motion.attending = !scenes.route.quiet && !leaning;
+    motion.attendX = x, motion.attendUp = y;
+  }
+  void unattend() {
+    if (!motion.attending) return;
+    motion.attending = false;
+    if (!motion.following) motion.gazeTarget = motion.gazeUpTarget = 0;
+  }
   // A finger kept still: it leans in (kLeanIn) toward the spot, (x, y) across
   // the dome's half-width and half-height (-1 … 1, y up), or dozes on it
   // (kLeanDoze), its face going to sleep, until it's let go (kLeanNone).

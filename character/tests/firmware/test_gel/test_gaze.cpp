@@ -1,0 +1,256 @@
+// Where the gel looks by itself (render/gel/gaze.h) and typing along with
+// you (render/gel/face.h): the rules, their times, and how each gives way.
+#include <unity.h>
+
+#include <algorithm>
+#include <cstdlib>
+#include <cstring>
+#include <memory>
+
+#include "app/behaviour.h"
+#include "render/gel/face.h"
+#include "render/gel/gaze.h"
+#include "render/gel/pastimes.h"
+#include "render/tags.h"
+
+using namespace render;
+using namespace render::gel;
+
+namespace {
+
+struct Board {
+  linkkit::Rng rng;
+  app::Behaviour b{std::make_unique<GelFace>()};
+  app::Model m;
+  uint32_t t = 0;
+  Board(SceneState look, uint32_t when) {
+    b.reset(0, rng);
+    m.mood = Mood::kCalm;
+    m.base = look;
+    m.act = SceneState::kTerminal;
+    m.when = reached(when);
+    b.onState(m, 0);
+  }
+  GelFace& face() { return static_cast<GelFace&>(b.face()); }
+  void state() { b.onState(m, t); }
+  void tags(uint32_t when) {
+    m.when = reached(when);
+    state();
+  }
+  template <typename Each>
+  void to(uint32_t until, Each each) {
+    for (; t + 16 <= until;) {
+      t += 16;
+      if (t % 10000 < 16) state();
+      b.advance(t, rng);
+      each();
+    }
+  }
+  void to(uint32_t until) {
+    to(until, [] {});
+  }
+};
+
+}  // namespace
+
+// Pins the rules and their order: nothing while something else has the
+// eyes; needs you is up at you for kNoticeMs, then the Mac's side, and
+// rest with no side told; typing along is down at the keys; else rest.
+void test_the_eyes_rest_unless_theres_a_reason() {
+  static_assert(Gaze::kNoticeMs == 1200, "the look at you this test pins");
+  Gaze g;
+  GazeFacts f;
+  TEST_ASSERT_FALSE(g.look(f, 0).on);  // not free
+  f.free = true;
+  TEST_ASSERT_FALSE(g.look(f, 16).on);  // free, and nothing to look at
+  f.needsYou = true, f.lookMs = 0, f.mac = 1;
+  GazePoint p = g.look(f, 32);
+  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX && p.y < 0);  // up at you
+  f.lookMs = Gaze::kNoticeMs - 1;
+  TEST_ASSERT_TRUE(g.look(f, 48).y < 0);
+  f.lookMs = Gaze::kNoticeMs;
+  p = g.look(f, 64);
+  TEST_ASSERT_TRUE(p.on && p.x > 502 && p.y == Gaze::kEyesY);  // then the Mac, on its right
+  f.lookMs = 10 * 60 * 1000;
+  TEST_ASSERT_TRUE(g.look(f, 80).x > 502);  // and held while it waits
+  f.mac = -1;
+  TEST_ASSERT_TRUE(g.look(f, 96).x < 0);
+  f.mac = 0;
+  TEST_ASSERT_FALSE(g.look(f, 112).on);  // no side told: rest
+  f.free = false, f.mac = 1;
+  TEST_ASSERT_FALSE(g.look(f, 128).on);  // a Moment over it has the eyes
+  f = GazeFacts{};
+  f.free = f.along = true;
+  p = g.look(f, 144);
+  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX && p.y > Gaze::kEyesY);  // down at the keys
+  f.needsYou = true;
+  TEST_ASSERT_TRUE(g.look(f, 160).y < 0);  // needs you first
+}
+
+// Pins kGlanceMs, kRestMs, kWatchRestMs and kCatchMs, the rule against
+// darting: at work a word is glanced at as it starts to fall and followed
+// for kGlanceMs, then the eyes rest forward at least kRestMs, whatever
+// falls meanwhile; kWatchRestMs while you watch too. However busy the
+// stream, a minute has at most 60 s / (glance + rest) + 1 glances.
+void test_a_glance_and_then_a_rest() {
+  static_assert(Gaze::kGlanceMs == 1600 && Gaze::kRestMs == 7000 && Gaze::kWatchRestMs == 3000 && Gaze::kCatchMs == 500,
+                "the times this test pins");
+  Gaze g;
+  GazeFacts f;
+  f.free = true;
+  auto word = [&](uint32_t born, int x, uint32_t t) {
+    f.word = true, f.wordBorn = born, f.wordX = x, f.wordY = int(t - born) / 8, f.wordSpeed = 125;
+    return g.look(f, t);
+  };
+  GazePoint p = word(1000, 420, 1016);
+  TEST_ASSERT_TRUE(p.on && p.x == 420);
+  TEST_ASSERT_TRUE(word(1000, 420, 2000).y > p.y);        // followed down
+  TEST_ASSERT_TRUE(word(2200, 84, 2216).x == 420);        // its own word, whatever drops after
+  TEST_ASSERT_TRUE(word(1000, 420, 1000 + 1599).on);      // for kGlanceMs
+  TEST_ASSERT_FALSE(word(1000, 420, 1016 + 1600).on);     // then forward
+  TEST_ASSERT_FALSE(word(3000, 84, 3016).on);             // a new word in its rest: no glance
+  TEST_ASSERT_FALSE(word(9500, 84, 9516).on);             // 6.9 s into the rest: still none
+  TEST_ASSERT_TRUE(word(9700, 84, 9716).x == 84);         // 7 s on: the next
+  TEST_ASSERT_FALSE(word(9700, 84, 9716 + 1600).on);
+  f.watching = true;                                      // you watch too: sooner
+  TEST_ASSERT_FALSE(word(14000, 420, 14016).on);          // 2.7 s into the rest
+  TEST_ASSERT_TRUE(word(14400, 420, 14416).on);           // 3 s on
+  // A word already falling a while isn't caught: only as it starts.
+  Gaze late;
+  f.watching = false, f.word = true, f.wordBorn = 0, f.wordX = 84;
+  TEST_ASSERT_FALSE(late.look(f, Gaze::kCatchMs).on);
+  // A minute of a word every 300 ms.
+  Gaze busy;
+  int glances = 0;
+  bool on = false;
+  for (uint32_t t = 0; t < 60000; t += 16) {
+    const uint32_t born = t / 300 * 300;
+    f.wordBorn = born, f.wordX = born / 300 % 2 ? 84 : 420;
+    const bool now = busy.look(f, t).on;
+    glances += now && !on, on = now;
+  }
+  TEST_ASSERT_TRUE(glances >= 5 && glances <= 60000 / (1600 + 7000) + 1);
+}
+
+// The eyes turn to what it looks at more slowly than they follow a finger
+// (Motion::kAttendRate against kFollowRate), a finger has them first, and
+// let go they come back forward.
+void test_a_look_is_a_turn_not_a_dart() {
+  static_assert(Motion::kAttendRate == 5 && Motion::kFollowRate == 12, "the rates this test pins");
+  auto after = [](bool finger, int ms) {
+    auto e = std::make_unique<Engine>();
+    for (int t = 0; t <= 960; t += 16) e->step(t);
+    for (int t = 976; t <= 960 + ms; t += 16) {
+      if (finger) e->lookAt(q(.08), 0);
+      else e->attend(q(.08), 0);
+      e->step(t);
+    }
+    return e->motion.gaze;
+  };
+  const F look = after(false, 160), follow = after(true, 160);
+  TEST_ASSERT_TRUE(look > F(0) && look < follow);
+  TEST_ASSERT_TRUE(after(false, 160) < q(.08) * q(.6));   // not there in 160 ms
+  TEST_ASSERT_TRUE(after(false, 1000) > q(.08) * q(.95));  // there within a second
+  auto e = std::make_unique<Engine>();
+  for (int t = 0; t <= 960; t += 16) e->step(t);
+  e->attend(q(.08), q(.05));
+  e->lookAt(q(-.08), 0);  // a finger, the other way
+  for (int t = 976; t <= 2000; t += 16) e->step(t);
+  TEST_ASSERT_TRUE(e->motion.gaze < F(0));
+  e->lookAway();
+  e->unattend();
+  for (int t = 2016; t <= 5000; t += 16) e->step(t);
+  TEST_ASSERT_TRUE(abs(e->motion.gaze) < q(.02) && abs(e->motion.gazeUp) < q(.005));
+}
+
+// Pins typing along, kAlongLingerMs and the brisk paws: idle with your
+// hands busy, its keyboard comes out over the rig's fade and its paws tap;
+// you stop, they rest and the keyboard stays 4 s, then goes; no pastime is
+// dealt while it's out. Something needs you: gone. At work its paws type
+// briskly with you at its desk; asleep, nothing. It waits for a pastime
+// playing to end, and never cuts one.
+void test_it_types_along_with_you() {
+  static_assert(GelFace::kAlongLingerMs == 4000, "the linger this test pins");
+  const uint32_t day = tagBit("day"), typing = tagBit("typing");
+  Board board(SceneState::kIdle, day | tierBit(2));
+  GelFace& face = board.face();
+  board.to(1000);
+  TEST_ASSERT_EQUAL_INT(0, face.pastimes(board.t).keys);
+  board.tags(day | tierBit(2) | typing);
+  board.to(board.t + rig::kFadeMs + 48);
+  PastimeShow s = face.pastimes(board.t);
+  TEST_ASSERT_TRUE(s.keys == 255 && s.tapping);
+  // Its body in it too: hunched and bouncing (the rig's `type-along`).
+  int low = 1 << 30, high = 0;
+  board.to(board.t + 1300, [&] {
+    const int squash = face.mixer().channels()[rig::Channel::kSquash];
+    low = std::min(low, squash), high = std::max(high, squash);
+  });
+  TEST_ASSERT_TRUE(high - low > 300);  // a big dip and spring, a beat every 600 ms
+  TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
+  TEST_ASSERT_TRUE(face.engine().motion.attending);  // its eyes on the keys
+  // Two minutes of your typing: never a pastime over the keys.
+  board.to(board.t + 120000, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(face.pastimes(board.t).playing)); });
+  // You stop.
+  board.tags(day | tierBit(2));
+  const uint32_t stopped = board.t;
+  board.to(stopped + 64);
+  s = face.pastimes(board.t);
+  TEST_ASSERT_TRUE(s.keys == 255 && !s.tapping);
+  board.to(board.t + 600);
+  TEST_ASSERT_TRUE(std::abs(face.mixer().channels()[rig::Channel::kSquash]) < 10);  // and it sits up again
+  TEST_ASSERT_FALSE(face.engine().motion.attending);  // and its eyes come back up
+  board.to(stopped + GelFace::kAlongLingerMs - 64);
+  TEST_ASSERT_EQUAL_INT(255, face.pastimes(board.t).keys);
+  board.to(stopped + GelFace::kAlongLingerMs + rig::kFadeMs + 64);
+  TEST_ASSERT_EQUAL_INT(0, face.pastimes(board.t).keys);
+  // A pause shorter than that keeps it out.
+  board.tags(day | tierBit(2) | typing);
+  board.to(board.t + 1000);
+  board.tags(day | tierBit(2));
+  board.to(board.t + 2000);
+  board.tags(day | tierBit(2) | typing);
+  board.to(board.t + 64);
+  TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 255 && face.pastimes(board.t).tapping);
+  // Something needs you: the keys go with the look.
+  board.m.attn = true, board.m.attnId = 4;
+  std::strcpy(board.m.agent, "claude");
+  board.state();
+  board.to(board.t + rig::kFadeMs + 64);
+  TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping);
+  board.m.attn = false;
+  // At work its desk is out already: no keyboard of its own, and its paws
+  // type with you, briskly, its eyes on the keys; you stop, and they don't.
+  board.m.base = SceneState::kWorking;
+  board.tags(day | typing);
+  board.to(board.t + 1000);
+  s = face.pastimes(board.t);
+  TEST_ASSERT_TRUE(s.keys == 0 && s.tapping);
+  TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
+  TEST_ASSERT_TRUE(face.engine().motion.attending);
+  board.tags(day);
+  board.to(board.t + 64);
+  TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
+  // Asleep: nothing, your typing or not.
+  board.m.base = SceneState::kAsleep;
+  board.tags(day | typing);
+  board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
+  // Brisk is twice as often and higher than the agents' soft typing.
+  // Size, not speed: no quicker than the soft typing, and far bigger.
+  static_assert(kBriskMs >= 300 && kBriskLift > 5 * kTypeLift && kAlongSize >= 3686, "typing with you is big, not fast");
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kBriskTapMs / 2, -1, true));
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kBriskTapMs / 2, 1, true));
+  // A pastime playing as you start: it plays out first.
+  Board playing(SceneState::kIdle, day | tierBit(2));
+  playing.to(1000);
+  playing.face().playPastime(Pastime::kHop, playing.t);
+  playing.tags(day | tierBit(2) | typing);
+  bool hopped = false, alongDuring = false, alongAfter = false;
+  playing.to(playing.t + 9000, [&] {
+    const PastimeShow now = playing.face().pastimes(playing.t);
+    hopped = hopped || now.playing == Pastime::kHop;
+    if (now.playing == Pastime::kHop && now.fade == 255) alongDuring = alongDuring || now.tapping;
+    alongAfter = alongAfter || (now.playing == Pastime::kNone && now.tapping);
+  });
+  TEST_ASSERT_TRUE(hopped && !alongDuring && alongAfter);
+}
