@@ -182,11 +182,11 @@ void test_it_types_along_with_you() {
   TEST_ASSERT_TRUE(s.keys == 255 && s.tapping);
   // Its body in it too: hunched and bouncing (the rig's `type-along`).
   int low = 1 << 30, high = 0;
-  board.to(board.t + 700, [&] {
+  board.to(board.t + 1300, [&] {
     const int squash = face.mixer().channels()[rig::Channel::kSquash];
     low = std::min(low, squash), high = std::max(high, squash);
   });
-  TEST_ASSERT_TRUE(low > 20 && high - low > 40);
+  TEST_ASSERT_TRUE(high - low > 300);  // a big dip and spring, a beat every 600 ms
   TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
   TEST_ASSERT_TRUE(face.engine().motion.attending);  // its eyes on the keys
   // Two minutes of your typing: never a pastime over the keys.
@@ -236,9 +236,10 @@ void test_it_types_along_with_you() {
   board.tags(day | typing);
   board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
   // Brisk is twice as often and higher than the agents' soft typing.
-  static_assert(kBriskMs * 2 == kTypeMs && kBriskLift > 3 * kTypeLift, "brisk against soft");
-  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kTapMs / 2, -1, true));
-  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kTapMs / 2, 1, true));
+  // Size, not speed: no quicker than the soft typing, and far bigger.
+  static_assert(kBriskMs >= 300 && kBriskLift > 5 * kTypeLift && kAlongSize >= 3686, "typing with you is big, not fast");
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kBriskTapMs / 2, -1, true));
+  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kBriskTapMs / 2, 1, true));
   // A pastime playing as you start: it plays out first.
   Board playing(SceneState::kIdle, day | tierBit(2));
   playing.to(1000);

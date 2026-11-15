@@ -889,11 +889,14 @@ sleep. A minute of the busiest stream has at most seven glances.
 
 **Typing along** (`GelFace::showAlong`): while your hands are busy at the
 Mac (the `typing` tag), it types with you, and so that you can see it on a
-small screen across a desk: its paws hammer, a tap every 170 ms lifting 44
-(`kBriskMs`, `kBriskLift`), against the agents' soft 340 and 12, the keys
-under them light as they land, and its whole body hunches over the keys
-and bounces with each one, side to side by the paw (the rig's looping
-`type-along` clip). At work that's at its desk, which
+small screen across a desk, by size and not by speed: its whole body rocks
+slowly over the keys, to one side and then the other, dipping onto each
+beat and springing up off it with a little hop, a beat every 600 ms (the
+rig's looping `type-along` clip); its paws swing 70 high, one every 300 ms
+(`kBriskLift`, `kBriskMs`), against the agents' soft 12 every 340; and the
+keyboard and paws are drawn no smaller than 95% of a Buddy's
+(`kAlongSize`), eased in, so a Hatchling's show too. The keys under the
+paws light as they land, which a small screen barely shows. At work that's at its desk, which
 is out already, and its eyes drop to the keys in place of the glances; you
 stop, and it's back to the soft typing. Idle, its keyboard comes out for
 it over the rig's fade; you stop, and its paws rest; the keyboard stays

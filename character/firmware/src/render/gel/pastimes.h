@@ -193,7 +193,7 @@ struct PastimeShow {
   // Typing along with you (GelFace::showAlong): how far out its keyboard is
   // alone, idle (0 … 255), and whether its paws type with you now, there
   // or at its desk.
-  int keys = 0;
+  int keys = 0, with = 0;
   bool tapping = false;
   // How far above its ears the headphones are, in px: coming down while
   // they're put on.
@@ -210,6 +210,7 @@ struct Paws {
   // typing briskly with you.
   int keys = 0;
   bool tapping = false;
+  int with = 0;  // how far into typing with you it is (0 … 255): the keyboard and paws grow to be seen
 };
 Paws pawsFor(const PastimeShow& show);
 

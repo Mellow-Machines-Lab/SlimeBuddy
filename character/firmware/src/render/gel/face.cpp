@@ -69,7 +69,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   stopped_ = false;
   dice_ = kSeed;
   transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, lastFullAct_ = alone_ = false;
-  headphones_ = along_ = rig::Ramp{};
+  headphones_ = along_ = with_ = rig::Ramp{};
   tapping_ = typed_ = false, typedAt_ = 0;
   gaze_.reset();
 }
@@ -398,8 +398,10 @@ void GelFace::showAlong(uint32_t t) {
   tapping_ = (idle || working) && typing && !playing();
   // Its whole body types with you: hunched over the keys and bouncing with
   // each one (the rig's `type-along`), so it shows from across a desk.
-  if (tapping_ != was)
+  if (tapping_ != was) {
     if (const rig::Clip* clip = rig::kRig.clip("type-along")) tapping_ ? mixer_.play(*clip) : mixer_.stop(*clip);
+    with_.retarget(tapping_ ? 1000 : 0, t);
+  }
   const bool alone = tapping_ && idle;  // with its keyboard alone
   if (alone) typed_ = true, typedAt_ = t;
   const bool out = idle && typed_ && (alone || (!playing() && within(t, typedAt_, kAlongLingerMs)));
@@ -444,6 +446,7 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
   s.t = t, s.when = engine_->scenes.when;
   s.keys = (along_.value(t) * 255 + 500) / 1000, s.tapping = tapping_;
+  s.with = (with_.value(t) * 255 + 500) / 1000;
   if (pastime_ != Pastime::kNone) {
     s.playing = pastime_;
     s.age = t - pastimeAt_;

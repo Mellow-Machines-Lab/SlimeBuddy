@@ -176,9 +176,10 @@ class GelFace final : public Face {
   rig::Ramp headphones_;
   // Typing along with you (showAlong): while your hands are busy at the Mac
   // (the `typing` tag) it types as you do, and so that you can see it from
-  // across a desk: its paws hammer, the keys under them light, and its whole
-  // body hunches over them and bounces with each key (the rig's
-  // `type-along` clip). At work that's at
+  // across a desk, by size and not by speed: its whole body rocks slowly
+  // over the keys and springs up off each beat (the rig's `type-along`
+  // clip), its paws swing high, and the keyboard and paws grow to at least
+  // kAlongSize (with_), so a small body's show too. At work that's at
   // its desk, in place of the agents' soft typing; idle, it has its keyboard
   // out for it, its paws rest when you stop, and the keyboard goes
   // kAlongLingerMs after. It's the lowest thing there is: it waits for a
@@ -186,7 +187,7 @@ class GelFace final : public Face {
   // Moment, a word forward, a work act, needs you or sleep. While the
   // keyboard is out alone no pastime is dealt; at work they're dealt as
   // ever, and it types with you again after each.
-  rig::Ramp along_;
+  rig::Ramp along_, with_;
   bool tapping_ = false;
   uint32_t typedAt_ = 0;
   bool typed_ = false;
