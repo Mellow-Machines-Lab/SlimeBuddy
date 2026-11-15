@@ -138,20 +138,16 @@ namespace {
 constexpr uint16_t kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245), kCream = rgb565(246, 240, 226),
                    kInk = rgb565(28, 24, 36), kCardInk = rgb565(27, 55, 78), kCardRim = rgb565(0x78, 0xa4, 0xc8),
                    kWords = rgb565(184, 233, 245), kAmber = rgb565(239, 189, 103);
-constexpr uint16_t kMug = rgb565(214, 92, 84), kMugDark = rgb565(150, 56, 52), kCoffee = rgb565(110, 66, 40),
-                   kSteam = rgb565(200, 210, 220), kPhones = rgb565(46, 48, 60), kPhonesCap = rgb565(86, 90, 110),
+constexpr uint16_t kSteam = rgb565(200, 210, 220), kPhones = rgb565(46, 48, 60), kPhonesCap = rgb565(86, 90, 110),
                    kCushion = rgb565(236, 104, 140), kCushionShade = rgb565(196, 82, 116),
-                   kLeaf = rgb565(96, 196, 112), kLeafDark = rgb565(60, 140, 80), kPot = rgb565(204, 112, 72),
-                   kSoil = rgb565(70, 46, 32), kPetal = rgb565(250, 130, 180), kNote = rgb565(255, 214, 120),
+                   kLeafDark = rgb565(60, 140, 80), kNote = rgb565(255, 214, 120),
                    kHeart = rgb565(240, 96, 140), kBulb = rgb565(255, 228, 110), kTick = rgb565(110, 220, 140),
                    kCookie = rgb565(206, 150, 88), kChip = rgb565(90, 54, 30),
-                   kGlass = rgb565(170, 196, 206),
                    kCheese = rgb565(255, 214, 96), kPepperoni = rgb565(200, 60, 50), kStar = rgb565(255, 240, 170),
                    kBlanket = rgb565(150, 104, 200), kBlanketDark = rgb565(104, 66, 150),
                    kPlaid = rgb565(214, 186, 240), kBubbleRim = rgb565(190, 236, 255), kBook = rgb565(206, 72, 88),
                    kPage = rgb565(250, 246, 232), kLine = rgb565(170, 170, 190), kConsole = rgb565(124, 104, 210),
-                   kScreen = rgb565(150, 230, 170), kCan = rgb565(90, 180, 120), kWater = rgb565(110, 190, 255),
-                   kPaper = rgb565(250, 250, 255), kGold = rgb565(232, 190, 80), kSheep = rgb565(250, 250, 246),
+                   kScreen = rgb565(150, 230, 170), kCan = rgb565(90, 180, 120), kPaper = rgb565(250, 250, 255), kGold = rgb565(232, 190, 80), kSheep = rgb565(250, 250, 246),
                    kFence = rgb565(170, 120, 70), kGrass = rgb565(80, 170, 90), kGrey = rgb565(150, 150, 160);
 constexpr uint16_t kBlocks[] = {rgb565(240, 96, 96),  rgb565(250, 200, 70),  rgb565(100, 200, 120),
                                 rgb565(90, 160, 240), rgb565(170, 110, 230), rgb565(250, 150, 60)};
