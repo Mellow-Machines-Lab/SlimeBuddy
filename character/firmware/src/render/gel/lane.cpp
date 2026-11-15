@@ -591,10 +591,6 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at, e);
   }
-  // The sky onto the background's black before the stream's words, which
-  // fall behind it as they do behind the body: drawn after them, it would
-  // leave their dim pixels as holes in the moon or the sun.
-  paintSky(surface, e, layers, t);
   if (stream) {
     Measure measure(profile.stream);
     // A full act holds the screen: no words falling beside it, no desk, no

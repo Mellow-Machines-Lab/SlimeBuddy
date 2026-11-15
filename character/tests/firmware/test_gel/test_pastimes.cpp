@@ -285,12 +285,6 @@ void test_pastimes_are_dealt_by_tier_after_a_rest() {
     Board none(look, tagBit("day"));
     none.to(120000, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(none.face().pastimes(none.t).playing)); });
   }
-  // In the morning, no sip or refill: its coffee is in its hand.
-  Board morning(SceneState::kWorking, tagBit("morning") | tierBit(4));
-  morning.to(5 * 60 * 1000, [&] {
-    const Pastime now = morning.face().pastimes(morning.t).playing;
-    TEST_ASSERT_TRUE(now != Pastime::kSip && now != Pastime::kRefill);
-  });
   // While something needs you, only the wave before 2 minutes.
   Board asking(SceneState::kNeedsYou, tagBit("day"));
   asking.to(110000, [&] {
@@ -407,8 +401,7 @@ void test_the_headphones_play_a_tune() {
 // has put them on (none while it wears a hat), and from tier5 a mug more on the stack every
 // kMugEveryMs up to kMostMugs, counted from when the work reached tier5,
 // and the zone's motes;
-// idle, a plant from tier3 that grows to tier5. No mug in the morning,
-// when its coffee is in its hand; none while something needs you.
+// idle, a plant from tier3 that grows to tier5. None while something needs you.
 void test_the_kit_follows_the_tiers() {
   Board board(SceneState::kWorking, tagBit("day"));
   GelFace& face = board.face();
@@ -436,10 +429,10 @@ void test_the_kit_follows_the_tiers() {
   TEST_ASSERT_EQUAL_INT(kMostMugs, face.pastimes(board.t + 10 * kMugEveryMs).mugs);
   s = kit(5, tagBit("night"));  // the nightcap wins the head
   TEST_ASSERT_TRUE(s.mug && !s.headphones);
-  s = kit(3, tagBit("morning"));  // the morning's coffee is in its hand
+  s = kit(3, tagBit("morning"));  // a morning is as any time of day
   board.to(board.t + 20000);  // and on go the headphones again
   s = face.pastimes(board.t);
-  TEST_ASSERT_TRUE(!s.mug && s.headphones);
+  TEST_ASSERT_TRUE(s.mug && s.headphones);
   board.m.attn = true, board.m.attnId = 4;
   s = kit(5);
   TEST_ASSERT_TRUE(!s.mug && !s.headphones && !s.zone);

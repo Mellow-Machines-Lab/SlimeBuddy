@@ -140,10 +140,8 @@ void GelFace::advanceTo(uint32_t t) {
 
 void GelFace::showLayers(uint32_t t) {
   const Contents now = layerContents(*engine_);
-  layers_.show(rig::Layer::kScene, now.scene, t);
   layers_.show(rig::Layer::kWorn, now.worn, t);
   layers_.show(rig::Layer::kHat, now.hat, t);
-  layers_.show(rig::Layer::kAir, now.air, t);
   layers_.show(rig::Layer::kBeside, now.beside, t);
 }
 
@@ -250,9 +248,8 @@ void GelFace::deal(SceneState look, uint32_t t) {
     int rank;  // the newest is the highest
   } options[kPastimeCount];
   int n = 0;
-  // In the morning its coffee is in its hand (render/gel/layers.h): no mug
-  // on the desk, so no sip, reach or refill from one. A move waits its gap.
-  const bool morning = hasTag(when, "morning"), moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
+  // A move waits its gap.
+  const bool moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
   // Nor a melt in a hat, which has no head to sit on then.
   const bool hatted = wornHat(when) != Outfit::kNone;
   // A take at work only while it types.
@@ -260,7 +257,6 @@ void GelFace::deal(SceneState look, uint32_t t) {
   const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
   for (const auto& p : kPastimes) {
     if (p.look != look || p.stage > growthStage(when) || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
-    if (morning && (p.id == Pastime::kSip || p.id == Pastime::kReach || p.id == Pastime::kRefill)) continue;
     if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
       continue;
     // The highest tier, then the longest wait, is the newest; one that
@@ -374,7 +370,7 @@ void GelFace::showKit(uint32_t t) {
   if (working && tier >= 5 && !inZone_) zoneSince_ = t;
   inZone_ = working && tier >= 5;
   show(zone_, inZone_);
-  show(mug_, working && tier >= 1 && !hasTag(when, "morning"));  // the morning's is in its hand
+  show(mug_, working && tier >= 1);
   phonesWanted_ = working && tier >= 3 && head;
   if (!phonesWanted_) phonesOn_ = false;
   if (pastime_ == Pastime::kPhonesOn && !stopped_ && t - pastimeAt_ >= kPhonesOnMs) phonesOn_ = true;

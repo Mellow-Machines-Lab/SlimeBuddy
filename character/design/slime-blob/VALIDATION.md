@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-14. What checks the gel slime, and which rule each check
+Updated 2026-11-15. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -219,9 +219,9 @@ ramps and springs can, and no jolt at an event. By file:
   (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
   through a giggle that opens the mouth, the hush reply's squeeze and
   nod, and unhush's perk-up with its own mouth back), the
-  layers (`layers.jsonl`: each outfit and air by its tags, Zs asleep at
-  night, the morning's coffee at its side, at a sip and on the desk, a
-  sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
+  layers (`layers.jsonl`: each outfit by its tags, Zs asleep at
+  night, a morning and a Valentine's Day with nothing behind or round
+  it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
   work acts (`acts.jsonl`: each act's opening, its middle, its pass, its

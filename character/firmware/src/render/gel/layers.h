@@ -1,32 +1,36 @@
 // What the gel wears and holds over its body, drawn natively by coverage
 // like the rest of the gel, at the anchors of the pose that drew the body
 // (the rig's Anchors, render/gel/painter.h), so each follows the body as it
-// moves, squashes and leaves the screen, and is cut off there with it:
+// moves, squashes and leaves the screen, and is cut off there with it.
 //
-// - the sky behind it: at night a crescent moon and twinkling stars, in
-//   the morning the sun up on its left, glowing, its rays turning, only
-//   where nothing else is drawn;
+// THE SCREEN'S RULE, part one: the face comes first, and what it wears is
+// on its body, one thing at a time. Nothing hangs in the sky behind it and
+// nothing drifts through the air round it for a time of day, a season or a
+// holiday: no sun, moon or stars, no snow, confetti or hearts, no coffee.
+// A day shows as one thing worn, and nothing else:
+//
 // - the outfit, by the tags on now (state.when): a striped nightcap at
 //   night, and its pyjamas on the body's lower rings, a party hat on a
 //   party day, New Year's Day, Lunar New Year and Programmers' Day, a
 //   witch hat at Halloween, a bobble hat in winter; shades on a Friday's
 //   day, off while it sleeps;
-// - the air around it: snow in winter, confetti on a party day and New
-//   Year's Day, hearts on Valentine's;
-// - beside it: Zs rising while it sleeps at night, or its coffee, steaming
-//   in a little gel hand, while it's idle or at work in the morning;
+// - beside it: Zs rising while it sleeps at night;
 // - the sign a reaction holds up (its `sign`): a dark card held at its
 //   front, under its mouth, with a little gel hand at either side, the words
 //   on it, sliding up as the reaction starts and bobbing while it's held. A
 //   small body rises to stand on it, so the card leaves its face clear (signHop).
 //
+// Part two, what may move beside the face, is in render/gel/face.cpp
+// (GelFace::passTime); what shares the top band and the lane, in
+// render/gel/lane.cpp.
+//
 // Each comes and goes through the rig's layer stack (render/rig/layers.h,
-// the face's), so the sky, a hat and the pyjamas at midnight, the Zs as
-// it falls asleep, shades on a Friday and the snow each fade over the
-// rig's fade, and a new one waits for the old to go; the sign fades out
-// at the opacity Behaviour gives it. A scene may hide a layer: peekaboo's
-// gesture takes the outfit off while the slime comes up from nothing. At
-// night its lids also hang a little lower (sleepyLids).
+// the face's), so a hat and the pyjamas at midnight, the Zs as it falls
+// asleep and shades on a Friday each fade over the rig's fade, and a new
+// one waits for the old to go; the sign fades out at the opacity Behaviour
+// gives it. A scene may hide a layer: peekaboo's gesture takes the outfit
+// off while the slime comes up from nothing. At night its lids also hang a
+// little lower (sleepyLids).
 #pragma once
 #include "render/face.h"
 #include "render/gel/painter.h"
@@ -53,7 +57,7 @@ namespace render::gel {
 // room around for any of them. Past its edges, or the recording's room,
 // it's drawn straight on the surface.
 struct OutfitLayer {
-  static constexpr int kSlack = 12, kSwingMs = 400, kSipMs = 9000;
+  static constexpr int kSlack = 12, kSwingMs = 400;
   static constexpr uint32_t kMovingMs = 100, kStillMs = 200;
   static constexpr int kFrameY = 288, kFrameHeight = 512;
   static constexpr int kHatBytes = 7 * 1024, kWornBytes = 10 * 1024;  // the hat's room, and the pyjamas' or eyewear's
@@ -83,27 +87,20 @@ class Engine;
 int sleepyLids(const Engine& e);
 
 // What the layer stack's layers (render/rig/layers.h) show for the
-// engine's tags and state now: the sky behind it (the night's, or the
-// morning's sun), what it wears over its eyes or on its body (worn)
-// and its hat, each a content of its own (0 for none), the air's bits, and
-// beside it the Zs while it sleeps at night, or its coffee while it's idle
-// or at work in the morning.
-enum : uint32_t { kNightSky = 1, kSun = 2 };
-enum : uint32_t { kZs = 1, kCoffeeMug = 2 };
+// engine's tags and state now: what it wears over its eyes or on its body
+// (worn) and its hat, each a content of its own (0 for none), and beside
+// it the Zs while it sleeps at night. The stack's scene and air layers
+// stay empty: the screen's rule, above.
+enum : uint32_t { kZs = 1 };
 struct Contents {
-  uint32_t scene, worn, hat, air, beside;
+  uint32_t worn, hat, beside;
 };
 Contents layerContents(const Engine& e);
-// The outfit, the air and the Zs, over the body and its face, under the
-// props: what the stack shows at t, at its layers' opacities; with none,
-// whole in what the engine's tags and state call for.
+// The outfit and the Zs, over the body and its face, under the props: what
+// the stack shows at t, at its layers' opacities; with none, whole in what
+// the engine's tags and state call for.
 void paintLayers(Surface& surface, const Engine& e, const rig::Anchors& at, const rig::Layers* layers = nullptr,
                  uint32_t t = 0);
-// The night sky, as the stack shows it at t (whole in the engine's tags
-// with none), behind everything: drawn last, only onto the background's
-// black, so the body, what it wears, the stream's words and the sign all
-// stay in front, and none of it is drawn over them.
-void paintSky(Surface& surface, const Engine& e, const rig::Layers* layers = nullptr, uint32_t t = 0);
 // How far the card sits below its place `ms` after it went up: sliding up,
 // then bobbing.
 int signOffset(uint32_t ms);

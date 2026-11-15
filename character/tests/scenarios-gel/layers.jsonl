@@ -1,16 +1,15 @@
-// What the gel wears and the air around it, by the tags on
+// What the gel wears, by the tags on, and nothing else: no sky, no air
 // (render/gel/layers.h), each on a frozen clock after a reset, idle unless
 // it says. A state every 20 s keeps the link alive.
-// A night: the moon and stars behind it, a striped nightcap flopping
-// down its side and the pyjamas to match, its lids a little lower.
+// A night: a striped nightcap flopping down its side and the pyjamas to
+// match, its lids a little lower; nothing in the sky.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}
 {"clock":1200}
 {"shot":"nightcap"}
 // Asleep at night: the nightcap and its pyjamas, and Zs rising; and on a
-// winter's night, night's cap and pyjamas over winter's bobble, in the
-// snow.
+// winter's night, night's cap and pyjamas over winter's bobble.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"asleep","mood":"calm","vol":0,"when":["night"]}
@@ -21,22 +20,19 @@
 {"t":"state","base":"asleep","mood":"happy","vol":0,"when":["night","winter"]}
 {"clock":3200}
 {"shot":"pyjamas"}
-// A morning: the sun up on its left and its coffee at its side,
-// steaming; lifted to its mouth for a sip (the last 1.8 s of every 9);
-// and on the desk beside the keyboard while it works.
+// A morning is as any time of day: nothing behind it and nothing in its
+// hand, idle or at work.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"when":["morning"]}
 {"clock":4200}
-{"shot":"coffee"}
-{"clock":7800}
-{"shot":"coffee-sip"}
+{"shot":"morning"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"determined","vol":0,"busy":1,"when":["morning"]}
 {"clock":1500}
-{"shot":"coffee-working"}
-// A party day: a party hat and confetti.
+{"shot":"morning-working"}
+// A party day: a party hat.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0,"busy":1,"when":["day","party"]}
@@ -48,13 +44,13 @@
 {"t":"state","base":"idle","mood":"curious","vol":0,"when":["evening","halloween"]}
 {"clock":1200}
 {"shot":"halloween"}
-// Winter: a bobble hat in the snow.
+// Winter: a bobble hat.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"when":["morning","winter"]}
 {"clock":1200}
 {"shot":"winter"}
-// A Friday's day: shades. Valentine's: hearts.
+// A Friday's day: shades. Valentine's: nothing worn.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"proud","vol":0,"when":["day","friday"]}

@@ -1901,8 +1901,8 @@ static void test_layers_follow_the_bodys_anchors() {
   paint(s, *e, false, 0, 0, &at);
   const size_t over = size_t(at.crown.y / 16 - 4) * 502 + size_t(at.crown.x / 16);
   TEST_ASSERT_NOT_EQUAL(bare[over], px[over]);
-  // Every layer at once, asleep (a hat, shades, snow, confetti, hearts and
-  // Zs), off the heap.
+  // Every layer at once, asleep (a hat, what's worn and the Zs), off the
+  // heap.
   e->setOccasion(tags({"night", "winter", "party", "valentines", "friday"}), 0);
   e->scenes.route.state = SceneState::kAsleep;
   allocCount = 0;
@@ -1912,12 +1912,11 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
 
-// What the gel wears, the air and the Zs come and go through the rig's
-// layer stack (the face's), on the rig's 200 ms fade: a winter evening's
-// bobble fades out at night and the nightcap in after it, the night sky
-// and the pyjamas fading in with it; falling asleep, the Zs fade in while
-// the sky, the hat, the pyjamas and the snow stay whole, each layer its
-// own; a sign fades out at its opacity, as Behaviour gives
+// What the gel wears and the Zs come and go through the rig's layer stack
+// (the face's), on the rig's 200 ms fade: a winter evening's bobble fades
+// out at night and the nightcap in after it, the pyjamas fading in with it;
+// falling asleep, the Zs fade in while the hat and the pyjamas stay whole,
+// each layer its own; a sign fades out at its opacity, as Behaviour gives
 // it. Each is drawn at its layer's opacity.
 static void test_the_layers_come_and_go_through_the_stack() {
   using rig::Layer;
@@ -1940,15 +1939,12 @@ static void test_the_layers_come_and_go_through_the_stack() {
   b.advance(1000, rng);
   TEST_ASSERT_EQUAL_UINT32(bobble, l.content(Layer::kHat, 1000));
   TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, 1000));
-  TEST_ASSERT_EQUAL_UINT32(kSnow, l.content(Layer::kAir, 1000));
-  TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kScene, 1000));
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, 1000));
   state(SceneState::kIdle, {"night", "winter"}, 1008);
   for (uint32_t t = 1008; t <= 1500; t += 16) {
     b.advance(t, rng);
     const uint32_t into = t - 1008;
     const int in = ease1000(std::min(int(into), 200), 200);
-    TEST_ASSERT_EQUAL_INT(in, l.opacity(Layer::kScene, t));  // the sky
     TEST_ASSERT_EQUAL_INT(in, l.opacity(Layer::kWorn, t));   // the pyjamas
     if (into < rig::kFadeMs) {
       TEST_ASSERT_EQUAL_UINT32(bobble, l.content(Layer::kHat, t));
@@ -1957,7 +1953,6 @@ static void test_the_layers_come_and_go_through_the_stack() {
       TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, t));
       TEST_ASSERT_EQUAL_INT(ease1000(std::min(int(into) - 200, 200), 200), l.opacity(Layer::kHat, t));
     }
-    TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kAir, t));  // the snow stays
   }
   state(SceneState::kAsleep, {"night", "winter"}, 2000);
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kBeside, 2000));
@@ -1965,11 +1960,9 @@ static void test_the_layers_come_and_go_through_the_stack() {
     b.advance(t, rng);
     const int in = ease1000(std::min(int(t - 2000), 200), 200);
     TEST_ASSERT_EQUAL_INT(in, l.opacity(Layer::kBeside, t));  // the Zs
-    TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kScene, t));
     TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kWorn, t));
     TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, t));
     TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, t));
-    TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kAir, t));
   }
   TEST_ASSERT_TRUE(l.content(Layer::kWorn, 2400) != 0 && l.content(Layer::kBeside, 2400) == 1);
   // Drawn at the opacity: a hat half in is about half as bright as whole.
@@ -2317,92 +2310,61 @@ static void test_the_outfit_is_kept_while_the_body_moves() {
   TEST_ASSERT_TRUE(glide > 0.4 && glide < 0.6);
 }
 
-// The sky (the stack's scene) is the night's at night and the sun in the
-// morning, and none by day; behind everything: drawn only onto the
-// background's black, so not a pixel of what's drawn changes, at its
-// layer's opacity.
-static void test_the_sky_is_behind_the_body() {
-  using rig::Layer;
+// The screen's rule, part one (render/gel/layers.h): nothing hangs behind
+// the body or drifts round it for a time of day, a season or a holiday. A
+// morning, and a Valentine's Day, draw nothing at all over the body; a
+// winter's day only its bobble hat, a party only its hat, a night only what
+// it wears: nothing above the crown's hat or out to the sides. The Zs are
+// the one thing beside it, only while it sleeps at night.
+static void test_nothing_hangs_in_the_sky_or_the_air() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
   for (int t = 0; t <= 960; t += 16) e->step(t);
   rig::Anchors at;
   paint(s, *e, false, 0, 0, &at);
-  const std::vector<uint16_t> body(px);
-  long bare = 0;
-  for (uint16_t p : body) bare += (p >> 11) + (p >> 5 & 63) / 2 + (p & 31);
-  e->setOccasion(tagBit("day"), 0);
-  TEST_ASSERT_EQUAL_UINT32(0, layerContents(*e).scene);
-  e->setOccasion(tagBit("evening"), 0);
-  TEST_ASSERT_EQUAL_UINT32(0, layerContents(*e).scene);
-  for (const auto& [tag, scene] : {std::pair<const char*, uint32_t>{"night", kNightSky}, {"morning", kSun}}) {
-    e->setOccasion(tagBit(tag), 0);
-    TEST_ASSERT_EQUAL_UINT32(scene, layerContents(*e).scene);
-    rig::Layers sky;
-    sky.show(Layer::kScene, scene, 0);
-    auto lit = [&](uint32_t t) {
-      px = body;
-      paintSky(s, *e, &sky, t);
-      long n = 0;
-      for (size_t i = 0; i < px.size(); ++i) {
-        if (body[i]) TEST_ASSERT_EQUAL_HEX16(body[i], px[i]);
-        n += (px[i] >> 11) + (px[i] >> 5 & 63) / 2 + (px[i] & 31);
-      }
-      return n;
-    };
-    const long whole = lit(400) - bare, half = lit(100) - bare;
-    TEST_ASSERT_TRUE(whole > 20000);
-    TEST_ASSERT_INT_WITHIN(whole / 10, whole / 2, half);
+  auto tags = [](std::initializer_list<const char*> names) {
+    uint32_t when = 0;
+    for (const char* n : names) when |= tagBit(n);
+    return when;
+  };
+  // What the layers draw for `when` in `state`: how many pixels in all, and
+  // how many clear of the body's sides by 60 px or more.
+  struct Drawn {
+    int all = 0, far = 0;
+  };
+  auto drawn = [&](uint32_t when, SceneState state) {
+    e->setOccasion(when, 0);
+    e->scenes.route.state = state;
+    std::fill(px.begin(), px.end(), 0);
+    paintLayers(s, *e, at);
+    Drawn d;
+    const int left = at.brimL.x / 16 - 60, right = at.brimR.x / 16 + 60;
+    for (int y = 0; y < s.height; ++y)
+      for (int x = 0; x < s.width; ++x)
+        if (px[size_t(y) * s.width + x]) ++d.all, d.far += x < left || x > right;
+    return d;
+  };
+  for (SceneState state : {SceneState::kIdle, SceneState::kWorking, SceneState::kAsleep}) {
+    TEST_ASSERT_EQUAL_INT(0, drawn(tags({"morning"}), state).all);
+    TEST_ASSERT_EQUAL_INT(0, drawn(tags({"day"}), state).all);
+    TEST_ASSERT_EQUAL_INT(0, drawn(tags({"day", "valentines"}), state).all);
+    for (uint32_t when : {tags({"day", "winter"}), tags({"day", "party"}), tags({"evening", "newyear"}), tags({"night"})}) {
+      const Drawn d = drawn(when, state);
+      TEST_ASSERT_TRUE(d.all > 1000);  // its hat
+      if (state != SceneState::kAsleep || when != tags({"night"})) TEST_ASSERT_EQUAL_INT(0, d.far);
+    }
   }
-}
-
-// Its morning coffee is beside it while it's idle or at work in the
-// morning, never asleep, in peekaboo or at another time of day, and the Zs
-// only while it sleeps at night. Once every kSipMs (9 s) it lifts the mug
-// to its mouth for the last 1.8 s: up over 500 ms, held 800, down over
-// 500; the rest of the time it's held at its side.
-static void test_it_has_its_coffee_in_the_morning() {
-  static_assert(OutfitLayer::kSipMs == 9000, "the rule this test pins");
-  std::vector<uint16_t> px(502 * 410);
-  Surface s{502, 410, px.data()};
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 960; t += 16) e->step(t);
-  rig::Anchors at;
-  paint(s, *e, false, 0, 0, &at);
-  auto beside = [&](const char* tag, SceneState state, int variant = 0) {
+  auto beside = [&](const char* tag, SceneState state) {
     e->setOccasion(tagBit(tag), 0);
     e->scenes.route.state = state;
-    e->scenes.variant = variant;
     return layerContents(*e).beside;
   };
-  TEST_ASSERT_EQUAL_UINT32(kCoffeeMug, beside("morning", SceneState::kIdle));
-  TEST_ASSERT_EQUAL_UINT32(kCoffeeMug, beside("morning", SceneState::kWorking));
-  TEST_ASSERT_EQUAL_UINT32(0, beside("morning", SceneState::kAsleep));
-  TEST_ASSERT_EQUAL_UINT32(0, beside("morning", SceneState::kGesture, int(Gesture::kPeekaboo)));
-  TEST_ASSERT_EQUAL_UINT32(0, beside("day", SceneState::kIdle));
+  TEST_ASSERT_EQUAL_UINT32(0, beside("morning", SceneState::kIdle));
+  TEST_ASSERT_EQUAL_UINT32(0, beside("morning", SceneState::kWorking));
   TEST_ASSERT_EQUAL_UINT32(0, beside("night", SceneState::kIdle));
+  TEST_ASSERT_EQUAL_UINT32(0, beside("day", SceneState::kAsleep));
   TEST_ASSERT_EQUAL_UINT32(kZs, beside("night", SceneState::kAsleep));
-  // The mug alone, `ms` into the engine's clock: over its mouth, just
-  // right of the eyes' middle, only while it sips.
-  beside("morning", SceneState::kIdle);
-  rig::Layers mug;
-  mug.show(rig::Layer::kBeside, kCoffeeMug, 0);
-  const int mouthY = (at.eyeL.y + at.eyeR.y) / 32 + (at.eyeR.x - at.eyeL.x) * 32 / 1600;
-  auto atMouth = [&](uint32_t ms) {
-    std::fill(px.begin(), px.end(), 0);
-    e->elapsedMs = ms;
-    paintLayers(s, *e, at, &mug, 1000);
-    const int mid = (at.eyeL.x + at.eyeR.x) / 32, d = (at.eyeR.x - at.eyeL.x) / 16;
-    int n = 0;
-    for (int x = mid; x < mid + d / 10; ++x) n += px[size_t(mouthY) * 502 + x] != 0;
-    return n;
-  };
-  TEST_ASSERT_EQUAL_INT(0, atMouth(1000));
-  TEST_ASSERT_EQUAL_INT(0, atMouth(7199));          // the last moment held at its side
-  TEST_ASSERT_TRUE(atMouth(7200 + 900) > 5);         // sipping
-  TEST_ASSERT_TRUE(atMouth(9000 + 7200 + 900) > 5);  // and again 9 s on
-  TEST_ASSERT_EQUAL_INT(0, atMouth(9000 + 1000));
 }
 
 static void test_steady_frames_allocate_nothing() {
@@ -3562,8 +3524,7 @@ int main() {
   RUN_TEST(test_the_materials_copy_draws_the_same_body);
   RUN_TEST(test_layers_follow_the_bodys_anchors);
   RUN_TEST(test_it_wears_pyjamas_at_night);
-  RUN_TEST(test_the_sky_is_behind_the_body);
-  RUN_TEST(test_it_has_its_coffee_in_the_morning);
+  RUN_TEST(test_nothing_hangs_in_the_sky_or_the_air);
   RUN_TEST(test_a_recording_replays_as_drawn);
   RUN_TEST(test_a_recording_replays_between_pixels);
   RUN_TEST(test_text_glides_between_pixels);

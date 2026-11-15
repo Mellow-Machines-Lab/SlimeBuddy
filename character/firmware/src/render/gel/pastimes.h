@@ -33,8 +33,7 @@
 // reply's), a small Boop tries and flops (GelFace::reply).
 //
 // The kit stays out while its tier lasts, fading in and out on the rig's
-// fade: at work a mug on the desk (tier1; in the morning its coffee is in
-// its hand instead, so neither the mug nor a sip or refill from it), a
+// fade: at work a mug on the desk (tier1), a
 // mug more stacked on it every kMugEveryMs from tier5, and headphones
 // from tier3, the hat winning where it has one: put on where you can see
 // it (kPhonesOn, the first pastime dealt once they're wanted), so they
