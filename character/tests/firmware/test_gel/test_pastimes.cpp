@@ -1,6 +1,7 @@
 // The gel's pastimes (render/gel/pastimes.h): the catalog and each one's
 // clip, what each draws, how the face deals them by tier after a rest, and
 // the kit the tiers put out.
+#include <algorithm>
 #include <unity.h>
 
 #include <cstring>
@@ -190,7 +191,7 @@ void test_every_pastime_has_its_clip_and_its_turn() {
     }
   }
   for (int n = 1; n <= 5; ++n) TEST_ASSERT_TRUE((n == 5 || count[0][n] >= 2) && count[1][n] >= 2);
-  TEST_ASSERT_TRUE(info(Pastime::kReach).move && info(Pastime::kMelt).move && info(Pastime::kStretch).move);
+  TEST_ASSERT_TRUE(info(Pastime::kMelt).move && info(Pastime::kStretch).move);
   TEST_ASSERT_EQUAL_INT(5, info(Pastime::kStretch).tier);
   TEST_ASSERT_EQUAL_INT(30, info(Pastime::kWave).afterS);
   TEST_ASSERT_EQUAL_INT(120, info(Pastime::kTap).afterS);
@@ -254,16 +255,17 @@ void test_each_pastime_draws_and_ends() {
 
 // Pins kRestMinMs, kRestMaxMs and kNewestPct: at work with tier2 on for
 // a quarter of an hour, the face deals only working pastimes of tier1 and tier2,
-// one at a time, never the same twice running, each after a rest of 4 to
-// 10 s (the look's first too), the newest tier's about 60% of the time.
-// With no tier, none.
+// one at a time, never the same twice running, each after a rest of 20 to
+// 45 s (the look's first too): calm, most of the time it only works. The
+// newest tier's are about 60% of them. With no tier, none.
 void test_pastimes_are_dealt_by_tier_after_a_rest() {
+  static_assert(kRestMinMs == 20000 && kRestMaxMs == 45000, "the rests this test pins");
   Board board(SceneState::kWorking, tagBit("day") | tierBit(2));
   GelFace& face = board.face();
   Pastime playing = Pastime::kNone, last = Pastime::kNone;
   uint32_t ended = 0;
   int dealt = 0, newest = 0;
-  board.to(15 * 60 * 1000, [&] {
+  board.to(45 * 60 * 1000, [&] {
     const Pastime now = face.pastimes(board.t).playing;
     if (now == playing) return;
     if (now != Pastime::kNone) {
@@ -279,7 +281,7 @@ void test_pastimes_are_dealt_by_tier_after_a_rest() {
     playing = now;
   });
   TEST_ASSERT_TRUE(dealt > 50);
-  TEST_ASSERT_INT_WITHIN(15, kNewestPct, newest * 100 / dealt);
+  TEST_ASSERT_INT_WITHIN(18, kNewestPct, newest * 100 / dealt);
   // No tier, no pastime: at work or idle.
   for (SceneState look : {SceneState::kWorking, SceneState::kIdle}) {
     Board none(look, tagBit("day"));
@@ -335,7 +337,7 @@ void test_a_tagged_pastime_plays_only_while_its_tag_is_on() {
     });
     return dealt;
   };
-  const uint32_t day = tagBit("day"), five = 5 * 60 * 1000;
+  const uint32_t day = tagBit("day"), five = 30 * 60 * 1000;  // long enough for a few dozen deals
   const Dealt plain = deal(SceneState::kIdle, day | tierBit(1), 0, five);
   TEST_ASSERT_TRUE(plain.has(Pastime::kYawn) && plain.has(Pastime::kSneeze) && plain.rows.size() == 2);
   const Dealt night = deal(SceneState::kIdle, tagBit("night") | tierBit(1), 0, five);
@@ -347,7 +349,7 @@ void test_a_tagged_pastime_plays_only_while_its_tag_is_on() {
   TEST_ASSERT_EQUAL_UINT32(tagBit("party") | tagBit("newyear") | tagBit("lunar") | tagBit("programmers"),
                            tagsOf(info(Pastime::kPartyBounce)));
   TEST_ASSERT_EQUAL_INT(0, deal(SceneState::kIdle, day, 0, 120000).all);
-  const Dealt early = deal(SceneState::kIdle, tagBit("night"), 0, 25000);
+  const Dealt early = deal(SceneState::kIdle, tagBit("night"), 0, kRestMaxMs + 5000);
   TEST_ASSERT_TRUE(early.has(Pastime::kNightDrowse) && early.rows.size() == 1);
   // Work: the take while busy or frantic, and none without.
   const Dealt busy = deal(SceneState::kWorking, day | tierBit(1), 2, five);
@@ -362,47 +364,12 @@ void test_a_tagged_pastime_plays_only_while_its_tag_is_on() {
   TEST_ASSERT_TRUE(deal(SceneState::kAsleep, day, 0, 31 * 60 * 1000).has(Pastime::kDream));
 }
 
-// Pins kTuneEveryMs, kTuneGapMs and kTuneNoteMs: with the headphones on, a
-// note floats up from the left cup, then kTuneGapMs later from the right,
-// each up for kTuneNoteMs, a pair every kTuneEveryMs, and a rest between
-// pairs when none is; and none while bopping, whose notes are its own.
-void test_the_headphones_play_a_tune() {
-  TEST_ASSERT_EQUAL_INT(0, tuneNoteAge(0, 0));
-  TEST_ASSERT_EQUAL_INT(-1, tuneNoteAge(0, 1));
-  TEST_ASSERT_EQUAL_INT(0, tuneNoteAge(kTuneGapMs, 1));
-  TEST_ASSERT_EQUAL_INT(int(kTuneNoteMs - 1), tuneNoteAge(kTuneNoteMs - 1, 0));
-  TEST_ASSERT_EQUAL_INT(-1, tuneNoteAge(kTuneNoteMs, 0));
-  TEST_ASSERT_EQUAL_INT(-1, tuneNoteAge(kTuneGapMs + kTuneNoteMs, 1));
-  TEST_ASSERT_EQUAL_INT(100, tuneNoteAge(5 * kTuneEveryMs + 100, 0));
-  TEST_ASSERT_TRUE(kTuneGapMs + kTuneNoteMs < kTuneEveryMs);  // a rest between pairs
-
-  rig::Anchors at;
-  at.crown = {251 * 16, 100 * 16}, at.brimL = {160 * 16, 140 * 16}, at.brimR = {342 * 16, 140 * 16};
-  at.eyeL = {178 * 16, 237 * 16}, at.eyeR = {324 * 16, 237 * 16};
-  auto above = [&](uint32_t t, Pastime playing) {
-    std::vector<uint16_t> px(502 * 410, 0);
-    Surface s{502, 410, px.data()};
-    PastimeShow show;
-    show.t = t, show.headphones = 255, show.playing = playing;
-    paintWorn(s, show, at);
-    // Only the notes go out past the band's ends, above the cups.
-    int lit = 0;
-    for (int y = 60; y < 150; ++y)
-      for (int x = 0; x < 502; ++x) lit += (x < 90 || x > 412) && px[size_t(y) * 502 + size_t(x)];
-    return lit;
-  };
-  const uint32_t rest = kTuneGapMs + kTuneNoteMs + 100, both = kTuneGapMs + 500;
-  TEST_ASSERT_EQUAL_INT(0, above(rest, Pastime::kNone));
-  TEST_ASSERT_TRUE(above(both, Pastime::kNone) > 20);
-  TEST_ASSERT_EQUAL_INT(0, above(both, Pastime::kBop));
-}
-
-// Pins the kit: at work a mug from tier1, headphones from tier3 once it
-// has put them on (none while it wears a hat), and from tier5 a mug more on the stack every
-// kMugEveryMs up to kMostMugs, counted from when the work reached tier5,
-// and the zone's motes;
-// idle, a plant from tier3 that grows to tier5. None while something needs you.
-void test_the_kit_follows_the_tiers() {
+// Pins the kit, the screen's rule's part two (render/gel/pastimes.h): at
+// work, headphones from tier3 once it has put them on (none while it wears
+// a hat), and nothing else stands about: none while something needs you,
+// none idle. The headphones are the headphones alone: no note floats off
+// them, at any moment, so nothing moves beside the face but a pastime.
+void test_the_kit_is_the_headphones_alone() {
   Board board(SceneState::kWorking, tagBit("day"));
   GelFace& face = board.face();
   auto kit = [&](int tier, uint32_t more = 0) {
@@ -411,38 +378,41 @@ void test_the_kit_follows_the_tiers() {
     return face.pastimes(board.t);
   };
   PastimeShow s = kit(0);
-  TEST_ASSERT_TRUE(!s.mug && !s.headphones && !s.plant);
+  TEST_ASSERT_TRUE(!s.headphones);
   s = kit(1);
-  TEST_ASSERT_TRUE(s.mug == 255 && !s.headphones);
+  TEST_ASSERT_TRUE(!s.headphones);
   s = kit(3);
-  TEST_ASSERT_TRUE(s.mug && !s.headphones);  // until it puts them on
-  board.to(board.t + 20000);
+  TEST_ASSERT_TRUE(!s.headphones);  // until it puts them on
+  board.to(board.t + 60000);
   TEST_ASSERT_EQUAL_INT(255, face.pastimes(board.t).headphones);
-  s = kit(4);
-  TEST_ASSERT_TRUE(s.mug && s.headphones && !s.zone);
-  TEST_ASSERT_EQUAL_INT(1, s.mugs);
-  TEST_ASSERT_EQUAL_INT(1, face.pastimes(board.t + kMugEveryMs).mugs);  // not before tier5
   s = kit(5);
-  TEST_ASSERT_TRUE(s.mug && s.headphones && s.zone == 255);
-  TEST_ASSERT_EQUAL_INT(1, s.mugs);
-  TEST_ASSERT_EQUAL_INT(2, face.pastimes(board.t + kMugEveryMs).mugs);
-  TEST_ASSERT_EQUAL_INT(kMostMugs, face.pastimes(board.t + 10 * kMugEveryMs).mugs);
+  TEST_ASSERT_TRUE(s.headphones);
   s = kit(5, tagBit("night"));  // the nightcap wins the head
-  TEST_ASSERT_TRUE(s.mug && !s.headphones);
+  TEST_ASSERT_TRUE(!s.headphones);
   s = kit(3, tagBit("morning"));  // a morning is as any time of day
-  board.to(board.t + 20000);  // and on go the headphones again
-  s = face.pastimes(board.t);
-  TEST_ASSERT_TRUE(s.mug && s.headphones);
+  board.to(board.t + 60000);  // and on go the headphones again
+  TEST_ASSERT_TRUE(face.pastimes(board.t).headphones);
   board.m.attn = true, board.m.attnId = 4;
   s = kit(5);
-  TEST_ASSERT_TRUE(!s.mug && !s.headphones && !s.zone);
+  TEST_ASSERT_TRUE(!s.headphones);
   board.m.attn = false, board.m.base = SceneState::kIdle;
-  for (int tier : {2, 3, 4, 5}) {
-    s = kit(tier);
-    TEST_ASSERT_TRUE(!s.mug && !s.headphones);
-    TEST_ASSERT_EQUAL_INT(tier >= 3 ? 255 : 0, s.plant);
-    if (tier >= 3) TEST_ASSERT_EQUAL_INT(tier - 2, s.grown);
-  }
+  for (int tier : {2, 3, 4, 5}) TEST_ASSERT_TRUE(!kit(tier).headphones);
+
+  // Worn, they draw the same at every moment: nothing floats off them.
+  rig::Anchors at;
+  at.crown = {251 * 16, 100 * 16}, at.brimL = {160 * 16, 140 * 16}, at.brimR = {342 * 16, 140 * 16};
+  at.eyeL = {178 * 16, 237 * 16}, at.eyeR = {324 * 16, 237 * 16};
+  auto worn = [&](uint32_t t) {
+    std::vector<uint16_t> px(502 * 410, 0);
+    Surface surface{502, 410, px.data()};
+    PastimeShow show;
+    show.t = t, show.headphones = 255;
+    paintWorn(surface, show, at);
+    return px;
+  };
+  const auto first = worn(0);
+  TEST_ASSERT_TRUE(std::count_if(first.begin(), first.end(), [](uint16_t p) { return p != 0; }) > 1000);
+  for (uint32_t t = 100; t <= 9000; t += 100) TEST_ASSERT_TRUE(first == worn(t));
 }
 
 // Pins working's base by tier (the rig's looks.json tiers): the last tier
@@ -517,7 +487,7 @@ void test_the_headphones_go_on_where_you_see_them() {
   GelFace& face = board.face();
   int puts = 0, others = 0;
   uint32_t start = 0;
-  board.to(60000, [&] {
+  board.to(5 * 60000, [&] {
     const PastimeShow s = face.pastimes(board.t);
     if (s.playing == Pastime::kPhonesOn) {
       if (!start) start = board.t, ++puts, TEST_ASSERT_EQUAL_INT(0, others);
@@ -546,19 +516,19 @@ void test_the_headphones_go_on_where_you_see_them() {
   TEST_ASSERT_TRUE(start > 0);
 }
 
-// Pins kMoveGapMs: at work for half an hour at tier5, the moves (the
-// coffee reach, the melt, the stretch break) each start at least
-// kMoveGapMs after the last, the stretch break among them, and calm
-// pastimes play between. While one plays, the desk's paws are its: the
-// right one has the mug, they spread with the melt, and they're away with
-// it on its stretch break.
+// Pins kMoveGapMs: at work for two hours at tier5, the moves (the melt,
+// the stretch break) each start at least kMoveGapMs after the last, the
+// stretch break among them, and calm pastimes play between. While one
+// plays, the desk's paws are its: they spread with the melt, and they're
+// away with it on its stretch break.
 void test_moves_are_rare() {
+  static_assert(kMoveGapMs == 300000, "the gap this test pins");
   Board board(SceneState::kWorking, tagBit("day") | tiers(5));
   GelFace& face = board.face();
   Pastime playing = Pastime::kNone;
   uint32_t lastMove = 0;
   int moves = 0, calm = 0, stretches = 0;
-  board.to(30 * 60 * 1000, [&] {
+  board.to(120 * 60 * 1000, [&] {
     const PastimeShow s = face.pastimes(board.t);
     if (s.playing != playing && s.playing != Pastime::kNone) {
       if (info(s.playing).move) {
@@ -571,11 +541,10 @@ void test_moves_are_rare() {
     playing = s.playing;
     if (s.fade < 255) return;
     const Paws paws = pawsFor(s);
-    if (s.playing == Pastime::kReach && s.age >= 1000 && s.age < 4100) TEST_ASSERT_EQUAL_INT(0, paws.alpha[1]);
     if (s.playing == Pastime::kMelt && s.age >= 2300 && s.age < 4200) TEST_ASSERT_EQUAL_INT(70, paws.dx[1]);
     if (s.playing == Pastime::kStretch && s.age >= 3000 && s.age < 7000) TEST_ASSERT_EQUAL_INT(0, paws.alpha[0]);
   });
-  TEST_ASSERT_TRUE(moves >= 8 && moves <= 30 * 60 / 90 + 1);
+  TEST_ASSERT_TRUE(moves >= 8 && moves <= 120 * 60 / 300 + 1);
   TEST_ASSERT_TRUE(stretches > 0);
   TEST_ASSERT_TRUE(calm > moves * 5);
 }

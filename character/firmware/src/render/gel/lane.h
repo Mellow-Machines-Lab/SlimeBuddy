@@ -70,10 +70,9 @@ uint32_t laneKey(const char* bubble, const Strip& strip, int spin = 0, const cha
 class Engine;
 struct PastimeShow;
 // A whole frame, as GelFace::draw draws it: the body, with the rig's
-// channels on it, the face art, what it wears and the air around it as the
-// layer stack shows them at t, the props, the pastimes (render/gel/
-// pastimes.h: their scenery behind the body, their kit, and the one
-// playing in front), the work stream at `now`, the device's time
+// channels on it, the face art, what it wears as the layer stack shows it
+// at t, the props, the pastimes (render/gel/pastimes.h: their kit, and the
+// one playing in front), the work stream at `now`, the device's time
 // (render/gel/stream.h: its words behind the body, the desk's to-do bar,
 // clock and thought cloud, and the word forward), the sign it holds up
 // (render/gel/layers.h), then the lane, unless this surface already shows

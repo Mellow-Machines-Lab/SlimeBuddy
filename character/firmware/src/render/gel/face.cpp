@@ -62,15 +62,14 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   layers_ = {};
   clip_ = cueing_ = base_ = nullptr;
   pastime_ = lastPastime_ = Pastime::kNone;
-  pastimeAt_ = pastimeEnds_ = stoppedAt_ = restUntil_ = zoneSince_ = 0;
-  inZone_ = phonesWanted_ = phonesOn_ = moved_ = false;
+  pastimeAt_ = pastimeEnds_ = stoppedAt_ = restUntil_ = 0;
+  phonesWanted_ = phonesOn_ = moved_ = false;
   movedAt_ = 0;
   pastimeLook_ = dealtLook_ = SceneState::kNone;
   stopped_ = false;
   dice_ = kSeed;
   transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, lastFullAct_ = alone_ = false;
-  mug_ = headphones_ = zone_ = plant_ = rig::Ramp{};
-  grown_ = 1;
+  headphones_ = rig::Ramp{};
 }
 
 // Power-on only, right after reset: the same engine with the board's seed.
@@ -359,7 +358,7 @@ void GelFace::showKit(uint32_t t) {
   const SceneState base = facts.attention.on ? SceneState::kNeedsYou : facts.base;
   const uint32_t when = e.scenes.when;
   const int tier = tierOf(when);
-  const bool working = base == SceneState::kWorking, idle = base == SceneState::kIdle;
+  const bool working = base == SceneState::kWorking;
   // The hat wins the head; and peekaboo's gesture takes it all off, as it
   // does the hat.
   const bool head = wornHat(when) == Outfit::kNone &&
@@ -367,16 +366,10 @@ void GelFace::showKit(uint32_t t) {
   auto show = [t](rig::Ramp& ramp, bool on) {
     if (ramp.target() != (on ? 1000 : 0)) ramp.retarget(on ? 1000 : 0, t);
   };
-  if (working && tier >= 5 && !inZone_) zoneSince_ = t;
-  inZone_ = working && tier >= 5;
-  show(zone_, inZone_);
-  show(mug_, working && tier >= 1);
   phonesWanted_ = working && tier >= 3 && head;
   if (!phonesWanted_) phonesOn_ = false;
   if (pastime_ == Pastime::kPhonesOn && !stopped_ && t - pastimeAt_ >= kPhonesOnMs) phonesOn_ = true;
   show(headphones_, phonesWanted_ && phonesOn_);
-  show(plant_, idle && tier >= 3);
-  if (idle && tier >= 3) grown_ = std::min(3, tier - 2);
 }
 
 PastimeShow GelFace::pastimes(uint32_t t) const {
@@ -393,7 +386,6 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
     s.fade = std::max(0, fade);
   }
   auto opacity = [t](const rig::Ramp& ramp) { return (ramp.value(t) * 255 + 500) / 1000; };
-  s.mug = opacity(mug_);
   s.headphones = opacity(headphones_);
   if (pastime_ == Pastime::kMelt) {  // off its head while it's a puddle
     const int age = int(s.age), off = age < kMeltOffAt              ? 0
@@ -407,10 +399,6 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
     s.headphones = std::max(s.headphones, s.fade);
     s.drop = kPhonesDropPx - kPhonesDropPx * int(ease(std::min<uint32_t>(s.age, kPhonesOnMs), kPhonesOnMs)) / 1024;
   }
-  s.zone = opacity(zone_);
-  s.plant = opacity(plant_);
-  s.grown = grown_;
-  if (inZone_) s.mugs = 1 + int(std::min<uint32_t>(kMostMugs - 1, (t - zoneSince_) / kMugEveryMs));
   return s;
 }
 

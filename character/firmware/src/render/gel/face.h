@@ -168,19 +168,15 @@ class GelFace final : public Face {
   bool stopped_ = false;
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
-  // The kit, each easing in and out, as the tiers and the look call for
-  // it (showKit): when the work reached tier5, for the stack of mugs, and
-  // how far the plant has grown.
-  rig::Ramp mug_, headphones_, zone_, plant_;
-  uint32_t zoneSince_ = 0;
-  bool inZone_ = false;
+  // The kit, easing in and out, as the tiers and the look call for it
+  // (showKit).
+  rig::Ramp headphones_;
   // Whether it wants the headphones on (working from tier3, its head free),
   // and has put them on since it last took them off (kPhonesOn).
   bool phonesWanted_ = false, phonesOn_ = false;
   // When the last move started (kMoveGapMs), if one has.
   uint32_t movedAt_ = 0;
   bool moved_ = false;
-  int grown_ = 1;
   // The reply it played last (FaceContext::reply), its clip or its
   // pastime, by when it started, so each plays once.
   uint32_t replyAt_ = 0;
