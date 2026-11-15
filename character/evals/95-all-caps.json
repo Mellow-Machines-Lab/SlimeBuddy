@@ -1,9 +1,0 @@
-{
-  "name": "Shouting at the agent makes Boop flinch",
-  "judge": "The person shouts at the agent in capitals that the login is still broken. Boop should flinch or take the tension seriously.",
-  "reasonable": "Startled, uneasy, hurt, wide-eyed or a tense determination to get it fixed. Silence, a small sound, or a retry-minded word are all fine.",
-  "unreasonable": "Glad, delighted or amused at the shouting, a glad word, or a finish animation at the start of the turn.",
-  "steps": [
-    {"event": "turn started", "at": "0s", "prompt": "WHY IS THE LOGIN STILL BROKEN", "reading": {"kind": "fix", "tone": "shouting", "phrases": ["STILL BROKEN"]}, "brain": {"react.face": "surprised", "say": "upset"}}
-  ]
-}

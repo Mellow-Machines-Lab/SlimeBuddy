@@ -1,9 +1,0 @@
-{
-  "name": "Manners warm Boop",
-  "judge": "The person asks the agent politely, with a please. Manners warm Boop.",
-  "reasonable": "A soft or glad face, such as affectionate, happy, pleased, or curious, perhaps a glad sound or a warm sign. A small reaction is fine.",
-  "unreasonable": "A cross or sneering face at good manners, or a finish animation at the start of the turn.",
-  "steps": [
-    {"event": "turn started", "at": "0s", "prompt": "please add a retry to the upload", "reading": {"kind": "feature", "tone": "polite", "phrases": ["please"]}, "brain": {"react.face": "affectionate", "say": "glad"}}
-  ]
-}

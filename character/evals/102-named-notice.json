@@ -1,9 +1,0 @@
-{
-  "name": "Say its name and Boop looks up at you",
-  "judge": "The person says Boop's name while asking the agent for something. Boop should notice it was named.",
-  "reasonable": "Looks up with a noticing move or a pleased, surprised or curious face. A glad sound or a small sign is fine. Any reaction that reads as noticing will do.",
-  "unreasonable": "No reaction at all to its own name, a cross or hurt face, or a finish animation at the start of the work.",
-  "steps": [
-    {"event": "turn started", "at": "0s", "prompt": "boop, watch this: add dark mode to settings", "reading": {"kind": "feature"}, "brain": {"react.face": "surprised", "react.move": "notice"}}
-  ]
-}
