@@ -147,7 +147,7 @@ static void test_one_face_vocabulary_and_latest_facts() {
   app::Model m;
   m.mood = Mood::kFrightened;
   m.base = SceneState::kWorking;
-  m.act = SceneState::kTerminal;
+  m.act = SceneState::kWorking;
   b.onState(m, 0);
   app::ReactionIn in;
   in.anim = SceneState::kTaskComplete;
@@ -159,10 +159,10 @@ static void test_one_face_vocabulary_and_latest_facts() {
   auto& e = static_cast<GelFace&>(b.face()).engine();
   TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTaskComplete);
   TEST_ASSERT_TRUE(e.scenes.route.outcome == Outcome::kFailure);
-  m.act = SceneState::kTesting;
+  m.act = SceneState::kTerminal;
   b.onState(m, 1600);
   b.advance(5008, rng);
-  TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTesting);
+  TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTerminal);
   TEST_ASSERT_EQUAL_INT(slime::kFrightened, e.emotion);
 }
 static void test_request_identity_and_cache_bounds() {
@@ -238,7 +238,7 @@ static void test_external_source_holds_without_repeating_reveal() {
   auto e = std::make_unique<Engine>();
   Facts f;
   f.base = SceneState::kWorking;
-  f.act = SceneState::kTesting;
+  f.act = SceneState::kTerminal;
   e->setFacts(f);
   e->step(0);
   Request req;
@@ -255,7 +255,7 @@ static void test_external_source_holds_without_repeating_reveal() {
   TEST_ASSERT_EQUAL_INT(1, reveals);
   TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTaskComplete);
   e->clear();
-  TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTesting);
+  TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTerminal);
 }
 // A finished turn's marks (render/gel/done.h). The glow comes over
 // kGlowInMs to kGlowPeak at the panel's edge (a reply's to kGlowPeakFaint),
@@ -770,8 +770,8 @@ static void test_each_cue_carries_its_own_duck() {
   FaceSource s;
   FaceContext c;
   c.base = SceneState::kWorking;
-  c.act = SceneState::kTerminal;
-  s.look = SceneState::kTerminal;
+  c.act = SceneState::kWorking;
+  s.look = SceneState::kWorking;
   f.sync(s, c, 0);
   int routine = 0, alert = 0;
   voice::FxEvent cues[Face::kMaxCues];
@@ -1309,7 +1309,7 @@ static void test_a_nap_or_a_dance_is_its_clip_alone() {
     uint32_t t = 0;
     Board(SceneState base, uint32_t when) {
       b.reset(0, rng);
-      m.base = base, m.mood = Mood::kCalm, m.act = SceneState::kTerminal;
+      m.base = base, m.mood = Mood::kCalm, m.act = SceneState::kWorking;
       m.when = reached(when);
       b.onState(m, 0);
     }
@@ -1397,8 +1397,8 @@ static void test_a_notice_plays_its_rig_clip() {
     FaceSource s;
     FaceContext c;
     c.mood = s.mood = Mood::kCalm;
-    c.base = SceneState::kWorking, c.act = SceneState::kTerminal;
-    s.look = SceneState::kTerminal;
+    c.base = SceneState::kWorking, c.act = SceneState::kWorking;
+    s.look = SceneState::kWorking;
     face.sync(s, c, 0);
     for (uint32_t t = 16; t <= 480; t += 16) face.step(t, rng);
     s.anim = SceneState::kNotice;
@@ -1437,7 +1437,7 @@ static void test_a_notice_plays_its_rig_clip() {
     s.anim = SceneState::kNone;
     face.sync(s, c, t += 16);
     face.step(t, rng);
-    TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTerminal);
+    TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kWorking);
     TEST_ASSERT_EQUAL_STRING("calm", slime::kProfile[e.expression].id);
     TEST_ASSERT_EQUAL_MEMORY(&rig::kRest, &face.mixer().channels(), sizeof rig::kRest);
   }
@@ -1467,7 +1467,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
     app::Behaviour b(std::make_unique<GelFace>());
     b.reset(0, rng);
     app::Model m;
-    m.base = SceneState::kWorking, m.act = SceneState::kTerminal, m.mood = Mood::kHappy, m.when = when;
+    m.base = SceneState::kWorking, m.act = SceneState::kWorking, m.mood = Mood::kHappy, m.when = when;
     b.onState(m, 0);
     Seen seen;
     for (uint32_t t = 16; t <= 300000u; t += 16) {
@@ -1603,6 +1603,7 @@ void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
 void test_work_settles_by_tier();
 void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
+void test_each_activity_is_a_pose();
 // test_hand.cpp
 void test_the_eyes_follow_a_finger();
 void test_a_finger_leaves_the_dice_alone();
@@ -2576,7 +2577,7 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
   auto e = std::make_unique<Engine>();
   Facts f;
   f.base = SceneState::kWorking;
-  f.act = SceneState::kTerminal;
+  f.act = SceneState::kWorking;
   e->setFacts(f);
   Strip asking, working;
   asking.agent = "claude", asking.name = "Fix a test", asking.more = 1, asking.busy = 2;
@@ -3011,7 +3012,7 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
 
   auto e = std::make_unique<Engine>();
   Facts working;
-  working.base = SceneState::kWorking, working.act = SceneState::kTerminal;
+  working.base = SceneState::kWorking, working.act = SceneState::kWorking;
   e->setFacts(working);
   for (int t = 0; t <= 960; t += 16) e->step(t);
   const SignShow sign;
@@ -3070,7 +3071,7 @@ static void test_the_body_answers_an_acts_result_once() {
     b.reset(0, rng);
     b.face().watch(&b.stream());  // as Device does before it draws
     app::Model m;
-    m.base = SceneState::kWorking, m.act = SceneState::kTerminal, m.mood = Mood::kCalm;
+    m.base = SceneState::kWorking, m.act = SceneState::kWorking, m.mood = Mood::kCalm;
     b.onState(m, 0);
     uint32_t t = 0;
     auto to = [&](uint32_t until) {
@@ -3265,6 +3266,7 @@ int main() {
   RUN_TEST(test_work_settles_by_tier);
   RUN_TEST(test_moves_are_rare);
   RUN_TEST(test_the_paws_type_on_the_keys);
+  RUN_TEST(test_each_activity_is_a_pose);
   RUN_TEST(test_the_layers_come_and_go_through_the_stack);
   RUN_TEST(test_gel_draws_natively);
   RUN_TEST(test_face_projection_and_pose_bounds);

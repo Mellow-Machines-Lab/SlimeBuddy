@@ -7,6 +7,18 @@ namespace render::gel {
 enum class Family { kRest, kIdle, kListen, kStart, kDesk, kHelpers, kAlert, kResult, kTouch };
 Family family(SceneState state);
 bool isDesk(SceneState state);
+// What the agents are doing at the desk, as the whole body shows it: typing
+// (an edit, a tool, a plan, or plain working), looking (reading, searching),
+// running (a command, the tests, helpers at work) and waiting. A change
+// from one to another is a move you can see across a desk: upright over the
+// keys, leant in to the monitor, sat back with its paws together, slumped.
+enum class Activity : uint8_t { kTyping, kLooking, kRunning, kWaiting };
+constexpr int kActivities = 4;
+// The activity a `state`'s `act` shows, and the one state the gel shows for
+// it: working, analyzing, terminal or waiting, so the scene, the rig's look
+// (looks.json's `acts`) and the monitor each know four.
+Activity activityOf(SceneState act);
+SceneState deskStateOf(Activity activity);
 struct Attention {
   bool on = false;
   std::string id = "0", agent, project, name;
@@ -16,7 +28,8 @@ struct Attention {
 struct Facts {
   SceneState base = SceneState::kIdle, act = SceneState::kWorking;
   Attention attention;
-  SceneState look() const { return base == SceneState::kWorking ? act : base; }
+  // At work, the one state of the act's activity.
+  SceneState look() const { return base == SceneState::kWorking ? deskStateOf(activityOf(act)) : base; }
 };
 // A reaction, or listening, as the board's Behaviour plays it: Behaviour
 // times it, and the engine holds it until it's cleared or another comes.

@@ -1,0 +1,12 @@
+{
+  "about": "Working, waiting (a call that's gone quiet): it slumps a little and sways slowly from side to side, its paws flat, its eyes drifting up and out at you, with a slow blink.",
+  "ms": 6000,
+  "loop": true,
+  "tracks": {
+    "squash": [[0, 260], [3000, 300], [6000, 260]],
+    "lean": [[0, 0], [1500, 160], [4500, -160], [6000, 0]],
+    "gazeX": [[0, 0], [1500, 250], [4500, -250], [6000, 0]],
+    "gazeY": [[0, -350], [3000, -450], [6000, -350]],
+    "eyeOpen": [[0, -200], [3600, -200], [3900, -1000], [4100, -1000], [4500, -200], [6000, -200]]
+  }
+}

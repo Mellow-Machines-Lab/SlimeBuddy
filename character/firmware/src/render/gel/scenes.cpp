@@ -267,6 +267,8 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
     int index = cursor++;
     const auto& c = recipe.contacts[index];
     if ((route.quiet && c.kind != kBreath) || (grab && !reveals(c.kind))) continue;
+    // Keys are pressed only while it types.
+    if (c.kind == kKey && activityOf(route.state) != Activity::kTyping) continue;
     last = {
         key,
         generation,
@@ -308,7 +310,7 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
       recoveryPose[channel] += c.velocity * gain[channel] * square(sin(pi * age / q(.48)));
     }
   }
-  F wave = (route.state == SceneState::kWaiting || route.state == SceneState::kListening)
+  F wave = route.state == SceneState::kListening
                ? q(.65) + q(.35) * sin(ageMs / recipe.duration * pi * 2 * recipe.focus)
                : F(1);
   F target[] = {
@@ -335,6 +337,9 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
   const bool party = finish.on && takesOver(finish.finish);
   prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party ? 1 : 0, 10, 14);
   prop(quietMix, dt, route.quiet ? 1 : 0, 12, 10);
+  const SceneState deskState = isDesk(route.state) ? route.state : route.baseState;
+  for (int a = 0; a < kActivities; ++a)
+    prop(pose[a], dt, isDesk(deskState) && activityOf(deskState) == Activity(a) ? 1 : 0, 9, 18);
   updateProps(time);
 }
 }  // namespace render::gel

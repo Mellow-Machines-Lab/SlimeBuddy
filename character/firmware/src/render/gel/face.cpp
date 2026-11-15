@@ -168,8 +168,13 @@ void GelFace::showBase() {
   SceneState look;
   const bool shows = showsLook(source_.anim, look);
   const rig::Look* l = rig::kRig.look(look);
-  const rig::Clip* clip = l && shows ? l->tiered(engine_->scenes.when) : nullptr;
-  if (clip != base_) mixer_.setLook(base_ = clip);
+  // The activity's pose, else the typing pose's variant for the tier.
+  const rig::Clip* clip = nullptr;
+  if (l && shows) {
+    if (look == SceneState::kWorking) clip = l->acted(engine_->router.facts.look());
+    if (!clip) clip = l->tiered(engine_->scenes.when);
+  }
+  if (clip != base_) mixer_.setLook(base_ = clip, kPoseMs);
 }
 
 // A clip for the way from one Doing to another: half a second to a second,
@@ -245,12 +250,14 @@ void GelFace::deal(SceneState look, uint32_t t) {
   const bool moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
   // Nor a melt in its nightcap, which has no head to sit on then.
   const bool hatted = nightcapFor(when);
-  // A take at work only while it types.
+  // At work, only a stretch but while it types: a take is typing, the done
+  // beat is a paw on Enter, and a melt from another pose would leave the
+  // screen.
   const SceneState desk = e.scenes.route.state;
-  const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
+  const bool types = isDesk(desk) && activityOf(desk) == Activity::kTyping;
   for (const auto& p : kPastimes) {
     if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
-    if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
+    if ((hatted && p.id == Pastime::kMelt) || (look == SceneState::kWorking && !types && p.id != Pastime::kStretch))
       continue;
     // The highest tier, then the longest wait, is the newest; one that
     // needs a tag is newer than any while it fits.

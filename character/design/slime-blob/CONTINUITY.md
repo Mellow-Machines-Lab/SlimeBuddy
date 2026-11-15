@@ -139,8 +139,10 @@ is a snore (Comedy, below).
 
 Priority is explicit no-app, listening, needs-you, the Moment held,
 then the latest Doing and activity (`gel/router.cpp`). An activity applies only
-to working; unknown activity falls back to working and an unknown Doing to
-idle. Attention identity follows the device: a new activation or changed
+to working, and the gel shows four, each as one state (`Activity`,
+`Facts::look`): typing as working, looking as analyzing, running as
+terminal, and waiting; unknown activity falls back to working and an
+unknown Doing to idle. Attention identity follows the device: a new activation or changed
 id, agent or project; changing mood, display name or more leaves the
 request's reveal consumed. Attention cuts future decorative contacts
 immediately. Clearing and showing the same request id again creates a new
@@ -740,6 +742,43 @@ channel, so no pastime tints the gel. The working looks' quicker pace
 while the agents are busy is the board's (`render::workPace`), not a
 tagged pastime.
 
+### The four activities (the board's)
+
+At arm's length the monitor is too small to say what the agents do, so
+the whole body says it, with no prop, costume or change of scene: a
+change of activity changes the silhouette. The Mac sends four
+(`Act`); the board still knows the eight older state names, and the gel
+shows each as one of the four (`activityOf`: planning and tool_use as
+typing, searching as looking, testing and delegating as running).
+
+| Activity | Body (the rig's clip, `looks.json`'s `acts`) | Eyes | Paws (`paintProps`) | Monitor |
+| --- | --- | --- | --- | --- |
+| typing | Upright over the keys, the tier's base (below), a small dip at each key | On the keys | Typing | Three lines of text typed out, then cleared |
+| looking | `work-looking`: leant well in to the monitor at its left (lean −430 to −470, x −34 px, lift 8) and up tall (squash −120 to −145) | Scanning a line left to right, stepping down, four lines in 2.8 s; lids a little lower | Off the keys, still on the desk, to the monitor's side (`kLookingPaws`) | A page of four lines, the one being read lit, stepping down |
+| running | `work-running`: sat back and up, away from the monitor (lean 200 to 260, x 30 px, squash −200 to −240), a slow breath and a small rock over 4 s | Fixed on the monitor | Lifted off the keys and held together in front (`kRunningPaws`) | One bar filling over 2.4 s, and again |
+| waiting | `work-waiting`: slumped (squash 260 to 300), swaying side to side (lean ±160) over 6 s | Up and out at you, half-lidded, a slow blink | Flat on the keys, still (`kWaitingPaws`) | Three dots, each brighter in its turn |
+
+- **Activity beats tier.** The tiers vary only the typing pose; pace
+  (`busy`, `frantic`) only speeds things up.
+- **A change is a move, not a jump.** The look's clip changes over
+  `kPoseMs` (400 ms, the mixer's `setLook`), the paws ease on a spring as
+  quick (`Scenes::pose`), and typing's taps go with typing's share. The
+  monitor cuts.
+- **Keys only while it types.** A recipe's key contacts, their clicks and
+  the paws' taps play in typing alone (`Scenes::advance`); the rows of
+  `slime.h` for the states never shown (planning, tool_use, searching,
+  testing, delegating) are still generated and never played.
+- **Pastimes.** Off typing, only the stretch is dealt: the done beat is a
+  paw on Enter, a take is typing, and a melt from a pose to one side
+  would leave the screen.
+- **The Mac holds them** so the body doesn't rock: running and looking
+  show at least 3 s (`Core.poseHoldMs`), typing and waiting 1.5 s.
+- A work act (`wact`) runs under the running pose; its result's hop or
+  flinch plays over it.
+
+Pinned by `test_each_activity_is_a_pose` and shot by
+`tests/scenarios-gel/activities.jsonl`.
+
 ### Calm work (the board's)
 
 Work is the Doing on screen most of the day, so it works calmly and
@@ -749,9 +788,10 @@ gel loops the rig's base for the last tier reached (`looks.json`'s
 `tiers`): at `tier1` an easy sway with its eyes open on the keys
 (`work-easy`), focused at `tier2` (`work-focused`), and at `tier3`, in
 the zone, low calm lids, a slow wide sway and a deep breath
-(`work-zone`). Under a
+(`work-zone`). These are the typing pose's; another activity loops its
+own (above). Under a
 Moment, or while something needs you, the base fades out over the
-mixer's 150 ms, and back after. The desk's paws type: before each key
+mixer's 150 ms, and back after. While it types, the desk's paws type: before each key
 contact of the recipe (its keyboard click) a paw lifts and lands on it
 (`kTapMs`, `kTapLift`), and between them they tap softly by turns,
 lower and without a sound (`kTypeMs`, `kTypeLift`), so the paws work
@@ -926,11 +966,10 @@ worst (3.5 ms).
 
 ## States share one scene
 
-Build a persistent desk and computer once. Working, terminal, searching,
-analyzing, testing, planning and generic tool use are activity submodes,
+Build a persistent desk and computer once. Typing, looking, running and
+waiting (The four activities, above) are activity submodes,
 not swaps to unrelated sets. Keep desk positions and parent transforms
-stable, change screen cue/cards and contact choreography. Waiting simply
-pauses the work action. Every state ([STATES.md](STATES.md)) still has its own
+stable, change the body's pose, the paws and the monitor's one shape. Every state ([STATES.md](STATES.md)) still has its own
 meaning, variations and audio policy.
 
 An action recipe has phases `enter → act → recover → sustain`. Start
@@ -941,7 +980,7 @@ current controls, not from a hard-coded neutral first frame. A loopable
 authored offset starts/ends at zero offset and compatible derivative;
 the continuing physical body need not return to a frozen identical frame.
 
-Never reset face/mood when terminal becomes searching. Never destroy the
+Never reset face/mood when running becomes looking. Never destroy the
 desk between work variations. A completion reveal may raise a card in
 front of the same hero; after the Moment, return toward the **latest**
 host snapshot, not a stale state saved before the animation.

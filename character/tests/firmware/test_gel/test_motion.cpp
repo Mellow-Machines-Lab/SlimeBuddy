@@ -657,7 +657,7 @@ std::array<double, 3> aim(const Engine& e) {
       echo[to] += num(p.cues[i].velocity) * gain[to] * std::pow(std::sin(M_PI * since / .48), 2);
     }
   }
-  const bool waves = s.route.state == SceneState::kWaiting || s.route.state == SceneState::kListening;
+  const bool waves = s.route.state == SceneState::kListening;  // waiting's sway is its rig clip's
   const double wave = waves ? .65 + .35 * std::sin(age / duration * M_PI * 2 * s.recipe.focus) : 1;
   if (!active) {
     double swell = 0;

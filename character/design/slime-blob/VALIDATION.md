@@ -214,6 +214,9 @@ ramps and springs can, and no jolt at an event. By file:
   nothing behind or round it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
+  four activities (`activities.jsonl`: each pose from plain working at
+  0.2, 0.6, 1, 1.6 and 2.4 s, the three typing tiers, and four changes of
+  pose a frame every 50 ms), the
   work acts (`acts.jsonl`: the low sign running with the words still
   falling, a pass with its hop, a fail with its flinch, a push shipped; a
   needs-you and back), the

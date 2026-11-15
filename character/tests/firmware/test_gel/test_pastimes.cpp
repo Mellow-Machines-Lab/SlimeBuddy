@@ -34,7 +34,7 @@ struct Board {
     b.reset(0, rng);
     m.mood = Mood::kHappy;
     m.base = look == SceneState::kNeedsYou ? SceneState::kWorking : look;
-    m.act = SceneState::kTerminal;
+    m.act = SceneState::kWorking;
     m.attn = look == SceneState::kNeedsYou;
     if (m.attn) std::strcpy(m.agent, "claude"), std::strcpy(m.project, "api"), m.attnId = 3;
     m.when = reached(when);
@@ -78,7 +78,7 @@ void test_transitions_play_between_doings_and_anything_urgent_cuts_through() {
   TEST_ASSERT_NULL(b.face().transition(b.t));
   b.m.base = SceneState::kWorking;
   b.b.onState(b.m, b.t);
-  TEST_ASSERT_EQUAL(SceneState::kTerminal, b.b.look(b.t));  // at once
+  TEST_ASSERT_EQUAL(SceneState::kWorking, b.b.look(b.t));  // at once
   b.to(b.t + 32);
   TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("to-work"), b.face().transition(b.t));
   b.to(b.t + rig::kRig.clip("to-work")->ms + 32);
@@ -370,6 +370,89 @@ void test_the_paws_type_on_the_keys() {
   TEST_ASSERT_EQUAL_INT(kTypeLift, typeLift(kTypeMs - kTapMs / 2, 1));
   TEST_ASSERT_EQUAL_INT(0, typeLift(kTypeMs, 1));
   TEST_ASSERT_TRUE(kTypeLift < kTapLift);
+}
+
+// The four activities (router.h's Activity), each a pose of the whole body:
+// every act the Mac may name is one of them; looking, running and waiting
+// each loop their own clip (the rig's looks.json acts) whatever the tier,
+// and typing the tier's; the pose comes over kPoseMs with no jump, leant
+// in to the monitor as it looks, sat back as something runs, slumped as it
+// waits; the paws leave their typing for the pose's, and of a look's
+// pastimes only the stretch is dealt off typing.
+void test_each_activity_is_a_pose() {
+  using rig::Channel;
+  const struct {
+    SceneState act;
+    Activity activity;
+    SceneState shown;
+  } acts[] = {{SceneState::kWorking, Activity::kTyping, SceneState::kWorking},
+              {SceneState::kToolUse, Activity::kTyping, SceneState::kWorking},
+              {SceneState::kPlanning, Activity::kTyping, SceneState::kWorking},
+              {SceneState::kAnalyzing, Activity::kLooking, SceneState::kAnalyzing},
+              {SceneState::kSearching, Activity::kLooking, SceneState::kAnalyzing},
+              {SceneState::kTerminal, Activity::kRunning, SceneState::kTerminal},
+              {SceneState::kTesting, Activity::kRunning, SceneState::kTerminal},
+              {SceneState::kDelegating, Activity::kRunning, SceneState::kTerminal},
+              {SceneState::kWaiting, Activity::kWaiting, SceneState::kWaiting}};
+  for (const auto& a : acts) {
+    TEST_ASSERT_EQUAL_INT(int(a.activity), int(activityOf(a.act)));
+    TEST_ASSERT_EQUAL_INT(int(a.shown), int(deskStateOf(a.activity)));
+  }
+  const rig::Look* working = rig::kRig.look(SceneState::kWorking);
+  TEST_ASSERT_NULL(working->acted(SceneState::kWorking));
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("work-looking"), working->acted(SceneState::kAnalyzing));
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("work-running"), working->acted(SceneState::kTerminal));
+  TEST_ASSERT_EQUAL_PTR(rig::kRig.clip("work-waiting"), working->acted(SceneState::kWaiting));
+  // From typing at tier3 to each, the body's channels step by step.
+  auto pose = [](SceneState act, int* jump = nullptr) {
+    Board board(SceneState::kWorking, tagBit("day") | tiers(3));
+    board.to(2000);
+    board.m.act = act;
+    board.b.onState(board.m, board.t);
+    rig::Channels last = board.face().mixer().channels();
+    board.to(board.t + 2 * kPoseMs, [&] {
+      const rig::Channels now = board.face().mixer().channels();
+      for (Channel c : {Channel::kLean, Channel::kSquash, Channel::kX})
+        if (jump) *jump = std::max(*jump, std::abs(now[c] - last[c]));
+      last = now;
+    });
+    TEST_ASSERT_EQUAL_INT(int(deskStateOf(activityOf(act))), int(board.face().engine().scenes.route.state));
+    return last;
+  };
+  int jump = 0;
+  const rig::Channels looking = pose(SceneState::kAnalyzing, &jump), running = pose(SceneState::kTesting, &jump),
+                      waiting = pose(SceneState::kWaiting, &jump), typing = pose(SceneState::kToolUse);
+  TEST_ASSERT_TRUE(jump <= 30);  // of 1000, a 16 ms step: no pop
+  TEST_ASSERT_TRUE(looking[Channel::kLean] <= -400 && looking[Channel::kX] <= -30 && looking[Channel::kGazeX] < -300);
+  TEST_ASSERT_TRUE(running[Channel::kLean] >= 180 && running[Channel::kX] >= 25 && running[Channel::kSquash] <= -180);
+  TEST_ASSERT_TRUE(waiting[Channel::kSquash] >= 240 && waiting[Channel::kGazeY] < -300);
+  // Typing keeps the tier's: work-zone's low lids and no slide.
+  TEST_ASSERT_INT_WITHIN(30, 620, typing[Channel::kEyeOpenL]);
+  TEST_ASSERT_EQUAL_INT(0, typing[Channel::kX]);
+  // The paws' poses come in as typing goes out.
+  Board board(SceneState::kWorking, tagBit("day"));
+  board.to(2000);
+  const Scenes& s = board.face().engine().scenes;
+  TEST_ASSERT_TRUE(s.posed(Activity::kTyping) > q(.99) && s.posed(Activity::kRunning) < q(.01));
+  board.m.act = SceneState::kTerminal;
+  board.b.onState(board.m, board.t);
+  board.to(board.t + 2 * kPoseMs);
+  TEST_ASSERT_TRUE(s.posed(Activity::kRunning) > q(.95) && s.posed(Activity::kTyping) < q(.05));
+  // Two hours of running at tier3: nothing but the stretch is dealt.
+  Board long_(SceneState::kWorking, tagBit("day") | tiers(3));
+  long_.m.act = SceneState::kTerminal;
+  long_.b.onState(long_.m, 0);
+  int stretches = 0;
+  Pastime playing = Pastime::kNone;
+  long_.to(120 * 60 * 1000, [&] {
+    const Pastime now = long_.face().pastimes(long_.t).playing;
+    if (now != playing && now != Pastime::kNone) {
+      TEST_ASSERT_EQUAL_INT(int(Pastime::kStretch), int(now));
+      ++stretches;
+    }
+    playing = now;
+  });
+  TEST_ASSERT_TRUE(stretches > 10);
 }
 
 // Pins kMoveGapMs: at work for two hours at tier3, the move, the melt,

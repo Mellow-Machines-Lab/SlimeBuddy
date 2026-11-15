@@ -331,14 +331,18 @@ void test_every_cell_plays_truthfully() {
         r.run(400);
         TEST_ASSERT_TRUE(r.e->scenes.route.state == SceneState::kWorking);
       } else {
-        // The desk's looks: working, and what the agents do at it.
+        // The desk's looks: working, and what the agents do at it, one of
+        // four activities, each shown as its one state (router.h). Keys
+        // are pressed only while it types.
         facts.base = SceneState::kWorking;
         facts.act = state;
+        const SceneState shown = deskStateOf(activityOf(state));
         Run r(mood, facts);
-        TEST_ASSERT_EQUAL_INT(3, int(look(r, row, 40000).size()));
+        TEST_ASSERT_EQUAL_INT(3, int(look(r, int(shown), 40000).size()));
         TEST_ASSERT_TRUE(r.moved > q(.0001));
-        if (state != SceneState::kWaiting && state != SceneState::kDelegating) TEST_ASSERT_TRUE(r.keys > 0);
-        if (state == SceneState::kWaiting) TEST_ASSERT_EQUAL_INT(0, r.contacts);
+        if (shown == SceneState::kWorking) TEST_ASSERT_TRUE(r.keys > 0);
+        else TEST_ASSERT_EQUAL_INT(0, r.keys);
+        if (shown == SceneState::kWaiting) TEST_ASSERT_EQUAL_INT(0, r.contacts);
         showsItsProp(r, state);
       }
     }
@@ -378,7 +382,7 @@ void test_ten_minutes_of_work() {
     }
     for (int i = 0; i < 1000; i += 16) {
       r.step();
-      TEST_ASSERT_TRUE(r.e->scenes.route.state == facts.act);
+      TEST_ASSERT_TRUE(r.e->scenes.route.state == deskStateOf(activityOf(facts.act)));
       if (second >= 1) TEST_ASSERT_TRUE(r.e->scenes.desk.x > q(.99));
       picked();
     }

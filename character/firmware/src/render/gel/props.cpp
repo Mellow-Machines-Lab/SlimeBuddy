@@ -149,7 +149,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
   };
   const uint16_t dark = rgb565(20, 55, 72), green = rgb565(140, 223, 203), light = rgb565(184, 233, 245),
                  blue = rgb565(100, 184, 207);
-  F contact = s.envelope(e.timeMs(), kKey), progress = clamp(s.ageMs / s.recipe.duration, 0, 1);
+  F contact = s.envelope(e.timeMs(), kKey);
   if (s.desk.x > q(.001)) {
     r.alpha = (s.desk.x * 255).integer();
     round(150, 749, 700, 21, 10, rgb565(25, 59, 77));
@@ -158,34 +158,43 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     round(114, 611, 156, 89, 8, rgb565(7, 24, 32));
     round(178, 715, 26, 32, 8, dark);
     round(140, 739, 98, 10, 5, blue);
-    auto deskState = isDesk(state) ? state : s.route.baseState;
-    if (deskState == SceneState::kPlanning) {
-      for (int i = 0; i < 3; ++i) {
-        round(130, 627 + i * 23, 10, 8, 3, green);
-        round(150, 628 + i * 23, 63 + i * 12, 4, 2, blue);
+    // The monitor says the activity in one shape that fills it: lines of
+    // text growing as it types, a lit line stepping down a page as it
+    // looks, one bar filling as something runs, three dots as it waits.
+    const auto deskState = isDesk(state) ? state : s.route.baseState;
+    const uint32_t ms = uint32_t(F(e.timeMs()).integer());
+    const uint16_t dim = rgb565(38, 84, 104);
+    switch (activityOf(deskState)) {
+      case Activity::kTyping: {
+        // Three lines, each typed out in steps over a second, then cleared.
+        const int at = int(ms % 3800);
+        for (int i = 0; i < 3; ++i) {
+          const int full = 132 - i * 22, typed = std::clamp((at - i * 1000) * 11 / 900, 0, 11) * full / 11;
+          if (typed > 0) round(126, 622 + i * 26, typed, 12, 5, at < (i + 1) * 1000 ? green : blue);
+        }
+        break;
       }
-    } else if (deskState == SceneState::kSearching) {
-      int sx = 165 + (progress * 32).integer();
-      r.disk(x(sx), y(645), 8, green);
-      r.disk(x(sx), y(645), 5, dark);
-      r.line({x(sx + 13), y(658)}, {x(sx + 28), y(675)}, 2, green);
-    } else if (deskState == SceneState::kTesting) {
-      for (int i = 0; i < 4; ++i) r.disk(x(143 + i * 31), y(644), 3, green);
-      text("TEST", 191, 678, blue);
-    } else if (deskState == SceneState::kAnalyzing) {
-      round(135, 627, 38, 52, 4, blue);
-      round(190, 627, 38, 52, 4, blue);
-      round(139 + (progress * 55).integer(), 648, 30, 5, 2, green);
-    } else if (deskState == SceneState::kToolUse) {
-      r.disk(x(178), y(647), 7, green);
-      r.disk(x(178), y(647), 4, dark);
-      r.line({x(194), y(647)}, {x(219), y(647)}, 2, green);
-      r.line({x(219), y(647)}, {x(219), y(658)}, 2, green);
-    } else if (deskState == SceneState::kWaiting)
-      text(". . .", 191, 647, blue);
-    else {
-      text(deskState == SceneState::kTerminal ? "> _" : ". . .", 162, 633, green);
-      for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
+      case Activity::kLooking: {
+        // A page of four lines, the one being read lit.
+        const int lit = int(ms / 700 % 4);
+        for (int i = 0; i < 4; ++i)
+          round(126, 619 + i * 20, i == lit ? 132 : 132 - (i * 37 % 50), i == lit ? 12 : 9, 4, i == lit ? light : dim);
+        break;
+      }
+      case Activity::kRunning: {
+        // One bar, filling over 2.4 s, full for a beat, and again.
+        const int filled = std::min(int(ms % 3000), 2400) * 124 / 2400;
+        round(122, 634, 140, 44, 10, dim);
+        round(126, 640, 132, 32, 7, rgb565(7, 24, 32));
+        if (filled > 8) round(130, 646, filled, 20, 4, green);
+        break;
+      }
+      case Activity::kWaiting: {
+        // Three dots, each brighter in its turn, slowly.
+        const int turn = int(ms / 600 % 4);
+        for (int i = 0; i < 3; ++i) r.disk(x(152 + i * 40), y(655), 5, i == turn ? light : blue);
+        break;
+      }
     }
     // The keyboard and the paws go as it melts, which would leave them lying across its face.
     r.alpha = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
@@ -195,12 +204,23 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
         bool pressed = contact > q(.35) && key == (s.hasLast && s.last.side < 0 ? 2 : 6);
         round(397 + key * 26, 718 + row * 10, 19, 6, 2, pressed ? light : rgb565(144, 170, 176));
       }
+    // The paws, by the activity, easing from one pose to the next
+    // (Scenes::pose): on the keys and typing; off the keys and still on the
+    // desk, to the monitor's side, as it looks; lifted and held together in
+    // front as something runs; flat on the keys as it waits.
+    const F looking = s.posed(Activity::kLooking), running = s.posed(Activity::kRunning),
+            waiting = s.posed(Activity::kWaiting), typing = clamp(F(1) - looking - running - waiting, 0, 1);
     for (int side : {-1, 1}) {
       const int i = side > 0;
-      const int lift = std::max(tapLift(s, side), typeLift(uint32_t(F(e.timeMs()).integer()), side)) +
-                       (paws ? paws->lift[i] : 0);
+      const int taps = (typing * std::max(tapLift(s, side), typeLift(ms, side))).integer();
+      const int lift =
+          taps + (paws ? paws->lift[i] : 0) +
+          (looking * kLookingPaws.lift[i] + running * kRunningPaws.lift[i] + waiting * kWaitingPaws.lift[i]).integer();
+      const int dx =
+          (paws ? paws->dx[i] : 0) +
+          (looking * kLookingPaws.dx[i] + running * kRunningPaws.dx[i] + waiting * kWaitingPaws.dx[i]).integer();
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
-      round(500 + side * 78 - 30 + (paws ? paws->dx[i] : 0), yy - 12, 60, 25, 13, rgb565(93, 166, 219));
+      round(500 + side * 78 - 30 + dx, yy - 12, 60, 25, 13, rgb565(93, 166, 219));
     }
   }
   // Each prop's alpha is its ramped visibility; one fading out still draws

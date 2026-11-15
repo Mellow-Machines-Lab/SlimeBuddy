@@ -17,8 +17,8 @@ remaining matrix was implemented and exercised.
 | Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn, a doze or a sneeze (excited has zoomies, the low moods a long yawn) |
 | Listen | listening | Actual mic-on, not every input event |
 | Start | starting, wake_up, notice | starting perks up with no card, whatever its ctx (the Mac sends none); wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
-| Desk | planning, working, terminal, tool_use, searching, analyzing, testing, waiting | One computer, different activity rhythms/cues |
-| Helpers | delegating | Dispatch/live helpers; one coming back lands in the work stream |
+| Desk | working, analyzing, terminal, waiting; and planning, tool_use, searching, testing, which the Mac no longer sends | One computer, four activities, each a pose of the whole body: typing (working, tool_use, planning), looking (analyzing, searching), running (terminal, testing, delegating), waiting (CONTINUITY.md, The four activities) |
+| Helpers | delegating | No longer sent; shown as running. One coming back lands in the work stream |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
 | Result | reply_ready, task_complete | Reply vs whole-task success/failure; no card: a failed call hits it in the work stream, and a stop drops its words there |
 | Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face, or the mood's own in a low or cross mood) |
@@ -93,19 +93,16 @@ Use [Core/Activity.swift](https://github.com/Mellow-Machines-Lab/buddygotchi/blo
 agent-hooks' ToolKind as the authoritative classification, rather than
 a second brittle list of tool-name guesses:
 
-1. Topic tests → testing, even for Bash.
-2. Topic inspect → analyzing, even for shell.
-3. Planning tools → planning.
-4. Shell/CLI → terminal.
-5. Read/local search → analyzing.
-6. Web tools → searching.
-7. Main-agent Task/Agent → delegating; nested-agent calls use tool_use.
-8. Edit/MCP/other → tool_use, unless above applies.
+1. Topic inspect → looking (`analyzing` on the wire), even for shell.
+2. Shell/CLI, the tests among them, and Task/Agent → running (`terminal`).
+3. Read/local search and web tools → looking.
+4. Edit/MCP/planning tools/other → typing (`tool_use`).
+5. A call quiet for 20 s → waiting.
 
 The host already holds an activity briefly to avoid flicker and uses
 specific priority/multi-session rules. Follow those rules unchanged;
 the renderer should not guess a second current activity. A completed web
-search does not prove the agent is now analyzing it: show analyzing when
+search does not prove the agent is now reading it: show looking when
 the next actual activity provides evidence, otherwise preserve/settle
 according to the core. Never display actual command/file/query contents;
 terminal can use harmless generic stylized snippets.

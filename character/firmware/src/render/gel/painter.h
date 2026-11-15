@@ -110,6 +110,16 @@ int tapLift(const Scenes& scenes, int side);
 // the paws by turns, each lifting kTypeLift over kTapMs, at `ms` of the
 // engine's clock.
 constexpr int kTypeMs = 340, kTypeLift = 12;
+// Where each activity that isn't typing holds the paws (0 left, 1 right),
+// in the thousandths paintProps draws them in: lifted, and moved right.
+struct PawPose {
+  int lift[2], dx[2];
+};
+constexpr PawPose kLookingPaws{{-14, -14}, {-96, -40}}, kRunningPaws{{40, 40}, {66, -30}},
+    kWaitingPaws{{-8, -8}, {-10, 10}};
+// A change of activity's pose takes this long (the rig's look, and so the
+// body's lean; the paws' spring settles as fast).
+constexpr uint32_t kPoseMs = 400;
 int typeLift(uint32_t ms, int side);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.

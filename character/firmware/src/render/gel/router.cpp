@@ -14,6 +14,25 @@ bool isDesk(SceneState s) {
     default: return false;
   }
 }
+Activity activityOf(SceneState s) {
+  switch (s) {
+    case SceneState::kAnalyzing:
+    case SceneState::kSearching: return Activity::kLooking;
+    case SceneState::kTerminal:
+    case SceneState::kTesting:
+    case SceneState::kDelegating: return Activity::kRunning;
+    case SceneState::kWaiting: return Activity::kWaiting;
+    default: return Activity::kTyping;
+  }
+}
+SceneState deskStateOf(Activity a) {
+  switch (a) {
+    case Activity::kLooking: return SceneState::kAnalyzing;
+    case Activity::kRunning: return SceneState::kTerminal;
+    case Activity::kWaiting: return SceneState::kWaiting;
+    default: return SceneState::kWorking;
+  }
+}
 Family family(SceneState s) {
   switch (s) {
     case SceneState::kAsleep:

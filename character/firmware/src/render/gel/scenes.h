@@ -79,6 +79,11 @@ struct Ramp {
 };
 struct Scenes {
   Spring activity[3], desk, quietMix;
+  // How far the desk shows each activity (router.h's Activity), 0 … 1,
+  // typing's what the others leave: the paws ease from one pose to the next
+  // by them (paintProps).
+  Spring pose[kActivities];
+  F posed(Activity a) const { return pose[int(a)].x; }
   Route route;
   uint64_t key = 0;  // what shows (Route::key)
   int mood = slime::kCalm, expression = slime::kCalm, profileExpression = slime::kCalm;

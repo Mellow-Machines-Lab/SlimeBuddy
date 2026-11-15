@@ -108,8 +108,9 @@ void test_requests_route_by_priority() {
   }
   for (SceneState act : {SceneState::kTesting, SceneState::kDelegating, SceneState::kTerminal, SceneState::kSearching,
                          SceneState::kAnalyzing, SceneState::kToolUse, SceneState::kWaiting, SceneState::kPlanning}) {
+    // Each act shows as its activity's one state.
     e->setFacts(look(SceneState::kWorking, act));
-    expect(*e, act);
+    expect(*e, deskStateOf(activityOf(act)));
   }
   e->setFacts(look(SceneState::kIdle, SceneState::kTesting));
   expect(*e, SceneState::kIdle);
@@ -142,7 +143,9 @@ void test_requests_route_by_priority() {
     TEST_ASSERT_TRUE(single->play(ask(anim, Outcome::kFailure)));
     expect(*single, anim);
   }
-  TEST_ASSERT_EQUAL_INT(int(SceneState::kCount), int(reached.size()));
+  // Every state but the five acts the gel shows as another's (planning,
+  // tool_use, searching, testing, delegating).
+  TEST_ASSERT_EQUAL_INT(int(SceneState::kCount) - 5, int(reached.size()));
   // A borrowed face over a finish: the finish, its outcome and its pass
   // stay; the lasting mood stays; a bare reaction has nothing to play.
   auto finish = engine(look(SceneState::kWorking));

@@ -9,8 +9,8 @@
 // name), which its acting plays in place of its next gesture; or a take of
 // the engine's (busier typing, a deeper snore, a dream:
 // slime::kPastimeTakes, by name), which its scene plays as the look's next
-// take. Each is for one look: working, idle or asleep; a take at work only
-// while it types. A working or idle one needs a tier (render/tags.h:
+// take. Each is for one look: working, idle or asleep; at work, only the
+// stretch while it does anything but type (router.h's Activity). A working or idle one needs a tier (render/tags.h:
 // `tier1` from a minute, `tier2` from 5, `tier3` from 15: the Mac's clock
 // of the agents' working stretch or of their rest), and one asleep, a
 // wait, the seconds its look has shown; a row that needs a tag (the night,

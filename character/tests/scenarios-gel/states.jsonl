@@ -1,4 +1,6 @@
-// All 23 gel states, plus explicit failure and neutral finish.
+// The gel's states: its looks, the four activities at work (plain working and
+// tool_use are both typing; the poses over time are in activities.jsonl) and
+// each reaction, plus explicit failure and neutral finish.
 // The stopped and neutral finish shots wait 200 ms longer, and the error and
 // failure shots 400 ms, for their card to finish rising;
 // no app draws a frame 200 ms before its shot, for its lane to fade in.
@@ -32,11 +34,6 @@
 {"shot":"starting"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"grumpy","vol":0,"act":"planning"}
-{"clock":1504}
-{"shot":"planning"}
-{"t":"dbg.reset"}
-{"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0}
 {"clock":1504}
 {"shot":"working"}
@@ -52,24 +49,9 @@
 {"shot":"tool_use"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"grumpy","vol":0,"act":"searching"}
-{"clock":1504}
-{"shot":"searching"}
-{"t":"dbg.reset"}
-{"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0,"act":"analyzing"}
 {"clock":1504}
 {"shot":"analyzing"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"act":"testing"}
-{"clock":1504}
-{"shot":"testing"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"happy","vol":0,"act":"delegating"}
-{"clock":1504}
-{"shot":"delegating"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0,"act":"waiting"}
