@@ -866,7 +866,7 @@ the same tags, after the face art and before the props
 (`gel/layers.h`): a hat by the first tag that has one (Halloween's witch
 hat; a party hat for party, New Year's, Lunar New Year and Programmers'
 Day; a striped nightcap at night, flopping down its left side to a
-tassel by its cheek, with pyjamas to match; a bobble hat in winter), shades on a Friday from noon to
+tassel by its cheek, and no pyjamas with it; a bobble hat in winter), shades on a Friday from noon to
 night, off while it shows a feeling (a Moment, a face the Mac lends
 it, needs you, listening) so its eyes are seen, Zs beside it asleep at
 night, and last the sign a Moment holds up. That's all: the face comes
@@ -886,11 +886,11 @@ night the lids hang a little lower (`kNightLids`) on the awake face,
 easing out as it squashes shut, gone by when it's a line, and back as it
 wakes. Each part comes and goes through the rig's layer stack
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §15, The layer stack), which the
-face keeps: what's worn over the eyes or on the body, the hat
+face keeps: what's worn over the eyes, the hat
 and what's beside it (the Zs) each fade in and out over 200 ms, a new one only once the old
 has gone (a winter evening's bobble fades out at night, then the
-nightcap in, while the pyjamas fade in at once), each on its own, so falling
-asleep at night brings the Zs while the nightcap and the pyjamas stay. The
+nightcap in), each on its own, so falling
+asleep at night brings the Zs while the nightcap stays. The
 sign fades out over 200 ms once it's down, at the opacity Behaviour
 gives it. It's held at the body's front, but a lean or a finish carrying
 the body sideways carries it only as far as keeps it whole on the

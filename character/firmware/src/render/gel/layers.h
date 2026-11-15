@@ -10,7 +10,7 @@
 // A day shows as one thing worn, and nothing else:
 //
 // - the outfit, by the tags on now (state.when): a striped nightcap at
-//   night, and its pyjamas on the body's lower rings, a party hat on a
+//   night (and no pyjamas: one thing worn), a party hat on a
 //   party day, New Year's Day, Lunar New Year and Programmers' Day, a
 //   witch hat at Halloween, a bobble hat in winter; shades on a Friday's
 //   day, off while it sleeps;
@@ -25,7 +25,7 @@
 // render/gel/lane.cpp.
 //
 // Each comes and goes through the rig's layer stack (render/rig/layers.h,
-// the face's), so a hat and the pyjamas at midnight, the Zs as it falls
+// the face's), so a hat at midnight, the Zs as it falls
 // asleep and shades on a Friday each fade over the rig's fade, and a new
 // one waits for the old to go; the sign fades out at the opacity Behaviour
 // gives it. A scene may hide a layer: peekaboo's gesture takes the outfit
@@ -39,9 +39,8 @@
 
 namespace render::gel {
 
-// Each part of the outfit (the hat, riding the brim's front; the pyjamas,
-// riding the hem's front, or else what's over its eyes, riding the left
-// eye, since it sleeps with its eyes bare) is drawn into a recording of
+// Each part of the outfit (the hat, riding the brim's front; what's over
+// its eyes, riding the left eye) is drawn into a recording of
 // its own (render/gel/raster.h) when its look changes or the body has
 // changed its shape (its anchors moved apart from the one it rides) by
 // more than kSlack sixteenths of a pixel, and blended from it in every
@@ -60,7 +59,7 @@ struct OutfitLayer {
   static constexpr int kSlack = 12, kSwingMs = 400;
   static constexpr uint32_t kMovingMs = 100, kStillMs = 200;
   static constexpr int kFrameY = 288, kFrameHeight = 512;
-  static constexpr int kHatBytes = 7 * 1024, kWornBytes = 10 * 1024;  // the hat's room, and the pyjamas' or eyewear's
+  static constexpr int kHatBytes = 7 * 1024, kWornBytes = 10 * 1024;  // the hat's room, and the eyewear's
 };
 
 struct SignLayer {

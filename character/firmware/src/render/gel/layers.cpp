@@ -24,7 +24,7 @@ namespace {
 constexpr uint16_t kCardInk = rgb565(27, 55, 78), kCardRim = rgb565(0x78, 0xa4, 0xc8);
 constexpr uint16_t kWords = rgb565(184, 233, 245), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kInk = rgb565(28, 24, 36);
-// The nightcap's and the pyjamas' flannel, its stripes and the cap's
+// The nightcap's flannel, its stripes and the cap's
 // cuff, and the pale gold of a wish's sparks.
 constexpr uint16_t kNightcloth = rgb565(62, 72, 168), kNightstripe = rgb565(176, 190, 238),
                    kNightcuff = rgb565(112, 124, 210), kMoonlight = rgb565(250, 230, 160);
@@ -189,56 +189,6 @@ void shades(Raster& r, const rig::Anchors& at) {
   r.stroke16(bridge, 2, d / 30 + 16, kInk);
 }
 
-// The nightcap's pyjamas: from the lap's ring down past
-// the body's hem, flaring out a little to it, in the cap's striped flannel
-// with a cream frill along the top.
-void pyjamas(Raster& r, const rig::Anchors& at) {
-  constexpr int n = rig::Anchors::kRingPoints;
-  const int w = std::max(16, at.lap[n - 1].x - at.lap[0].x), flare = w / 22, lip = w / 90 + 8;
-  // The hem a lip below the body's outline, flared out to the sides.
-  Point hem[n];
-  for (int i = 0; i < n; ++i) hem[i] = {at.hem[i].x + flare * (2 * i - (n - 1)) / (n - 1), at.hem[i].y + lip};
-  // A side from the lap's end down to the hem's, bowed out as the body is
-  // between them: a quadratic's points a quarter, a half and three quarters
-  // down.
-  Point v[2 * n + 6];
-  int k = 0;
-  auto side = [&](Point from, Point to, int out) {
-    const Point c{(from.x + to.x) / 2 + out, (from.y + to.y) / 2};
-    for (int t : {1, 2, 3})
-      v[k++] = {((4 - t) * (4 - t) * from.x + 2 * t * (4 - t) * c.x + t * t * to.x) / 16,
-                ((4 - t) * (4 - t) * from.y + 2 * t * (4 - t) * c.y + t * t * to.y) / 16};
-  };
-  for (int i = 0; i < n; ++i) v[k++] = at.lap[i];
-  side(at.lap[n - 1], hem[n - 1], w / 24);
-  for (int i = n - 1; i >= 0; --i) v[k++] = hem[i];
-  side(hem[0], at.lap[0], -w / 24);
-  r.polygon16(v, k, kNightcloth);
-  for (int i = 1; i < n - 1; i += 2) {  // the cap's stripes, down it: a pair of rings' gap wide
-    const Point &a = at.lap[i], &b = hem[i], &c = at.lap[i + 1], &d = hem[i + 1];
-    const Point stripe[] = {
-        {a.x, a.y - lip}, {(a.x + c.x) / 2, c.y - lip}, {(b.x + d.x) / 2, d.y + lip}, {b.x, b.y + lip}};
-    r.polygon16(stripe, 4, kNightstripe, v, k);
-  }
-  // The frill: a cream band along the top short of the sides, where the
-  // ring turns away, and under it a scallop between each two of its
-  // points, as one shape: from inside the band, along its lower edge and
-  // back.
-  const int band = w / 34, first = 1, last = n - 2;
-  r.stroke16(at.lap + first, last - first + 1, band, kCream);
-  static constexpr int kScallop[] = {0, 3, 4, 3};  // eighths of the band, down past its edge
-  Point f[n + 4 * (n - 1) + 1];
-  int m = 0;
-  for (int i = first; i <= last; ++i) f[m++] = at.lap[i];
-  for (int i = last; i > first; --i)
-    for (int q = 0; q < 4; ++q) {
-      const Point &a = at.lap[i], &b = at.lap[i - 1];
-      f[m++] = {a.x + (b.x - a.x) * q / 4, a.y + (b.y - a.y) * q / 4 + band / 2 + band * kScallop[q] / 8};
-    }
-  f[m++] = {at.lap[first].x, at.lap[first].y + band / 2};
-  r.polygon16(f, m, kCream);
-}
-
 // A heart about (x16, y16), sixteenths of a pixel, `s` whole pixels its
 // half-width.
 void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
@@ -294,13 +244,11 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
 
 // What it wears besides where it sits: the hat, the party hat's colours,
 // how far into its swing the nightcap is, on a step of kSwingMs (the hat's
-// as one number), what's over its eyes, and the pyjamas that go with the
-// nightcap.
+// as one number), and what's over its eyes.
 struct Look {
   Outfit hat;
   int colors, swing;
   Eyewear eyes;
-  bool pyjamas;
   int size = 4096;  // the body's (BodySettings)
   uint32_t hatKey() const { return uint32_t(hat) | uint32_t(colors) << 4 | uint32_t(swing) << 8; }
 };
@@ -308,8 +256,7 @@ struct Look {
 int swingFor(const Engine& e) { return int(e.elapsedMs % 2000 / OutfitLayer::kSwingMs * OutfitLayer::kSwingMs); }
 // Peekaboo's gesture takes it all off, and it sleeps with its eyes bare;
 // the shades come off while it shows a feeling (a reaction, a face the
-// Mac lends it, needs you, listening), so its eyes are seen; the
-// nightcap comes with its pyjamas.
+// Mac lends it, needs you, listening), so its eyes are seen.
 Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
   const SceneState state = e.scenes.route.state;
@@ -321,8 +268,7 @@ Look lookFor(const Engine& e) {
                        state == SceneState::kNeedsYou || state == SceneState::kListening;
   const Eyewear worn = state == SceneState::kAsleep ? Eyewear::kNone : eyewearFor(when);
   const Eyewear eyes = worn == Eyewear::kShades && feeling ? Eyewear::kNone : worn;
-  return {hat, hat == Outfit::kPartyHat ? colors : 0, nightcap ? swingFor(e) : 0, eyes,
-          nightcap && eyes == Eyewear::kNone};
+  return {hat, hat == Outfit::kPartyHat ? colors : 0, nightcap ? swingFor(e) : 0, eyes};
 }
 
 void eyewear(Raster& r, const rig::Anchors& at, Eyewear eyes) {
@@ -375,14 +321,13 @@ struct Kept {
   uint32_t ms = 0, movedAt = 0;
   Point last[kAnchors]{};
 };
-// Room for the hat's and the pyjamas' recordings: one block made at start,
+// Room for the hat's and the eyewear's recordings: one block made at start,
 // so on the board it's PSRAM's, not its scarce internal memory's (17 KB).
 struct Rooms {
   uint8_t hat[OutfitLayer::kHatBytes], worn[OutfitLayer::kWornBytes];
 };
 Rooms& rooms = *new Rooms;
-// The hat, on the brim's front; and the pyjamas, on the hem's front, or else
-// what's over its eyes, on the left eye (it never wears both).
+// The hat, on the brim's front; and what's over its eyes, on the left eye.
 Kept keptHat{{rooms.hat, OutfitLayer::kHatBytes}}, keptWorn{{rooms.worn, OutfitLayer::kWornBytes}};
 
 int floor16(int v) { return v >= 0 ? v / 16 : -((15 - v) / 16); }
@@ -436,24 +381,18 @@ void wear(Raster& r, Kept& kept, const Engine& e, const rig::Anchors& at, const 
 
 // The worn and hat layers' contents for a look, and the look a pair of
 // them is, its nightcap swinging on the engine's clock.
-constexpr uint32_t kPyjamas = 1u << 8;  // a worn content no eyewear has
 uint32_t hatOf(const Look& l) { return l.hat == Outfit::kNone ? 0 : uint32_t(l.hat) | uint32_t(l.colors) << 4; }
-uint32_t wornOf(const Look& l) { return l.pyjamas ? kPyjamas : uint32_t(l.eyes); }
+uint32_t wornOf(const Look& l) { return uint32_t(l.eyes); }
 Look lookOf(uint32_t hat, uint32_t worn, const Engine& e) {
   const Outfit kind = Outfit(hat & 15);
   return {kind, int(hat >> 4 & 15), kind == Outfit::kNightcap ? swingFor(e) : 0,
-          worn == kPyjamas ? Eyewear::kNone : Eyewear(worn), worn == kPyjamas, e.body().size};
+          Eyewear(worn), e.body().size};
 }
 
-// The pyjamas or what's over its eyes, then the hat, each at its layer's
-// fade.
+// What's over its eyes, then the hat, each at its layer's fade.
 void outfit(Raster& r, const Engine& e, const rig::Anchors& at, const Look& look, int wornFade, int hatFade) {
-  constexpr int kEnd = rig::Anchors::kRingPoints - 1;
   r.fade = wornFade;
-  if (look.pyjamas) {
-    const Point now[] = {at.hem[kEnd / 2], at.hem[0], at.hem[kEnd], at.lap[0], at.lap[kEnd / 2], at.lap[kEnd]};
-    wear(r, keptWorn, e, at, now, 6, 1u << 8, pyjamas);  // a look no eyewear has
-  } else if (look.eyes != Eyewear::kNone) {
+  if (look.eyes != Eyewear::kNone) {
     const Point now[] = {at.eyeL, at.eyeR};
     wear(r, keptWorn, e, at, now, 2, uint32_t(look.eyes),
          [&look](Raster& r, const rig::Anchors& at) { eyewear(r, at, look.eyes); });
