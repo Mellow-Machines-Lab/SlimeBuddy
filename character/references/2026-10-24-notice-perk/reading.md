@@ -60,6 +60,6 @@ the take-off and the landing. The happy arcs and the cheeks are the face
 the board borrows for each take, since the rig has no `eyeCurve` or
 `cheek`: the hop's eyes are squeezed shut instead.
 
-The gel plays it (CHARACTER.md §15, The gel on the rig), so
-the studio's References view shows it beside the reference, frame for
-frame. Pixel's face doesn't play it.
+The gel plays it (CHARACTER.md §15, The gel on the rig); `boopctl
+reference` records the board beside the reference, frame for frame.
+Pixel's face doesn't play it.
