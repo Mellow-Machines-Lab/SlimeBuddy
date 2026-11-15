@@ -37,7 +37,7 @@ constexpr Finish finishOf(int variant) {
 // the more work, the bigger the party: small short of kLongTier (a
 // minute), medium to kBigTier (5 minutes), big to kBiggestTier (10) and
 // biggest from there. With no turn (render::kNoTurn: a finish that isn't
-// a turn's, such as growing a stage), by the hold instead: once small,
+// a turn's, such as a level reached), by the hold instead: once small,
 // twice medium, three times big, four or more biggest. A sad mood's
 // (`mood`, canonical) is small whatever else.
 constexpr int kLongTier = 2, kBigTier = 4, kBiggestTier = 5;

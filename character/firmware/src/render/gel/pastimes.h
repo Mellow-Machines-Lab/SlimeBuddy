@@ -28,10 +28,6 @@
 // its head, spread as it melts, away with it), they're where it puts them
 // (pawsFor).
 //
-// Each row has the growth stage that first knows it: nothing a pastime does is
-// useful, so nothing useful waits on one. Asked for one it doesn't know yet (a
-// reply's), a small Boop tries and flops (GelFace::reply).
-//
 // THE SCREEN'S RULE, part two (part one is render/gel/layers.h): beside
 // the face, at most one thing moves at a time, and nothing stands about
 // for no reason. So the kit is one thing, worn: headphones at work from
@@ -125,7 +121,6 @@ struct PastimeInfo {
   SceneState look;
   uint8_t tier;
   uint16_t afterS;
-  uint8_t stage;  // the growth stage that knows it, from then on (growthStage)
   const char* tag = nullptr;
   bool move = false;
 };
@@ -155,8 +150,6 @@ struct ReplyPastime {
   const char* reply;
   Pastime pastime;
 };
-// How long a small Boop's lids stay shut after it tries a trick it doesn't know.
-constexpr uint32_t kFlopMs = 700;
 constexpr ReplyPastime kReplyPastimes[] = {{"nap", Pastime::kSnuggle}, {"dance", Pastime::kDance}};
 // The pastime a reply asks for, kNone for one that asks for none.
 Pastime pastimeFor(const char* reply);

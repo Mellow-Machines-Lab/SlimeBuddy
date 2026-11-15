@@ -494,8 +494,7 @@ characters/CHARACTER.md §9, the tiers the tags count: `tier2` a minute,
 variation (`GelFace::pick`), so the Mac never names a design, and the
 brain decides only whether to celebrate and in which face. A turn short
 of `tier2` is small, to `tier4` medium, to `tier5` big, and from `tier5`
-biggest, however long it's held. A finish with no turn (growing a stage,
-onboarding's) is sized by how long it's held (`loops`) instead: once
+biggest, however long it's held. A finish with no turn (onboarding's) is sized by how long it's held (`loops`) instead: once
 small, twice medium, three times big, four times or more biggest. A
 success in a sad mood (disappointed, sad, crying, whiny, wounded) is
 small whatever else: tearful but valid. A failure never plays one: its
@@ -667,8 +666,7 @@ back up as it was. `tests/scenarios-gel/drawer.jsonl` pulls it.
 ## A finger at rest
 
 While a finger is down the eyes go toward it (`GelFace::finger`,
-`Motion::gazeTarget`, `gazeUpTarget`): measured from where the eyes are at the
-stage's height, by the eyes' size, half way there at 40 canvas px off and never
+`Motion::gazeTarget`, `gazeUpTarget`): measured from where the eyes are, half way there at 40 canvas px off and never
 past `kGazeReach`. They don't follow with the eyes shut or asleep. When it
 goes, they drift back at the wander's rate, and the wander's dice go on as
 before under a finger.

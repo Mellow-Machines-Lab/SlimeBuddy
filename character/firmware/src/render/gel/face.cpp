@@ -39,11 +39,9 @@ const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, O
   return take(profileFor(mood), row, std::max(0, std::min(takes(row) - 1, variant)));
 }
 
-// Where the nose is now: sunk by its stage's height, up by its sign's hop
-// (in the surface's rows, of 410, to the canvas's, of 240).
-int GelFace::noseDrop() const {
-  return engine_ ? noseDropFor(engine_->body()) - signHop_ * 240 / 410 : 0;
-}
+// Where the nose is now: up by its sign's hop (in the surface's rows, of
+// 410, to the canvas's, of 240).
+int GelFace::noseDrop() const { return -signHop_ * 240 / 410; }
 void GelFace::reset(uint32_t t, linkkit::Rng&) {
   engine_ = std::make_unique<Engine>(kSeed);
   engine_->step(0);
@@ -250,12 +248,12 @@ void GelFace::deal(SceneState look, uint32_t t) {
   // A move waits its gap.
   const bool moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
   // Nor a melt in a hat, which has no head to sit on then.
-  const bool hatted = wornHat(when) != Outfit::kNone;
+  const bool hatted = outfitFor(when) != Outfit::kNone;
   // A take at work only while it types.
   const SceneState desk = e.scenes.route.state;
   const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
   for (const auto& p : kPastimes) {
-    if (p.look != look || p.stage > growthStage(when) || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
+    if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
     if ((hatted && p.id == Pastime::kMelt) || (p.body == Body::kTake && look == SceneState::kWorking && !types))
       continue;
     // The highest tier, then the longest wait, is the newest; one that
@@ -327,11 +325,6 @@ void GelFace::playPastime(Pastime p, uint32_t t) {
 void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
   SceneState look;
   const Pastime p = pastimeFor(name);
-  // A trick it doesn't know yet: it tries, and flops.
-  if (p != Pastime::kNone && info(p).stage > growthStage(engine_->scenes.when)) {
-    engine_->jolt(q(4), q(-6), 0, 1, kFlopMs);
-    return;
-  }
   if (p != Pastime::kNone && hasBody(info(p)) && showsLook(anim, look) &&
       (look == SceneState::kIdle || look == SceneState::kAsleep)) {
     start(info(p), look, t);
@@ -361,7 +354,7 @@ void GelFace::showKit(uint32_t t) {
   const bool working = base == SceneState::kWorking;
   // The hat wins the head; and peekaboo's gesture takes it all off, as it
   // does the hat.
-  const bool head = wornHat(when) == Outfit::kNone &&
+  const bool head = outfitFor(when) == Outfit::kNone &&
                     !(e.scenes.route.state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo));
   auto show = [t](rig::Ramp& ramp, bool on) {
     if (ramp.target() != (on ? 1000 : 0)) ramp.retarget(on ? 1000 : 0, t);
@@ -419,15 +412,6 @@ void GelFace::play(const rig::Clip& clip) {
   cueAge_ = 0;
 }
 
-namespace {
-// Canvas pixels to a body unit at this stage's size.
-F unitOf(const BodySettings& body) { return F(kPxPerUnit) * body.size / 4096; }
-}  // namespace
-
-// Its middle's row: it stands on the desk at its stage's size, so its middle
-// sinks as it shrinks.
-int GelFace::midYOf(const BodySettings& body) { return kDeskRow - (kDeskRow - kMidY) * heightOf(body) / 4096; }
-
 // The finger in the engine's body units, where the dome stands: kPxPerUnit
 // canvas pixels a unit, its middle at (kMidX, kMidY), and y up, as the
 // engine's is and the canvas's isn't. The panel draws the canvas half as
@@ -443,14 +427,13 @@ void GelFace::finger(bool down, int x, int y) {
   if (!finger_) {
     finger_ = true, fingerX_ = x, fingerY_ = y;
     // Where on the dome, -1 … 1 across its half-width and half-height.
-    const BodySettings body = engine_->body();
-    const F unit = unitOf(body);
-    engine_->dragStart(F(x - kMidX) / unit / q(1.1), F(midYOf(body) - y) / unit / q(.91));
+    const F unit = F(kPxPerUnit);
+    engine_->dragStart(F(x - kMidX) / unit / q(1.1), F(kMidY - y) / unit / q(.91));
     return;
   }
   if (lean_ != Lean::kNone) leanOn(lean_);
   else {
-    const F unit = unitOf(engine_->body());
+    const F unit = F(kPxPerUnit);
     engine_->dragMove(F(x - fingerX_) / unit, F(fingerY_ - y) / unit, F(0));
   }
 }
@@ -459,7 +442,7 @@ void GelFace::letGo(int vx, int vy) {
   if (finger_) {
     const bool woke = lean_ == Lean::kDoze;
     engine_->lookAway();
-    const F unit = unitOf(engine_->body());
+    const F unit = F(kPxPerUnit);
     engine_->dragEnd(F(vx) / unit, F(-vy) / unit, F(0));
     // Woken by your hand going: a little start, up.
     if (woke && !engine_->scenes.route.quiet) engine_->jolt(0, q(2.2), 0);
@@ -469,18 +452,16 @@ void GelFace::letGo(int vx, int vy) {
 }
 
 void GelFace::followFinger(int x, int y) {
-  const BodySettings body = engine_->body();
-  const int across = x - kMidX, up = kDeskRow - kEyesOverDesk * heightOf(body) / 4096 - y;
+  const int across = x - kMidX, up = kDeskRow - kEyesOverDesk - y;
   const F dx = F(across), dy = F(up), away = F(root(uint32_t(across * across + up * up)) + kGazeKneePx);
-  const F size = F(body.eyes) / 4096;
-  engine_->lookAt(kGazeReach * size * dx / away, kGazeUpReach * size * dy / away);
+  engine_->lookAt(kGazeReach * dx / away, kGazeUpReach * dy / away);
 }
 
-// Nothing has the body: no animation, its own face, reaction, needs-you or stage change.
+// Nothing has the body: no animation, its own face, reaction or needs-you.
 bool GelFace::bodyFree() const {
   const Engine& e = *engine_;
   return source_.anim == SceneState::kNone && !hasOwnFace_ && !e.scenes.route.reaction && !e.router.reacting &&
-         !e.router.facts.attention.on && !e.bodyChange.moving;
+         !e.router.facts.attention.on;
 }
 
 bool GelFace::leans(uint32_t t) const {
@@ -511,16 +492,13 @@ void GelFace::tilt(int mg, uint32_t t) {
   engine_->tilt(free ? mg : 0);
 }
 
-// The stage's body stands on the desk's row, and spreads from there.
 void GelFace::leanOn(Lean level) {
-  const BodySettings body = engine_->body();
-  const int size = std::max(1, body.size);
-  const F wide = F(kPxPerUnit * 11 / 10 * size / 4096), tall = F(kPxPerUnit * 91 / 100 * size / 4096);
-  const int mid = midYOf(body);
+  // The dome's half-width and half-height on the canvas.
+  const F wide = F(kPxPerUnit * 11 / 10), tall = F(kPxPerUnit * 91 / 100);
   // A mood that keeps its own face through a touch shuts its own eyes; the
   // others wear a stroke's, which are shut.
   const bool keeps = slime::kKeepsFaceThroughGestures[engine_->emotion];
-  engine_->lean(int(level), clamp(F(fingerNowX_ - kMidX) / wide, -1, 1), clamp(F(mid - fingerNowY_) / tall, -1, 1), keeps);
+  engine_->lean(int(level), clamp(F(fingerNowX_ - kMidX) / wide, -1, 1), clamp(F(kMidY - fingerNowY_) / tall, -1, 1), keeps);
 }
 
 // While it leans, a soft breath now and then, through the same queue as the
@@ -618,7 +596,6 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   e.setMood(expressionFromName(moodName(context.mood)));
   bool timeout = source.look == SceneState::kNoApp;
   if (timeout != e.router.timedOut) e.linkTimedOut(timeout);
-  e.bodyWaits = context.growthWaits;
   e.setOccasion(context.when, context.lookMs);
   // The Mac's borrowed expression, else a gesture's or a notice's own face
   // while it plays. A low or cross mood keeps its own face through a
@@ -746,7 +723,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const bool full = stream_ && actTakesOver(stream_->actNow(t));
   const PastimeShow kit = full ? PastimeShow{} : pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
-  signHop_ = full ? 0 : signHop(sign, engine_->body());
+  signHop_ = full ? 0 : signHop(sign);
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
              lastTick_, stream_, t, &kit, drawer_, caption, &wish_, &growth_);
   return true;

@@ -82,7 +82,7 @@ ramps and springs can, and no jolt at an event. By file:
   request sounding once whatever changes, and sound's randomness changing
   nothing drawn.
 - `test_hand.cpp`: your hand on the whole board, the device with the gel's
-  face. A finger: the eyes following it and a drag at every stage's size; at
+  face. A finger: the eyes following it and where a drag starts on the dome; at
   rest the lean, then the doze, and lifting it
   (`test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes`,
   `test_lifting_a_doze_wakes_it_with_a_start`), which allocates nothing. What

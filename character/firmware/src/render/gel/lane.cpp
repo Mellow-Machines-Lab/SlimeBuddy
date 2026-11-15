@@ -583,7 +583,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note, rowAlpha);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome) | (doneGlowPeak ? 0 : 0x80))) * 16777619u) | 1;
-  const int hop = actTakesOver(act) ? 0 : signHop(sign, e.body());
+  const int hop = actTakesOver(act) ? 0 : signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
   paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, &act, duck);
@@ -607,7 +607,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     // The top band holds one thing at a time: while LISTENING shows there,
     // the bar gives way to it (a heart flying still flies).
     const int listening = (e.scenes.visible(Scenes::kListeningProp, e.timeMs()) * 255).integer();
-    paintGrowthBar(surface, *growth, at, wornHat(e.scenes.when) != Outfit::kNone, 255 - listening);
+    paintGrowthBar(surface, *growth, at, outfitFor(e.scenes.when) != Outfit::kNone, 255 - listening);
   }
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;

@@ -1691,7 +1691,7 @@ void test_the_headphones_go_on_where_you_see_them();
 void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
 // test_hand.cpp
-void test_the_eyes_follow_a_finger_at_every_size();
+void test_the_eyes_follow_a_finger();
 void test_a_finger_leaves_the_dice_alone();
 void test_a_lean_goes_where_the_finger_is();
 void test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes();
@@ -1706,7 +1706,7 @@ void test_a_hold_on_the_strip_is_the_drawers();
 void test_a_lean_answers_an_ask_that_takes_a_touch();
 void test_an_asks_lane_keeps_its_held_tap();
 void test_a_moment_cuts_a_lean();
-void test_a_drag_goes_by_the_size_it_is();
+void test_a_drag_starts_where_the_finger_is_on_the_dome();
 void test_to_work_waits_for_a_turns_starting();
 void test_a_leans_breath_minds_the_volume();
 void test_a_lean_allocates_nothing();
@@ -1861,10 +1861,6 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"night", "party"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"day", "programmers"}))));
   TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(outfitFor(tags({"night", "halloween", "party"}))));
-  // A Sprout's leaves stay on show on a party day; a witch hat is a costume.
-  TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(wornHat(tags({"day", "party"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kNone), int(wornHat(tags({"day", "party", "sprout"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(wornHat(tags({"day", "halloween", "sprout"}))));
   // Shades on a Friday, only by day.
   TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"day", "friday"}))));
   TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"night", "friday"}))));
@@ -2032,8 +2028,8 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(22, tagIndex("hushed"));  // last, after the stages: the Mac's list (Tags.board) agrees
-  TEST_ASSERT_EQUAL_INT(23, kTagCount);
+  TEST_ASSERT_EQUAL_INT(19, tagIndex("hushed"));  // last, after the tiers: the Mac's list (Tags.board) agrees
+  TEST_ASSERT_EQUAL_INT(20, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -3346,44 +3342,17 @@ static void test_a_daze_ends_across_the_clock_wrap() {
   TEST_ASSERT_TRUE(e->daze() == F(0));
 }
 
-// A stage change is over once it's over, for good: `moving` going stale would
-// read a clock gone round 24.9 days later as before the change began.
-static void test_a_stage_change_ends_across_the_clock_wrap() {
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 96; t += 16) e->step(t);
-  const uint32_t day = render::tagBit("day");
-  e->setOccasion(day | render::tagBit("hatchling"), 0);
-  e->setOccasion(day | render::tagBit("sprout"), 0);
-  TEST_ASSERT_TRUE(e->bodyChange.moving);
-  uint32_t t = 112;
-  const uint32_t end = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64;
-  for (; t <= end; t += 16) e->step(t);
-  TEST_ASSERT_FALSE(e->bodyChange.moving);  // over, so no frame takes the growth path
-  e->elapsedMs = e->bodyChange.at + 0x80000000u;  // the clock half way round: now - at reads negative
-  TEST_ASSERT_EQUAL_INT(kSproutBody.size, e->body().size);
-  TEST_ASSERT_EQUAL_INT(0, e->bodyChange.glow(e->elapsedMs));
-  // And with the tags held back (Engine::bodyWaits) it still ends.
-  e->setOccasion(day | render::tagBit("chonk"), 0);
-  e->bodyWaits = true;
-  e->setOccasion(day | render::tagBit("chonk"), 0);
-  for (const uint32_t until = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64; t <= until; t += 16) e->step(t);
-  TEST_ASSERT_FALSE(e->bodyChange.moving);
-}
-
-// A small body stands up on its sign, or the card would cover its face: most
-// at a Hatchling, not at all at a Chonk, easing with the card.
-static void test_a_small_body_rises_for_its_sign() {
+// It stands up on its sign, or the card would cover its mouth, easing with
+// the card; not for a low sign.
+static void test_it_rises_for_its_sign() {
   const SignShow up{"<3", kSignRiseMs, 1000};
-  TEST_ASSERT_EQUAL_INT(SignLayer::kHopPx, signHop(up, kHatchlingBody));
-  const int sprout = signHop(up, kSproutBody);
-  TEST_ASSERT_TRUE(sprout > SignLayer::kBuddyHopPx && sprout < SignLayer::kHopPx);
-  TEST_ASSERT_EQUAL_INT(SignLayer::kBuddyHopPx, signHop(up, kBuddyBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop(up, kChonkBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 0, 1000}, kHatchlingBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 2000, 0}, kHatchlingBody));
+  TEST_ASSERT_EQUAL_INT(14, SignLayer::kHopPx);
+  TEST_ASSERT_EQUAL_INT(SignLayer::kHopPx, signHop(up));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 0, 1000}));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 2000, 0}));
   SignShow low = up;
   low.low = true;
-  TEST_ASSERT_EQUAL_INT(0, signHop(low, kHatchlingBody));
+  TEST_ASSERT_EQUAL_INT(0, signHop(low));
 }
 
 // The desk's turn clock: nothing in the first minute, minutes and seconds
@@ -3411,8 +3380,7 @@ int main() {
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
   RUN_TEST(test_a_work_act_plays_by_its_state);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
-  RUN_TEST(test_a_stage_change_ends_across_the_clock_wrap);
-  RUN_TEST(test_a_small_body_rises_for_its_sign);
+  RUN_TEST(test_it_rises_for_its_sign);
   RUN_TEST(test_the_desk_clock_shows_hours_from_the_hour);
   RUN_TEST(test_software_clock_matches_binary64);
   RUN_TEST(test_a_divisor_divides_exactly);
@@ -3530,7 +3498,7 @@ int main() {
   RUN_TEST(test_a_request_sounds_once_whatever_changes);
   RUN_TEST(test_sound_draws_change_nothing_drawn);
   // test_hand.cpp
-  RUN_TEST(test_the_eyes_follow_a_finger_at_every_size);
+  RUN_TEST(test_the_eyes_follow_a_finger);
   RUN_TEST(test_a_finger_leaves_the_dice_alone);
   RUN_TEST(test_a_lean_goes_where_the_finger_is);
   RUN_TEST(test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes);
@@ -3545,7 +3513,7 @@ int main() {
   RUN_TEST(test_a_lean_answers_an_ask_that_takes_a_touch);
   RUN_TEST(test_an_asks_lane_keeps_its_held_tap);
   RUN_TEST(test_a_moment_cuts_a_lean);
-  RUN_TEST(test_a_drag_goes_by_the_size_it_is);
+  RUN_TEST(test_a_drag_starts_where_the_finger_is_on_the_dome);
   RUN_TEST(test_to_work_waits_for_a_turns_starting);
   RUN_TEST(test_a_leans_breath_minds_the_volume);
   RUN_TEST(test_a_lean_allocates_nothing);

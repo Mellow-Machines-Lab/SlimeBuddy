@@ -45,8 +45,7 @@ class GelFace final : public Face {
   // A finger: the dome follows it (the engine's drag), from where it first
   // touched, leaning, squashing and stretching its way, and springs back
   // when it lets go, carried on a little by the finger's own speed.
-  // The eyes follow it, wherever the body stands at its stage's size, and
-  // drift back as it goes.
+  // The eyes follow it, and drift back as it goes.
   void finger(bool down, int x, int y) override;
   void letGo(int vx, int vy) override;
   // A finger kept still: it leans into the spot, its eyes shut, and breathes;
@@ -118,7 +117,6 @@ class GelFace final : public Face {
 
  private:
   bool bodyFree() const;
-  static int midYOf(const BodySettings& body);
   // A cue waits at most this long for Device to take it (one tick is 16 ms).
   static constexpr uint32_t kCueWaitMs = 150;
   // The engine's seed after a reset, so a reset board replays the same.
@@ -126,7 +124,7 @@ class GelFace final : public Face {
   // The dome's middle on the canvas (finger).
   static constexpr int kMidX = 160, kMidY = 129;
   // The eyes after a finger: how far they go at most, across and up, in
-  // face units at a Buddy's eyes, and how far off (canvas px) the finger is
+  // face units, and how far off (canvas px) the finger is
   // when they're half way there.
   static constexpr F kGazeReach = q(.09), kGazeUpReach = q(.07);
   static constexpr int kGazeKneePx = 40;
@@ -200,8 +198,7 @@ class GelFace final : public Face {
   bool hasOwnFace_ = false;  // a Moment's face shows, which a lean gives way to
   uint32_t breathAt_ = 0;
   int breathTake_ = 0;
-  // The eyes after a finger at x, y, and the spot it's on, from where the
-  // body stands at its stage's size.
+  // The eyes after a finger at x, y, and the spot it's on.
   void followFinger(int x, int y);
   void leanOn(Lean level);
   void breathe(uint32_t t);

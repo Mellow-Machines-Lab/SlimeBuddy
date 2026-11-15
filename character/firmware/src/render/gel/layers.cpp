@@ -249,7 +249,6 @@ struct Look {
   Outfit hat;
   int colors, swing;
   Eyewear eyes;
-  int size = 4096;  // the body's (BodySettings)
   uint32_t hatKey() const { return uint32_t(hat) | uint32_t(colors) << 4 | uint32_t(swing) << 8; }
 };
 // The nightcap's swing for the engine's clock.
@@ -261,7 +260,7 @@ Look lookFor(const Engine& e) {
   const uint32_t when = e.scenes.when;
   const SceneState state = e.scenes.route.state;
   if (state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo)) return {};
-  const Outfit hat = wornHat(when);
+  const Outfit hat = outfitFor(when);
   const int colors = hasTag(when, "lunar") ? 1 : hasTag(when, "programmers") && !hasTag(when, "party") ? 2 : 0;
   const bool nightcap = hat == Outfit::kNightcap;
   const bool feeling = e.router.reacting || e.router.expression >= 0 ||
@@ -276,10 +275,7 @@ void eyewear(Raster& r, const rig::Anchors& at, Eyewear eyes) {
 }
 
 void hat(Raster& r, const rig::Anchors& at, const Look& look) {
-  Head h = head(at, 0);
-  // A Chonk is wider, not taller: its hat stands as high as a Buddy's, with
-  // the same room over its head, on its wider brim.
-  if (look.size > kBuddyBody.size) h.width = h.width * kBuddyBody.size / look.size;
+  const Head h = head(at, 0);
   switch (look.hat) {
     case Outfit::kWitchHat: witchHat(r, h); break;
     case Outfit::kPartyHat: {
@@ -385,8 +381,7 @@ uint32_t hatOf(const Look& l) { return l.hat == Outfit::kNone ? 0 : uint32_t(l.h
 uint32_t wornOf(const Look& l) { return uint32_t(l.eyes); }
 Look lookOf(uint32_t hat, uint32_t worn, const Engine& e) {
   const Outfit kind = Outfit(hat & 15);
-  return {kind, int(hat >> 4 & 15), kind == Outfit::kNightcap ? swingFor(e) : 0,
-          Eyewear(worn), e.body().size};
+  return {kind, int(hat >> 4 & 15), kind == Outfit::kNightcap ? swingFor(e) : 0, Eyewear(worn)};
 }
 
 // What's over its eyes, then the hat, each at its layer's fade.
@@ -560,14 +555,10 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
   r.alpha = 255;
 }
 
-int signHop(const SignShow& sign, const BodySettings& body) {
-  if (!sign.text || sign.low || body.size >= kChonkBody.size) return 0;
-  const int most = body.size >= kBuddyBody.size
-                       ? SignLayer::kBuddyHopPx * (kChonkBody.size - body.size) / (kChonkBody.size - kBuddyBody.size)
-                       : SignLayer::kBuddyHopPx + (SignLayer::kHopPx - SignLayer::kBuddyHopPx) * (kBuddyBody.size - body.size) /
-                                                      (kBuddyBody.size - kHatchlingBody.size);
+int signHop(const SignShow& sign) {
+  if (!sign.text || sign.low) return 0;
   const int in = std::min<int>(sign.ms, kSignRiseMs) * 1000 / int(kSignRiseMs);
-  return most * ease1000(in, 1000) / 1000 * sign.opacity / 1000;
+  return SignLayer::kHopPx * ease1000(in, 1000) / 1000 * sign.opacity / 1000;
 }
 
 void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at, int hop) {
