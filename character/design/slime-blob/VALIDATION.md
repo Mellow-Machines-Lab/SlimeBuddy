@@ -141,7 +141,7 @@ ramps and springs can, and no jolt at an event. By file:
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
   bit and work's and asleep's as the scene's take, busier typing only
-  while busy and the dream after half an hour; the kit, the headphones
+  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime); the kit, the headphones
   alone, by the tiers, the hat winning the head, none while something
   needs you, drawn the same at every moment (nothing floats off them);
   the headphones put on first, coming down over
@@ -219,6 +219,7 @@ ramps and springs can, and no jolt at an event. By file:
   (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
   through a giggle that opens the mouth, the hush reply's squeeze and
   nod, and unhush's perk-up with its own mouth back), the
+  gaze (`gaze.jsonl`: at work forward, a glance at a word and down it, forward again and no glance inside its rest; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, nothing at work or asleep, a Chonk's), the
   layers (`layers.jsonl`: each outfit by its tags, Zs asleep at
   night, a morning and a Valentine's Day with nothing behind or round
   it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished

@@ -20,9 +20,9 @@
 //   on it, sliding up as the reaction starts and bobbing while it's held. A
 //   small body rises to stand on it, so the card leaves its face clear (signHop).
 //
-// Part two, what may move beside the face, is in render/gel/face.cpp
-// (GelFace::passTime); what shares the top band and the lane, in
-// render/gel/lane.cpp.
+// Part two, what may move beside the face, is in render/gel/pastimes.h;
+// part three, where its eyes look, in render/gel/gaze.h; what shares the
+// top band and the lane, in render/gel/lane.cpp.
 //
 // Each comes and goes through the rig's layer stack (render/rig/layers.h,
 // the face's), so a hat at midnight, the Zs as it falls

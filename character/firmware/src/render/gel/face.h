@@ -16,6 +16,7 @@
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
 #include "render/gel/lane.h"
+#include "render/gel/gaze.h"
 #include "render/gel/painter.h"
 #include "render/gel/pastimes.h"
 #include "render/rig/mixer.h"
@@ -115,6 +116,8 @@ class GelFace final : public Face {
   bool playPastime(const char* name, uint32_t t) override;
   // What it shows of the pastimes at t: the one playing, and the kit.
   PastimeShow pastimes(uint32_t t) const;
+  // How long its keyboard stays out after you stop typing (showAlong).
+  static constexpr uint32_t kAlongLingerMs = 4000;
 
  private:
   bool bodyFree() const;
@@ -171,6 +174,21 @@ class GelFace final : public Face {
   // The kit, easing in and out, as the tiers and the look call for it
   // (showKit).
   rig::Ramp headphones_;
+  // Typing along with you (showAlong): idle, while your hands are busy at the
+  // Mac (the `typing` tag), it has its keyboard out and its paws tap as
+  // yours do; they rest when you stop, and the keyboard goes kAlongLingerMs
+  // after. It's the lowest thing there is: it waits for a pastime or a
+  // transition to end, and gives way at once to a finger, a Moment, needs
+  // you, work or sleep, as the look itself does. While the keys are out no
+  // pastime is dealt.
+  rig::Ramp along_;
+  bool tapping_ = false;
+  uint32_t typedAt_ = 0;
+  bool typed_ = false;
+  void showAlong(uint32_t t);
+  // Where it looks by itself (render/gel/gaze.h), from the facts now.
+  Gaze gaze_;
+  void showGaze(uint32_t t);
   // Whether it wants the headphones on (working from tier3, its head free),
   // and has put them on since it last took them off (kPhonesOn).
   bool phonesWanted_ = false, phonesOn_ = false;
@@ -203,6 +221,7 @@ class GelFace final : public Face {
   // The eyes after a finger at x, y, and the spot it's on, from where the
   // body stands at its stage's size.
   void followFinger(int x, int y);
+  void lookToward(int x, int y, bool finger);
   void leanOn(Lean level);
   void breathe(uint32_t t);
   voice::FxEvent pending_[kMaxCues];

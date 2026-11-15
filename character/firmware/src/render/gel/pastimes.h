@@ -190,6 +190,10 @@ struct PastimeShow {
   int fade = 0;
   uint32_t t = 0, when = 0;
   int headphones = 0;
+  // Typing along with you (GelFace::showAlong): how far out its keyboard is
+  // (0 … 255), and whether its paws tap now.
+  int keys = 0;
+  bool tapping = false;
   // How far above its ears the headphones are, in px: coming down while
   // they're put on.
   int drop = 0;
@@ -200,6 +204,10 @@ struct PastimeShow {
 struct Paws {
   int lift[2] = {0, 0}, dx[2] = {0, 0}, alpha[2] = {255, 255};
   int melted = 0;  // how far it's melted, Q12 (PaintControls::melt): they fade with it, and the keyboard
+  // With no desk out: its keyboard alone, this far out (0 … 255), as it
+  // types along with you, its paws tapping only while `tapping`.
+  int keys = 0;
+  bool tapping = false;
 };
 Paws pawsFor(const PastimeShow& show);
 

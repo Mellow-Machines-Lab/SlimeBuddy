@@ -1064,6 +1064,7 @@ void paintWorn(Surface& surface, const PastimeShow& show, const rig::Anchors& at
 
 Paws pawsFor(const PastimeShow& show) {
   Paws paws;
+  paws.keys = show.keys, paws.tapping = show.tapping;
   const int age = int(show.age);
   switch (show.playing) {
     case Pastime::kDone:  // the right one up, and down on Enter

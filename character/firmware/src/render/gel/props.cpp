@@ -198,10 +198,17 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       text(deskState == SceneState::kTerminal ? "> _" : ". . .", 162, 633, green);
       for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
     }
-    // The keyboard and the paws are its size, about the desk's front under it.
+  }
+  // The keyboard and the paws are its size, about the desk's front under it:
+  // out with the desk, or alone while it types along with you (Paws::keys).
+  const int deskAlpha = (s.desk.x * 255).integer(), alongAlpha = paws ? paws->keys : 0;
+  if (std::max(deskAlpha, alongAlpha) > 0) {
     const int size = e.body().size;
     // They go as it melts, which would leave them lying across its face.
-    const int kit = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
+    const int kit = std::max(deskAlpha, alongAlpha) * (4096 - (paws ? paws->melted : 0)) / 4096;
+    // At the desk the paws type on softly between its keys; typing along,
+    // only while you type.
+    const bool soft = deskAlpha >= alongAlpha || (paws && paws->tapping);
     r.alpha = kit;
     auto scaled = [&](int v) { return v * size / 4096; };
     auto atX = [&](int v) { return 500 + scaled(v - 500); };
@@ -215,7 +222,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     for (int side : {-1, 1}) {
       const int i = side > 0, alpha = paws ? paws->alpha[i] : 255;
       if (alpha < 3) continue;
-      const int lift = std::max(tapLift(s, side), typeLift(uint32_t(F(e.timeMs()).integer()), side)) +
+      const int lift = std::max(tapLift(s, side), soft ? typeLift(uint32_t(F(e.timeMs()).integer()), side) : 0) +
                        (paws ? paws->lift[i] : 0);
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
       r.alpha = kit * alpha / 255;
