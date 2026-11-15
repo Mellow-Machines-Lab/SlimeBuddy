@@ -1,6 +1,5 @@
 # What the gel does to pass the time and between Doings, by the name the face says (GelFace::passing), for the popover alone.
 # kind	name	words, after "Boop's"
-pastime	sip	sipping its coffee
 pastime	peek	peeking at the work
 pastime	hum	humming to itself
 pastime	done-beat	having a little think
@@ -11,8 +10,6 @@ pastime	bop	bopping along
 pastime	drum	drumming on the desk
 pastime	sticky	writing a sticky note
 pastime	phones-on	putting its headphones on
-pastime	coffee-reach	reaching for its coffee
-pastime	refill	refilling its mug
 pastime	snack	having a snack
 pastime	melt	melting a little
 pastime	stretch-break	off on a stretch break
@@ -26,7 +23,6 @@ pastime	bubble	blowing bubbles
 pastime	doodle	doodling
 pastime	book	reading a book
 pastime	game	playing a game
-pastime	water	watering its plant
 pastime	brb	popping out
 pastime	tower	building a tower
 pastime	dance	dancing
