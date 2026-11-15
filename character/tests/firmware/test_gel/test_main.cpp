@@ -2544,6 +2544,27 @@ static void test_the_strip_fades_as_one() {
     for (size_t i = 0; i < a.size(); ++i) TEST_ASSERT_EQUAL_HEX16(mix565(0, a[i], alpha), b[i]);
   }
 }
+// Text inside a raster's bounds draws only what's in them, and marks only
+// those rows written: as a kept card draws its corners again, pixel for
+// pixel what the whole text leaves there, at the cost of the corner alone.
+static void test_text_draws_only_inside_its_bounds() {
+  constexpr int kW = 200, kH = 100;
+  std::vector<uint16_t> a(kW * kH), b(a.size());
+  Surface whole{kW, kH, a.data()}, part{kW, kH, b.data()};
+  Raster rw{whole}, rp{part};
+  rw.limit = rp.limit = kH;
+  const Box box{20, 10, 41, 22};
+  rp.bounds = box;
+  text(rw, kSign, 5, 0, "NEEDS YOU", 0xffff);
+  text(rp, kSign, 5, 0, "NEEDS YOU", 0xffff);
+  for (int y = 0; y < kH; ++y)
+    for (int x = 0; x < kW; ++x) {
+      const bool in = x >= box.x0 && x < box.x1 && y >= box.y0 && y < box.y1;
+      TEST_ASSERT_EQUAL_HEX16(in ? a[size_t(y) * kW + x] : 0, b[size_t(y) * kW + x]);
+    }
+  for (int y = 0; y < kH; ++y)
+    if (y < box.y0 || y >= box.y1) TEST_ASSERT_EQUAL_INT(0, part.written[y].last);
+}
 // The lane's text is cut by the rule every face's is (render::cutAt): a
 // line too long for its room draws as the words cutAt keeps and one cell's
 // "…". With room, the counts are words, from the margin: "2 working", the
@@ -3522,6 +3543,7 @@ int main() {
   RUN_TEST(test_the_strip_gives_way_to_the_finishs_sign);
   RUN_TEST(test_a_still_card_is_drawn_once_into_each_surface);
   RUN_TEST(test_steady_frames_allocate_nothing);
+  RUN_TEST(test_text_draws_only_inside_its_bounds);
   RUN_TEST(test_the_lane_is_native_and_tracked);
   RUN_TEST(test_the_lane_clears_the_rounded_corners);
   RUN_TEST(test_the_strip_fades_as_one);

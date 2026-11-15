@@ -67,13 +67,19 @@ struct BubbleBox {
   int room(int width) const { return width - 2 * (margin + kBubblePad + kBubbleLine); }
 };
 
-// One glyph's 4-bit coverage, its cell's top left at (x, y).
+// One glyph's 4-bit coverage, its cell's top left at (x, y): only the part
+// of its cell inside the raster's bounds, the surface and above its bottom
+// (a kept card draws its corners again through bounds a few pixels wide).
 void glyph(Raster& r, const Font& f, int x, int y, int g, uint16_t ink) {
   const int rowBytes = (f.w + 1) / 2, opacity = r.alpha;
   const uint8_t* src = f.data + size_t(g) * rowBytes * f.h;
-  r.touch(x, y, x + f.w, y + f.h);
-  for (int yy = 0; yy < f.h; ++yy)
-    for (int xx = 0; xx < f.w; ++xx) {
+  const int bottom = r.limit ? r.limit : r.s.height * 4 / 5;
+  const int x0 = std::max({x, r.bounds.x0, 0}), x1 = std::min({x + int(f.w), r.bounds.x1, r.s.width});
+  const int y0 = std::max({y, r.bounds.y0, 0}), y1 = std::min({y + int(f.h), r.bounds.y1, bottom});
+  if (x0 >= x1 || y0 >= y1) return;
+  r.touch(x0, y0, x1, y1);
+  for (int yy = y0 - y; yy < y1 - y; ++yy)
+    for (int xx = x0 - x; xx < x1 - x; ++xx) {
       const int b = src[yy * rowBytes + xx / 2], coverage = xx & 1 ? b & 15 : b >> 4;
       if (!coverage) continue;
       r.alpha = opacity * coverage / 15;
