@@ -3,10 +3,8 @@
 // over that face, with the reply's sign: a nod, a head shake, a shrug, a
 // head tilt, puffing up, snuggling, a flinch, presenting the agents'
 // facts and a glance off to the Mac (notme), each caught partway through
-// on a frozen clock after a reset. A nap or a dance is a pastime's own
-// (render/gel/pastimes.h, kReplyPastimes): idle or asleep, the pastime
-// itself, the snuggle under its blanket or the dance under its disco
-// ball; at work, its clip alone, a yawn or a wiggle.
+// on a frozen clock after a reset. A nap or a dance is its clip alone, a
+// yawn or a wiggle, and nothing is brought out for it.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"when":["day"]}
@@ -79,32 +77,11 @@
 {"shot":"nap-work"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["day"]}
-{"clock":1000}
-{"t":"do","name":"react","play":"now","args":{"sign":"zzz","reply":"nap","say":{},"mood":"tired","loops":1}}
-{"clock":3600}
-{"shot":"nap-idle"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"asleep","mood":"calm","vol":0,"when":["night"]}
-{"clock":1000}
-{"t":"do","name":"react","play":"now","args":{"sign":"zzz","reply":"nap","say":{},"mood":"tired","loops":1}}
-{"clock":3600}
-{"shot":"nap-asleep"}
-{"t":"dbg.reset"}
-{"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"when":["day"]}
 {"clock":1000}
 {"t":"do","name":"react","play":"now","args":{"sign":"busy!","reply":"dance","say":{},"mood":"happy","loops":1}}
 {"clock":1450}
 {"shot":"dance-work"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["day"]}
-{"clock":1000}
-{"t":"do","name":"react","play":"now","args":{"sign":"yay!","reply":"dance","say":{},"mood":"happy","loops":1}}
-{"clock":2700}
-{"shot":"dance-idle"}
 // A reply while something needs you: "tell claude yes" gets notme's
 // glance and sign over the needs-you screen, no voice, then it's back.
 {"t":"dbg.reset"}
@@ -123,8 +100,8 @@
 {"t":"do","name":"react","play":"now","args":{"reason":"you locked the Mac","reply":"wave","say":{},"mood":"calm","loops":1}}
 {"clock":1250}
 {"shot":"wave-at-a-lock"}
-// A lock at night, the nap: its sign and the snuggle as Boop's Doing goes
-// to asleep at once, then simply asleep.
+// A lock at night, the nap: its sign and its yawn as Boop's Doing goes to
+// asleep at once, then simply asleep.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}

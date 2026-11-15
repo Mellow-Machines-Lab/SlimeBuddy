@@ -742,7 +742,7 @@ void test_the_scenes_formulas() {
       // bounds.
       if (s.generation != generation || s.iteration != iteration) {
         generation = s.generation, iteration = s.iteration;
-        const int row = recipeState(s.route.state, s.route.outcome, s.route.ctx);
+        const int row = recipeState(s.route.state, s.route.outcome);
         if (s.variant >= takes(row) && s.route.state != SceneState::kGesture) continue;  // an occasion's
         const auto& base = take(s.profileExpression, row, s.variant);
         TEST_ASSERT_EQUAL_INT(base.count, s.recipe.count);

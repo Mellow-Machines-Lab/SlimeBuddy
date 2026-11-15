@@ -24,7 +24,7 @@
 {"clock":2800}
 {"shot":"over-finish"}
 // A finish holding up a sign on a party day: the confetti (a finish held
-// twice with no turn), in its party hat.
+// twice with no turn), and nothing worn for the day.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0,"when":["day","party"]}

@@ -767,7 +767,7 @@
 {"clock":69900}
 {"clock":70000}
 {"t":"state","vol":0,"when":["day"],"base":"asleep","mood":"calm"}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","tests",1]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","running tests"]}
 {"clock":70100}
 {"clock":70200}
 {"clock":70300}
@@ -788,7 +788,7 @@
 {"clock":71800}
 {"clock":71900}
 {"clock":72000}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","tests",1]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","running tests"]}
 {"clock":72100}
 {"clock":72200}
 {"clock":72300}
@@ -812,7 +812,7 @@
 {"clock":73800}
 {"clock":73900}
 {"clock":74000}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","tests",1]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","running tests"]}
 {"clock":74100}
 {"clock":74200}
 {"clock":74300}
@@ -833,7 +833,7 @@
 {"clock":75800}
 {"clock":75900}
 {"clock":76000}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","tests",1]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1,"wact":["tests","running tests"]}
 {"clock":76100}
 {"clock":76200}
 {"clock":76300}
@@ -874,14 +874,14 @@
 {"clock":79600}
 {"clock":79700}
 {"clock":79800}
-{"t":"do","id":9,"name":"starting","play":"if_free","args":{"ctx":"new_task","reason":"claude started"}}
+{"t":"do","id":9,"name":"react","play":"if_free","args":{"reason":"claude started"}}
 {"clock":79900}
 {"clock":80000}
 {"t":"state","vol":0,"when":["day"],"base":"working","mood":"calm","busy":1}
 {"clock":80100}
 {"clock":80200}
 {"clock":80300}
-{"shot":"starting"}
+{"shot":"started"}
 {"clock":80400}
 {"clock":80500}
 {"clock":80600}

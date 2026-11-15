@@ -10,213 +10,194 @@
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
-      "line": "{\"t\":\"do\",\"id\":563722453,\"name\":\"starting\",\"play\":\"if_free\",\"args\":{\"ctx\":\"session\",\"reason\":\"new claude thread\"}}"
-    },
-    {
-      "at": 1.004,
+      "at": 1.009,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.006,
+      "at": 1.012,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Migrate the payments service to the new queue”"
       }
     },
     {
-      "at": 1.332,
-      "effect": "Boop makes a curious face and says “Launch”",
-      "line": "{\"t\":\"do\",\"id\":563722454,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.launch__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "at": 1.322,
+      "effect": "Boop makes a curious face and says “Onward”",
+      "line": "{\"t\":\"do\",\"id\":2140135272,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.onward__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
     },
     {
-      "at": 2.4,
+      "at": 2.384,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"todo\":{\"done\":1,\"total\":4},\"calls\":[[0,1,\"plan\"]]}"
     },
     {
-      "at": 3.003,
+      "at": 2.997,
       "cause": {
         "kind": "tool",
         "text": "Claude ticks off its to-do list: 1 of 4 done"
       }
     },
     {
-      "at": 4.071,
+      "at": 4.005,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"todo\":{\"done\":1,\"total\":4},\"calls\":[[0,2,\"read\"]]}"
     },
     {
-      "at": 4.711,
+      "at": 4.619,
       "cause": {
         "kind": "tool",
         "text": "Claude reads src/payments/queue.js"
       }
     },
     {
-      "at": 6.843,
+      "at": 6.745,
       "cause": {
         "kind": "wait",
-        "text": "Two minutes in: on go the headphones"
+        "text": "A minute in: at ease"
       }
     },
     {
-      "at": 6.844,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":1,\"total\":4},\"calls\":[[0,2,\"read\"]]}"
+      "at": 6.746,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"todo\":{\"done\":1,\"total\":4},\"calls\":[[0,2,\"read\"]]}"
     },
     {
-      "at": 7.91,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,3,\"plan\"]]}"
+      "at": 7.813,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,3,\"plan\"]]}"
     },
     {
-      "at": 8.552,
+      "at": 8.443,
       "cause": {
         "kind": "tool",
         "text": "Claude ticks off its to-do list: 2 of 4 done"
       }
     },
     {
-      "at": 9.62,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"running tests\",1]}"
+      "at": 9.509,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 12.821,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"pass\",1,\"p\"]}"
+      "at": 12.709,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 12.821,
+      "at": 12.71,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the payments tests"
       }
     },
     {
-      "at": 13.888,
+      "at": 13.776,
       "cause": {
         "kind": "wait",
-        "text": "Five minutes in: settled in"
+        "text": "Five minutes in: focused"
       }
     },
     {
-      "at": 13.889,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier4\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]]}"
+      "at": 13.777,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier2\"],\"todo\":{\"done\":2,\"total\":4},\"calls\":[[0,4,\"npm test\"]]}"
     },
     {
-      "at": 19.999,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier4\"],\"todo\":{\"done\":3,\"total\":4},\"calls\":[[0,5,\"plan\"]]}"
+      "at": 19.994,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier2\"],\"todo\":{\"done\":3,\"total\":4},\"calls\":[[0,5,\"plan\"]]}"
     },
     {
-      "at": 20.639,
+      "at": 20.618,
       "cause": {
         "kind": "tool",
         "text": "Claude ticks off its to-do list: 3 of 4 done"
       }
     },
     {
-      "at": 22.773,
+      "at": 22.75,
       "cause": {
         "kind": "wait",
-        "text": "Ten minutes in: in the zone"
+        "text": "Fifteen minutes in: in the zone"
       }
     },
     {
-      "at": 22.774,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"],\"todo\":{\"done\":3,\"total\":4},\"calls\":[[0,5,\"plan\"]]}"
+      "at": 22.751,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":3,\"total\":4},\"calls\":[[0,5,\"plan\"]]}"
     },
     {
-      "at": 28.997,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"],\"todo\":{\"done\":4,\"total\":4},\"calls\":[[0,6,\"plan\"]]}"
+      "at": 28.996,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"planning\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":4,\"total\":4},\"calls\":[[0,6,\"plan\"]]}"
     },
     {
-      "at": 29.639,
+      "at": 29.62,
       "cause": {
         "kind": "tool",
         "text": "Claude ticks off its to-do list: 4 of 4 done"
       }
     },
     {
-      "at": 32.003,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"],\"todo\":{\"done\":4,\"total\":4},\"calls\":[[0,6,\"plan\"]]}"
+      "at": 32.005,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"todo\":{\"done\":4,\"total\":4},\"calls\":[[0,6,\"plan\"]]}"
     },
     {
-      "at": 32.414,
+      "at": 32.364,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 32.414,
-      "line": "{\"t\":\"do\",\"id\":563722455,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 32.364,
+      "line": "{\"t\":\"do\",\"id\":2140135273,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 32.415,
+      "at": 32.366,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 32.737,
-      "effect": "Boop celebrates and says “Nailed it”",
-      "line": "{\"t\":\"do\",\"id\":563722456,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"outcome\":\"success\",\"turn\":5,\"who\":{\"agent\":\"claude\",\"thread\":\"the-long-haul\"},\"say\":{\"take\":\"phase1.phrase.pride.nailed-it__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
+      "at": 32.674,
+      "effect": "Boop celebrates and says “Very nice”",
+      "line": "{\"t\":\"do\",\"id\":2140135274,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"the-long-haul\"},\"say\":{\"take\":\"phase1.phrase.pride.very-nice__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
     },
     {
-      "at": 32.738,
+      "at": 32.675,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 37.998,
+      "at": 37.994,
       "cause": {
         "kind": "wait",
-        "text": "Half a minute idle: it looks round"
+        "text": "A minute idle: it looks round"
       }
     },
     {
-      "at": 37.998,
+      "at": 37.995,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"]}"
     },
     {
-      "at": 44.003,
-      "cause": {
-        "kind": "wait",
-        "text": "Two minutes idle: a book, a plant"
-      }
-    },
-    {
       "at": 44.004,
+      "cause": {
+        "kind": "wait",
+        "text": "Five minutes idle: a hop, a yawn"
+      }
+    },
+    {
+      "at": 44.005,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier2\"]}"
+    },
+    {
+      "at": 50.382,
+      "cause": {
+        "kind": "wait",
+        "text": "Fifteen minutes idle: it nods off"
+      }
+    },
+    {
+      "at": 50.383,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"]}"
-    },
-    {
-      "at": 50.405,
-      "cause": {
-        "kind": "wait",
-        "text": "Five minutes idle: a tower, a dance"
-      }
-    },
-    {
-      "at": 50.405,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier4\"]}"
-    },
-    {
-      "at": 56.805,
-      "cause": {
-        "kind": "wait",
-        "text": "Ten minutes idle: it nods off"
-      }
-    },
-    {
-      "at": 56.806,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"]}"
-    },
-    {
-      "at": 60,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\",\"tier5\"]}"
     }
   ],
   "face": "gel",
-  "length": 63,
+  "length": 56.77,
   "name": "Boop",
-  "script": "f5cb700b742f5a51beedfe4f7bf141ab3b28efbde32fb84a706cd4a4ddbc1f78",
+  "script": "6800475827d6ebe76fcead41de56f84bf9160120f1f6d40fc769c213ede6e72d",
   "takes": [
-    "phase1.word.begin.launch__curious__contained",
-    "phase1.phrase.pride.nailed-it__proud__contained"
+    "phase1.word.begin.onward__curious__contained",
+    "phase1.phrase.pride.very-nice__proud__contained"
   ],
   "version": 1
 }

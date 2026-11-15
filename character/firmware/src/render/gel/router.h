@@ -24,7 +24,6 @@ struct Request {
   SceneState anim = SceneState::kNone;
   int expression = -1, loops = 1, variant = -1;
   Outcome outcome = Outcome::kNone;
-  StartCtx ctx = StartCtx::kNone;
 };
 // What a route shows, as one number: what it is, and which one (a look's
 // state, a needs-you's or a reaction's count). A scene keeps its take while
@@ -43,7 +42,6 @@ struct Route {
   T reactionAt;
   int expression = -1, loops = 1;
   Outcome outcome = Outcome::kNone;
-  StartCtx ctx = StartCtx::kNone;
 };
 // What the engine shows: the look, needs you, listening, the reaction it
 // holds, the face it borrows, and whether the link is lost. Each needs-you

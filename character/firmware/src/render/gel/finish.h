@@ -5,13 +5,8 @@
 // - Small, Little Win: the row's own takes (slime::kRecipes, with hiccups
 //   for a fourth): a hop at the reveal, a little trophy over its head, a
 //   ring of sparkles. Proud's second take holds up its bug beside it.
-// - Medium: Little Win with confetti cannons from both corners.
-// - Big, the mood's (bigFinish): Gold Rush (the screen floods gold, a
-//   trophy lands on its head), Jelly Fireworks (star eyes, bursts over the
-//   black), Mini-Boop Parade (it splits into five little ones and back) or
-//   Proud Spotlight (a podium, a crown, its smug sway).
-// - Biggest, Mega Boop: it puffs up until its face fills the screen, then
-//   pops back in a splash of jelly drops and confetti.
+// - Medium, Confetti: Little Win with confetti cannons from both corners.
+// - Big, Gold Rush: the screen floods gold, and a trophy lands on its head.
 //
 // A finish a size above small plays once, whatever its loops. A failure
 // never plays one: its row keeps its card.
@@ -22,8 +17,8 @@
 #include "slime.h"
 namespace render::gel {
 class Engine;
-enum class Finish : uint8_t { kLittle, kConfetti, kGoldRush, kFireworks, kMegaBoop, kParade, kSpotlight, kCount };
-enum class FinishSize : uint8_t { kSmall, kMedium, kBig, kBiggest };
+enum class Finish : uint8_t { kLittle, kConfetti, kGoldRush, kCount };
+enum class FinishSize : uint8_t { kSmall, kMedium, kBig };
 // The success row's variations: Little Win's takes, then each finish after
 // it, from kFinishBase (kConfetti's).
 constexpr int kFinishBase = slime::kMaxTakes;
@@ -35,20 +30,12 @@ constexpr Finish finishOf(int variant) {
 }
 // The size: by how long its turn ran (`turn`, the tier it reached), so
 // the more work, the bigger the party: small short of kLongTier (a
-// minute), medium to kBigTier (5 minutes), big to kBiggestTier (10) and
-// biggest from there. With no turn (render::kNoTurn: a finish that isn't
-// a turn's, such as a level reached), by the hold instead: once small,
-// twice medium, three times big, four or more biggest. A sad mood's
-// (`mood`, canonical) is small whatever else.
-constexpr int kLongTier = 2, kBigTier = 4, kBiggestTier = 5;
+// minute), medium to kBigTier (5 minutes) and big from there. With no turn
+// (render::kNoTurn: a finish that isn't a turn's, such as a level
+// reached), by the hold instead: once small, twice medium, three times or
+// more big. A sad mood's (`mood`, canonical) is small whatever else.
+constexpr int kLongTier = 1, kBigTier = 2;
 FinishSize finishSize(int loops, int turn, int mood);
-// The big finish for the reaction's mood (canonical): its first, or its
-// second when the first played last (`last`), or the one the Mac asked for
-// (`wanted`, from 1, among its two); a proud board (`boardMood`) takes the
-// spotlight whatever the reaction's mood.
-Finish bigFinish(int mood, int boardMood, int wanted, Finish last);
-// The two big finishes a mood (canonical) takes turns between.
-void bigFinishes(int mood, Finish out[2]);
 // A finish's recipe: its length, its reveal (the fanfare, and where a
 // `say` starts) and its landings.
 const slime::Recipe& finishRecipe(Finish f);
@@ -56,24 +43,15 @@ const slime::Recipe& finishRecipe(Finish f);
 // What a finish does to the body at `ageMs` into it, `revealMs` being its
 // reveal's time: offsets in sixteenths of a pixel (up negative), its scale
 // about where it stands, and squash and lean added to the pose's (Q12, as
-// PaintControls'). `minis` > 0: the parade's little ones stand in for it.
+// PaintControls').
 struct FinishPose {
   int dx16 = 0, dy16 = 0, scale = 4096, squash = 0, lean = 0;
-  bool starEyes = false;
-  int minis = 0;
 };
 FinishPose finishPose(const Surface& s, Finish f, int ageMs, int revealMs);
-// How far past its size Mega Boop puffs up, Q12.
-constexpr int kMegaPuff = 4915;
 // Where a finish scales the body about: the middle of where it stands.
 Point finishAnchor(const Surface& s);
-// The parade's little ones at `ageMs`, into `out` (at most kParadeMinis): their
-// count.
-constexpr int kParadeMinis = 5;
-int finishMinis(const Surface& s, int ageMs, FinishPose* out);
-// What's drawn behind the body (the flood and its rays, the spotlight, the
-// fireworks), and over it (the trophy, the crown, the podium, confetti,
-// sparkles, jelly drops, the star eyes, the words), at the body's anchors.
+// What's drawn behind the body (the flood and its rays), and over it (the
+// trophy, confetti, sparkles), at the body's anchors.
 // `gift`: proud's bug beside its trophy.
 // At night, Gold Rush's flood is half as bright.
 void paintFinishBehind(Surface& s, Finish f, int ageMs, int revealMs, bool night = false);
@@ -88,7 +66,7 @@ struct FinishShow {
 };
 // Whether a finish draws behind the body (paintFinishBehind), so the
 // frame is erased whole before it, not band by band with the body.
-constexpr bool drawsBehind(Finish f) { return f == Finish::kGoldRush || f == Finish::kSpotlight; }
+constexpr bool drawsBehind(Finish f) { return f == Finish::kGoldRush; }
 // The rows from the top a finish covers whole at `ageMs` (Gold Rush's
 // flood, once it reaches every corner above the lane): erasing them first
 // would only be painted over.

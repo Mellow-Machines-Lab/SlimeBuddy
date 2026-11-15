@@ -1,4 +1,5 @@
 #include "render/gel/lane.h"
+#include "render/gel/act.h"
 #include "render/gel/done.h"
 
 #include <algorithm>
@@ -14,7 +15,6 @@
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
 #include "render/gel/raster.h"
-#include "render/gel/act.h"
 #include "render/gel/stream.h"
 #include "render/palette.h"
 
@@ -583,31 +583,26 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note, rowAlpha);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome) | (doneGlowPeak ? 0 : 0x80))) * 16777619u) | 1;
-  const int hop = actTakesOver(act) ? 0 : signHop(sign);
+  const int hop = signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
-  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, &act, duck);
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck);
   if (pastimes) {
     Measure measure(profile.props);
-    paintPastimes(surface, *pastimes, at, e);
+    paintPastimes(surface, *pastimes, at);
   }
   if (stream) {
     Measure measure(profile.stream);
-    // A full act holds the screen: no words falling beside it, no desk, no
-    // thought cloud, no word forward.
-    if (!actTakesOver(act)) {
-      paintStreamBehind(surface, *stream, now);
-      paintStreamDesk(surface, *stream, e, s, now);
-      paintStreamFront(surface, *stream, at, e, now);
-    }
+    paintStreamBehind(surface, *stream, now);
+    paintStreamFront(surface, *stream, at, now);
   }
-  if (wish && !actTakesOver(act)) paintWish(surface, *wish, at);
-  if (sign.text && !sign.low && !actTakesOver(act)) paintSign(surface, sign, at, hop);
-  if (growth && !actTakesOver(act)) {
+  if (wish) paintWish(surface, *wish, at);
+  if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
+  if (growth) {
     // The top band holds one thing at a time: while LISTENING shows there,
     // the bar gives way to it (a heart flying still flies).
     const int listening = (e.scenes.visible(Scenes::kListeningProp, e.timeMs()) * 255).integer();
-    paintGrowthBar(surface, *growth, at, outfitFor(e.scenes.when) != Outfit::kNone, 255 - listening);
+    paintGrowthBar(surface, *growth, at, nightcapFor(e.scenes.when), 255 - listening);
   }
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;

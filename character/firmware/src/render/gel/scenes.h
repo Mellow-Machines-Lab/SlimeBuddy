@@ -6,14 +6,13 @@
 #include "render/gel/router.h"
 namespace render::gel {
 // The recipe table's rows (slime::kRecipes): every state, then
-// task_complete's success and failure, then starting's four contexts.
-inline int recipeState(SceneState state, Outcome outcome, StartCtx ctx) {
+// task_complete's success and failure.
+inline int recipeState(SceneState state, Outcome outcome) {
   constexpr int kStates = int(SceneState::kCount);
   if (state == SceneState::kTaskComplete && outcome != Outcome::kNone) return kStates + int(outcome) - 1;
-  if (state == SceneState::kStarting && ctx != StartCtx::kNone) return kStates + 2 + int(ctx) - 1;
   return int(state);
 }
-static_assert(int(SceneState::kCount) + 2 + 4 == slime::kRecipeStates, "recipe rows: states, outcomes, contexts");
+static_assert(int(SceneState::kCount) + 2 == slime::kRecipeStates, "recipe rows: states, outcomes");
 // A row's takes: three, and a fourth for two rows, asleep's snore and a
 // successful finish's hiccups. The fourths are a
 // table of their own, so the other rows stay three.
@@ -64,8 +63,6 @@ constexpr bool comedy(int kind) { return kind >= kSneeze; }
 // the current value and slope: a smoothstep from rest, continuous in value and
 // velocity on a reversal, exact at its end.
 constexpr int kPropRampMs = 200;
-// A card's reveal, from its reveal contact.
-constexpr int kCardRevealMs = 400;
 struct Ramp {
   F from, to, tangent;
   T start;
@@ -82,8 +79,6 @@ struct Ramp {
 };
 struct Scenes {
   Spring activity[3], desk, quietMix;
-  // A work act holds the screen (render/gel/act.h): the desk goes.
-  bool clearStage = false;
   Route route;
   uint64_t key = 0;  // what shows (Route::key)
   int mood = slime::kCalm, expression = slime::kCalm, profileExpression = slime::kCalm;
@@ -109,21 +104,17 @@ struct Scenes {
   };
   Saved alert, held;
   // Each prop keeps the content it last showed while its ramp fades it out.
-  enum Prop { kAlertProp, kStartProp, kListeningProp, kTouchProp, kProps };
+  enum Prop { kAlertProp, kListeningProp, kTouchProp, kProps };
   struct Slot {
     bool on = false;
     uint64_t key = 0;
     Ramp ramp;
-    Ramp reveal;  // a card's (cardReveal)
   } slots[kProps];
   struct {
     std::string agent, project, name;
     int more = 0;
     bool known = false;
   } alertProp;
-  struct {
-    const char* label = "START";
-  } startProp;
   F listeningPulse = q(.5);
   SceneState touchKind = SceneState::kIdle;
   // The tags on and how long the look has shown (Engine::setOccasion).
@@ -149,16 +140,11 @@ struct Scenes {
   }
   F entry() const { return smooth(ageMs / 240); }
   F focus() const { return q(.5) + q(.5) * sin(clamp(ageMs / recipe.duration, 0, 1) * pi * 2 * recipe.focus); }
-  // A prop's drawn opacity: its ramp, times a card's reveal.
-  F visible(Prop prop, T time) const {
-    const auto& slot = slots[prop];
-    return slot.ramp.value(time) * (card(prop) ? slot.reveal.value(time) : F(1));
-  }
-  static bool card(Prop prop) { return prop == kStartProp; }
+  // A prop's drawn opacity: its ramp.
+  F visible(Prop prop, T time) const { return slots[prop].ramp.value(time); }
 
  private:
   const char* phaseAt(T age) const;
-  void cardReveal(Ramp& reveal) const;
   bool wants(Prop prop) const;
   void refresh(Prop prop);
   void updateProps(T time);

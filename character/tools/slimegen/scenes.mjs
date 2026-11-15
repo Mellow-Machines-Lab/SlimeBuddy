@@ -102,11 +102,10 @@ function statusResultRecipe(state,variant,profile) {
     contacts:result.contacts.map(contact=>({...contact,kind:state+'_reveal'}))};
 }
 
-function startRecipe(ctx,variant,profile) {
+function startRecipe(variant,profile) {
   const traits=profileTraits(profile),at=[520,820,1080][variant]+traits.delayMs;
   return {duration:cycleMs[variant],intent:['perk and present start','nod into the new work','stretch and resume'][variant],
-    lean:traits.lean,contacts:[{at,kind:'start_reveal',side:0,strength:traits.gain}],
-    label:ctx==='new_task'?'NEW TASK':ctx==='continuation'?'RESUME':ctx==='compacted'?'COMPACTED':'START'};
+    lean:traits.lean,contacts:[{at,kind:'start_reveal',side:0,strength:traits.gain}]};
 }
 // wake_up: the person back at the Mac after a long break. The start family's
 // body without its card: a stretch up and forward (a presentation beat), then
@@ -207,7 +206,7 @@ export function takesOf(state,outcome=null) {
 }
 // The recipe for a profile's state (its outcome or context) and take, and
 // whether the board jitters its contacts (a desk's).
-export function recipe(p,{state,outcome,ctx},v,design){
+export function recipe(p,{state,outcome},v,design){
  let r,jitter=false;
  if(state==='gesture')r=gestureRecipe(design.gestures,v);
  else if(state==='notice')r=noticeRecipe(design.noticeClip);
@@ -215,7 +214,7 @@ export function recipe(p,{state,outcome,ctx},v,design){
  else if(state==='needs_you')r=alertRecipe(v,p);
  else if(state==='task_complete')r=resultRecipe(outcome||null,v,p);
  else if(state==='reply_ready')r=statusResultRecipe(state,v,p);
- else if(state==='starting')r=startRecipe(ctx||null,v,p);
+ else if(state==='starting')r=startRecipe(v,p);
  else if(state==='wake_up')r=wakeRecipe(v,p);
  else if(state==='delegating')r=helpersRecipe(state,v,p);
  else if(['poked','tap_spam'].includes(state))r=touchRecipe(state,v);

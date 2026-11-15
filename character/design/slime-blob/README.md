@@ -1,6 +1,6 @@
 # VideoG Slime Blob — the gel slime's design
 
-Updated 2026-11-01. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
+Updated 2026-11-15. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
 is the design of Boop's gel slime: its moods, faces, acting, scenes and
 sounds as data. The slime has one engine, the C++ one the AMOLED runs
 (`character/firmware/src/render/gel/`), which the simulator and the
@@ -111,7 +111,7 @@ interprets events and performs feelings, not which tool may run.
 mood/state; it is not another mood or an intensity value selected by Jev.
 
 The control vocabulary remains `mood` + `state`. Host-owned facts such as
-`ctx` for starting and `outcome` for completion select compatible designs.
+`outcome` for completion select compatible designs.
 The runtime may keep clock/seed/physics/variation bookkeeping, but those
 are internal renderer controls, not new LLM-selected emotional axes.
 
@@ -227,11 +227,10 @@ firm contacts; frightened+working has hesitant guarded input. Keep them
 the same blob with the same desk. Visual drama need not add dense audio.
 
 `task_complete` has separate success/failure coverage under the same
-state, and a success comes in four sizes ([CONTINUITY.md](CONTINUITY.md),
+state, and a success comes in three sizes ([CONTINUITY.md](CONTINUITY.md),
 Finishes). Failure must never use the trophy, fanfare or cheer; `error` is an observed
 tool failure, not automatically a failed whole task. `reply_ready` is a
-ready reply, not an accomplishment. `starting` has new_task/session/
-continuation/compacted variants with truthful card wording. See [STATES.md](STATES.md).
+ready reply, not an accomplishment. `starting` has no card. See [STATES.md](STATES.md).
 
 The bottom 20% is the host's lane: the board's strip and bubble, softly
 rounded and readable. The scenes keep their props above it. Do not
@@ -349,7 +348,7 @@ control link or claim ESP32 performance without actual board measurements
 - All canonical moods and reference alternates are cute/readable at the
   real viewport, including angry/hurt/crying/frightened; owner art review.
 - Every mood/state cell plays truthfully (`test_gel`); every completion
-  outcome and starting context is covered.
+  outcome is covered.
 - Every directed mood edge bridges continuously; state changes preserve
   mood and springs. Ten-minute working runs contain no reset/flash.
 - Interruptions and rapid event bursts cannot hide attention, replay old

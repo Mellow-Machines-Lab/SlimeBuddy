@@ -1,5 +1,4 @@
 #include "render/gel/face.h"
-#include "render/gel/act.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -30,12 +29,12 @@ constexpr int kTakes = int(sizeof(slime::kRecipes[0][0]) / sizeof(slime::kRecipe
 
 const voice::EffectClips& GelFace::clips() const { return gel::clips(); }
 
-const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome, StartCtx ctx) {
+const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome) {
   if (state == SceneState::kTaskComplete && outcome != Outcome::kFailure && isFinishVariant(variant))
     return finishRecipe(finishOf(variant));
-  int row = recipeState(state, outcome, ctx);
+  int row = recipeState(state, outcome);
   // A finish timed without its outcome: its fourth take is a success's.
-  if (state == SceneState::kTaskComplete && variant >= takes(row)) row = recipeState(state, Outcome::kSuccess, ctx);
+  if (state == SceneState::kTaskComplete && variant >= takes(row)) row = recipeState(state, Outcome::kSuccess);
   return take(profileFor(mood), row, std::max(0, std::min(takes(row) - 1, variant)));
 }
 
@@ -48,11 +47,10 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   origin_ = lastTick_ = lookAt_ = t;
   engineMs_ = engineFrac_ = 0;
   pace_ = 100;
-  lastBig_ = Finish::kLittle;
   source_ = {};
   replyAt_ = 0, replied_ = false;
   finger_ = false;  // the new engine has no drag: a finger still down grabs it afresh
-  owesToWork_ = false, signHop_ = 0;
+  signHop_ = 0;
   lean_ = Lean::kNone, breathTake_ = 0;
   pendingCount_ = 0;
   revision_ = cueRevision_ = 0;
@@ -61,13 +59,13 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   clip_ = cueing_ = base_ = nullptr;
   pastime_ = lastPastime_ = Pastime::kNone;
   pastimeAt_ = pastimeEnds_ = stoppedAt_ = restUntil_ = 0;
-  phonesWanted_ = phonesOn_ = moved_ = false;
+  moved_ = false;
   movedAt_ = 0;
   pastimeLook_ = dealtLook_ = SceneState::kNone;
   stopped_ = false;
   dice_ = kSeed;
-  transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, lastFullAct_ = alone_ = false;
-  headphones_ = rig::Ramp{};
+  transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, alone_ = false;
+  actAt_ = 0, actResult_ = ActResult::kRunning;
 }
 
 // Power-on only, right after reset: the same engine with the board's seed.
@@ -113,7 +111,7 @@ void GelFace::advanceTo(uint32_t t) {
   showBase();
   showTransition(t);
   showLayers(t);
-  showKit(t);
+  answerAct(t);
   int kept = 0;
   for (int i = 0; i < pendingCount_; ++i)
     if (t - pendingAt_[i] <= kCueWaitMs) {
@@ -137,7 +135,6 @@ void GelFace::advanceTo(uint32_t t) {
 
 void GelFace::showLayers(uint32_t t) {
   const Contents now = layerContents(*engine_);
-  layers_.show(rig::Layer::kWorn, now.worn, t);
   layers_.show(rig::Layer::kHat, now.hat, t);
   layers_.show(rig::Layer::kBeside, now.beside, t);
 }
@@ -175,32 +172,24 @@ void GelFace::showBase() {
   if (clip != base_) mixer_.setLook(base_ = clip);
 }
 
-// A clip for the way from one Doing to another, or into and out of a full work
-// act: half a second to a second, over the new look, which has already come,
-// so it delays nothing. Whatever takes the face (a reaction, a needs-you, a
-// finger, a word forward) cuts through it, and with one of those already up it
-// doesn't start; nor with the Mac gone, which is no Doing changing. The one
-// exception: a turn's start comes with its `starting` Moment, which would cut
-// nearly every `to-work`, so that one is owed until the Moment is over.
+// A clip for the way from one Doing to another: half a second to a second,
+// over the new look, which has already come, so it delays nothing. Whatever
+// takes the face (a reaction, a needs-you, a finger, a word forward) cuts
+// through it, and with one of those already up it doesn't start; nor with
+// the Mac gone, which is no Doing changing.
 void GelFace::showTransition(uint32_t t) {
   const Engine& e = *engine_;
   const auto& facts = e.router.facts;
   const SceneState base = facts.base;
-  const bool act = stream_ && actTakesOver(stream_->actNow(t));
   const bool taken = finger_ || facts.attention.on || e.scenes.route.reaction || e.router.reacting || e.router.expression >= 0 ||
                      source_.anim != SceneState::kNone || alone_ || (stream_ && stream_->call.live);
   const char* name = nullptr;
-  if (lastBase_ != SceneState::kNone) {
-    if (act != lastFullAct_) name = act ? "act-on" : "act-off";
-    else if (base != lastBase_ && base == SceneState::kAsleep) name = "to-sleep";
-    else if (base != lastBase_ && base == SceneState::kWorking && lastBase_ == SceneState::kIdle) name = "to-work";
-    else if (base != lastBase_ && base == SceneState::kIdle && lastBase_ == SceneState::kWorking) name = "to-rest";
+  if (lastBase_ != SceneState::kNone && base != lastBase_) {
+    if (base == SceneState::kAsleep) name = "to-sleep";
+    else if (base == SceneState::kWorking && lastBase_ == SceneState::kIdle) name = "to-work";
+    else if (base == SceneState::kIdle && lastBase_ == SceneState::kWorking) name = "to-rest";
   }
-  lastBase_ = base, lastFullAct_ = act;
-  const bool starting = source_.anim == SceneState::kStarting;
-  if (starting && taken && ((name && std::strcmp(name, "to-work") == 0) || (transition_ && transition_ == rig::kRig.clip("to-work"))))
-    owesToWork_ = true, owedUntil_ = t + kOwedToWorkMs;
-  if (base != SceneState::kWorking || act || !after(owedUntil_, t)) owesToWork_ = false;
+  lastBase_ = base;
   if (transition_ && (taken || !after(transitionEnds_, t))) {
     if (taken) {
       if (cueing_ == transition_) cueing_ = nullptr;
@@ -208,16 +197,27 @@ void GelFace::showTransition(uint32_t t) {
     }
     transition_ = nullptr;
   }
-  if (taken) return;
-  if (!name && owesToWork_) name = "to-work";
-  owesToWork_ = false;
-  if (!name) return;
+  if (taken || !name) return;
   if (const rig::Clip* clip = rig::kRig.clip(name)) {
     if (transition_) mixer_.stop(*transition_);
     transition_ = clip, transitionEnds_ = t + clip->ms;
     play(*clip);
     holdGestures(*clip);
   }
+}
+
+// A work act's result, once, as its sign changes: a pleased hop at a pass,
+// a flinch at a fail. Not while something else has the body.
+void GelFace::answerAct(uint32_t t) {
+  if (!stream_) return;
+  const Stream::ActNow act = stream_->actNow(t);
+  const uint32_t at = act.shows() ? stream_->act.at : 0;
+  const ActResult result = act.shows() ? act.result : ActResult::kRunning;
+  const bool fresh = result != ActResult::kRunning && (at != actAt_ || actResult_ == ActResult::kRunning);
+  actAt_ = at, actResult_ = result;
+  if (!fresh || finger_ || !bodyFree()) return;
+  if (result == ActResult::kPass) engine_->jolt(0, q(-1.6), 0);
+  else engine_->jolt(q(-1.2), q(2.4), q(-2), q(.6), 450);
 }
 
 void GelFace::passTime(uint32_t t) {
@@ -228,11 +228,7 @@ void GelFace::passTime(uint32_t t) {
   if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
-  // A work act holds the screen, as a finger does: what's playing goes.
-  const bool acting = stream_ && actTakesOver(stream_->actNow(t));
-  engine_->scenes.clearStage = acting;
-  if (acting && playing()) endPastime(t, true);
-  const bool busy = finger_ || acting || (stream_ && stream_->drawn(t) && stream_->call.live);
+  const bool busy = finger_ || (stream_ && stream_->drawn(t) && stream_->call.live);
   if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
@@ -247,8 +243,8 @@ void GelFace::deal(SceneState look, uint32_t t) {
   int n = 0;
   // A move waits its gap.
   const bool moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
-  // Nor a melt in a hat, which has no head to sit on then.
-  const bool hatted = outfitFor(when) != Outfit::kNone;
+  // Nor a melt in its nightcap, which has no head to sit on then.
+  const bool hatted = nightcapFor(when);
   // A take at work only while it types.
   const SceneState desk = e.scenes.route.state;
   const bool types = desk == SceneState::kWorking || desk == SceneState::kTerminal || desk == SceneState::kToolUse;
@@ -260,13 +256,6 @@ void GelFace::deal(SceneState look, uint32_t t) {
     // needs a tag is newer than any while it fits.
     options[n++] = {&p, (p.tag ? 1000000 : p.tier * 100000) + p.afterS};
   }
-  // The headphones wanted and not yet on: they go on first, and only then.
-  if (look == SceneState::kWorking && phonesWanted_ && !phonesOn_) {
-    playPastime(Pastime::kPhonesOn, t);
-    return;
-  }
-  for (int i = 0; i < n; ++i)
-    if (options[i].row->id == Pastime::kPhonesOn) options[i--] = options[--n];
   // Never the one dealt last, while there's another.
   if (n > 1)
     for (int i = 0; i < n; ++i)
@@ -322,14 +311,7 @@ void GelFace::playPastime(Pastime p, uint32_t t) {
   if (hasBody(i)) start(i, i.look, t);
 }
 
-void GelFace::reply(const char* name, SceneState anim, uint32_t t) {
-  SceneState look;
-  const Pastime p = pastimeFor(name);
-  if (p != Pastime::kNone && hasBody(info(p)) && showsLook(anim, look) &&
-      (look == SceneState::kIdle || look == SceneState::kAsleep)) {
-    start(info(p), look, t);
-    return;
-  }
+void GelFace::reply(const char* name) {
   char clip[24];
   std::snprintf(clip, sizeof(clip), "reply-%s", name);
   if (const rig::Clip* c = rig::kRig.clip(clip)) play(*c);
@@ -345,29 +327,8 @@ bool GelFace::playPastime(const char* name, uint32_t t) {
   return false;
 }
 
-void GelFace::showKit(uint32_t t) {
-  const Engine& e = *engine_;
-  const auto& facts = e.router.facts;
-  const SceneState base = facts.attention.on ? SceneState::kNeedsYou : facts.base;
-  const uint32_t when = e.scenes.when;
-  const int tier = tierOf(when);
-  const bool working = base == SceneState::kWorking;
-  // The hat wins the head; and peekaboo's gesture takes it all off, as it
-  // does the hat.
-  const bool head = outfitFor(when) == Outfit::kNone &&
-                    !(e.scenes.route.state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo));
-  auto show = [t](rig::Ramp& ramp, bool on) {
-    if (ramp.target() != (on ? 1000 : 0)) ramp.retarget(on ? 1000 : 0, t);
-  };
-  phonesWanted_ = working && tier >= 3 && head;
-  if (!phonesWanted_) phonesOn_ = false;
-  if (pastime_ == Pastime::kPhonesOn && !stopped_ && t - pastimeAt_ >= kPhonesOnMs) phonesOn_ = true;
-  show(headphones_, phonesWanted_ && phonesOn_);
-}
-
 PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
-  s.t = t, s.when = engine_->scenes.when;
   if (pastime_ != Pastime::kNone) {
     s.playing = pastime_;
     s.age = t - pastimeAt_;
@@ -377,20 +338,6 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
     int fade = int(std::min<uint32_t>({255, s.age * 255 / 150, s.age < s.ms ? (s.ms - s.age) * 255 / 250 : 0}));
     if (stopped_) fade = fade * int(rig::kFadeMs - std::min(rig::kFadeMs, t - stoppedAt_)) / int(rig::kFadeMs);
     s.fade = std::max(0, fade);
-  }
-  auto opacity = [t](const rig::Ramp& ramp) { return (ramp.value(t) * 255 + 500) / 1000; };
-  s.headphones = opacity(headphones_);
-  if (pastime_ == Pastime::kMelt) {  // off its head while it's a puddle
-    const int age = int(s.age), off = age < kMeltOffAt              ? 0
-                                      : age < kMeltOffAt + kMeltOffMs ? (age - kMeltOffAt) * 255 / kMeltOffMs
-                                      : age < kMeltOnBy - kMeltOnMs   ? 255
-                                      : age < kMeltOnBy               ? (kMeltOnBy - age) * 255 / kMeltOnMs
-                                                                      : 0;
-    s.headphones = s.headphones * (255 - off) / 255;
-  }
-  if (pastime_ == Pastime::kPhonesOn) {  // coming down over its ears
-    s.headphones = std::max(s.headphones, s.fade);
-    s.drop = kPhonesDropPx - kPhonesDropPx * int(ease(std::min<uint32_t>(s.age, kPhonesOnMs), kPhonesOnMs)) / 1024;
   }
   return s;
 }
@@ -464,8 +411,8 @@ bool GelFace::bodyFree() const {
          !e.router.facts.attention.on;
 }
 
-bool GelFace::leans(uint32_t t) const {
-  return finger_ && bodyFree() && !(stream_ && actTakesOver(stream_->actNow(t)));
+bool GelFace::leans(uint32_t) const {
+  return finger_ && bodyFree();
 }
 
 void GelFace::lean(Lean level, uint32_t t) {
@@ -488,7 +435,7 @@ void GelFace::tilt(int mg, uint32_t t) {
   if (!mg) return engine_->tilt(0);
   const Engine& e = *engine_;
   const bool free = !finger_ && bodyFree() && !e.router.listening && !playing() && !transition(t) && !e.acting.current() &&
-                    !(stream_ && (actTakesOver(stream_->actNow(t)) || stream_->call.live));
+                    !(stream_ && stream_->call.live);
   engine_->tilt(free ? mg : 0);
 }
 
@@ -536,9 +483,6 @@ void GelFace::step(uint32_t t, linkkit::Rng&) {
 // word sinks in or a bit of hail lands; stretched up by a shrug or a cheer.
 void GelFace::land(CallStyle style) {
   auto& e = *engine_;
-  // Toward the word's side: its lane's half of the screen.
-  const int column = stream_ ? stream_->column(stream_->call.slot) : 0;
-  const F side = stream_ && 2 * column + 1 >= stream_->laneCount ? F(1) : F(-1);
   switch (callMove(style)) {
     case CallMove::kHit:
       // A failure's knock; its dizzy eyes are the stream's to draw. Your
@@ -551,12 +495,8 @@ void GelFace::land(CallStyle style) {
     case CallMove::kSink: e.jolt(0, q(1.8), 0); break;
     case CallMove::kShatter: e.jolt(0, q(1.4), 0); break;
     case CallMove::kShrug: e.jolt(0, q(-1.6), 0); break;
-    // The whole turn's: a gulp at its end; the cube's thud; buried, its
-    // lids heavy; leaning in to poke a frozen word; a blink as all goes off.
+    // The whole turn's: a gulp at its end; a blink as all goes off.
     case CallMove::kGather: e.jolt(0, q(1.6), q(.6)); break;
-    case CallMove::kCompact: e.jolt(q(.6), q(1.2), 0); break;
-    case CallMove::kBuried: e.jolt(0, q(1.8), 0, q(.5), 900); break;
-    case CallMove::kFreeze: e.jolt(side * q(.8), 0, q(.8)); break;
     case CallMove::kDrop: e.jolt(0, q(.6), 0, q(.6), 300); break;
   }
 }
@@ -607,7 +547,6 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     borrowed = slime::kGestureFaces[std::min<int>(source.animVariant, slime::kGestureCount - 1)];
   if (borrowed < 0 && source.anim == SceneState::kNotice)
     borrowed = slime::kNoticeFaces[std::min<int>(source.animVariant, slime::kNoticeCount - 1)];
-  if (borrowed < 0 && stream_) borrowed = actFace(stream_->actNow(t), e.emotion);
   // Leaning in, it wears a stroke's shut eyes, unless its mood keeps its own.
   if (borrowed < 0 && lean_ != Lean::kNone && !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
     borrowed = slime::kGestureFaces[int(Gesture::kStroke)];
@@ -619,7 +558,6 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     r.anim = source.anim;
     r.loops = source.loops;
     r.outcome = source.outcome;
-    r.ctx = source.ctx;
     r.variant = source.animVariant;
     r.expression = borrowed;
     e.play(r);
@@ -635,7 +573,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   // it plays the face alone.
   if (context.reply[0] && !(replied_ && context.replyAt == replyAt_)) {
     replied_ = true, replyAt_ = context.replyAt;
-    reply(context.reply, source.anim, t);
+    reply(context.reply);
   }
   if (source.state() != source_.state()) {
     lookAt_ = t;
@@ -648,7 +586,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
 // The engine's shuffle bag for the reaction, drawn from copies: a call
 // refused after its pick (Device::refuse) leaves the bag and the engine's
 // randomness as they were. started draws the same take for real.
-uint8_t GelFace::pick(SceneState a, Mood mood, int wanted, Outcome outcome, StartCtx ctx, linkkit::Rng&, int loops,
+uint8_t GelFace::pick(SceneState a, Mood mood, int, Outcome outcome, StartCtx, linkkit::Rng&, int loops,
                       int turn) const {
   // A successful finish by its size: small deals Little Win's takes from
   // the bag, as every other row does.
@@ -657,27 +595,19 @@ uint8_t GelFace::pick(SceneState a, Mood mood, int wanted, Outcome outcome, Star
     switch (finishSize(loops, turn, canonical)) {
       case FinishSize::kSmall: break;
       case FinishSize::kMedium: return uint8_t(finishVariant(Finish::kConfetti));
-      case FinishSize::kBiggest: return uint8_t(finishVariant(Finish::kMegaBoop));
-      case FinishSize::kBig:
-        return uint8_t(finishVariant(
-            bigFinish(canonical, slime::kProfile[engine_->emotion].canonical, wanted, lastBig_)));
+      case FinishSize::kBig: return uint8_t(finishVariant(Finish::kGoldRush));
     }
   }
-  const int row = recipeState(a, outcome, ctx);
+  const int row = recipeState(a, outcome);
   auto bag = engine_->scenes.bags[slime::kProfile[profileFor(mood)].canonical][row];
   Random random = engine_->random;
   return uint8_t(bag.next(random, takes(row)));
 }
 
-void GelFace::started(SceneState a, Mood mood, uint8_t variant, Outcome outcome, StartCtx ctx) {
+void GelFace::started(SceneState a, Mood mood, uint8_t variant, Outcome outcome, StartCtx) {
   if (a == SceneState::kGesture) return;
-  if (a == SceneState::kTaskComplete && isFinishVariant(variant)) {
-    // The big one it played, which the next big one isn't, where it can be.
-    const Finish f = finishOf(variant);
-    if (f != Finish::kConfetti && f != Finish::kMegaBoop) lastBig_ = f;
-    return;
-  }
-  const int row = recipeState(a, outcome, ctx);
+  if (a == SceneState::kTaskComplete && isFinishVariant(variant)) return;
+  const int row = recipeState(a, outcome);
   engine_->scenes.bags[slime::kProfile[profileFor(mood)].canonical][row].next(engine_->random, takes(row));
 }
 
@@ -688,13 +618,13 @@ int GelFace::plays(SceneState a, uint8_t variant, int loops) const {
 int GelFace::variants(Mood, SceneState s) const { return s == SceneState::kGesture ? slime::kGestureCount : kTakes; }
 
 uint32_t GelFace::loopMs(Mood mood, SceneState state, int variant) const {
-  return uint32_t(F(recipe(mood, state, variant, Outcome::kNone, StartCtx::kNone).duration).integer());
+  return uint32_t(F(recipe(mood, state, variant, Outcome::kNone).duration).integer());
 }
 
 // A line over a reaction starts at its first result contact (the card or
 // the alert), less the speaker's lead.
 uint32_t GelFace::voiceMs(Mood mood, SceneState state, int variant) const {
-  const auto& r = recipe(mood, state, variant, Outcome::kNone, StartCtx::kNone);
+  const auto& r = recipe(mood, state, variant, Outcome::kNone);
   for (int i = 0; i < r.count; ++i)
     if (reveals(r.contacts[i].kind)) return uint32_t(F(r.contacts[i].at).integer() + 70);
   return 0;
@@ -720,12 +650,11 @@ int GelFace::cues(uint32_t, bool, voice::FxEvent* out, bool& changed) {
 bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, const char* bubble,
                    const char* caption, const SignShow& sign, const DoneShow& done, const Strip& strip, bool) {
   if (!native || !native->pixels) return false;
-  const bool full = stream_ && actTakesOver(stream_->actNow(t));
-  const PastimeShow kit = full ? PastimeShow{} : pastimes(lastTick_);
+  const PastimeShow passing = pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
-  signHop_ = full ? 0 : signHop(sign);
+  signHop_ = signHop(sign);
   paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &kit, drawer_, caption, &wish_, &growth_);
+             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_);
   return true;
 }
 

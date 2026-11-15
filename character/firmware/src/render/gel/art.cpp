@@ -129,7 +129,7 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
     const auto& path = slime::kArtPaths[placed[i].range->first + k];
     const int g = path.group;
     return pairs.oldest[i][k] && path.count <= kMaxPoints && path.clipCount <= kMaxPoints &&
-           (c.eyes || (g != 1 && g != 2)) && !(zipped && g == 3) && classWeight(i, k) > 0;
+           !(zipped && g == 3) && classWeight(i, k) > 0;
   };
   // Each group's shapes, drawn as one look for each shape the layers give
   // it; a group with two or more cross-fades. Its looks are drawn together

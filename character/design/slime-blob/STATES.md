@@ -1,6 +1,6 @@
 # State coverage and event mapping
 
-Updated 2026-11-01. The board's 22 states (the firmware's `kStateNames`,
+Updated 2026-11-15. The board's 22 states (the firmware's `kStateNames`,
 `firmware/src/render/types.cpp`) fall into nine visual scene families, below.
 Each state's takes (three each; idle's six or seven and asleep's four,
 with their comedy, a successful finish's four and a gesture's ten) are
@@ -16,7 +16,7 @@ remaining matrix was implemented and exercised.
 | Quiet rest | no_app, asleep | Lost app vs no sessions; both quiet, retained mood suppressed visually; only asleep snores now and then |
 | Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn, a doze or a sneeze (excited has zoomies, the low moods a long yawn) |
 | Listen | listening | Actual mic-on, not every input event |
-| Start | starting, wake_up, notice | ctx new_task/session/continuation/compacted selects truthful card; wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
+| Start | starting, wake_up, notice | starting perks up with no card, whatever its ctx (the Mac sends none); wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
 | Desk | planning, working, terminal, tool_use, searching, analyzing, testing, waiting | One computer, different activity rhythms/cues |
 | Helpers | delegating | Dispatch/live helpers; one coming back lands in the work stream |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
@@ -24,12 +24,11 @@ remaining matrix was implemented and exercised.
 | Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face, or the mood's own in a low or cross mood) |
 
 `test_gel` plays every one of the 924 mood/state cells, each of its
-takes, the two completion outcomes and four start contexts apart. Shared
+takes, the two completion outcomes apart. Shared
 rest rows alias one quiet family; they still keep the mood. Active cells
 are compositions, not isolated exported assets.
 
-`starting` expands each variant for all three ctx values. `task_complete`
-expands each for both success and failure. Do not count these as new
+`task_complete` expands each variant for both success and failure. Do not count these as new
 moods/states or choose an outcome at random. A sad success is a small
 tearful-but-valid achievement; a happy failure is still visibly failure,
 never a misleading trophy. A success comes in four sizes, by how long it's
@@ -61,8 +60,8 @@ than parsing raw private tool inputs in this renderer.
 
 | Earlier event type / phase | Current form / visual handling |
 | --- | --- |
-| session start/end | session_start/end; start may trigger starting with correct ctx; end recomputes base/remaining work, never automatically task success |
-| turn start | turn_start; core may show starting and working/planning, as appropriate; a prompt is not mic listening |
+| session start/end | session_start/end; a start plays nothing by rule; end recomputes base/remaining work, never automatically task success |
+| turn start | turn_start; core shows working/planning, as appropriate; a prompt is not mic listening |
 | turn end done | turn_end; update base immediately; eligible authorized reaction selects task_complete success/failure or reply_ready using actual content, or no one-shot |
 | turn end failed | turn_end; update base; failed finish must use failure outcome if a finish is played; not a trophy |
 | turn end stopped | turn_end; updated base, the work stream drops its words, not a task failure |

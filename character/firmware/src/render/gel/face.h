@@ -8,9 +8,8 @@
 // (render/gel/pastimes.h), one at a time after a rest, and a reaction's
 // clip, a clip named as its state, as it starts. A clip's cues sound
 // through the engine's contacts. The engine keeps its expressions,
-// recipes, bits and springs. What it wears and the air around it come and
-// go through the rig's layer stack, the face's own too, and so does the
-// pastimes' kit.
+// recipes, bits and springs. Its nightcap and the Zs beside it come and go
+// through the rig's layer stack, the face's own too.
 #pragma once
 #include "render/face.h"
 #include "render/gel/drawer.h"
@@ -112,7 +111,7 @@ class GelFace final : public Face {
   const rig::Clip* transition(uint32_t t) const { return transition_ && after(transitionEnds_, t) ? transition_ : nullptr; }
   const rig::Clip* cueing() const { return cueing_; }
   bool playPastime(const char* name, uint32_t t) override;
-  // What it shows of the pastimes at t: the one playing, and the kit.
+  // What it shows of the pastimes at t: the one playing.
   PastimeShow pastimes(uint32_t t) const;
 
  private:
@@ -136,8 +135,8 @@ class GelFace final : public Face {
   static constexpr uint16_t kLeanBreathPitch = 900, kDozeBreathPitch = 800;
   std::unique_ptr<Engine> engine_;
   rig::Mixer mixer_;
-  // What it wears, the air and the Zs, as the engine's tags and state call
-  // for them (layerContents), each fading in and out.
+  // Its nightcap and the Zs, as the engine's tags and state call for them
+  // (layerContents), each fading in and out.
   rig::Layers layers_;
   // The transition playing (GelFace::showTransition), and until when, and
   // what it last saw: it plays once on the way from one Doing to another,
@@ -145,13 +144,13 @@ class GelFace final : public Face {
   const rig::Clip* transition_ = nullptr;
   uint32_t transitionEnds_ = 0;
   SceneState lastBase_ = SceneState::kNone;
-  bool lastFullAct_ = false, alone_ = false;
+  bool alone_ = false;
   void showTransition(uint32_t t);
-  // A `to-work` that a `starting` Moment took the place of, still to play,
-  // if the Moment is over by then and it's still at work.
-  static constexpr uint32_t kOwedToWorkMs = 6000;
-  bool owesToWork_ = false;
-  uint32_t owedUntil_ = 0;
+  // The work act whose result the body last answered (answerAct), by when
+  // it began, and the result it had then.
+  uint32_t actAt_ = 0;
+  ActResult actResult_ = ActResult::kRunning;
+  void answerAct(uint32_t t);
   // How far the sign has lifted the body, as last drawn (signHop).
   int signHop_ = 0;
   // The pastime playing, its clip on the mixer (none for a bit's or a
@@ -166,17 +165,11 @@ class GelFace final : public Face {
   bool stopped_ = false;
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
-  // The kit, easing in and out, as the tiers and the look call for it
-  // (showKit).
-  rig::Ramp headphones_;
-  // Whether it wants the headphones on (working from tier3, its head free),
-  // and has put them on since it last took them off (kPhonesOn).
-  bool phonesWanted_ = false, phonesOn_ = false;
   // When the last move started (kMoveGapMs), if one has.
   uint32_t movedAt_ = 0;
   bool moved_ = false;
-  // The reply it played last (FaceContext::reply), its clip or its
-  // pastime, by when it started, so each plays once.
+  // The reply it played last (FaceContext::reply), by when it started, so
+  // each plays once.
   uint32_t replyAt_ = 0;
   bool replied_ = false;
   // The clip it last played, whose cues sound as it crosses them, and how
@@ -210,8 +203,6 @@ class GelFace final : public Face {
   // The surface it last drew on: the AMOLED's until it has (the drawer's
   // rows are laid out on it).
   Size size_{502, 410, 110};
-  // The big finish it played last, which the next one isn't, where it can be.
-  Finish lastBig_ = Finish::kLittle;
   // The word forward the body last answered, by when it came.
   uint32_t landedAt_ = 0;
   bool landed_ = true;
@@ -232,20 +223,17 @@ class GelFace final : public Face {
   // One of those that fit the look now, the newest kNewestPct of the time;
   // none dealt while none fits.
   void deal(SceneState look, uint32_t t);
-  // A pastime starts as the one playing over `look`: dealt, asked for by a
-  // reply or by a test. It counts as the last dealt, so the deal doesn't
+  // A pastime starts as the one playing over `look`: dealt, or asked for
+  // by a test. It counts as the last dealt, so the deal doesn't
   // play it again next, and the rest before the next starts as it ends.
   void start(const PastimeInfo& p, SceneState look, uint32_t t);
   // The engine's own idle gestures wait for the clip dealt or asked for.
   void holdGestures(const rig::Clip& clip);
-  // A reply asked for at t: its pastime (kReplyPastimes) while the look is
-  // idle or asleep and shows, else its pack's clip, reply-<name>.
-  void reply(const char* name, SceneState anim, uint32_t t);
+  // A reply asked for: its pack's clip, reply-<name>.
+  void reply(const char* name);
   // The playing one stops, fading out unless it ran its length; the rest
   // before the next starts now.
   void endPastime(uint32_t t, bool early);
-  // The kit the tiers and the look call for now, from t.
-  void showKit(uint32_t t);
   // A die from dice_: below `n`.
   uint32_t roll(uint32_t n);
   // The layers what the engine's tags and state call for now, from t.
@@ -262,6 +250,6 @@ class GelFace final : public Face {
   void restartCues();
   bool factsChanged(const FaceContext& context) const;
   // The recipe a design names: its mood's profile, its row and take.
-  static const slime::Recipe& recipe(Mood mood, SceneState state, int variant, Outcome outcome, StartCtx ctx);
+  static const slime::Recipe& recipe(Mood mood, SceneState state, int variant, Outcome outcome);
 };
 }  // namespace render::gel

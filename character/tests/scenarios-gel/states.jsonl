@@ -27,7 +27,7 @@
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0}
-{"t":"do","id":104,"name":"starting","args":{"ctx":"new_task"}}
+{"t":"do","id":104,"name":"starting","args":{}}
 {"clock":1504}
 {"shot":"starting"}
 {"t":"dbg.reset"}
@@ -120,12 +120,6 @@
 {"t":"do","id":123,"name":"task_complete","args":{}}
 {"clock":1704}
 {"shot":"neutral_finish"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"happy","vol":0}
-{"t":"do","id":124,"name":"starting","args":{"ctx":"compacted"}}
-{"clock":1504}
-{"shot":"starting_compacted"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0}

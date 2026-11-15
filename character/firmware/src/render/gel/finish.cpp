@@ -20,7 +20,7 @@ namespace {
 constexpr uint16_t kGold = rgb565(255, 201, 60), kGoldDeep = rgb565(255, 176, 32), kOutline = rgb565(122, 74, 0),
                    kFloodGold = rgb565(178, 140, 42), kFloodGoldDeep = rgb565(178, 123, 22),
                    kNightGold = rgb565(89, 70, 21), kNightGoldDeep = rgb565(89, 62, 11), kOutlineOnGold = rgb565(90, 51, 0),
-                   kCream = rgb565(255, 244, 199), kJelly = rgb565(61, 155, 230), kJellyShine = rgb565(191, 230, 255),
+                   kCream = rgb565(255, 244, 199),
                    kWhite = rgb565(255, 255, 255);
 constexpr uint16_t kConfettiInk[] = {rgb565(255, 213, 74),  rgb565(255, 122, 182), rgb565(92, 225, 230),
                                      rgb565(140, 242, 122), rgb565(255, 255, 255), rgb565(181, 140, 255)};
@@ -262,20 +262,6 @@ void trophy(Raster& r, const Frame& f, bool onGold = false) {
   const Point mid = f.at(0, -42);
   star(r, {mid.x, mid.y, f.scale, f.c12, f.s12}, 9, 4, kCream);
 }
-// The crown: five points, three gems, a pearl on each point.
-void crown(Raster& r, const Frame& f) {
-  static constexpr int kCrown[][2] = {{-34, 0}, {-38, -34}, {-18, -16}, {0, -42}, {18, -16}, {38, -34}, {34, 0}};
-  constexpr int n = int(std::size(kCrown));
-  Point v[n];
-  for (int i = 0; i < n; ++i) v[i] = f.at(kCrown[i][0], kCrown[i][1]);
-  outlined(r, v, n, kGold, kOutline, f.size16(3) / 2);
-  const uint16_t gems[] = {rgb565(255, 92, 138), rgb565(92, 225, 230), rgb565(140, 242, 122)};
-  for (int i = 0; i < 3; ++i) {
-    const Point g = f.at(-20 + 20 * i, -8);
-    dot16(r, g.x, g.y, f.size16(5), gems[i]);
-  }
-  for (int i : {1, 3, 5}) dot16(r, v[i].x, v[i].y, f.size16(4), kCream);
-}
 // Proud's bug, held up beside its trophy: the small one Boop caught.
 void gift(Raster& r, const Surface& s) {
   auto x = [&](int p) { return s.width * p / 1000; };
@@ -316,63 +302,6 @@ void confetti(Raster& r, int age, int at, int x0, int y0, int count, uint32_t se
   }
   r.alpha = 255;
 }
-// A firework at (x, y) px whose rocket goes up from the floor at `at`: a
-// trail of sparks rising, then a ring of sparks flying out and drooping,
-// with a flash at its middle, gone 1.5 s after the burst.
-constexpr int kRocketMs = 350, kBurstMs = 1500;
-void firework(Raster& r, const Surface& s, int age, int at, int x, int y, uint16_t ink, int sparks, int reach,
-              uint32_t seed) {
-  const int d = age - at;
-  if (d < 0) return;
-  const int floor = s.height * 783 / 1000;
-  if (d < kRocketMs) {
-    const int p = ease(d, 0, kRocketMs), ry = lerp(floor - 40, y, p);
-    for (int k = 0; k < 5; ++k) {
-      r.alpha = 204 - k * 38;
-      dot16(r, x * 16 + 8, (ry + k * 9) * 16 + 8, (32 - k * 4) * 16 / 10, ink);
-    }
-    r.alpha = 255;
-    return;
-  }
-  const int b = d - kRocketMs;
-  if (b > kBurstMs) return;
-  const F t = seconds(b);
-  const int out = reach - scalar(F(reach) * decay(t * q(4.2))) / 4096, droop = scalar(t * t * 40) / 4096;
-  if (b < 200) sparkle(r, x * 16 + 8, y * 16 + 8, (30 * (200 - b) / 200 + 10) * 16, (200 - b) * 255 / 200, kWhite);
-  Random rnd(seed);
-  r.alpha = std::clamp((kBurstMs - b) * 255 / kBurstMs, 0, 255);
-  for (int i = 0; i < sparks; ++i) {
-    const F a = pi * 2 * i / sparks + rnd.unit() / 10;
-    const int len = out * (85 + int(rnd.index(25))) / 100, c = sin12(a + pi / 2), sn = sin12(a);
-    const Point tip{(x * 4096 + len * c) * 16 / 4096, (y * 4096 + len * sn) * 16 / 4096 + droop * 16};
-    const Point tail{(x * 4096 + len * 72 / 100 * c) * 16 / 4096,
-                     (y * 4096 + len * 72 / 100 * sn) * 16 / 4096 + droop * 16 * 7 / 10};
-    // Its head, and two smaller dots behind it for its trail.
-    dot16(r, tail.x, tail.y, 20, ink);
-    dot16(r, (tail.x + tip.x) / 2, (tail.y + tip.y) / 2, 30, ink);
-    dot16(r, tip.x, tip.y, 48, i % 3 ? ink : kWhite);
-  }
-  r.alpha = 255;
-}
-
-// Where the body stands and its face sits on the board's canvas, at rest.
-int faceY(const Surface& s) { return s.height * 560 / 1000; }
-
-// The fireworks' bursts: when each rocket goes up, where it bursts (in
-// thousandths of the surface), its colour, sparks and reach (px).
-struct Burst {
-  int at, x, y;
-  uint16_t ink;
-  int sparks, reach;
-};
-constexpr Burst kBursts[] = {
-    {200, 239, 268, rgb565(255, 213, 74), 16, 95},   {750, 777, 220, rgb565(255, 122, 182), 16, 95},
-    {1300, 498, 171, rgb565(92, 225, 230), 16, 95},  {1850, 179, 366, rgb565(140, 242, 122), 16, 95},
-    {2300, 817, 390, rgb565(181, 140, 255), 16, 95}, {2750, 500, 207, rgb565(255, 213, 74), 24, 150}};
-
-// Mega Boop pops back to its size, its splash and its cheer.
-constexpr int kPopMs = 2650;
-
 // The recipes: each finish's length, its reveal (the cheer, and where a
 // `say` starts) and its landings, in the order of Finish after kLittle.
 using slime::Contact;
@@ -382,7 +311,6 @@ const slime::Recipe kFinishRecipes[kBigFinishes] = {
     // Confetti: Little Win's hop at its reveal, a second one later.
     {AT(3600),
      F(0),
-     nullptr,
      3,
      1,
      0,
@@ -396,7 +324,6 @@ const slime::Recipe kFinishRecipes[kBigFinishes] = {
     // Gold Rush: the cheer as the gold floods in, and four landings.
     {AT(4600),
      F(0),
-     nullptr,
      5,
      1,
      0,
@@ -409,61 +336,8 @@ const slime::Recipe kFinishRecipes[kBigFinishes] = {
       {AT(landing(1550, 380)), kBody, 0, kStrong},
       {AT(landing(2250, 380)), kBody, 0, kStrong},
       {AT(landing(2950, 320)), kBody, 0, kStrong}}},
-    // Jelly Fireworks: the cheer at the first burst, and its big hops' landings.
-    {AT(4600),
-     F(0),
-     nullptr,
-     4,
-     1,
-     0,
-     1,
-     false,
-     false,
-     -1,
-     {{AT(550), kSuccess, 0, kStrong},
-      {AT(landing(400, 400)), kBody, 0, kStrong},
-      {AT(landing(1500, 400)), kBody, 0, kStrong},
-      {AT(landing(2950, 500)), kBody, 0, kStrong}}},
-    // Mega Boop: a boing as it starts to puff up, the cheer as it pops.
-    {AT(4800),
-     F(0),
-     nullptr,
-     2,
-     1,
-     0,
-     1,
-     false,
-     false,
-     -1,
-     {{AT(260), kBody, 0, kStrong}, {AT(kPopMs - 30), kSuccess, 0, kStrong}}},
-    // Mini-Boop Parade: the cheer as it splits, a squish as they merge.
-    {AT(5000),
-     F(0),
-     nullptr,
-     2,
-     1,
-     0,
-     1,
-     false,
-     false,
-     -1,
-     {{AT(650), kSuccess, 0, kStrong}, {AT(3450), kBody, 0, kStrong}}},
-    // Proud Spotlight: the podium's thunk, the cheer as the crown lands.
-    {AT(5000),
-     F(0),
-     nullptr,
-     2,
-     1,
-     0,
-     1,
-     false,
-     false,
-     -1,
-     {{AT(1100), kBody, 0, kStrong}, {AT(1750), kSuccess, 0, kStrong}}},
 };
 #undef AT
-// The parade's moments: it splits, and the little ones merge back.
-constexpr int kSplitMs = 650, kMergeMs = 3450;
 }  // namespace
 
 Point finishAnchor(const Surface& s) { return {s.width * 8, floorY(s) * 16}; }
@@ -472,29 +346,9 @@ FinishSize finishSize(int loops, int turn, int mood) {
   const bool sad = mood == slime::kDisappointed || mood == slime::kSad || mood == slime::kCrying ||
                    mood == slime::kWhiny || mood == slime::kWounded;
   if (sad) return FinishSize::kSmall;
-  if (turn < 0) return FinishSize(loops >= 4 ? 3 : std::max(0, loops - 1));
-  if (turn >= kBiggestTier) return FinishSize::kBiggest;
+  if (turn < 0) return FinishSize(std::clamp(loops - 1, 0, 2));
   if (turn >= kBigTier) return FinishSize::kBig;
   return turn >= kLongTier ? FinishSize::kMedium : FinishSize::kSmall;
-}
-
-void bigFinishes(int mood, Finish out[2]) {
-  switch (mood) {
-    case slime::kExcited: out[0] = Finish::kFireworks, out[1] = Finish::kGoldRush; return;
-    case slime::kHappy:
-    case slime::kPleased: out[0] = Finish::kGoldRush, out[1] = Finish::kParade; return;
-    case slime::kAmused: out[0] = Finish::kParade, out[1] = Finish::kFireworks; return;
-    case slime::kProud: out[0] = Finish::kSpotlight, out[1] = Finish::kGoldRush; return;
-    default: out[0] = Finish::kGoldRush, out[1] = Finish::kFireworks;
-  }
-}
-
-Finish bigFinish(int mood, int boardMood, int wanted, Finish last) {
-  Finish two[2];
-  bigFinishes(mood, two);
-  if (wanted == 1 || wanted == 2) return two[wanted - 1];
-  if (boardMood == slime::kProud) return Finish::kSpotlight;
-  return two[0] == last ? two[1] : two[0];
 }
 
 const slime::Recipe& finishRecipe(Finish f) { return kFinishRecipes[std::clamp(int(f) - 1, 0, kBigFinishes - 1)]; }
@@ -513,77 +367,9 @@ FinishPose finishPose(const Surface& s, Finish f, int age, int reveal) {
       p.scale = keys({{200, 4096}, {700, 3440}, {3900, 3440}, {4400, 4096}}, age);
       body(hops({hop(age, 250, 70, 550), hop(age, 1550, 34, 380), hop(age, 2250, 34, 380), hop(age, 2950, 22, 320)}));
       break;
-    case Finish::kFireworks:
-      body(hops({hop(age, 400, 50, 400), hop(age, 950, 34, 360), hop(age, 1500, 50, 400), hop(age, 2050, 34, 360),
-                 hop(age, 2950, 60, 500), hop(age, 3600, 22, 300)}));
-      p.lean =
-          1200 * sin12(seconds(age) * q(3.3)) / 4096 * ease(age, 0, 300) / 4096 * (4096 - ease(age, 4200, 4600)) / 4096;
-      p.starEyes = age >= 300 && age < 4300;
-      break;
-    case Finish::kMegaBoop: {
-      // Puffed up until its face fills the board, wobbling with glee, then
-      // popped back to its size with a boing; its face kept in the middle
-      // as it grows.
-      const int grow = keys({{250, 0}, {1250, 4096}, {2300, 4096}, {kPopMs, -491}}, age);
-      if (age < kPopMs) {
-        p.scale = 4096 + kMegaPuff * grow / 4096;  // to 2.2 times its size, and down past it
-      } else {
-        const F t = seconds(age - kPopMs);
-        p.scale = 4096 - scalar(decay(t * 6) * lcos(t * 14) * q(.12));
-      }
-      const int g = std::clamp(grow, 0, 4096), base = floorY(s), face = faceY(s), target = s.height * 470 / 1000;
-      p.dy16 = int(int64_t(g) * (target - base + int64_t(base - face) * p.scale / 4096) * 16 / 4096);
-      if (age > 1100 && age < 2300) {
-        const int w = 184 * sin12(seconds(age) * 17) / 4096;  // .045
-        p.squash = squashFor(4096 - w);
-      }
-      break;
-    }
-    case Finish::kParade:
-      if (age < kSplitMs) {
-        body(hop(age, 100, 70, 500));
-        p.scale = keys({{450, 4096}, {kSplitMs, 2048}}, age);
-      } else if (age < kMergeMs) {
-        p.minis = kParadeMinis;
-      } else {
-        // Whole again, with a boing.
-        const F t = seconds(age - kMergeMs);
-        p.scale = 4096 - scalar(decay(t * 8) * lcos(t * 14) / 2);
-      }
-      break;
-    case Finish::kSpotlight: {
-      const int pod = keys({{500, 0}, {1100, 4096}}, age) * (4096 - ease(age, 4400, 4900)) / 4096;
-      p.dy16 = -54 * pod / 4096 * 16;
-      p.scale = lerp(4096, 3031, pod);  // .74 on the podium
-      const int rise = keys({{1000, 4096}, {1400, 4383}, {4300, 4383}, {4600, 4096}}, age);
-      p.squash = squashFor(rise);
-      if (age > 1800)
-        p.lean = 2400 * sin12(seconds(age - 1800) * q(3.2)) / 4096 * (4096 - ease(age, 4300, 4700)) / 4096;
-      break;
-    }
     default: break;
   }
   return p;
-}
-
-int finishMinis(const Surface& s, int age, FinishPose* out) {
-  if (age < kSplitMs || age >= kMergeMs) return 0;
-  const int spread = keys({{kSplitMs, 0}, {kSplitMs + 450, 4096}, {kMergeMs - 450, 4096}, {kMergeMs, 0}}, age);
-  const F t = seconds(age - kSplitMs);
-  for (int i = 0; i < kParadeMinis; ++i) {
-    FinishPose& m = out[i];
-    m = {};
-    m.scale = 1229;  // under a third of it
-    const int lane = (i - kParadeMinis / 2) * 92 * s.width / 502, march = 16 * sin12(t * q(1.9)) / 4096;
-    m.dx16 = (lane + march) * spread / 4096 * 16;
-    const F phase = t * q(3.2) + q(.45) * i;
-    const int bounce = std::abs(scalar(lsin(phase * pi)));
-    m.dy16 = -(38 * bounce / 4096 * spread / 4096 + 60 * (4096 - spread) / 4096) * 16;
-    const int within = scalar(phase - F(int(phase.raw >> F::bits)));  // where in its hop, Q12
-    if (within < 492) m.squash = squashFor(4096 - 1024 * sin12(F::ratio(within, 492) * pi) / 4096);
-    m.lean = 1500 * sin12(phase * pi * 2) / 4096;
-  }
-  return kParadeMinis;
 }
 
 // Gold Rush's flood, px: out from behind it, and back at the end.
@@ -663,29 +449,12 @@ void paintFinishBehind(Surface& s, Finish f, int age, int reveal, bool night) {
     if (radius <= 0) return;
     const int cx = s.width * 8, cy = s.height * 560 / 1000 * 16;
     goldBurst(r, cx, cy, radius * 16, turnOf(seconds(age) * q(.35)), night);
-  } else if (f == Finish::kSpotlight) {
-    const int light = keys({{200, 0}, {550, 4096}, {4400, 4096}, {4900, 0}}, age);
-    if (!light) return;
-    const int w = s.width, base = floorY(s) + 10;
-    const Point cone[] = {
-        {w * 8 - 36 * 16, 0}, {w * 8 + 36 * 16, 0}, {w * 8 + 169 * 16, base * 16}, {w * 8 - 169 * 16, base * 16}};
-    // Over the black it's drawn on, translucent cream is a colour of its
-    // own: filled whole, with no blend a pixel.
-    auto cream = [&](int a) { return rgb565(255 * a / 255, 244 * a / 255, 199 * a / 255); };
-    const int coneAlpha = 56 * light / 4096;
-    r.polygon16(cone, 4, cream(coneAlpha));
-    Point pool[16];
-    for (int k = 0; k < 16; ++k) {
-      const F a = pi * 2 * k / 16;
-      pool[k] = {w * 8 + 170 * 16 * sin12(a + pi / 2) / 4096, (base - 4) * 16 + 22 * 16 * sin12(a) / 4096};
-    }
-    r.polygon16(pool, 16, cream(coneAlpha + (255 - coneAlpha) * 90 / 255 * light / 4096));
   }
 }
 
 void paintFinishFront(Surface& s, Finish f, int age, int reveal, const rig::Anchors& at, int scale, bool gifted) {
   Raster r{s};
-  const int w = s.width, h = s.height, floor = floorY(s);
+  const int w = s.width, h = s.height;
   // A ring of sparkles about the body, opening out, in the confetti's colours.
   auto ring = [&](int from, int lifeMs, int count, int cy) {
     const int d = age - from;
@@ -746,97 +515,6 @@ void paintFinishFront(Surface& s, Finish f, int age, int reveal, const rig::Anch
       confetti(r, age, 1600, 0, h, 8, 5, -q(1.15), q(.5), 470);
       confetti(r, age, 1600, w, h, 8, 6, -pi + q(1.15), q(.5), 470);
       twinkle(5, 40, 700, 3900, kWhite, 230);
-      break;
-    }
-    case Finish::kFireworks:
-      // The bursts, over it where they reach it: drawn behind, they'd
-      // need the whole frame erased first, not band by band with the body.
-      for (int i = 0; i < int(std::size(kBursts)); ++i) {
-        const auto& b = kBursts[i];
-        firework(r, s, age, b.at, w * b.x / 1000, h * b.y / 1000, b.ink, b.sparks, b.reach, 11 + i);
-      }
-      if (age >= 300 && age < 4300) {
-        // Star eyes, pulsing, where its eyes are.
-        const int pulse = 4096 + 491 * sin12(seconds(age) * 14) / 4096;
-        for (const Point eye : {at.eyeL, at.eyeR}) {
-          const Frame fr = turned(eye.x, eye.y + 2 * 16, scale * pulse / 4096, lsin(seconds(age) * 3) * q(.3));
-          star(r, fr, 24, 10, kGold, kOutline);
-          sparkle(r, fr.at(14, -14).x, fr.at(14, -14).y, fr.size16(6), 230, kWhite);
-        }
-      }
-      break;
-    case Finish::kMegaBoop: {
-      // The jelly splashes out as it pops, and a shower of confetti.
-      const int d = age - (kPopMs - 50);
-      if (d > 0 && d < 1600) {
-        const F t = seconds(d), spread = (F(1) - decay(t * 2)) / 2;
-        Random rnd(9);
-        r.alpha = std::clamp((1600 - d) * 255 / 400, 0, 255);
-        for (int i = 0; i < 18; ++i) {
-          const F a = -pi * (rnd.unit() * q(1.1) - q(.05)), v = 260 + rnd.unit() * 260;
-          const int radius = 7 + rnd.index(10);
-          const F x = w / 2 + lcos(a) * v * spread * q(1.3), y = h * 512 / 1000 - lsin(a) * v * spread + t * t * 230;
-          const int x16 = px16(x), y16 = px16(y);
-          dot16(r, x16, y16, radius * 16, kJelly);
-          dot16(r, x16 - radius * 6, y16 - radius * 6, radius * 5, kJellyShine);
-        }
-        r.alpha = 255;
-      }
-      confetti(r, age, kPopMs, w / 2, h * 490 / 1000, 28, 11, -pi / 2, q(2.6), 560, 2100);
-      twinkle(6, 70, 1000, 2450, kCream, 370);
-      if (age > kPopMs + 50 && age < 4400) {
-        // TA-DA!, popping up over it.
-        const int fade = 255 * (4096 - ease(age, 4100, 4400)) / 4096;
-        r.alpha = fade;
-        // Rising in sixteenths of a pixel, its corner on a whole one once it's up.
-        const int cy16 = h * 150 / 1000 * 16 - 12 * 16 * (4096 - ease(age, kPopMs + 50, kPopMs + 250)) / 4096;
-        const int left16 = (w / 2 - 6 * kSign.w / 2) * 16, top16 = cy16 - kSign.h / 2 * 16;
-        text16(r, kSign, left16 + 3 * 16, top16 + 3 * 16, "TA-DA!", rgb565(90, 51, 0));
-        text16(r, kSign, left16, top16, "TA-DA!", kGold);
-        r.alpha = 255;
-      }
-      break;
-    }
-    case Finish::kParade:
-      if (age >= kSplitMs && age < kMergeMs) twinkle(5, 90, kSplitMs, kMergeMs, kCream, 180);
-      if (age >= kMergeMs) ring(kMergeMs, 1200, 10, h * 490 / 1000);
-      break;
-    case Finish::kSpotlight: {
-      // The podium rises under it, the crown drops onto its head, and gold
-      // stars twinkle about.
-      const int pod = keys({{500, 0}, {1100, 4096}}, age) * (4096 - ease(age, 4400, 4900)) / 4096;
-      if (pod > 0) {
-        const int lift = 54 * pod / 4096, top = floor - lift + 4;
-        r.round(w / 2 - 140, top, 280, lift + 30, 6, kGoldDeep);
-        r.ring(w / 2 - 140, top, 280, lift + 30, 6, 3, kOutline);
-        r.round(w / 2 - 137, top + 3, 274, 8, 3, kGold);
-        if (pod > 2867) {
-          for (int dx = -1; dx <= 1; ++dx)
-            for (int dy = -1; dy <= 1; ++dy)
-              if (dx || dy) r.text("1", w / 2 + dx, top + 33 + dy, kOutline, kLarge);
-          r.text("1", w / 2, top + 33, kCream, kLarge);
-        }
-      }
-      if (age > 1300 && age < 4800) {
-        const int fall = age < 1750
-                             ? -140 + 140 * ease(age, 1300, 1750) / 4096
-                             : scalar(decay(seconds(age - 1750) * 6) * lsin(seconds(age - 1750) * 22) * 5) / 4096;
-        const int out = 4096 - ease(age, 4400, 4800);
-        // Its tilt: the body's lean, a little more, and a jaunty tip.
-        const int lean = age > 1800 ? 2400 * sin12(seconds(age - 1800) * q(3.2)) / 4096 : 0;
-        crown(r, turned(at.crown.x, at.crown.y + (12 + fall) * 16 * scale / 4096, 3900 * scale / 4096 * out / 4096,
-                        F::ratio(lean, 4096) / 5 - q(.1)));
-      }
-      const int light = keys({{200, 0}, {550, 4096}, {4400, 4096}, {4900, 0}}, age);
-      Random rnd(120);
-      for (int i = 0; i < 10; ++i) {
-        const int x = 30 + rnd.index(440), y = 20 + rnd.index(230);
-        const F phase = rnd.unit() * 6;
-        if (std::abs(x - 251) < 130) continue;
-        r.alpha = light * std::max(0, sin12(seconds(age) * 3 + phase)) / 4096 * 255 / 4096;
-        star(r, turned(x * w / 502 * 16, y * h / 410 * 16, 4096, seconds(age) / 2), 10, 4, kGold);
-      }
-      r.alpha = 255;
       break;
     }
     default: break;

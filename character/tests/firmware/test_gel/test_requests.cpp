@@ -180,7 +180,6 @@ void test_requests_route_by_priority() {
   // A start holds its last until it's cleared, then shows the latest facts.
   auto start = engine(look(SceneState::kWorking));
   Request starting = ask(SceneState::kStarting);
-  starting.ctx = StartCtx::kNewTask;
   start->play(starting);
   TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
   start->setFacts(look(SceneState::kWorking, SceneState::kTerminal));

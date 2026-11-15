@@ -148,7 +148,7 @@ inline void check(const Engine& e, const Frame* before = nullptr) {
 // its per-frame velocity at most twice as much as it does anywhere else in
 // the same runs. Drawn is the face's controls (each art's drawn size
 // counting in its control's family), the arts' weights, the mood's posture,
-// the props and a card's reveal while it shows. Jolts keeps the runs'
+// and the props. Jolts keeps the runs'
 // largest changes; each run's Track feeds it.
 struct Jolts {
   enum {
@@ -156,8 +156,7 @@ struct Jolts {
     kPosture = 8,
     kProps = 10,
     kDesk = kProps + Scenes::kProps,
-    kReveal,
-    kWeight = kReveal + 1,
+    kWeight = kDesk + 1,
     kFamilies
   };
   double event[kFamilies]{}, steady[kFamilies]{};
@@ -194,8 +193,7 @@ struct Track {
   }
   Said last{};
   Frame frames[2];
-  F posture[2][2], reveal[2];  // the start card's
-  bool shown[2]{};
+  F posture[2][2];
   int seen = 0;
   // Before a step: whether the host has said something since the last.
   bool heard(const Engine& e) const { return seen && !(said(e) == last); }
@@ -203,10 +201,7 @@ struct Track {
   void add(const Engine& e, bool isEvent) {
     const Frame now = capture(e);
     const auto p = e.posture();
-    const T t = e.timeMs();
     const F nowPosture[2] = {p[0], p[1]};
-    const F nowReveal = e.scenes.slots[Scenes::kStartProp].reveal.value(t);
-    const bool nowShown = now.props[Scenes::kStartProp] > F(0);
     if (seen >= 2) {
       auto& out = isEvent ? jolts->event : jolts->steady;
       auto d2 = [&](int family, F a, F b, F c) {
@@ -218,7 +213,6 @@ struct Track {
       for (int k = 0; k < Scenes::kProps; ++k)
         d2(Jolts::kProps + k, frames[0].props[k], frames[1].props[k], now.props[k]);
       d2(Jolts::kDesk, frames[0].desk, frames[1].desk, now.desk);
-      if (shown[0] && shown[1] && nowShown) d2(Jolts::kReveal, reveal[0], reveal[1], nowReveal);
       // Each art by its identity through the three frames: its weight, and
       // its drawn sizes in their controls' families.
       const int sized[] = {2, 4, 5};
@@ -240,8 +234,6 @@ struct Track {
     }
     frames[0] = frames[1], frames[1] = now;
     for (int k = 0; k < 2; ++k) posture[0][k] = posture[1][k], posture[1][k] = nowPosture[k];
-    reveal[0] = reveal[1], reveal[1] = nowReveal;
-    shown[0] = shown[1], shown[1] = nowShown;
     last = said(e);
     ++seen;
   }

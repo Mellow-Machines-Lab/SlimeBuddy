@@ -24,10 +24,8 @@ struct PaintControls {
   int squeezeTop = 0, squeezeBottom = 0, widen = 4096;
   // A finish's (render/gel/finish.h): the whole body scaled (Q12) about
   // (anchorX, anchorY) and moved by (offsetX, offsetY), in sixteenths of a
-  // pixel, its face and anchors with it; and its eyes left undrawn, for
-  // the finish's own.
+  // pixel, its face and anchors with it.
   int scale = 4096, anchorX = 0, anchorY = 0, offsetX = 0, offsetY = 0;
-  bool eyes = true;
 };
 // The canvas row the body stands on (restBodyBottom), and how far above it
 // its eyes are.
@@ -70,22 +68,21 @@ constexpr int kRigGaze = 205, kRigMouthOpen = 300;
 // (paint). At rest, none moves.
 void applyRig(PaintControls& c, const rig::Channels& rig);
 class Engine;
-// The body, the face art, what it wears and the air around it
+// The body, the face art, its nightcap and the Zs beside it
 // (render/gel/layers.h) as the layer stack shows them at t (whole in the
-// engine's tags and state with none), the pastimes' kit it wears, then the
-// props, with the rig's channels on the engine's controls; a lane that
+// engine's tags and state with none), then the props, their paws where the
+// pastime playing puts them, with the rig's channels on the engine's controls; a lane that
 // shows `keepLane` is kept
 // from this surface's last frame. Its anchors into `anchors`.
 // Pressed under the agents' drawer (`squeeze`, render/gel/drawer.h), it
 // draws flattened, and with its eyes squeezed shut it draws the body alone.
 struct DrawerPose;
-// A work act (render/gel/act.h) moves the body as a finish does, and draws
-// behind it and over it. Ducking `duck` px (under the needs-you card), its
+// Ducking `duck` px (under the needs-you card), its
 // crown comes down that far and its foot stays where it stands.
 void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t keepLane = 0,
            rig::Anchors* anchors = nullptr, const rig::Channels& rig = rig::kRest, const rig::Layers* layers = nullptr,
            uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
-           const Stream::ActNow* act = nullptr, int duck = 0);
+           int duck = 0);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
 // Hushed (the `hushed` tag, render/tags.h), its lips are zipped: in the
 // mouth's place, in its ink and following the face as it does, whatever

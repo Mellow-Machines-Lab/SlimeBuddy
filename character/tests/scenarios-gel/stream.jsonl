@@ -1,7 +1,7 @@
 // The work stream on the gel (render/gel/stream.h): two agents' lanes, each
-// in its colour, each new call's word falling behind the body, the
-// to-do list along the monitor's foot and the turn's clock in its corner; then
-// each gag a word that comes forward plays as it lands. One run on a frozen
+// in its colour, each new call's word falling behind the body, and
+// nothing of them on the monitor; then what each word that comes forward
+// does as it lands. One run on a frozen
 // clock after a reset, the state sent again every 20 s as the Mac does.
 {"t": "dbg.reset"}
 {"clock": 0}
@@ -25,7 +25,7 @@
 {"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "swift", "as": "bonk3"}}
 {"clock": 8200}
 {"shot": "bonk3"}
-// A lookup that found nothing: a shrug and an empty bubble.
+// A lookup that found nothing: its word beside its head, and a shrug.
 {"clock": 10500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "grep", "as": "shrug"}}
 {"clock": 11300}
@@ -48,45 +48,23 @@
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "back", "as": "back"}}
 {"clock": 49900}
 {"shot": "back"}
-// An edit sinks in; the monitor shows its lines.
+// An edit sinks in; the monitor stays as it was.
 {"clock": 64500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "edit +18 -2", "as": "land"}}
 {"clock": 65000}
 {"shot": "edit"}
-// No new call for 20 s: a thought cloud. The clock says how long they've worked.
+// No new call for 20 s: nothing comes up beside it or on the monitor.
 {"clock": 67500}
-{"shot": "thinking"}
+{"shot": "quiet"}
 // The whole turn's moments, each over the words falling as it comes.
-// A compaction: the words squashed into a cube that drops onto the desk.
-{"clock": 68000}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 6, "python"], [1, 5, "rg"]]}
-{"clock": 68600}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "context", "as": "compact"}}
-{"clock": 68900}
-{"shot": "compact-squash"}
-{"clock": 69700}
-{"shot": "compact-cube"}
-// A rate limit: the words freeze where they are, icy.
-{"clock": 71500}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 8, "python"], [1, 7, "rg"]]}
-{"clock": 71900}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "rate limit", "as": "freeze"}}
-{"clock": 72800}
-{"shot": "freeze"}
-// You stopped it: the words drop, switched off.
+// You stopped it, or it failed (a rate limit, a full context): the words
+// drop, switched off.
 {"clock": 74500}
 {"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 10, "python"], [1, 9, "rg"]]}
 {"clock": 74800}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 0, "w": "stopped", "as": "drop"}}
 {"clock": 75100}
 {"shot": "drop"}
-// Its context ran out: buried in bricks of its words, to its eyes.
-{"clock": 77500}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 12, "python"], [1, 11, "rg"]]}
-{"clock": 77800}
-{"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "context full", "as": "buried"}}
-{"clock": 79200}
-{"shot": "buried"}
 // The turn's done: the stream goes, its words linger, and it gathers them up.
 {"clock": 81000}
 {"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 2, "vol": 0, "when": ["day"], "todo": {"done": 3, "total": 7}, "calls": [[0, 14, "python"], [1, 13, "rg"]]}

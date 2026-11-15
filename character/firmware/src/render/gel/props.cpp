@@ -24,7 +24,7 @@ struct Card {
 };
 // The needs-you card stands in the top band, 344 × 76 px on the AMOLED from
 // y 16, clear of the crown, which ducks under it (paintFrame's duck).
-constexpr Card kAlertCard{158, 40, 685, 186, 40}, kStartCard{280, 85, 440, 132, 30};
+constexpr Card kAlertCard{158, 40, 685, 186, 40};
 // A card on a surface, in pixels, with its corners' radius as Raster::round
 // clamps it.
 struct Placed {
@@ -38,26 +38,16 @@ Placed place(const Surface& surface, const Card& c) {
 // Raster::round fills at the card's opacity: opaque from 253 on.
 bool opaque(F visible) { return (visible * 255).integer() >= 253; }
 
-// What the cards show, as a key that's the same exactly when their pixels
-// are (never 0), when one card shows, opaque: 0 while one fades, and when
-// two overlap, since the one on top covers the other's corners.
+// What the needs-you card shows, as a key that's the same exactly when its
+// pixels are (never 0), while it shows, opaque: 0 while it fades.
 uint32_t cardsKey(const Scenes& s, T now) {
+  const F seen = s.visible(Scenes::kAlertProp, now);
+  if (seen <= F(0) || !opaque(seen)) return 0;
+  // Its labels' and marks' soft edges still blend at 253 and 254.
   uint32_t h = 2166136261u;
-  auto add = [&](const void* data, size_t n) {
-    for (size_t i = 0; i < n; ++i) h = (h ^ static_cast<const uint8_t*>(data)[i]) * 16777619u;
-  };
-  auto str = [&](const char* v) { add(v ? v : "", v ? std::strlen(v) + 1 : 1); };
-  int shown = 0;
-  for (auto prop : {Scenes::kStartProp, Scenes::kAlertProp}) {
-    const F seen = s.visible(prop, now);
-    if (seen <= F(0)) continue;
-    if (!opaque(seen) || ++shown > 1) return 0;
-    // Its labels' and marks' soft edges still blend at 253 and 254.
-    const int facts[] = {int(prop), (seen * 255).integer()};
-    add(facts, sizeof facts);
-    if (prop == Scenes::kStartProp) str(s.startProp.label);
-  }
-  return shown ? (h ? h : 1) : 0;
+  const int facts[] = {int(Scenes::kAlertProp), (seen * 255).integer()};
+  for (size_t i = 0; i < sizeof facts; ++i) h = (h ^ reinterpret_cast<const uint8_t*>(facts)[i]) * 16777619u;
+  return h ? h : 1;
 }
 
 // The card's first row something's been drawn over yet this frame, or the
@@ -105,7 +95,6 @@ int opaqueCards(const Surface& surface, const Engine& e, Box* out) {
     }
   };
   add(kAlertCard, Scenes::kAlertProp);
-  add(kStartCard, Scenes::kStartProp);
   return count;
 }
 
@@ -199,8 +188,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       for (int i = 0; i < 3; ++i) round(129, 654 + i * 13, 100 - i * 24, 3, 1, blue);
     }
     // The keyboard and the paws go as it melts, which would leave them lying across its face.
-    const int kit = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
-    r.alpha = kit;
+    r.alpha = (s.desk.x * 255).integer() * (4096 - (paws ? paws->melted : 0)) / 4096;
     round(387, 713, 258, 30, 8, rgb565(49, 88, 107));
     for (int row = 0; row < 2; ++row)
       for (int key = 0; key < 9; ++key) {
@@ -208,12 +196,10 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
         round(397 + key * 26, 718 + row * 10, 19, 6, 2, pressed ? light : rgb565(144, 170, 176));
       }
     for (int side : {-1, 1}) {
-      const int i = side > 0, alpha = paws ? paws->alpha[i] : 255;
-      if (alpha < 3) continue;
+      const int i = side > 0;
       const int lift = std::max(tapLift(s, side), typeLift(uint32_t(F(e.timeMs()).integer()), side)) +
                        (paws ? paws->lift[i] : 0);
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
-      r.alpha = kit * alpha / 255;
       round(500 + side * 78 - 30 + (paws ? paws->dx[i] : 0), yy - 12, 60, 25, 13, rgb565(93, 166, 219));
     }
   }
@@ -232,11 +218,6 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     round(kMic - 8, 119, 16, 31, 8, light);
     r.line({x(kMic), y(153)}, {x(kMic), y(164)}, 2, blue);
     text("LISTENING", kLabel, 144, light, kLarge);
-  }
-  if (F start = s.visible(Scenes::kStartProp, now); start > F(0)) {
-    r.alpha = (start * 255).integer();
-    drawCard(kStartCard, rgb565(27, 55, 78), rgb565(0x78, 0xa4, 0xc8),
-             [&] { text(s.startProp.label, 500, 151, light, kLarge); });
   }
   if (F touch = s.visible(Scenes::kTouchProp, now); touch > F(0)) {
     F pulse = s.envelope(now, kBody);

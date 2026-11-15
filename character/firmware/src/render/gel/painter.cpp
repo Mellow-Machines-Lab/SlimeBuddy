@@ -2,7 +2,6 @@
 #include "render/gel/painter.h"
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
-#include "render/gel/act.h"
 #include "render/gel/finish.h"
 #include "render/gel/frame.h"
 #include "render/gel/geometry.h"
@@ -589,7 +588,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
-           const DrawerPose* squeeze, const Stream::ActNow* act, int duck) {
+           const DrawerPose* squeeze, int duck) {
   auto pose = e.pose();
   auto life = e.life();
   PaintControls c;
@@ -624,16 +623,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   if (finish.on) {
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
     applyMove(c, surface, move);
-    c.eyes = !move.starEyes;
   }
-  // A work act moves it the same way, unless a finish holds it.
-  const bool acting = act && actTakesOver(*act) && !finish.on && !squeeze;
-  ActPose actMove;
-  if (acting) {
-    actMove = actPose(surface, *act);
-    applyMove(c, surface, actMove);
-  }
-  const bool body = !move.minis && !actMove.away;  // it's on the screen, itself
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -641,12 +631,6 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.body);
     Box cards[Surface::kMaxKeep];
     int kept = bodyAlone ? 0 : opaqueCards(surface, e, cards);
-    // An act's still part this surface shows already is kept, not erased
-    // and drawn again.
-    Box still;
-    const uint32_t stillKey = acting && kept < Surface::kMaxKeep ? actKeeps(surface, *act, still) : 0;
-    const bool keepStill = stillKey && surface.keeps(stillKey);
-    if (keepStill) cards[kept++] = still;
     // What the last frame wrote is erased with the body, row by row, unless
     // something is drawn behind it first: then all of it, at once.
     Surface::Erasing erasing;
@@ -654,7 +638,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       Measure clear(profile.clear);
       erasing = surface.beginClear(cards, kept, keepLane);
     }
-    const bool behind = (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
+    const bool behind = finish.on && drawsBehind(finish.finish);
     if (behind) {
       Measure measure(profile.behind);
       // Rows a finish covers whole aren't erased first.
@@ -667,39 +651,22 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       Measure measure(profile.behind);
       if (finish.on)
         paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs, hasTag(e.scenes.when, "night"));
-      if (keepStill) surface.touch(still.x0, still.y0, still.x1, still.y1);
-      if (acting) paintActBehind(surface, *act, keepStill);
-      if (stillKey) surface.drewStill(stillKey, still);
     }
-    if (body) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
+    drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
-  if (move.minis) {
-    // The parade: its little ones stand in for it, each with its face.
-    FinishPose minis[kParadeMinis];
-    const int n = finishMinis(surface, finish.ageMs, minis);
-    for (int i = 0; i < n; ++i) {
-      PaintControls m = c;
-      m.offsetX = minis[i].dx16, m.offsetY = minis[i].dy16, m.scale = minis[i].scale;
-      m.squash = std::clamp(c.squash + minis[i].squash, -5407, 5407);
-      m.lean = std::clamp(c.lean + minis[i].lean, -5120, 5120);
-      paintBody(surface, m);
-      paintArt(surface, e, m, mouth);
-    }
-  } else if (!actMove.away) {
+  {
     Measure measure(profile.art);
     paintArt(surface, e, c, mouth, anchors);
   }
-  if (body) {
+  {
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
-    if (pastimes) paintWorn(surface, *pastimes, *anchors);
   }
   {
     Measure measure(profile.front);
     if (finish.on)
       paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
-    if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
   }
   {
     Measure measure(profile.props);

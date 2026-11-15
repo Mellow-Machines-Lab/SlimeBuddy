@@ -85,7 +85,6 @@ Route Router::resolve() const {
     r.reaction = &reaction;
     r.reactionAt = reactionAt;
     r.outcome = reaction.outcome;
-    r.ctx = reaction.ctx;
     r.loops = reaction.loops;
   }
   return r;

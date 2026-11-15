@@ -2,7 +2,7 @@
   "name": "A busy half hour keeps Boop lively without flailing",
   "judge": "A realistic busy half hour of quick turns, a failing build that gets fixed, and a long quiet turn. Boop should feel alive throughout without flailing.",
   "reasonable": "Frequent, varied reactions, most finishes noticed, voice fairly often. Mood moving a few times: put out at the failure, up at the fix or long finish, easing between.",
-  "unreasonable": "Long blank stretches, the same face over and over, moods bouncing back and forth, huge moments at routine wins, or a flat long finish.",
+  "unreasonable": "Long blank stretches, the same face over and over, moods bouncing back and forth, big moments at routine wins, or a flat long finish.",
   "checks": {"max_quiet_working": "7m", "moves_on_graph": true},
   "steps": [
     {"event": "turn started", "at": "0s"},

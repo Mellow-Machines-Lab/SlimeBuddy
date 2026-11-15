@@ -34,12 +34,12 @@ struct Layout {
 constexpr int kTop = 10;  // where words start falling, from the top edge
 
 // The props' inks, and a few of the stream's own.
-constexpr uint16_t kNavy = 0x10E8, kIce = 0xA6FF, kGrey = 0x8410;
+constexpr uint16_t kNavy = 0x10E8, kGrey = 0x8410;
 
 uint16_t laneInk(uint8_t slot) { return kLaneInk[slot % Stream::kLanes]; }
 
-// The ink a word forward is drawn in: a failure's red, a pass's green, a
-// freeze's ice, a drop's grey, else its lane's.
+// The ink a word forward is drawn in: a failure's red, a drop's grey, else
+// its lane's.
 uint16_t callInk(const Stream::Call& c) {
   switch (c.style) {
     case CallStyle::kBonk:
@@ -47,9 +47,7 @@ uint16_t callInk(const Stream::Call& c) {
     case CallStyle::kBonk3:
     case CallStyle::kThrow:
     case CallStyle::kNo:
-    case CallStyle::kTimeout:
-    case CallStyle::kBuried: return kFailInk;
-    case CallStyle::kFreeze: return kIce;
+    case CallStyle::kTimeout: return kFailInk;
     case CallStyle::kDrop: return kGrey;
     default: return laneInk(c.slot);
   }
@@ -115,55 +113,6 @@ void twinkle(Raster& r, const Layout& l, int cx, int cy, int ms, int alpha) {
   }
 }
 
-// The desk's monitor's screen, as the props draw it, and how much the desk
-// shows.
-struct Screen {
-  int x, y, w, h, alpha;
-};
-Screen screen(const Surface& s, const Engine& e) {
-  auto x = [&](int p) { return s.width * p / 1000; };
-  auto y = [&](int p) { return s.height * p / 1000; };
-  return {x(114), y(611), x(156), y(89), (e.scenes.desk.x * 255).integer()};
-}
-
-// The two numbers of an edit's word, `edit +18 -2`: lines added, removed.
-void editSize(const char* word, int& added, int& removed) {
-  added = removed = 0;
-  for (const char* p = word; *p; ++p) {
-    if (*p == '+') added = std::atoi(p + 1);
-    if (*p == '-' && p[1] >= '0' && p[1] <= '9') removed = std::atoi(p + 1);
-  }
-}
-
-// The monitor answering the word forward: a failure's crack up the ladder;
-// an edit's lines as bars.
-void monitor(Raster& r, const Surface& s, const Engine& e, const Stream::Call& c, int age) {
-  const bool crack = c.style == CallStyle::kBonk2 || c.style == CallStyle::kBonk3 || c.style == CallStyle::kThrow;
-  if (!crack && c.style != CallStyle::kLand) return;
-  const Screen m = screen(s, e);
-  if (m.alpha < 8) return;
-  r.alpha = m.alpha;
-  r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
-  if (crack) {  // longer up the ladder
-    const int rungs = c.style == CallStyle::kBonk2 ? 2 : c.style == CallStyle::kBonk3 ? 3 : 4;
-    const Point at[6] = {{m.x + 6, m.y + 8},   {m.x + 20, m.y + 16}, {m.x + 30, m.y + 12},
-                         {m.x + 44, m.y + 24}, {m.x + 56, m.y + 20}, {m.x + m.w - 6, m.y + m.h - 6}};
-    for (int i = 0; i + 1 < std::min(6, rungs + 2); ++i) r.line(at[i], at[i + 1], 1, 0xFFFF);
-  } else {  // an edit's lines: green added, red removed, to scale
-    r.round(m.x, m.y, m.w, m.h, 6, rgb565(7, 24, 32));
-    int added = 0, removed = 0;
-    editSize(c.text, added, removed);
-    if (added || removed) {
-      const int cy = m.y + m.h / 2;
-      auto bar = [&](int n) { return std::min(m.w - 30, 6 + n * (m.w - 36) / std::max(40, std::max(added, removed))); };
-      const int grow = easeOut(std::min(400, age), 400);  // in sixteenths of a pixel
-      round16(r, (m.x + 8) * 16, (cy - 9) * 16, bar(added) * 16 * grow / 400, 7 * 16, 3 * 16, kPassInk);
-      round16(r, (m.x + 8) * 16, (cy + 3) * 16, bar(removed) * 16 * grow / 400, 7 * 16, 3 * 16, kFailInk);
-    }
-  }
-  r.bounds = Raster::kEverywhere;
-}
-
 // Dizzy eyes: each eye hidden under the body's own colour, a spiral turning
 // over it.
 void dizzy(Raster& r, Surface& s, const Layout& l, const rig::Anchors& at, int ms, int alpha) {
@@ -190,85 +139,31 @@ void paintStreamBehind(Surface& surface, const Stream& stream, uint32_t t) {
   const Layout l{surface.width, surface.height};
   Raster r{surface};  // which stops at the lane's top
   // The words, dim, easing in as they come from the top and out before the
-  // lane, falling in sixteenths of a pixel; held where they are, icy, while
-  // a freeze lasts. A word the word forward takes is its to draw.
+  // lane, falling in sixteenths of a pixel. A word the word forward takes
+  // is its to draw.
   for (const auto& w : stream.words) {
     if (!w.live || stream.taken(w)) continue;
-    const bool held = stream.frozen() && int32_t(w.born - stream.call.at) <= 0;
-    const int age = int(int32_t((held ? stream.call.at : t) - w.born));
+    const int age = int(int32_t(t - w.born));
     if (age < 0 || age >= int(Stream::kFallMs)) continue;
-    const Point at = wordAt(l, w, held ? stream.call.at : t);
+    const Point at = wordAt(l, w, t);
     const int in = std::min(255, age * 255 / 200), out = std::min(255, (int(Stream::kFallMs) - age) * 255 / 600);
-    r.alpha = held ? 170 : std::min(in, out) * 110 / 255;
+    r.alpha = std::min(in, out) * 110 / 255;
     if (r.alpha < 3) continue;
-    centred16(r, kLarge, at.x, at.y, w.text, held ? kIce : laneInk(w.slot), true);
-  }
-}
-
-void deskClock(uint32_t secs, char* out) {
-  const unsigned mins = unsigned(secs / 60);
-  if (mins == 0)
-    out[0] = 0;
-  else if (mins < 60)
-    std::snprintf(out, kDeskClockBytes, "%u:%02u", mins, unsigned(secs % 60));
-  else if (mins < 100 * 60)
-    std::snprintf(out, kDeskClockBytes, "%uh%02u", mins / 60, mins % 60);
-  else
-    std::snprintf(out, kDeskClockBytes, "99h59");
-}
-
-void paintStreamDesk(Surface& surface, const Stream& stream, const Engine& e, const Strip& strip, uint32_t t) {
-  // Only while the Mac plays the stream: it sends a lane for each agent at
-  // work.
-  if (!surface.pixels || !stream.on || stream.laneCount == 0) return;
-  const Layout l{surface.width, surface.height};
-  Raster r{surface};
-  const Screen m = screen(surface, e);
-  // While no lane has counted a new call for a while: a thought cloud.
-  const int quiet = int(int32_t(t - stream.movedAt)) - int(Stream::kThinkMs);
-  if (quiet >= 0 && !stream.call.live && isDesk(e.scenes.route.state)) {
-    const int cx = l.x(330), cy = l.y(50), in = std::min(255, quiet * 255 / 400);
-    r.alpha = in;
-    r.disk(l.x(290), l.y(96), l.x(4), 0xFFFF);
-    r.disk(l.x(302), l.y(80), l.x(6), 0xFFFF);
-    for (int i = 0; i < 5; ++i)
-      r.disk(cx + l.x(18) * cos40(i * 8) / 1000, cy + l.y(10) * sin40(i * 8) / 1000, l.x(16), 0xFFFF);
-    const int dots = int(t / 400 % 4);
-    for (int i = 0; i < 3; ++i)
-      r.disk(cx - l.x(14) + i * l.x(14), cy, l.x(3), i < dots ? kNavy : rgb565(200, 200, 200));
-  }
-  if (m.alpha < 8) return;
-  r.alpha = m.alpha;
-  // The to-do list's progress along the screen's foot, and the turn's clock
-  // in its corner, amber from the fourth tier (5 minutes of the agents'
-  // working stretch).
-  if (strip.todoTotal > 0) {
-    const int span = m.w - 12, done = span * std::clamp(strip.todoDone, 0, strip.todoTotal) / strip.todoTotal;
-    r.round(m.x + 6, m.y + m.h - 6, span, 3, 1, rgb565(30, 60, 75));
-    if (done > 0) r.round(m.x + 6, m.y + m.h - 6, done, 3, 1, kPassInk);
-  }
-  char clock[kDeskClockBytes];
-  deskClock((t - stream.since) / 1000, clock);
-  if (clock[0]) {
-    const uint16_t ink = hasTag(e.scenes.when, "tier4") ? rgb565(239, 189, 103) : rgb565(110, 160, 180);
-    r.bounds = {m.x, m.y, m.x + m.w, m.y + m.h};
-    r.text(clock, m.x + m.w - glyphCount(clock) * kSmall.w / 2 - 4, m.y + 10, ink, kSmall);
-    r.bounds = Raster::kEverywhere;
+    centred16(r, kLarge, at.x, at.y, w.text, laneInk(w.slot), true);
   }
 }
 
 namespace {
 
 // The whole turn's moments, played over the words falling as the word came:
-// gathered into its mouth at a turn's end, squashed into a cube that thuds
-// onto the desk at a compaction, dropped when it's stopped, held icy at a
-// rate limit, or piled up to its eyes as bricks when its context runs out.
+// gathered into its mouth at a turn's end, or dropped when it's stopped or
+// has failed.
 void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors& at, int age, uint16_t ink,
             const char* word) {
   const auto& c = stream.call;
   const int flight = int(callFlightMs(c.style)), end = int(Stream::kCallMs);
   const int eyesX = (at.eyeL.x + at.eyeR.x) / 32, eyesY = (at.eyeL.y + at.eyeR.y) / 32;
-  const int crownX = at.crown.x / 16, crownY = at.crown.y / 16, deskY = l.y(305);
+  const int crownX = at.crown.x / 16, crownY = at.crown.y / 16;
   const int mouthX = eyesX, mouthY = eyesY + l.y(36);
   // The words it takes, from where they were as it came, in sixteenths of
   // a pixel; with none on screen, and `own`, its own word from its lane's
@@ -294,30 +189,6 @@ void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors
       }
       break;
     }
-    case CallMove::kCompact: {  // squashed together over its head, then a cube that drops onto the desk
-      const int cubeX = crownX, cubeY = l.y(70), squash = 500, side = l.x(56);
-      if (age < squash) {
-        const int k = easeIn(age, squash);
-        each(true, [&](Point p, const char* s, uint16_t in) {
-          r.alpha = 255 - k * 200 / squash;
-          centred16(r, kLarge, lerp(p.x, cubeX * 16, k, squash), lerp(p.y, cubeY * 16, k, squash), s, in);
-        });
-      }
-      if (age >= squash - 120) {
-        const int fall = easeIn(std::clamp(age - squash, 0, flight - squash), flight - squash);
-        // In sixteenths of a pixel, the cube's corner a whole pixel once it's landed.
-        const int bounce = age > flight && age < flight + 200 ? l.y16(6 * 16) * sin40((age - flight) / 10) / 1000 : 0;
-        const int x = lerp(cubeX * 16, l.x(456) * 16, fall, flight - squash) - side * 8,
-                  y = lerp(cubeY * 16, (deskY - side / 2) * 16, fall, flight - squash) - side * 8 - std::abs(bounce);
-        r.alpha = std::min(fadeBy(age, end, 400), std::min(255, (age - squash + 120) * 255 / 120));
-        round16(r, x, y, side * 16, side * 16, l.x16(8 * 16), rgb565(55, 65, 85));
-        for (int i = 0; i < 3; ++i)
-          round16(r, x + l.x16(7 * 16), y + l.y16((10 + i * 14) * 16), (side - l.x(14)) * 16, l.y16(7 * 16),
-                  l.y16(3 * 16), kLaneInk[(c.slot + i) % Stream::kLanes]);
-        centred16(r, kSmall, x + side * 8, y - l.y16(12 * 16), "context", rgb565(200, 210, 230));
-      }
-      break;
-    }
     case CallMove::kDrop: {  // switched off: the words fall away, grey
       each(false, [&](Point p, const char* s, uint16_t) {
         r.alpha = std::max(0, 200 - age * 200 / 700);
@@ -328,67 +199,25 @@ void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors
       centred16(r, kSign, crownX * 16, (crownY - l.y(40)) * 16 + l.y16(std::min(age, 400) * 16 / 20), word, ink);
       break;
     }
-    case CallMove::kFreeze: {  // the words held icy (paintStreamBehind), a snowflake, and a poke
-      r.alpha = fadeBy(age, end, 400);
-      const int fx = crownX, fy = crownY - l.y(52);
-      centred(r, kSign, fx, fy, word, ink);
-      const int sx = fx + glyphCount(word) * kSign.w / 2 + l.x(22), sy = fy, arm = l.x(12), spin = age / 60;
-      for (int i = 0; i < 3; ++i)
-        r.line({sx - arm * cos40(spin + i * 13) / 1000, sy - arm * sin40(spin + i * 13) / 1000},
-               {sx + arm * cos40(spin + i * 13) / 1000, sy + arm * sin40(spin + i * 13) / 1000}, l.x(2), kIce);
-      break;
-    }
-    case CallMove::kBuried: {  // bricks of its words piling up, to its eyes
-      const int bw = l.x(70), bh = l.y(18), rows = std::max(1, (deskY - eyesY) / bh), perRow = 4;
-      const int count = rows * perRow, x0 = crownX - perRow * bw / 2;
-      const char* texts[Stream::kWords + 1];
-      int n = 0;
-      for (const auto& w : stream.words)
-        if (w.live) texts[n++] = w.text;
-      if (!n) texts[n++] = "...";
-      r.alpha = fadeBy(age, end, 400);
-      const int a = r.alpha;
-      for (int i = 0; i < count; ++i) {
-        const int due = i * flight / count, k = std::min(150, age - due);
-        if (k < 0) break;
-        const int row = i / perRow, col = i % perRow, shift = row % 2 ? bw / 2 : 0;
-        // Each brick drops its last 150 px gathering speed, in sixteenths of
-        // a pixel.
-        const int x = x0 + col * bw + shift - bw / 4,
-                  y16 = (deskY - (row + 1) * bh) * 16 - l.y16((150 - easeIn(k, 150)) * 16);
-        r.alpha = a;
-        round16(r, (x + 1) * 16, y16 + 16, (bw - 2) * 16, (bh - 2) * 16, l.y16(4 * 16),
-                mix565(0, kLaneInk[(row + col) % Stream::kLanes], 150));
-        r.alpha = a * 3 / 4;
-        centred16(r, kSmall, (x + bw / 2) * 16, y16 + bh / 2 * 16, texts[i % n], 0xFFFF);
-      }
-      r.alpha = a;
-      centred(r, kSign, crownX, crownY - l.y(46), word, ink);
-      break;
-    }
     default: break;
   }
 }
 
 }  // namespace
 
-void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors& at, const Engine& e, uint32_t t) {
+void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors& at, uint32_t t) {
   const auto& c = stream.call;
   const int age = int(int32_t(t - c.at));
   if (!surface.pixels || !stream.drawn(t) || !c.live || age < 0 || age >= int(Stream::kCallMs)) return;
   const Layout l{surface.width, surface.height};
   Raster r{surface};
-  monitor(r, surface, e, c, age);
   const Font& big = bubbleFont();
   const CallMove move = callMove(c.style);
   const int flight = int(callFlightMs(c.style)), after = age - flight, end = int(Stream::kCallMs);
   const uint16_t ink = callInk(c);
   switch (move) {
     case CallMove::kGather:
-    case CallMove::kCompact:
-    case CallMove::kDrop:
-    case CallMove::kFreeze:
-    case CallMove::kBuried: moment(r, l, stream, at, age, ink, c.text); return;
+    case CallMove::kDrop: moment(r, l, stream, at, age, ink, c.text); return;
     default: break;
   }
 
@@ -460,13 +289,9 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
       }
       break;
     }
-    case CallMove::kShrug: {  // beside its head, and an empty bubble over it
+    case CallMove::kShrug: {  // beside its head, as it shrugs
       r.alpha = fadeBy(after, 1600, 300);
-      if (r.alpha < 3) break;
-      centred(r, big, toX, toY, c.text, ink);
-      const int bx = toX - l.x(32), by = toY - l.y(64), bw = l.x(64), bh = l.y(32);
-      r.round(bx, by, bw, bh, bh / 2, 0xFFFF);
-      for (int i = -1; i <= 1; ++i) r.disk(toX + i * l.x(14), by + bh / 2, l.x(4), rgb565(40, 40, 40));
+      if (r.alpha >= 3) centred(r, big, toX, toY, c.text, ink);
       break;
     }
     case CallMove::kShatter: {  // bursting into its glyphs, which it swallows
@@ -481,10 +306,6 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
         char one[2] = {char(g + 0x20), 0};
         if (g + 0x20 < 0x7f)
           centred16(r, kLarge, lerp(bx, mouthX * 16, in, 480), lerp(by, mouthY * 16, in, 480), one, ink);
-      }
-      if (after >= 780 && after < 1100) {  // a burp
-        r.alpha = fadeBy(after, 1100, 200);
-        centred(r, kSmall, mouthX + l.x(46), mouthY - l.y(20), "burp", rgb565(200, 200, 200));
       }
       break;
     }
