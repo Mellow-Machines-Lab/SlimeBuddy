@@ -198,13 +198,16 @@ void test_it_types_along_with_you() {
   board.to(board.t + rig::kFadeMs + 48);
   PastimeShow s = face.pastimes(board.t);
   TEST_ASSERT_TRUE(s.keys == 255 && s.tapping);
-  // Its body in it too: hunched and bouncing (the rig's `type-along`).
-  int low = 1 << 30, high = 0;
+  // Its body keeps time too, a little (the rig's `type-along`): it moves, and
+  // never bounces.
+  int low = 1 << 30, high = 0, lifted = 0;
   board.to(board.t + 1300, [&] {
-    const int squash = face.mixer().channels()[rig::Channel::kSquash];
-    low = std::min(low, squash), high = std::max(high, squash);
+    const auto c = face.mixer().channels();
+    low = std::min(low, int(c[rig::Channel::kSquash])), high = std::max(high, int(c[rig::Channel::kSquash]));
+    lifted = std::max(lifted, int(c[rig::Channel::kLift]));
   });
-  TEST_ASSERT_TRUE(high - low > 300);  // a big dip and spring, a beat every 600 ms
+  TEST_ASSERT_TRUE(high - low > 20 && high - low < 100);  // a slight dip, a beat every 600 ms
+  TEST_ASSERT_EQUAL_INT(0, lifted);                        // and no hop
   TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
   TEST_ASSERT_TRUE(face.engine().motion.attending);  // its eyes on the keys
   // Two minutes of your typing: never a pastime over the keys.
@@ -269,8 +272,9 @@ void test_it_types_along_with_you() {
   board.tags(day | typing);
   board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
   // Brisk is twice as often and higher than the agents' soft typing.
-  // Size, not speed: no quicker than the soft typing, and far bigger.
-  static_assert(kBriskMs >= 300 && kBriskLift > 5 * kTypeLift, "typing with you is big, not fast");
+  // No quicker than the soft typing, higher, and no bounce.
+  static_assert(kBriskMs >= 300 && kBriskLift > 2 * kTypeLift && kBriskLift <= 3 * kTypeLift,
+                "typing with you is clearer than the agents', not a bounce");
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kBriskTapMs / 2, -1, true));
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kBriskTapMs / 2, 1, true));
   // A pastime playing as you start: it plays out first.

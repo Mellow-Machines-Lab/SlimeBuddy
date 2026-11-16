@@ -171,10 +171,9 @@ class GelFace final : public Face {
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
   // Typing along with you (showAlong): while your hands are busy at the Mac
-  // (the `typing` tag) it types as you do, and so that you can see it from
-  // across a desk, by size and not by speed: its whole body rocks slowly
-  // over the keys and springs up off each beat (the rig's `type-along`
-  // clip) and its paws swing high. At work that's at its desk, in place of
+  // (the `typing` tag) it types as you do: its paws swing higher than the
+  // agents' soft typing, and its body sways a little over the keys, keeping
+  // time (the rig's `type-along` clip), never hopping. At work that's at its desk, in place of
   // the agents' soft typing, and only in its typing pose: looking, running
   // or waiting, its paws are off the keys and the pose has the body. Idle,
   // it has its keyboard out for it, its paws rest when you stop, and the

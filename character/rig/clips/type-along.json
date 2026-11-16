@@ -1,11 +1,10 @@
 {
-  "about": "Typing along with you (GelFace::showAlong), looped while your hands are busy: a slow, big rock over its keys, to one side and then the other, dipping onto each beat and springing up off it with a little hop, eyes lowered. Size, not speed, so it shows on a small screen across a desk without looking frantic: a beat every 600 ms.",
+  "about": "Typing along with you (GelFace::showAlong), looped while your hands are busy: a small sway over its keys, to one side and then the other, dipping a little onto each beat, eyes lowered. The paws carry the typing; the body only keeps time. A beat every 600 ms.",
   "ms": 1200,
   "loop": true,
   "tracks": {
-    "lean": [[0, -300], [600, 300], [1200, -300]],
-    "squash": [[0, 300], [220, -60], [420, 30], [600, 300], [820, -60], [1020, 30], [1200, 300]],
-    "lift": [[0, 0], [120, 0], [280, 16], [460, 0], [600, 0], [720, 0], [880, 16], [1060, 0], [1200, 0]],
+    "lean": [[0, -60], [600, 60], [1200, -60]],
+    "squash": [[0, 40], [220, -10], [600, 40], [820, -10], [1200, 40]],
     "eyeOpen": [[0, -200], [1200, -200]]
   }
 }

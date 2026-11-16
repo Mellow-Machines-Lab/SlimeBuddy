@@ -858,12 +858,12 @@ would pull its eyes off the page or the monitor: that's why the pose
 comes before the glance in the list.
 
 **Typing along** (`GelFace::showAlong`): while your hands are busy at the
-Mac (the `typing` tag), it types with you, and so that you can see it on a
-small screen across a desk, by size and not by speed: its whole body rocks
-slowly over the keys, to one side and then the other, dipping onto each
-beat and springing up off it with a little hop, a beat every 600 ms (the
-rig's looping `type-along` clip); its paws swing 70 high, one every 300 ms
-(`kBriskLift`, `kBriskMs`), against the agents' soft 12 every 340. The keys under the
+Mac (the `typing` tag), it types with you: its body sways a little over
+the keys, to one side and then the other, dipping slightly onto each beat,
+a beat every 600 ms, never hopping (the rig's looping `type-along` clip);
+its paws swing 30 high, one every 300 ms (`kBriskLift`, `kBriskMs`),
+against the agents' soft 12 every 340. At the Buddy's size, more was a
+bounce. The keys under the
 paws light as they land, which a small screen barely shows. At work that's at its desk, which
 is out already, and its eyes drop to the keys in place of the glances; you
 stop, and it's back to the soft typing. Only its typing pose types with

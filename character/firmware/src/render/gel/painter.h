@@ -100,11 +100,11 @@ int tapLift(const Scenes& scenes, int side);
 // Between them it types on softly, without a sound: a tap every kTypeMs,
 // the paws by turns, each lifting kTypeLift over kTapMs, at `ms` of the
 // engine's clock.
-// `brisk`, while you type and it types with you (GelFace::showAlong): size,
-// not speed. A paw comes down every kBriskMs, a little slower than the soft
-// typing, swinging kBriskLift high over kBriskTapMs, and its key lights as
-// it lands.
-constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 70, kBriskTapMs = 280;
+// `brisk`, while you type and it types with you (GelFace::showAlong): a paw
+// comes down every kBriskMs, swinging kBriskLift high over kBriskTapMs,
+// clearly more than the soft typing but no bounce, and its key lights as it
+// lands.
+constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 30, kBriskTapMs = 280;
 // Where each activity that isn't typing holds the paws (0 left, 1 right),
 // in the thousandths paintProps draws them in: lifted, and moved right.
 struct PawPose {

@@ -370,8 +370,8 @@ void GelFace::showAlong(uint32_t t) {
   // It never cuts a pastime to start: it waits for it to end.
   const bool was = tapping_;
   tapping_ = (idle || working) && typing && !playing();
-  // Its whole body types with you: hunched over the keys and bouncing with
-  // each one (the rig's `type-along`), so it shows from across a desk.
+  // Its body keeps time with you: a small sway over the keys (the rig's
+  // `type-along`); the paws carry the typing.
   if (tapping_ != was)
     if (const rig::Clip* clip = rig::kRig.clip("type-along")) tapping_ ? mixer_.play(*clip) : mixer_.stop(*clip);
   const bool alone = tapping_ && idle;  // with its keyboard alone
