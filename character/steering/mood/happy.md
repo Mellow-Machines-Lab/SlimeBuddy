@@ -10,5 +10,3 @@ work done, proud; a long turn working on, or the person sounding
 frustrated, focused; a failed check, a failed turn short of very long
 or 2 pokes in a row, cross; a very long turn failing, the agent giving
 up, sad news or rude words to Boop, sad.
-At an idle check-in when CONTEXT says its wish is waiting 1 h or more
-with you here: cross or sad.

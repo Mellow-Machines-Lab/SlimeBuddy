@@ -115,12 +115,7 @@ ramps and springs can, and no jolt at an event. By file:
   each cue, no bit), a reply's clip (`test_a_reply_plays_its_clip_once`:
   every reply has one, 1 to 1.8 s, its name fits the board's buffer, a
   shake of the head leans the body, once for each reply, nothing for a
-  reply with no clip, from a `ReactionIn` too; a nap or a dance its clip
-  alone, the yawn and the sway, and no pastime; notme's eyes off to one
-  side), hushed lips
-  (`test_hushed_its_lips_are_zipped`: `hushed` the tags' last, the zip's
-  ends and its ticks' tips inked only while it's on, nothing between the
-  ticks, and the same frame whether a clip opens the mouth or not), the
+  reply with no clip, from a `ReactionIn` too), the
   rig's stretch on both faces (a row of the gel's pastimes, over its
   pose, and on Pixel's rig face, faded out by a Moment), the
   pastimes (`test_pastimes.cpp`: each row's body in the pack and its
@@ -200,10 +195,9 @@ ramps and springs can, and no jolt at an event. By file:
   around, a hopeful look, a hop and a snooze's Zs, asleep a snore's bubble
   and a roll over, and needs you with no pastime after two minutes), the
   replies (`replies.jsonl`: each reply's clip partway through under its
-  face and sign, a nap and a dance at work, and the nap at a night's lock), hushed
-  (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
-  through a giggle that opens the mouth, the hush reply's squeeze and
-  nod, and unhush's perk-up with its own mouth back), the
+  face and sign, the hush reply's squeeze and nod among them, a no over the
+  needs-you screen, the slight wave at a lock and the bye at a night's
+  lock), the
   gaze (`gaze.jsonl`: at work typing, forward, a glance at a word and down it, forward again and no glance inside its rest; looking, running and waiting with the same word falling and no glance; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: the nightcap at night and on a party night, Zs
   asleep at night, a morning and each special day with nothing worn and

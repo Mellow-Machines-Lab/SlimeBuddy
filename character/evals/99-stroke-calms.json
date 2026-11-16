@@ -6,7 +6,7 @@
   "steps": [
     {"event": "pokes", "at": "0s", "count": 4, "brain": {"mood": "cross"}},
     {"event": "gesture", "at": "8s", "kind": "stroke", "brain": {"react.face": "annoyed", "mood": "cross"}},
-    {"event": "gesture", "at": "3m", "kind": "dizzy", "brain": {"react.face": "surprised"}},
+    {"event": "gesture", "at": "3m", "kind": "shake", "brain": {"react.face": "surprised"}},
     {"event": "gesture", "at": "6m", "kind": "swipe", "brain": {"react.face": "annoyed", "mood": "cross"}}
   ]
 }

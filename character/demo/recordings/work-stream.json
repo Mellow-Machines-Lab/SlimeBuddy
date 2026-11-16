@@ -10,169 +10,169 @@
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.01,
+      "at": 1.009,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.01,
+      "at": 1.009,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Clean up the old payment handlers and get the tests green”"
       }
     },
     {
-      "at": 1.331,
-      "effect": "Boop makes a focused face and says “Rrr...”",
-      "line": "{\"t\":\"do\",\"id\":384293375,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.nonverbal.effort.rrr__engaged__contained\"},\"mood\":\"focused\",\"loops\":1}}"
+      "at": 1.329,
+      "effect": "Boop makes a focused face and says “Hup”",
+      "line": "{\"t\":\"do\",\"id\":1684725951,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.nonverbal.effort.hup__engaged__contained\"},\"mood\":\"focused\",\"loops\":1}}"
     },
     {
-      "at": 3.467,
+      "at": 3.465,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"read\"]]}"
     },
     {
-      "at": 4.101,
+      "at": 4.104,
       "cause": {
         "kind": "tool",
         "text": "Claude reads src/payments/handlers.js"
       }
     },
     {
-      "at": 5.168,
+      "at": 5.171,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"grep\"]]}"
     },
     {
-      "at": 7.3,
+      "at": 7.303,
       "cause": {
         "kind": "tool",
         "text": "Claude: find the old handlers"
       }
     },
     {
-      "at": 8.366,
+      "at": 8.37,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 10.5,
+      "at": 10.505,
       "cause": {
         "kind": "tool",
         "text": "Claude: read the routes"
       }
     },
     {
-      "at": 11.535,
+      "at": 11.57,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 11.536,
+      "at": 11.572,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"]]}"
     },
     {
-      "at": 11.536,
+      "at": 11.572,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Update the payments docs”"
       }
     },
     {
-      "at": 12.603,
+      "at": 12.636,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,3,\"sed\"],[1,1,\"read\"]]}"
     },
     {
-      "at": 13.244,
+      "at": 13.278,
       "cause": {
         "kind": "tool",
         "text": "Claude reads docs/payments.md"
       }
     },
     {
-      "at": 15.378,
+      "at": 15.411,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"analyzing\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,1,\"read\"]]}"
     },
     {
-      "at": 17.51,
-      "line": "{\"t\":\"do\",\"id\":384293376,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"grep\",\"as\":\"shrug\"}}"
+      "at": 17.543,
+      "line": "{\"t\":\"do\",\"id\":1684725952,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"grep\",\"as\":\"shrug\"}}"
     },
     {
-      "at": 17.51,
+      "at": 17.543,
       "cause": {
         "kind": "tool_failed",
         "text": "A lookup that finds nothing: a shrug"
       }
     },
     {
-      "at": 19.643,
+      "at": 19.677,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 20.271,
+      "at": 20.315,
       "cause": {
         "kind": "tool",
         "text": "Claude edits docs/payments.md"
       }
     },
     {
-      "at": 22.004,
+      "at": 22.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,4,\"grep\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 22.405,
+      "at": 22.449,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,5,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 24.539,
-      "line": "{\"t\":\"do\",\"id\":384293377,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk\"}}"
+      "at": 24.581,
+      "line": "{\"t\":\"do\",\"id\":1684725953,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk\"}}"
     },
     {
-      "at": 24.539,
+      "at": 24.581,
       "cause": {
         "kind": "tool_failed",
         "text": "A failed command hits it"
       }
     },
     {
-      "at": 27.738,
+      "at": 27.782,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,6,\"node\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 29.813,
-      "line": "{\"t\":\"do\",\"id\":384293378,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk2\"}}"
+      "at": 29.917,
+      "line": "{\"t\":\"do\",\"id\":1684725954,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"node\",\"as\":\"bonk2\"}}"
     },
     {
-      "at": 29.813,
+      "at": 29.917,
       "cause": {
         "kind": "tool_failed",
         "text": "Again: harder"
       }
     },
     {
-      "at": 32.999,
+      "at": 32.998,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,7,\"edit -140\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 33.636,
-      "line": "{\"t\":\"do\",\"id\":384293379,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"-140\",\"as\":\"shatter\"}}"
+      "at": 33.637,
+      "line": "{\"t\":\"do\",\"id\":1684725955,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"-140\",\"as\":\"shatter\"}}"
     },
     {
-      "at": 33.636,
+      "at": 33.638,
       "cause": {
         "kind": "tool",
         "text": "A big deletion, swallowed"
       }
     },
     {
-      "at": 36.006,
+      "at": 36.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,7,\"edit -140\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 36.805,
+      "at": 36.838,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,8,\"npm test\"],[1,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 38.94,
+      "at": 38.972,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,8,\"npm test\"],[1,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
     },
     {
-      "at": 38.94,
+      "at": 38.972,
       "cause": {
         "kind": "tool_failed",
         "text": "Failing tests rain on it"
@@ -187,26 +187,26 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,9,\"edit +1 -1\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 41.636,
+      "at": 41.637,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/payments/routes.js"
       }
     },
     {
-      "at": 42.003,
+      "at": 42.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,9,\"edit +1 -1\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 44.837,
+      "at": 44.839,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,10,\"npm test\"],[1,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 46.889,
+      "at": 46.973,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,10,\"npm test\"],[1,2,\"edit +1 -1\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 46.89,
+      "at": 46.973,
       "cause": {
         "kind": "tool",
         "text": "Green: confetti"
@@ -217,40 +217,40 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,10,\"npm test\"],[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 50.637,
+      "at": 50.636,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 50.637,
-      "line": "{\"t\":\"do\",\"id\":384293380,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 50.636,
+      "line": "{\"t\":\"do\",\"id\":1684725956,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 50.638,
+      "at": 50.636,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 50.964,
-      "effect": "Boop celebrates and says “Ha! Yatta”",
-      "line": "{\"t\":\"do\",\"id\":384293381,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-work-stream\"},\"say\":{\"take\":\"phase1.nonverbal.delight.ha__proud__contained\",\"then\":\"phase1.borrowed.yatta__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
+      "at": 50.959,
+      "effect": "Boop celebrates and says “Bravo”",
+      "line": "{\"t\":\"do\",\"id\":1684725957,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-work-stream\"},\"say\":{\"take\":\"phase1.word.celebrate.bravo__proud__contained\"},\"mood\":\"proud\",\"loops\":2}}"
     },
     {
-      "at": 50.966,
+      "at": 50.961,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"proud\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[1,2,\"edit +1 -1\"]]}"
     },
     {
-      "at": 53.639,
+      "at": 53.637,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 53.639,
-      "line": "{\"t\":\"do\",\"id\":384293382,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":1,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 53.637,
+      "line": "{\"t\":\"do\",\"id\":1684725958,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":1,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 53.639,
+      "at": 53.637,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
@@ -262,9 +262,8 @@
   "name": "Boop",
   "script": "caf4968416823e2cced97e7b51d2395b0946309d5c446bad1753d90639519467",
   "takes": [
-    "phase1.nonverbal.effort.rrr__engaged__contained",
-    "phase1.nonverbal.delight.ha__proud__contained",
-    "phase1.borrowed.yatta__proud__contained"
+    "phase1.nonverbal.effort.hup__engaged__contained",
+    "phase1.word.celebrate.bravo__proud__contained"
   ],
   "version": 1
 }

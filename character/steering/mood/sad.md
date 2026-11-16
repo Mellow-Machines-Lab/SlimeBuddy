@@ -1,8 +1,7 @@
 <!-- The sad mood: the MOOD section while it's current. Read-only at runtime; the app bundles a copy. Comments are left out of Jev's state. The app fades a mood by its clock (character.json), so no minutes here. -->
 MOOD
 Sad. Boop is deflated or hurt: a very long turn failed, the agent gave
-up, the person shared sad news, rude words stung it, or a wish waited
-about an hour with you here.
+up, the person shared sad news, or rude words stung it.
 Its faces lean sad, wounded when it was the person's words; at a poke
 too, never cheeky. A win gets a pleased or proud face; a failure, sad
 again. A touch never cheers its face.

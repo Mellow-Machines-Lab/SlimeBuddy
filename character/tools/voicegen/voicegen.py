@@ -118,7 +118,7 @@ UNSAID = {"helpers", "helper back", "command", "tool", "looking", "planning", "a
 # The replies that merged into another (their recorded words go with
 # them), and the ones Boop no longer makes, left out as UNSAID's are.
 REPLY_AS = {"love": "thanks", "notme": "no"}
-UNMADE = {"dance", "nap"}
+UNMADE = {"dance", "nap", "unhush"}
 # Entries whose words name a fact that belongs to another topic, whatever
 # the bank's intent: "Passed" is about tests, so it's only said about them
 # (and only on a success); the greetings, recorded for pokes and needs you,

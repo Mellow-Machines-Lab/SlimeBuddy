@@ -1765,20 +1765,7 @@ placeholder.phrase.talk-notme.ask-the-mac__proud__contained	Ask the Mac	reply	no
 placeholder.phrase.talk-notme.not-my-job__annoyed__contained	Not my job	reply	no	phrase	annoyed		838
 placeholder.phrase.talk-notme.not-my-job__curious__contained	Not my job	reply	no	phrase	curious surprised		848
 placeholder.phrase.talk-notme.not-my-job__calm__contained	Not my job	reply	no	phrase	calm		928
-placeholder.nonverbal.talk-unhush.ahh__excited__contained	Ahh!	reply	unhush	sound	excited		349
-placeholder.nonverbal.talk-unhush.ahh__happy__contained	Ahh!	reply	unhush	sound	happy pleased amused affectionate		369
-placeholder.nonverbal.talk-unhush.hah__excited__contained	Hah!	reply	unhush	sound	excited		389
-placeholder.nonverbal.talk-unhush.hah__happy__contained	Hah!	reply	unhush	sound	happy pleased amused affectionate		429
-placeholder.word.talk-unhush.finally__excited__contained	Finally	reply	unhush	word	excited		548
-placeholder.word.talk-unhush.finally__happy__contained	Finally	reply	unhush	word	happy pleased amused affectionate		568
-placeholder.word.talk-unhush.free__excited__contained	Free	reply	unhush	word	excited		379
-placeholder.word.talk-unhush.free__happy__contained	Free	reply	unhush	word	happy pleased amused affectionate		409
-placeholder.phrase.talk-unhush.i-can-talk__excited__contained	I can talk!	reply	unhush	phrase	excited		628
-placeholder.phrase.talk-unhush.i-can-talk__happy__contained	I can talk!	reply	unhush	phrase	happy pleased amused affectionate		698
-placeholder.phrase.talk-unhush.words-again__excited__contained	Words again!	reply	unhush	phrase	excited		698
-placeholder.phrase.talk-unhush.words-again__happy__contained	Words again!	reply	unhush	phrase	happy pleased amused affectionate		748
 previous.yay	Yay	reply	thanks	word	happy pleased amused affectionate		958
-previous.yay	Yay	reply	unhush	word	happy pleased amused affectionate		958
 previous.basta	Basta	reply	no	word	annoyed		967
 previous.eh	Eh?	reply	huh	sound	curious surprised		588
 previous.tsk	Tsk...	reply	no	sound	annoyed		1377
@@ -1787,7 +1774,6 @@ previous.heh	Heh...	reply	hehe	sound	happy pleased amused affectionate		961
 new.d09	Hello	reply	hello	word	curious surprised		758
 new.d10	Hello	reply	hello	word	calm		668
 new.d11	Hello	reply	hello	word	wounded		1007
-new.d13	Phew...	reply	unhush	sound	happy pleased amused affectionate		987
 phase1.word.search.look__calm__contained	Look	reply	status	word	calm		748
 phase1.word.search.look__engaged__contained	Look	reply	status	word	focused		748
 phase1.word.search.look__determined__contained	Look	reply	status	word	determined		738
@@ -1815,26 +1801,12 @@ phase1.word.search.peek__excited__contained	Peek	reply	status	word	excited		778
 phase1.word.search.peek__proud__contained	Peek	reply	status	word	proud mischievous		987
 phase1.word.search.peek__curious__contained	Peek	reply	status	word	curious surprised		718
 phase1.word.celebrate.yay__calm__contained	Yay	reply	thanks	word	calm		878
-phase1.word.celebrate.yay__calm__contained	Yay	reply	unhush	word	calm		878
 phase1.word.celebrate.yay__engaged__contained	Yay	reply	thanks	word	focused		898
-phase1.word.celebrate.yay__engaged__contained	Yay	reply	unhush	word	focused		898
 phase1.word.celebrate.yay__determined__contained	Yay	reply	thanks	word	determined		818
-phase1.word.celebrate.yay__determined__contained	Yay	reply	unhush	word	determined		818
 phase1.word.celebrate.yay__happy__contained	Yay	reply	thanks	word	happy pleased amused affectionate		908
-phase1.word.celebrate.yay__happy__contained	Yay	reply	unhush	word	happy pleased amused affectionate		908
 phase1.word.celebrate.yay__excited__contained	Yay	reply	thanks	word	excited		1027
-phase1.word.celebrate.yay__excited__contained	Yay	reply	unhush	word	excited		1027
 phase1.word.celebrate.yay__proud__contained	Yay	reply	thanks	word	proud mischievous		1237
-phase1.word.celebrate.yay__proud__contained	Yay	reply	unhush	word	proud mischievous		1237
 phase1.word.celebrate.yay__curious__contained	Yay	reply	thanks	word	curious surprised		798
-phase1.word.celebrate.yay__curious__contained	Yay	reply	unhush	word	curious surprised		798
-phase1.word.celebrate.hooray__calm__contained	Hooray	reply	unhush	word	calm		938
-phase1.word.celebrate.hooray__engaged__contained	Hooray	reply	unhush	word	focused		928
-phase1.word.celebrate.hooray__determined__contained	Hooray	reply	unhush	word	determined		948
-phase1.word.celebrate.hooray__happy__contained	Hooray	reply	unhush	word	happy pleased amused affectionate		1137
-phase1.word.celebrate.hooray__excited__contained	Hooray	reply	unhush	word	excited		1157
-phase1.word.celebrate.hooray__proud__contained	Hooray	reply	unhush	word	proud mischievous		1277
-phase1.word.celebrate.hooray__curious__contained	Hooray	reply	unhush	word	curious surprised		997
 phase1.word.celebrate.nice__calm__contained	Nice	reply	thanks	word	calm		918
 phase1.word.celebrate.nice__engaged__contained	Nice	reply	thanks	word	focused		1057
 phase1.word.celebrate.nice__determined__contained	Nice	reply	thanks	word	determined		967
@@ -2060,31 +2032,6 @@ phase1.nonverbal.frustration.hmph__wounded__contained	Hmph	reply	no	sound	wounde
 phase1.nonverbal.frustration.hmph__wounded__contained	Hmph	reply	hush	sound	wounded		728
 phase1.nonverbal.frustration.hmph__sad__contained	Hmph	reply	no	sound	sad lonely		469
 phase1.nonverbal.frustration.hmph__sad__contained	Hmph	reply	hush	sound	sad lonely		469
-phase1.nonverbal.relief.phew__calm__contained	Phew...	reply	unhush	sound	calm		1017
-phase1.nonverbal.relief.phew__engaged__contained	Phew...	reply	unhush	sound	focused		888
-phase1.nonverbal.relief.phew__determined__contained	Phew...	reply	unhush	sound	determined		928
-phase1.nonverbal.relief.phew__annoyed__contained	Phew...	reply	unhush	sound	annoyed		958
-phase1.nonverbal.relief.phew__irritated__contained	Phew...	reply	unhush	sound	grumpy angry		948
-phase1.nonverbal.relief.phew__grumpy__contained	Phew...	reply	unhush	sound	grumpy angry		1057
-phase1.nonverbal.relief.phew__whiny__contained	Phew...	reply	unhush	sound	sad lonely		1237
-phase1.nonverbal.relief.phew__wounded__contained	Phew...	reply	unhush	sound	wounded		1057
-phase1.nonverbal.relief.phew__sad__contained	Phew...	reply	unhush	sound	sad lonely		1057
-phase1.nonverbal.relief.phew__excited__contained	Phew...	reply	unhush	sound	excited		928
-phase1.nonverbal.relief.phew__proud__contained	Phew...	reply	unhush	sound	proud mischievous		1117
-phase1.nonverbal.relief.phew__curious__contained	Phew...	reply	unhush	sound	curious surprised		1017
-phase1.nonverbal.relief.ahh__calm__contained	Ahh...	reply	unhush	sound	calm		868
-phase1.nonverbal.relief.ahh__engaged__contained	Ahh...	reply	unhush	sound	focused		898
-phase1.nonverbal.relief.ahh__determined__contained	Ahh...	reply	unhush	sound	determined		848
-phase1.nonverbal.relief.ahh__annoyed__contained	Ahh...	reply	unhush	sound	annoyed		948
-phase1.nonverbal.relief.ahh__irritated__contained	Ahh...	reply	unhush	sound	grumpy angry		918
-phase1.nonverbal.relief.ahh__grumpy__contained	Ahh...	reply	unhush	sound	grumpy angry		1057
-phase1.nonverbal.relief.ahh__whiny__contained	Ahh...	reply	unhush	sound	sad lonely		1127
-phase1.nonverbal.relief.ahh__wounded__contained	Ahh...	reply	unhush	sound	wounded		997
-phase1.nonverbal.relief.ahh__sad__contained	Ahh...	reply	unhush	sound	sad lonely		868
-phase1.nonverbal.relief.ahh__happy__contained	Ahh...	reply	unhush	sound	happy pleased amused affectionate		918
-phase1.nonverbal.relief.ahh__excited__contained	Ahh...	reply	unhush	sound	excited		1007
-phase1.nonverbal.relief.ahh__proud__contained	Ahh...	reply	unhush	sound	proud mischievous		1257
-phase1.nonverbal.relief.ahh__curious__contained	Ahh...	reply	unhush	sound	curious surprised		958
 phase1.nonverbal.delight.heh__calm__contained	Heh...	reply	hehe	sound	calm		538
 phase1.nonverbal.delight.heh__engaged__contained	Heh...	reply	hehe	sound	focused		628
 phase1.nonverbal.delight.heh__determined__contained	Heh...	reply	hehe	sound	determined		578

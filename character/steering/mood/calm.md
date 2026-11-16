@@ -10,7 +10,6 @@ What moves it: kind words to Boop, a long turn's hard work done, thanks
 to the agent or you back from away, happy; a long turn working on, or
 the person sounding frustrated, focused; a check passing after it
 failed, proud; a failed check, a failed turn short of very long, 2
-pokes in a row or being hushed, cross; a very long turn failing, the
+pokes in a row or being told to hush, cross; a very long turn failing, the
 agent giving up, sad news or rude words to Boop, sad.
-At an idle check-in once its wish is "waiting 1 h" or more: lonely, sad
-or cross. Back after 20 to 40 hours away: lonely.
+Back after 20 to 40 hours away: lonely.
