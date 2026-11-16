@@ -1,4 +1,5 @@
 #include "render/gel/face.h"
+#include "render/gel/card.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -238,8 +239,10 @@ void GelFace::passTime(uint32_t t) {
   if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
+  // Holding a card, its hands are full: no pastime is dealt over it.
+  if (card_.on && playing()) endPastime(t, true);
   // Nor one over its keyboard, out to type along with you.
-  const bool busy = finger_ || along_.target() || (stream_ && stream_->drawn(t) && stream_->call.live);
+  const bool busy = finger_ || card_.on || along_.target() || (stream_ && stream_->drawn(t) && stream_->call.live);
   if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
@@ -353,11 +356,11 @@ bool GelFace::typingPose() const {
 // for it, and stays a little longer after you stop, its paws at rest, so a
 // pause in your typing doesn't put the keyboard away and bring it back; at
 // work the desk is out already, and its paws go back to the agents' soft
-// typing.
+// typing. Not while it holds a card: its hands are full.
 void GelFace::showAlong(uint32_t t) {
   const Engine& e = *engine_;
   SceneState look;
-  const bool free = showsLook(source_.anim, look) && !finger_ && !alone_ && !transition(t);
+  const bool free = showsLook(source_.anim, look) && !finger_ && !alone_ && !card_.on && !transition(t);
   const bool idle = free && look == SceneState::kIdle;
   // At work its desk is out already: there your typing makes its paws
   // brisk, while its own pose is typing and no word forward has the screen.
@@ -426,6 +429,17 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
     s.fade = std::max(0, fade);
   }
   return s;
+}
+
+// Whether the canvas's (x, y) is on the card it holds, a finger's width
+// round it: the card's box on the surface, in the canvas's 320 by 240. Only
+// a card the last frame drew: under a work act or a sign there's none.
+bool GelFace::cardAt(int x, int y) const {
+  if (!card_.on || !cardDrawn_ || !size_.width) return false;
+  const Surface s{size_.width, size_.height, nullptr, size_.corner};
+  const Box b = cardBox(s, card_);
+  const int sx = x * size_.width / 320, sy = y * size_.height / 240;
+  return sx >= b.x0 - 16 && sx < b.x1 + 16 && sy >= b.y0 - 12 && sy < b.y1 + CardLayout::kDotsRow + 8;
 }
 
 void GelFace::wish(const WishShow& show) {
@@ -746,8 +760,8 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow passing = pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   signHop_ = signHop(sign);
-  paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
-             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_);
+  cardDrawn_ = paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
+             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_, &card_);
   return true;
 }
 

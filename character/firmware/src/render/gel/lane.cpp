@@ -1,5 +1,6 @@
 #include "render/gel/lane.h"
 #include "render/gel/act.h"
+#include "render/gel/card.h"
 #include "render/gel/done.h"
 
 #include <algorithm>
@@ -536,10 +537,10 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
   surface.laneKeyFrom = l.y(kLaneTop);
 }
 
-void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
+bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
-                const char* note, const WishShow* wish, const GrowthShow* growth) {
+                const char* note, const WishShow* wish, const GrowthShow* growth, const CardShow* card) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -548,7 +549,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     if (pose.squint) paintSquint(surface, at, pose, DrawerLayout(surface.width, surface.height, surface.corner).top(drawer->open));
     Measure measure(profile.lane);
     paintDrawer(surface, *drawer, s, at, spinStep(now));
-    return;
+    return false;
   }
   // The sign takes the lane from the strip and the words; a newer
   // reaction's words take it back, as they take the sign down.
@@ -583,7 +584,10 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   uint32_t key = laneAtRest ? 1 : laneKey(line, s, spin, note, rowAlpha);
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome) | (doneGlowPeak ? 0 : 0x80))) * 16777619u) | 1;
-  const int hop = signHop(sign);
+  // The card is Doing's: it gives way to a sign and to the low sign (a
+  // finished turn's, a work act's, a celebration's gold), and comes back.
+  const bool held = card && card->on && !sign.text && !low.shows();
+  const int hop = held ? cardHop(*card) : signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
   paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck);
@@ -598,6 +602,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   if (wish) paintWish(surface, *wish, at);
   if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
+  if (held) paintCard(surface, *card);
   if (growth) {
     // The top band holds one thing at a time: while LISTENING shows there,
     // the bar gives way to it (a heart flying still flies).
@@ -621,6 +626,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintGlow(surface, done, 0, glowTo);
   else if (gold.glow)
     paintGlow(surface, gold.glow, glowInk, 0, glowTo);
+  return held;
 }
 
 }  // namespace render::gel

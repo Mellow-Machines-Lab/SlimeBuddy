@@ -73,18 +73,18 @@ struct PastimeShow;
 // channels on it, the face art, what it wears as the layer stack shows it
 // at t, the props, the pastime playing (render/gel/pastimes.h), the work
 // stream at `now`, the device's time (render/gel/stream.h: its words
-// behind the body, and the word forward), the sign it holds up
-// (render/gel/layers.h), then the lane, unless this surface already shows
+// behind the body, and the word forward), the card it holds
+// (render/gel/card.h; true when it drew it) or the sign it holds up (render/gel/layers.h), then the lane, unless this surface already shows
 // it, with the low sign (a finished turn's, render/gel/done.h, or a work
 // act's, render/gel/act.h) in the strip's place, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
 // lane's place, the body pressed flat above it, and the pastimes, the
 // stream, the sign and the finished turn wait for it to shut.
-void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,
+bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,
                 const Strip& strip, const DoneShow& done = {}, const rig::Channels& rig = rig::kRest,
                 const rig::Layers* layers = nullptr,
                 uint32_t t = 0, const Stream* stream = nullptr, uint32_t now = 0,
                 const PastimeShow* pastimes = nullptr, const Drawer* drawer = nullptr, const char* caption = nullptr,
-                const WishShow* wish = nullptr, const GrowthShow* growth = nullptr);
+                const WishShow* wish = nullptr, const GrowthShow* growth = nullptr, const CardShow* card = nullptr);
 // The widest line the bubble holds on a surface, in px, clear of its
 // rounded corners: on the AMOLED's, the longest take (22 glyphs) in the
 // sign's font (pinned by test_gel).
