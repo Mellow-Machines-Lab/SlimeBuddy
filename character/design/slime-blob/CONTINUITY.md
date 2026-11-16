@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-15. The slime's one engine is the C++ in
+Updated 2026-11-16. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -833,7 +833,7 @@ message. The only things a pastime draws are sleep's, in front, at the
 body's anchors: a snooze's Zs and a snore's bubble. No sounds of their
 own but a few landings (`body_contact`), and none asleep.
 
-### Where it looks, and typing along (the board's)
+### Where it looks, typing along, and with you (the board's)
 
 The eyes rest forward and turn to one thing at a time, for a reason you
 can name (`render/gel/gaze.h`, the screen's rule, part three). The face
@@ -846,7 +846,12 @@ quick as they follow a finger, so a look is a turn and never a dart.
 | --- | --- | --- |
 | Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag; forward with neither) | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
 | Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
+| A stretch of typing along of 8 s or more stops (thinking with you) | Up at you | 2 s (`kThinkAfterMs`, `kThinkMs`) |
 | At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests, and drops a glance it was in | While the pose lasts |
+| On a call (`call`) | Forward, still | While the call lasts |
+| Your pointer moves (`state.ptr`) | Its way, as you see the board: across `ptr`'s x × 42 px and up or down y × 36 (`kPointerX`, `kPointerY`); at the edge of the screen nearest the board, right at it on the Mac's side | Until the Mac stops sending it, 3 s after it stops |
+| Reading along (`scrolling`) | The Mac's side, at its page (`kPageReach`, `kPageTopY`): down a line of 30 px every 1.4 s while you scroll, four lines a page, back to the top as you stop (`kLineMs`, `kLinePx`, `kLines`) | While it reads along |
+| Watching a video (`watching`) | The Mac's side, at its eyes' height, still | While it watches |
 | At work, typing, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
 | Otherwise | Forward, with the engine's own small wander | |
 
@@ -876,7 +881,32 @@ the lowest thing there is: it waits for a pastime or a transition to end
 and never cuts one, and it goes at once for a finger, a Moment, a word
 forward, needs you or sleep. No pastime is dealt over the
 keyboard alone; at work they're dealt as ever. The Mac says only that your
-hands are busy, never what they type.
+hands are busy, never what they type. Typing fast (`typingfast`), its paws
+come down every 210 ms in place of 300 (`kFastMs`), as high, and its eyes
+open a little wider (`type-along-fast`).
+
+**With you** (`GelFace::showWithYou`): what else the Mac says of you at
+it, each body, eyes and paws alone, nothing held up or floating, lower
+even than typing along, idle or in its typing pose at work: on a call
+(`call`) it keeps still and a little smaller, its eyes half (`on-call`),
+with no typing along, music or pastime, and stretches up as the call ends;
+a copy held (`holding`) puffs it a little wider (`holding`), and it lets go
+with a pah (`release`); while you scroll (`scrolling`) and 6 s after, it
+reads along, turned and slid to the Mac's side, a little lower, its eyes
+lowered to the page (`read-along`), and settles in after 2 minutes of
+reading, its lids half down (`read-along-settled`); a video (`watching`)
+turns it to the screen, still, with a slow blink (`watching`); music
+(`music`) gets it into a groove 24 s, its eyes half closed, a content face
+(the `pleased` one, unless its mood keeps its own), a slow sway and a nod
+at each end (`groove`), then 3 minutes' rest, and again; as it stops, a
+look round (`look-around`). Each pose comes and goes over 600 ms
+(`kWithFadeMs`). The pointer leans it its way, 14 a step of `ptr`, slides
+it 1 px a step and turns the eyes further (the rig's gaze, 55 a step
+across, 45 up or down), and up its way it stretches up; at the edge nearest
+the board it leans in 160 toward the Mac's side, reaching up 50. The lean,
+slide and gaze follow over about 350 ms (`kLeanMs`), so a pointer that
+jumps is followed, never jumped to. While any of them is on, no pastime is
+dealt. The Mac never says what you scroll, hear, watch, say or copy.
 
 ### Layers over the body (the board's)
 

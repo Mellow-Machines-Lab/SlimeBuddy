@@ -118,6 +118,29 @@ class GelFace final : public Face {
   PastimeShow pastimes(uint32_t t) const;
   // How long its keyboard stays out after you stop typing (showAlong).
   static constexpr uint32_t kAlongLingerMs = 4000;
+  // With you at the Mac (showWithYou): a pose's clip comes and goes over
+  // kWithFadeMs; it reads along kReadLingerMs after your last scroll, and
+  // settles in for a long read once it has read along kSettleMs, a gap of
+  // kReadGapMs or more without a scroll starting the read again; with music
+  // it gets into it kGrooveMs, then rests kGrooveRestMs, and again. A lean
+  // toward the screen or the pointer is at most kLeanReach (the rig's lean,
+  // thousandths), kPointerLean a step of the pointer's way across; up its
+  // way, it stretches up kPointerStretch a step; and the body follows both
+  // over about kLeanMs.
+  static constexpr uint32_t kWithFadeMs = 600, kReadLingerMs = 6000, kSettleMs = 120000, kReadGapMs = 60000;
+  static constexpr uint32_t kGrooveMs = 24000, kGrooveRestMs = 180000, kLeanMs = 350;
+  static constexpr int kLeanReach = 160, kPointerLean = 14, kPointerStretch = 6, kNearStretch = 50;
+  // The pointer also slides the body its way, kPointerSlide px a step at
+  // most, and turns the eyes further than a look alone, kPointerGaze a step
+  // across and kPointerGazeUp up or down (the rig's gaze, thousandths).
+  static constexpr int kPointerSlide = 1, kPointerGaze = 55, kPointerGazeUp = 45;
+  // Turned to the screen, reading or watching: slid its way kScreenSlide px,
+  // its eyes kScreenGaze across; reading, lowered kPageGaze to the page.
+  static constexpr int kScreenSlide = 8, kScreenGaze = 450, kPageGaze = 250;
+  // What it does with you now besides typing along, and the rig's channels
+  // as it paints them: the mixer's, with the lean it follows.
+  WithYou withYou() const { return with_; }
+  rig::Channels channels() const;
 
  private:
   bool bodyFree() const;
@@ -188,6 +211,52 @@ class GelFace final : public Face {
   bool typed_ = false;
   void showAlong(uint32_t t);
   bool typingPose() const;
+  // Typing fast (the `typingfast` tag): its paws tap quicker and its eyes
+  // open a little wider (the rig's `type-along-fast`). A stretch of typing
+  // along kThinkAfterMs or longer that stops: it looks up at you
+  // (render/gel/gaze.h, thinking with you).
+  bool fast_ = false, typingTag_ = false, thought_ = false;
+  uint32_t typingFrom_ = 0, thinkAt_ = 0;
+  // With you at the Mac besides typing along: THE SCREEN'S RULE holds, so
+  // each is the body, the eyes and the paws alone, nothing held up or
+  // floating. Lowest of all, below typing along: it waits for a pastime or a
+  // transition, gives way at once to a finger, a Moment, a word forward,
+  // needs you or sleep, and at work comes only in the typing pose. The one
+  // shown, first that fits:
+  //
+  // - on a call (`call`): still and a little smaller, its eyes half closed
+  //   (`on-call`); no typing along, music or pastime, and its board silent
+  //   (the Mac sends no volume). As the call ends, it stretches up (`stretch`);
+  // - holding a copy (`holding`): its cheeks puffed (`holding`), and a pah
+  //   as it lets go (`release`);
+  // - reading along while you scroll (`scrolling`), and kReadLingerMs after:
+  //   turned to the Mac's side, sitting a little lower (`read-along`), its
+  //   eyes going down the page (gaze.h); after kSettleMs, settled in, its lids
+  //   half down (`read-along-settled`);
+  // - watching a video (`watching`): turned to the screen, still, a slow
+  //   blink now and then (`watching`);
+  // - music (`music`): it gets into it kGrooveMs, eyes half closed, a
+  //   content face, swaying with a nod at each end (`groove`), then rests;
+  //   as the music stops it opens its eyes and looks around (`look-around`).
+  //
+  // While a call, a copy held, a read, a video or a groove is on, no pastime
+  // is dealt. The pointer (state.ptr) moves the eyes (gaze.h) and leans the
+  // body a little its way, more at the edge nearest the board.
+  WithYou with_ = WithYou::kNone, wanted_ = WithYou::kNone;
+  const rig::Clip* withClip_ = nullptr;
+  bool scrolled_ = false, music_ = false, called_ = false, held_ = false, settled_ = false;
+  uint32_t scrolledAt_ = 0, readFrom_ = 0, musicFrom_ = 0;
+  bool pointer_ = false, pointerNear_ = false;
+  int pointerX_ = 0, pointerY_ = 0;
+  // What it follows on the rig's channels, over the mixer's: the lean, the
+  // stretch (squash), the whole body's slide (x, px) and the eyes' way
+  // (gazeX, gazeY); where each is going, and where it is now, in 256ths.
+  enum Follow { kFollowLean, kFollowSquash, kFollowX, kFollowGazeX, kFollowGazeY, kFollows };
+  int followTo_[kFollows]{}, followBy_[kFollows]{};
+  void showWithYou(uint32_t t);
+  void followLean(uint32_t dt);
+  // A move once, as one of them ends, if the body is free.
+  void once(const char* clip, uint32_t t);
   // Where it looks by itself (render/gel/gaze.h), from the facts now.
   Gaze gaze_;
   void showGaze(uint32_t t);

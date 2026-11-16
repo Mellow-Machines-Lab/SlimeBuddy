@@ -1,0 +1,9 @@
+{
+  "about": "Reading along with you while you scroll (GelFace::showWithYou), looped: turned to the screen (the face leans it toward the Mac's side and its eyes go down the page, render/gel/gaze.h), it sits a little lower, its lids a touch down, and breathes slowly. Nothing held, nothing beside it.",
+  "ms": 3600,
+  "loop": true,
+  "tracks": {
+    "squash": [[0, 40], [1800, 60], [3600, 40]],
+    "eyeOpen": [[0, -150], [3600, -150]]
+  }
+}

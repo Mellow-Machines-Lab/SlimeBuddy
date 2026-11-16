@@ -1,0 +1,9 @@
+{
+  "about": "Letting go of what it held, once, as you paste or move on: a quick exhale, pah, the mouth open a moment, a squash up and back.",
+  "ms": 600,
+  "tracks": {
+    "squash": [[0, 0], [90, -120, "out"], [260, 30], [420, -10], [600, 0]],
+    "mouthOpen": [[0, 0], [60, 450, "out"], [260, 450], [380, 0], [600, 0]],
+    "eyeOpen": [[0, 0], [80, -350], [300, 0], [600, 0]]
+  }
+}

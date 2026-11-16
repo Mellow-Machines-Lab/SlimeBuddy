@@ -1,0 +1,9 @@
+{
+  "about": "Reading along a long while (two minutes and more): settled in for a comfortable read, lower, its lids half down, breathing slower.",
+  "ms": 4800,
+  "loop": true,
+  "tracks": {
+    "squash": [[0, 120], [2400, 140], [4800, 120]],
+    "eyeOpen": [[0, -480], [4800, -480]]
+  }
+}

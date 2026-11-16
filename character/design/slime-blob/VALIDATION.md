@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-15. What checks the gel slime, and which rule each check
+Updated 2026-11-16. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -126,7 +126,7 @@ ramps and springs can, and no jolt at an event. By file:
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
   bit and work's and asleep's as the scene's take, busier typing only
-  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose); none dealt while something
+  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose, and its look up at you as a long stretch stops); with you at the Mac (`test_with_you.cpp`: the eyes' rules in order, from needs you down to the glance; the pointer's eyes, lean, stretch and slide, eased and at most 20 a frame, none in a work pose of its own, needs you first; reading along with its 6 s linger, two minutes to settle in and no pastime over it; music's 24 s groove (a sway, no hop, lids half) and 3 minutes' rest, and the look round as it stops; watching to the Mac's side; a call that stills it through typing, music and five minutes with no pastime, then a stretch; a copy held and its pah; typing fast's quicker, not higher, taps and wider eyes; and nothing with none of the facts, asleep or while something needs you); none dealt while something
   needs you; the move, the melt, at least 5 minutes apart at `tier3`, the
   paws its while it plays; working's base by tier, its lids lower the further in and
   faded out under a Moment or while something needs you; and the paws
@@ -198,6 +198,7 @@ ramps and springs can, and no jolt at an event. By file:
   face and sign, the hush reply's squeeze and nod among them, a no over the
   needs-you screen, the slight wave at a lock and the bye at a night's
   lock), the
+  with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the flick up and settled in; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; watching; a call and its stretch; a copy held and its pah; and nothing at work in a pose of its own), the
   gaze (`gaze.jsonl`: at work typing, forward, a glance at a word and down it, forward again and no glance inside its rest; looking, running and waiting with the same word falling and no glance; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: the nightcap at night and on a party night, Zs
   asleep at night, a morning and each special day with nothing worn and

@@ -72,9 +72,11 @@ int tapLift(const Scenes& s, int side) {
   return 0;
 }
 
-int typeLift(uint32_t ms, int side, bool brisk) {
-  // Each paw taps every other kTypeMs (kBriskMs, brisk), the right's between the left's.
-  const int every = brisk ? kBriskMs : kTypeMs, most = brisk ? kBriskLift : kTypeLift, tap = brisk ? kBriskTapMs : kTapMs;
+int typeLift(uint32_t ms, int side, bool brisk, bool fast) {
+  // Each paw taps every other kTypeMs (kBriskMs, brisk; kFastMs, fast), the
+  // right's between the left's.
+  const int every = !brisk ? kTypeMs : fast ? kFastMs : kBriskMs, most = brisk ? kBriskLift : kTypeLift,
+            tap = !brisk ? kTapMs : fast ? kFastTapMs : kBriskTapMs;
   const int period = 2 * every, p = int((ms + (side > 0 ? every : 0)) % period), d = (period - p) % period;
   return d < tap ? most * 4 * d * (tap - d) / (tap * tap) : 0;
 }
@@ -208,14 +210,14 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     // At the desk the paws type on softly between its keys; while you type
     // they type with you, briskly, at the desk or with the keyboard alone;
     // the keyboard alone and you still, they rest.
-    const bool brisk = paws && paws->tapping, soft = brisk || deskAlpha >= alongAlpha;
+    const bool brisk = paws && paws->tapping, fast = brisk && paws->fast, soft = brisk || deskAlpha >= alongAlpha;
     round(387, 713, 258, 30, 8, rgb565(49, 88, 107));
     for (int row = 0; row < 2; ++row)
       for (int key = 0; key < 9; ++key) {
         bool pressed = contact > q(.35) && key == (s.hasLast && s.last.side < 0 ? 2 : 6);
         // Typing with you: the keys under a paw light as it comes down.
         if (brisk && (key == 1 || key == 2 || key == 6 || key == 7))
-          pressed = pressed || typeLift(ms, key < 4 ? -1 : 1, true) < kBriskLift / 3;
+          pressed = pressed || typeLift(ms, key < 4 ? -1 : 1, true, fast) < kBriskLift / 3;
         round(397 + key * 26, 718 + row * 10, 19, 6, 2, pressed ? light : rgb565(144, 170, 176));
       }
     // The paws, by the activity, easing from one pose to the next
@@ -226,7 +228,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
             waiting = s.posed(Activity::kWaiting), typing = clamp(F(1) - looking - running - waiting, 0, 1);
     for (int side : {-1, 1}) {
       const int i = side > 0;
-      const int taps = (typing * std::max(tapLift(s, side), soft ? typeLift(ms, side, brisk) : 0)).integer();
+      const int taps = (typing * std::max(tapLift(s, side), soft ? typeLift(ms, side, brisk, fast) : 0)).integer();
       const int lift =
           taps + (paws ? paws->lift[i] : 0) +
           (looking * kLookingPaws.lift[i] + running * kRunningPaws.lift[i] + waiting * kWaitingPaws.lift[i]).integer();

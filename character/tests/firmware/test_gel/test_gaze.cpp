@@ -220,7 +220,11 @@ void test_it_types_along_with_you() {
   TEST_ASSERT_TRUE(s.keys == 255 && !s.tapping);
   board.to(board.t + 600);
   TEST_ASSERT_TRUE(std::abs(face.mixer().channels()[rig::Channel::kSquash]) < 10);  // and it sits up again
-  TEST_ASSERT_FALSE(face.engine().motion.attending);  // and its eyes come back up
+  // Two minutes of typing along stopped: it looks up at you a moment
+  // (thinking with you), then rests.
+  TEST_ASSERT_TRUE(face.engine().motion.attending && face.engine().motion.attendUp > F(0));
+  board.to(stopped + Gaze::kThinkMs + 32);
+  TEST_ASSERT_FALSE(face.engine().motion.attending);  // and its eyes come back
   board.to(stopped + GelFace::kAlongLingerMs - 64);
   TEST_ASSERT_EQUAL_INT(255, face.pastimes(board.t).keys);
   board.to(stopped + GelFace::kAlongLingerMs + rig::kFadeMs + 64);

@@ -122,6 +122,7 @@ struct PastimeShow {
   // or at its desk.
   int keys = 0;
   bool tapping = false;
+  bool fast = false;  // and fast, with you typing fast
 };
 // Where a pastime puts the desk's paws, each (0 left, 1 right) in the
 // thousandths of the surface paintProps draws them in: lifted and moved
@@ -131,9 +132,9 @@ struct Paws {
   int melted = 0;  // how far it's melted, Q12 (PaintControls::melt): they fade with it, and the keyboard
   // With no desk out: its keyboard alone, this far out (0 … 255), as it
   // types along with you; and `tapping`, there or at its desk, its paws
-  // typing briskly with you.
+  // typing briskly with you, and `fast`, quicker.
   int keys = 0;
-  bool tapping = false;
+  bool tapping = false, fast = false;
 };
 Paws pawsFor(const PastimeShow& show);
 

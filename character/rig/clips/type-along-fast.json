@@ -1,0 +1,9 @@
+{
+  "about": "Typing along with you fast, over type-along: its eyes a little more open and a little wider; the paws tap quicker (render/gel/painter.h, kFastMs).",
+  "ms": 1200,
+  "loop": true,
+  "tracks": {
+    "eyeOpen": [[0, 140], [1200, 140]],
+    "eyeSize": [[0, 50], [1200, 50]]
+  }
+}

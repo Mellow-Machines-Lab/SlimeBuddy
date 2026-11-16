@@ -105,6 +105,9 @@ int tapLift(const Scenes& scenes, int side);
 // clearly more than the soft typing but no bounce, and its key lights as it
 // lands.
 constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 30, kBriskTapMs = 280;
+// `fast`, with you typing fast (the `typingfast` tag): a paw every kFastMs,
+// as high, over kFastTapMs: quicker, not higher.
+constexpr int kFastMs = 210, kFastTapMs = 196;
 // Where each activity that isn't typing holds the paws (0 left, 1 right),
 // in the thousandths paintProps draws them in: lifted, and moved right.
 struct PawPose {
@@ -115,7 +118,7 @@ constexpr PawPose kLookingPaws{{-14, -14}, {-96, -40}}, kRunningPaws{{40, 40}, {
 // A change of activity's pose takes this long (the rig's look, and so the
 // body's lean; the paws' spring settles as fast).
 constexpr uint32_t kPoseMs = 400;
-int typeLift(uint32_t ms, int side, bool brisk = false);
+int typeLift(uint32_t ms, int side, bool brisk = false, bool fast = false);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.
 int opaqueCards(const Surface&, const Engine&, Box* out);
