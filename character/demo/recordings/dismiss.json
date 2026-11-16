@@ -6,11 +6,11 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0,
+      "at": 0.001,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.008,
+      "at": 1.009,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
@@ -22,27 +22,27 @@
     },
     {
       "at": 1.335,
-      "effect": "Boop makes a curious face and says “Onward”",
-      "line": "{\"t\":\"do\",\"id\":1557258035,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.onward__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "effect": "Boop makes a curious face and says “Dai”",
+      "line": "{\"t\":\"do\",\"id\":1988167989,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.borrowed.dai__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
-      "at": 2.403,
+      "at": 2.399,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"brew install\"]]}"
     },
     {
-      "at": 2.618,
+      "at": 2.613,
       "effect": "Boop shows that it needs you",
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1407702580,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":207530180,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.618,
+      "at": 2.614,
       "cause": {
         "kind": "needs_you",
         "text": "Claude asks to install Postgres, and waits for you"
       }
     },
     {
-      "at": 5.817,
+      "at": 5.81,
       "cause": {
         "kind": "hold",
         "text": "You hold a finger on the needs-you screen: not now"
@@ -51,62 +51,61 @@
       "input": "hold"
     },
     {
-      "at": 7.095,
+      "at": 7.089,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.006,
+      "at": 13.005,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.495,
+      "at": 13.443,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"run\"]]}"
     },
     {
-      "at": 13.709,
+      "at": 13.656,
       "effect": "Boop shows that it needs you",
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1407702581,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":207530181,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 19.998,
+      "at": 19.997,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 19.999,
+      "at": 19.998,
       "cause": {
         "kind": "needs_you",
         "text": "Claude asks to create the database, and you allow it"
       }
     },
     {
-      "at": 21.648,
+      "at": 21.646,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 21.648,
-      "line": "{\"t\":\"do\",\"id\":1557258036,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 21.646,
+      "line": "{\"t\":\"do\",\"id\":1988167990,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 21.649,
+      "at": 21.647,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 21.973,
-      "effect": "Boop celebrates and says “Heh... Ole”",
-      "line": "{\"t\":\"do\",\"id\":1557258037,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"not-now\"},\"say\":{\"take\":\"previous.heh\",\"then\":\"phase1.borrowed.ole__happy__contained\"},\"mood\":\"pleased\",\"loops\":2}}"
+      "at": 21.969,
+      "effect": "Boop celebrates and says “Haa...”",
+      "line": "{\"t\":\"do\",\"id\":1988167991,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"not-now\"},\"say\":{\"take\":\"phase1.nonverbal.relief.haa__happy__contained\"},\"mood\":\"pleased\",\"loops\":1}}"
     }
   ],
   "face": "gel",
   "length": 28,
   "name": "Boop",
-  "script": "c3a5f4ffb8caf1a577bf9362f60edd526d3afec1656c14b06b23dfc56d366040",
+  "script": "4b35838aea51d46f3a35ac21b22f3de021c0e7a793fdf59902941569e1a76067",
   "takes": [
-    "phase1.word.begin.onward__curious__contained",
-    "previous.heh",
-    "phase1.borrowed.ole__happy__contained"
+    "phase1.borrowed.dai__curious__contained",
+    "phase1.nonverbal.relief.haa__happy__contained"
   ],
   "version": 1
 }

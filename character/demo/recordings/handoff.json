@@ -6,60 +6,56 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
+      "at": 0,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
-    },
-    {
-      "at": 1.008,
+      "at": 1.006,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.012,
+      "at": 1.009,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Tidy the settings page”"
       }
     },
     {
-      "at": 2.08,
+      "at": 2.064,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.081,
+      "at": 2.065,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.081,
+      "at": 2.066,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Write the changelog for 2.4”"
       }
     },
     {
-      "at": 3.149,
+      "at": 3.133,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 3.15,
+      "at": 3.135,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 3.151,
+      "at": 3.136,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Find why the build is slow”"
       }
     },
     {
-      "at": 4.219,
+      "at": 4.203,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 6.354,
+      "at": 6.337,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/settings.js"
@@ -70,58 +66,58 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":3,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 8.059,
+      "at": 8.008,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 8.059,
-      "line": "{\"t\":\"do\",\"id\":87052950,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 8.008,
+      "line": "{\"t\":\"do\",\"id\":2143351390,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 8.06,
+      "at": 8.009,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 8.381,
-      "effect": "Boop celebrates and says “Evviva”",
-      "line": "{\"t\":\"do\",\"id\":87052951,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off\"},\"say\":{\"take\":\"phase1.borrowed.evviva__happy__contained\"},\"mood\":\"pleased\",\"loops\":2}}"
+      "at": 8.327,
+      "effect": "Boop celebrates and says “Heh...”",
+      "line": "{\"t\":\"do\",\"id\":2143351391,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off\"},\"say\":{\"take\":\"previous.heh\"},\"mood\":\"pleased\",\"loops\":1}}"
     },
     {
-      "at": 9.448,
+      "at": 9.395,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":2,\"idle\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +4\"]]}"
     },
     {
-      "at": 11.583,
+      "at": 11.525,
       "cause": {
         "kind": "tool",
         "text": "Claude edits CHANGELOG.md"
       }
     },
     {
-      "at": 13.288,
+      "at": 13.228,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"idle\":2,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.288,
-      "line": "{\"t\":\"do\",\"id\":87052952,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 13.228,
+      "line": "{\"t\":\"do\",\"id\":2143351392,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 13.289,
+      "at": 13.229,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 13.61,
-      "effect": "Boop celebrates and says “Yatta”",
-      "line": "{\"t\":\"do\",\"id\":87052953,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-notes\"},\"say\":{\"take\":\"previous.yatta\"},\"mood\":\"happy\",\"loops\":2}}"
+      "at": 13.549,
+      "effect": "Boop celebrates and says “Whee!”",
+      "line": "{\"t\":\"do\",\"id\":2143351393,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-notes\"},\"say\":{\"take\":\"phase1.nonverbal.delight.whee__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
-      "at": 15.745,
+      "at": 15.674,
       "cause": {
         "kind": "press",
         "text": "BOOT: the changelog opens"
@@ -129,7 +125,7 @@
       "input": "press"
     },
     {
-      "at": 17.878,
+      "at": 17.807,
       "cause": {
         "kind": "press",
         "text": "BOOT again: the settings page opens"
@@ -137,7 +133,7 @@
       "input": "press"
     },
     {
-      "at": 18.949,
+      "at": 18.876,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"idle\":2,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm run\"]],\"wact\":[\"build\",\"building\"]}"
     },
     {
@@ -152,39 +148,39 @@
       }
     },
     {
-      "at": 23.646,
+      "at": 23.642,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"],\"wact\":[\"build\",\"built\",\"p\"]}"
     },
     {
-      "at": 23.647,
+      "at": 23.643,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 23.97,
-      "effect": "Boop celebrates and says “Heh, obviously”",
-      "line": "{\"t\":\"do\",\"id\":87052954,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-build\"},\"say\":{\"take\":\"phase1.phrase.pride.heh-obviously__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
+      "at": 23.965,
+      "effect": "Boop celebrates and says “Ha!”",
+      "line": "{\"t\":\"do\",\"id\":2143351394,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-hand-off-build\"},\"say\":{\"take\":\"phase1.nonverbal.delight.ha__proud__contained\"},\"mood\":\"proud\",\"loops\":1}}"
     },
     {
-      "at": 23.971,
+      "at": 23.966,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"],\"wact\":[\"build\",\"built\",\"p\"]}"
     },
     {
-      "at": 25.006,
+      "at": 25.004,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":3,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 30,
+  "length": 29.99,
   "name": "Boop",
-  "script": "8a9729449445f64694f71a08a4c39572d3a26eb4db4e77abdfc63b561c0affe8",
+  "script": "a7abb462d5de2d95c4fb82c72e8be693fcf6f21a247b35599b09e22a46564859",
   "takes": [
-    "phase1.borrowed.evviva__happy__contained",
-    "previous.yatta",
-    "phase1.phrase.pride.heh-obviously__proud__contained"
+    "previous.heh",
+    "phase1.nonverbal.delight.whee__happy__contained",
+    "phase1.nonverbal.delight.ha__proud__contained"
   ],
   "version": 1
 }

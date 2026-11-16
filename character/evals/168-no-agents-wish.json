@@ -8,8 +8,7 @@
       "event": "poke",
       "at": "0s",
       "brain": {
-        "react.face": "curious",
-        "react.move": "none"
+        "react.face": "curious"
       }
     },
     {
