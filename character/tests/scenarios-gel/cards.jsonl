@@ -5,7 +5,7 @@
 // cards, its dots under it. A result after the turn, with what it made. A
 // card gives way: to needs you, to a Moment's sign, to a finished turn's
 // low sign; and comes back. A swipe across it asks for the next, a tap
-// opens it.
+// opens it, and under a work act, which hides it, a tap is Boop's.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day"],"calls":[[0,1,"grep"]],"card":{"a":0,"k":"s","t":"fixing the overflow","d":"2 of 5 · 4 min left","at":[1,1]}}
@@ -29,6 +29,11 @@
 {"t":"dbg.touch","x":160,"y":180,"ms":80}
 {"clock":6600}
 {"expect":{"last_input":{"k":"card"}}}
+{"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day"],"wact":["build","building",1],"card":{"a":0,"k":"s","t":"fixing the overflow","at":[1,1]}}
+{"clock":8000}
+{"t":"dbg.touch","x":160,"y":180,"ms":80}
+{"clock":8300}
+{"expect":{"last_input":{"k":"tap"}}}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"idle":1,"when":["day"],"card":{"a":0,"k":"r","t":"nav overflow fixed","d":"said 5 min, took 12","at":[1,1]}}

@@ -537,7 +537,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
   surface.laneKeyFrom = l.y(kLaneTop);
 }
 
-void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
+bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
                 const char* note, const WishShow* wish, const GrowthShow* growth, const CardShow* card) {
@@ -549,7 +549,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     if (pose.squint) paintSquint(surface, at, pose, DrawerLayout(surface.width, surface.height, surface.corner).top(drawer->open));
     Measure measure(profile.lane);
     paintDrawer(surface, *drawer, s, at, spinStep(now));
-    return;
+    return false;
   }
   // The sign takes the lane from the strip and the words; a newer
   // reaction's words take it back, as they take the sign down.
@@ -626,6 +626,7 @@ void paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintGlow(surface, done, 0, glowTo);
   else if (gold.glow)
     paintGlow(surface, gold.glow, glowInk, 0, glowTo);
+  return held;
 }
 
 }  // namespace render::gel

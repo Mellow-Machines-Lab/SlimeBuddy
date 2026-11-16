@@ -432,9 +432,10 @@ PastimeShow GelFace::pastimes(uint32_t t) const {
 }
 
 // Whether the canvas's (x, y) is on the card it holds, a finger's width
-// round it: the card's box on the surface, in the canvas's 320 by 240.
+// round it: the card's box on the surface, in the canvas's 320 by 240. Only
+// a card the last frame drew: under a work act or a sign there's none.
 bool GelFace::cardAt(int x, int y) const {
-  if (!card_.on || !size_.width) return false;
+  if (!card_.on || !cardDrawn_ || !size_.width) return false;
   const Surface s{size_.width, size_.height, nullptr, size_.corner};
   const Box b = cardBox(s, card_);
   const int sx = x * size_.width / 320, sy = y * size_.height / 240;
@@ -759,7 +760,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow passing = pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   signHop_ = signHop(sign);
-  paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
+  cardDrawn_ = paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, mixer_.channels(), &layers_,
              lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_, &card_);
   return true;
 }

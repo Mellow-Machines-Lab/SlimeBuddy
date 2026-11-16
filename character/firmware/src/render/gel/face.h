@@ -272,8 +272,10 @@ class GelFace final : public Face {
   void land(CallStyle style);
   // The wish to show, the device's, set before each frame.
   WishShow wish_;
-  // The card it holds (render/gel/card.h), as last given.
+  // The card it holds (render/gel/card.h), as last given, and whether the
+  // last frame drew it.
   CardShow card_;
+  bool cardDrawn_ = false;
   // The growth bar to show, the device's, set before each frame.
   GrowthShow growth_;
   // A new revision: the sounds already queued belong to what came before.
