@@ -228,7 +228,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   scrolls), and an agent's card (`cards.jsonl`: a status coming and held,
   its guess run out, one with no small line, one of three with its dots, a
   swipe and a tap that are the card's, a result, under a sign and back
-  after it, under needs you, and a Hatchling's and a Chonk's). `--accept` updates only the gel
+  after it, under needs you, and a tap under a work act, which is Boop's). `--accept` updates only the gel
   goldens, after looking at them.
 - `boopctl mirror` (in `make -C internal mirror`) plays the same scenarios
   on the Mac's mirror of the board (`character/mac/mirror/board.js`)

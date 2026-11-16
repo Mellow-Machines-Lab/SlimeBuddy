@@ -966,8 +966,8 @@ in its agent's lane colour, a gel hand at either side. The main thing is in
 the sign's font and the small line under it in the large one; a guess that
 has run out turns the small line red. With more than one card, dots under
 it say how many and which. Boop stands up on the card (`cardHop`), so its
-face stays clear at every stage; the desk is put away and no pastime is
-dealt, since its hands are full; the work stream's words still fall behind.
+face stays clear; no pastime is dealt and it doesn't type along, since
+its hands are full; the desk stays; the work stream's words still fall behind.
 The card rises over 220 ms as it comes. A sign, a low sign, an ask, a work
 act, the needs-you screen and the drawer each take its place, and it comes
 back after.
