@@ -15,6 +15,7 @@
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
 #include "render/gel/lane.h"
+#include "render/gel/gaze.h"
 #include "render/gel/painter.h"
 #include "render/gel/pastimes.h"
 #include "render/rig/mixer.h"
@@ -113,6 +114,8 @@ class GelFace final : public Face {
   bool playPastime(const char* name, uint32_t t) override;
   // What it shows of the pastimes at t: the one playing.
   PastimeShow pastimes(uint32_t t) const;
+  // How long its keyboard stays out after you stop typing (showAlong).
+  static constexpr uint32_t kAlongLingerMs = 4000;
 
  private:
   bool bodyFree() const;
@@ -165,6 +168,28 @@ class GelFace final : public Face {
   bool stopped_ = false;
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
+  // Typing along with you (showAlong): while your hands are busy at the Mac
+  // (the `typing` tag) it types as you do, and so that you can see it from
+  // across a desk, by size and not by speed: its whole body rocks slowly
+  // over the keys and springs up off each beat (the rig's `type-along`
+  // clip) and its paws swing high. At work that's at its desk, in place of
+  // the agents' soft typing, and only in its typing pose: looking, running
+  // or waiting, its paws are off the keys and the pose has the body. Idle,
+  // it has its keyboard out for it, its paws rest when you stop, and the
+  // keyboard goes kAlongLingerMs after. It's the lowest thing there is: it
+  // waits for a pastime or a transition to end, and gives way at once to a
+  // finger, a Moment, a word forward, needs you or sleep. While the
+  // keyboard is out alone no pastime is dealt; at work they're dealt as
+  // ever, and it types with you again after each.
+  rig::Ramp along_;
+  bool tapping_ = false;
+  uint32_t typedAt_ = 0;
+  bool typed_ = false;
+  void showAlong(uint32_t t);
+  bool typingPose() const;
+  // Where it looks by itself (render/gel/gaze.h), from the facts now.
+  Gaze gaze_;
+  void showGaze(uint32_t t);
   // When the last move started (kMoveGapMs), if one has.
   uint32_t movedAt_ = 0;
   bool moved_ = false;
@@ -193,6 +218,7 @@ class GelFace final : public Face {
   int breathTake_ = 0;
   // The eyes after a finger at x, y, and the spot it's on.
   void followFinger(int x, int y);
+  void lookToward(int x, int y, bool finger);
   void leanOn(Lean level);
   void breathe(uint32_t t);
   voice::FxEvent pending_[kMaxCues];

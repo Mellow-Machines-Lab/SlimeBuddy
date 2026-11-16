@@ -9,9 +9,14 @@ struct Motion {
   int emotion = slime::kCalm;
   T time, nextBlink = T::literal(2.8), blinkAt = -10, nextLook = T::literal(4.5);
   // Where the eyes look, across and up, in face units: a wander of their
-  // own, or a finger while one's down (`following`), and back once it's gone.
-  F gaze, gazeTarget, gazeUp, gazeUpTarget;
-  bool following = false;
+  // own, or a finger while one's down (`following`), and back once it's gone;
+  // or, with no finger, what it's looking at by itself (`attending`, to
+  // attendX and attendUp: render/gel/gaze.h), reached more slowly than a
+  // finger is followed (kAttendRate against kFollowRate), so a look is a
+  // turn of the eyes, not a dart.
+  F gaze, gazeTarget, gazeUp, gazeUpTarget, attendX, attendUp;
+  bool following = false, attending = false;
+  static constexpr int kFollowRate = 12, kAttendRate = 5, kWanderRate = 3;
   void advance(T dt, T now, Random& random);
   // A poke (at x across the dome: it leans away from where it's poked) or a shake.
   void impulse(bool shake, F x = 0);

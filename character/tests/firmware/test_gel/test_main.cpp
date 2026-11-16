@@ -1589,6 +1589,10 @@ void test_each_pastime_draws_and_ends();
 void test_pastimes_are_dealt_by_tier_after_a_rest();
 void test_transitions_play_between_doings_and_anything_urgent_cuts_through();
 void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
+void test_the_eyes_rest_unless_theres_a_reason();
+void test_a_glance_and_then_a_rest();
+void test_a_look_is_a_turn_not_a_dart();
+void test_it_types_along_with_you();
 void test_work_settles_by_tier();
 void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
@@ -1919,8 +1923,11 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(19, tagIndex("hushed"));  // last, after the tiers: the Mac's list (Tags.board) agrees
-  TEST_ASSERT_EQUAL_INT(20, kTagCount);
+  // after the tiers, before your hands and the Mac's side: the Mac's list (Tags.board) agrees
+  TEST_ASSERT_EQUAL_INT(19, tagIndex("hushed"));
+  TEST_ASSERT_EQUAL_INT(20, tagIndex("typing"));
+  TEST_ASSERT_EQUAL_INT(23, tagIndex("macright"));
+  TEST_ASSERT_EQUAL_INT(24, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -3252,6 +3259,10 @@ int main() {
   RUN_TEST(test_pastimes_are_dealt_by_tier_after_a_rest);
   RUN_TEST(test_transitions_play_between_doings_and_anything_urgent_cuts_through);
   RUN_TEST(test_a_tagged_pastime_plays_only_while_its_tag_is_on);
+  RUN_TEST(test_the_eyes_rest_unless_theres_a_reason);
+  RUN_TEST(test_a_glance_and_then_a_rest);
+  RUN_TEST(test_a_look_is_a_turn_not_a_dart);
+  RUN_TEST(test_it_types_along_with_you);
   RUN_TEST(test_work_settles_by_tier);
   RUN_TEST(test_moves_are_rare);
   RUN_TEST(test_the_paws_type_on_the_keys);

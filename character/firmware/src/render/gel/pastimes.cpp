@@ -205,6 +205,7 @@ void snore(const Stage& s, const PastimeShow& p, int popAt) {
 
 Paws pawsFor(const PastimeShow& show) {
   Paws paws;
+  paws.keys = show.keys, paws.tapping = show.tapping;
   const int age = int(show.age);
   switch (show.playing) {
     case Pastime::kDone:  // the right one up, and down on Enter

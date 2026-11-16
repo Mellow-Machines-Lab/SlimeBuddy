@@ -117,6 +117,11 @@ struct PastimeShow {
   Pastime playing = Pastime::kNone;
   uint32_t age = 0, ms = 1;
   int fade = 0;
+  // Typing along with you (GelFace::showAlong): how far out its keyboard is
+  // alone, idle (0 … 255), and whether its paws type with you now, there
+  // or at its desk.
+  int keys = 0;
+  bool tapping = false;
 };
 // Where a pastime puts the desk's paws, each (0 left, 1 right) in the
 // thousandths of the surface paintProps draws them in: lifted and moved
@@ -124,6 +129,11 @@ struct PastimeShow {
 struct Paws {
   int lift[2] = {0, 0}, dx[2] = {0, 0};
   int melted = 0;  // how far it's melted, Q12 (PaintControls::melt): they fade with it, and the keyboard
+  // With no desk out: its keyboard alone, this far out (0 … 255), as it
+  // types along with you; and `tapping`, there or at its desk, its paws
+  // typing briskly with you.
+  int keys = 0;
+  bool tapping = false;
 };
 Paws pawsFor(const PastimeShow& show);
 

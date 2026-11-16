@@ -66,6 +66,9 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   dice_ = kSeed;
   transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, alone_ = false;
   actAt_ = 0, actResult_ = ActResult::kRunning;
+  along_ = rig::Ramp{};
+  tapping_ = typed_ = false, typedAt_ = 0;
+  gaze_.reset();
 }
 
 // Power-on only, right after reset: the same engine with the board's seed.
@@ -112,6 +115,8 @@ void GelFace::advanceTo(uint32_t t) {
   showTransition(t);
   showLayers(t);
   answerAct(t);
+  showAlong(t);
+  showGaze(t);
   int kept = 0;
   for (int i = 0; i < pendingCount_; ++i)
     if (t - pendingAt_[i] <= kCueWaitMs) {
@@ -233,7 +238,8 @@ void GelFace::passTime(uint32_t t) {
   if (playing() && (!shows || look != pastimeLook_)) endPastime(t, true);
   // A new look rests before its first.
   if (look != dealtLook_) dealtLook_ = look, restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
-  const bool busy = finger_ || (stream_ && stream_->drawn(t) && stream_->call.live);
+  // Nor one over its keyboard, out to type along with you.
+  const bool busy = finger_ || along_.target() || (stream_ && stream_->drawn(t) && stream_->call.live);
   if (!shows || pastime_ != Pastime::kNone || busy || after(restUntil_, t)) return;
   deal(look, t);
 }
@@ -334,8 +340,81 @@ bool GelFace::playPastime(const char* name, uint32_t t) {
   return false;
 }
 
+// Whether the working look's pose is typing's: no activity's own clip
+// (looking, running, waiting) has the body and the eyes.
+bool GelFace::typingPose() const {
+  const rig::Look* l = rig::kRig.look(SceneState::kWorking);
+  return !(l && l->acted(engine_->router.facts.look()));
+}
+
+// Typing along with you (face.h): while your hands are busy and it shows
+// its own look, idle or at work in its typing pose, with nothing else
+// having it, its paws type briskly with you. Idle, its keyboard comes out
+// for it, and stays a little longer after you stop, its paws at rest, so a
+// pause in your typing doesn't put the keyboard away and bring it back; at
+// work the desk is out already, and its paws go back to the agents' soft
+// typing.
+void GelFace::showAlong(uint32_t t) {
+  const Engine& e = *engine_;
+  SceneState look;
+  const bool free = showsLook(source_.anim, look) && !finger_ && !alone_ && !transition(t);
+  const bool idle = free && look == SceneState::kIdle;
+  // At work its desk is out already: there your typing makes its paws
+  // brisk, while its own pose is typing and no word forward has the screen.
+  // Looking, running or waiting, its paws are off the keys, and stay off.
+  const bool working = free && look == SceneState::kWorking && typingPose() && !(stream_ && stream_->call.live);
+  const bool typing = hasTag(e.scenes.when, "typing");
+  // It never cuts a pastime to start: it waits for it to end.
+  const bool was = tapping_;
+  tapping_ = (idle || working) && typing && !playing();
+  // Its whole body types with you: hunched over the keys and bouncing with
+  // each one (the rig's `type-along`), so it shows from across a desk.
+  if (tapping_ != was)
+    if (const rig::Clip* clip = rig::kRig.clip("type-along")) tapping_ ? mixer_.play(*clip) : mixer_.stop(*clip);
+  const bool alone = tapping_ && idle;  // with its keyboard alone
+  if (alone) typed_ = true, typedAt_ = t;
+  const bool out = idle && typed_ && (alone || (!playing() && within(t, typedAt_, kAlongLingerMs)));
+  if (!out) typed_ = alone;
+  if (along_.target() != (out ? 1000 : 0)) {
+    along_.retarget(out ? 1000 : 0, t);
+    // Put away: a rest before the next pastime, as a new look has.
+    if (!out) restUntil_ = t + kRestMinMs + roll(kRestMaxMs - kRestMinMs);
+  }
+}
+
+// Where it looks by itself (render/gel/gaze.h): the facts now, and the
+// eyes turned to the point they give, or let go.
+void GelFace::showGaze(uint32_t t) {
+  Engine& e = *engine_;
+  SceneState look;
+  GazeFacts f;
+  const bool shows = showsLook(source_.anim, look);
+  f.free = shows && !finger_ && !alone_ && !playing() && !transition(t) && !e.acting.current() && !e.router.listening &&
+           !(stream_ && stream_->call.live);
+  f.needsYou = look == SceneState::kNeedsYou;
+  f.lookMs = e.scenes.lookMs;
+  f.mac = hasTag(e.scenes.when, "macleft") ? -1 : hasTag(e.scenes.when, "macright") ? 1 : 0;
+  f.along = tapping_;
+  f.posed = look == SceneState::kWorking && !typingPose();
+  f.watching = look == SceneState::kWorking && hasTag(e.scenes.when, "reading");
+  if (stream_ && stream_->on && look == SceneState::kWorking) {
+    const Stream::Word* newest = nullptr;
+    for (const Stream::Word& w : stream_->words)
+      if (w.live && int32_t(t - w.born) >= 0 && (!newest || int32_t(w.born - newest->born) > 0)) newest = &w;
+    if (newest) {
+      f.word = true, f.wordBorn = newest->born, f.wordX = newest->x;
+      f.wordY = int(int64_t(t - newest->born) * newest->speed / 1000), f.wordSpeed = newest->speed;
+    }
+  }
+  const GazePoint p = gaze_.look(f, t);
+  if (!p.on) return e.unattend();
+  // The point, from the screen's px to the canvas's, as a finger's is.
+  lookToward(p.x * 320 / 502, p.y * 240 / 410, false);
+}
+
 PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
+  s.keys = (along_.value(t) * 255 + 500) / 1000, s.tapping = tapping_;
   if (pastime_ != Pastime::kNone) {
     s.playing = pastime_;
     s.age = t - pastimeAt_;
@@ -405,10 +484,16 @@ void GelFace::letGo(int vx, int vy) {
   finger_ = false;
 }
 
-void GelFace::followFinger(int x, int y) {
+void GelFace::followFinger(int x, int y) { lookToward(x, y, true); }
+
+// The eyes toward (x, y) on the canvas, which may be off it: after a
+// finger, or to what it looks at by itself.
+void GelFace::lookToward(int x, int y, bool finger) {
   const int across = x - kMidX, up = kDeskRow - kEyesOverDesk - y;
   const F dx = F(across), dy = F(up), away = F(root(uint32_t(across * across + up * up)) + kGazeKneePx);
-  engine_->lookAt(kGazeReach * dx / away, kGazeUpReach * dy / away);
+  const F gx = kGazeReach * dx / away, gy = kGazeUpReach * dy / away;
+  if (finger) engine_->lookAt(gx, gy);
+  else engine_->attend(gx, gy);
 }
 
 // Nothing has the body: no animation, its own face, reaction or needs-you.
@@ -435,6 +520,7 @@ void GelFace::lean(Lean level, uint32_t t) {
 
 const char* GelFace::passing(uint32_t t) const {
   if (const rig::Clip* clip = transition(t)) return clip->id;
+  if (tapping_) return "along";
   return playing() ? info(pastime_).name : nullptr;
 }
 

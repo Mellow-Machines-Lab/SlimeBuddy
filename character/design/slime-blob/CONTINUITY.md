@@ -836,6 +836,51 @@ message. The only things a pastime draws are sleep's, in front, at the
 body's anchors: a snooze's Zs and a snore's bubble. No sounds of their
 own but a few landings (`body_contact`), and none asleep.
 
+### Where it looks, and typing along (the board's)
+
+The eyes rest forward and turn to one thing at a time, for a reason you
+can name (`render/gel/gaze.h`, the screen's rule, part three). The face
+gathers the facts each tick (`GelFace::showGaze`), `Gaze` picks a point on
+or off the screen by the first rule that applies, and the engine turns the
+eyes to it (`Engine::attend`), at `Motion::kAttendRate`, under half as
+quick as they follow a finger, so a look is a turn and never a dart.
+
+| When | It looks | For how long |
+| --- | --- | --- |
+| Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag; forward with neither) | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
+| Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
+| At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests, and drops a glance it was in | While the pose lasts |
+| At work, typing, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
+| Otherwise | Forward, with the engine's own small wander | |
+
+Nothing of it applies while anything else has the eyes: a finger, a
+Moment, a pastime, a transition, a word forward, listening or sleep. A
+minute of the busiest stream has at most seven glances. The rig's gaze
+tracks are added to the engine's own, so a glance over a pose's clip
+would pull its eyes off the page or the monitor: that's why the pose
+comes before the glance in the list.
+
+**Typing along** (`GelFace::showAlong`): while your hands are busy at the
+Mac (the `typing` tag), it types with you, and so that you can see it on a
+small screen across a desk, by size and not by speed: its whole body rocks
+slowly over the keys, to one side and then the other, dipping onto each
+beat and springing up off it with a little hop, a beat every 600 ms (the
+rig's looping `type-along` clip); its paws swing 70 high, one every 300 ms
+(`kBriskLift`, `kBriskMs`), against the agents' soft 12 every 340. The keys under the
+paws light as they land, which a small screen barely shows. At work that's at its desk, which
+is out already, and its eyes drop to the keys in place of the glances; you
+stop, and it's back to the soft typing. Only its typing pose types with
+you: looking, running or waiting, its paws are off the keys, the pose has
+the body, and your typing changes nothing until it types again. Idle, its keyboard comes out for
+it over the rig's fade; you stop, and its paws rest; the keyboard stays
+`kAlongLingerMs` (4 s) more, so a pause doesn't put it away and bring it
+back, and then goes, with a pastime's rest before the next pastime. It is
+the lowest thing there is: it waits for a pastime or a transition to end
+and never cuts one, and it goes at once for a finger, a Moment, a word
+forward, needs you or sleep. No pastime is dealt over the
+keyboard alone; at work they're dealt as ever. The Mac says only that your
+hands are busy, never what they type.
+
 ### Layers over the body (the board's)
 
 The engine draws no costume, but the board draws layers over the body by

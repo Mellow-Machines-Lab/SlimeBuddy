@@ -17,8 +17,9 @@
 //   on it, sliding up as the reaction starts and bobbing while it's held. It
 //   rises to stand on it, so the card leaves its mouth clear (signHop).
 //
-// Part two, what a pastime may show, is in render/gel/pastimes.h; what
-// shares the top band and the lane, in render/gel/lane.cpp.
+// Part two, what a pastime may show, is in render/gel/pastimes.h; part
+// three, where its eyes look, in render/gel/gaze.h; what shares the top
+// band and the lane, in render/gel/lane.cpp.
 //
 // Each comes and goes through the rig's layer stack (render/rig/layers.h,
 // the face's), so the nightcap at nightfall and the Zs as it falls asleep

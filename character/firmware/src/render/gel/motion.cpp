@@ -11,11 +11,13 @@ void Motion::advance(T dt, T now, Random& random) {
   if (time > nextLook) {
     // The dice go as they always have, whether or not a finger has its eyes.
     const F wander = (random.unit() - q(.5)) * q(.028);
-    if (!following) gazeTarget = wander;
+    if (!following && !attending) gazeTarget = wander;
     nextLook = time + q(3.2) + random.unit() * 4;
   }
-  // Quick after a finger, and drifting back when it's gone.
-  const F ease = F(1) - (following ? exp(-dt * 12) : exp(-dt * 3));
+  if (attending && !following) gazeTarget = attendX, gazeUpTarget = attendUp;
+  // Quick after a finger, slower to what it looks at itself, and drifting
+  // back when it's gone.
+  const F ease = F(1) - exp(-dt * (following ? kFollowRate : attending ? kAttendRate : kWanderRate));
   gaze += (gazeTarget - gaze) * ease;
   gazeUp += (gazeUpTarget - gazeUp) * ease;
 }
