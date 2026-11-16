@@ -6,7 +6,7 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0,
+      "at": 0.001,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
@@ -22,96 +22,96 @@
     },
     {
       "at": 1.333,
-      "effect": "Boop makes a curious face and says “Piano”",
-      "line": "{\"t\":\"do\",\"id\":1681099600,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.borrowed.piano__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
+      "effect": "Boop makes a curious face and says “Careful”",
+      "line": "{\"t\":\"do\",\"id\":1560897369,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.work.careful__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
       "at": 2.401,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 4.534,
+      "at": 4.535,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/search/index.js"
       }
     },
     {
-      "at": 5.554,
+      "at": 5.605,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 8.756,
+      "at": 8.803,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 8.757,
+      "at": 8.804,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the search tests"
       }
     },
     {
-      "at": 9.078,
-      "effect": "Boop makes a determined face and says “Verify”",
-      "line": "{\"t\":\"do\",\"id\":1681099601,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass\",\"say\":{\"take\":\"phase1.word.test.verify__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
+      "at": 9.127,
+      "effect": "Boop makes a determined face and says “Trial”",
+      "line": "{\"t\":\"do\",\"id\":1560897370,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass\",\"say\":{\"take\":\"phase1.word.test.trial__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
     },
     {
-      "at": 9.08,
+      "at": 9.128,
       "effect": "Boop's mood is now focused",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 10.146,
+      "at": 10.195,
       "cause": {
         "kind": "wait",
         "text": "Sixteen minutes in: the third tier"
       }
     },
     {
-      "at": 10.149,
-      "effect": "Boop makes a focused face and says “Testing”",
-      "line": "{\"t\":\"do\",\"id\":1681099602,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"working 16 min\",\"say\":{\"take\":\"phase1.word.test.testing__engaged__contained\"},\"mood\":\"focused\",\"loops\":1}}"
+      "at": 10.199,
+      "effect": "Boop makes a focused face and says “Measure”",
+      "line": "{\"t\":\"do\",\"id\":1560897371,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"working 16 min\",\"say\":{\"take\":\"phase1.word.test.measure__engaged__contained\"},\"mood\":\"focused\",\"loops\":1}}"
     },
     {
-      "at": 10.149,
+      "at": 10.199,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,2,\"npm test\"]]}"
     },
     {
-      "at": 12.921,
+      "at": 12.973,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"focused\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 12.921,
-      "line": "{\"t\":\"do\",\"id\":1681099603,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.973,
+      "line": "{\"t\":\"do\",\"id\":1560897372,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.922,
+      "at": 12.974,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 13.245,
-      "effect": "Boop celebrates and says “Big tiny win”",
-      "line": "{\"t\":\"do\",\"id\":1681099604,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"the-new-search-index\"},\"say\":{\"take\":\"phase1.phrase.celebrate.big-tiny-win__excited__contained\"},\"mood\":\"excited\",\"loops\":3}}"
+      "at": 13.297,
+      "effect": "Boop celebrates and says “Bada bing bada boom”",
+      "line": "{\"t\":\"do\",\"id\":1560897373,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"the-new-search-index\"},\"say\":{\"take\":\"new.d15\"},\"mood\":\"excited\",\"loops\":3}}"
     },
     {
-      "at": 13.246,
+      "at": 13.3,
       "effect": "Boop's mood is now happy",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 19.64,
+  "length": 19.7,
   "name": "Boop",
   "script": "6b288d97b0d7038a29b6322a701f9096c708eb900a3d4b8949d1d40105e6307c",
   "takes": [
-    "phase1.borrowed.piano__curious__contained",
-    "phase1.word.test.verify__determined__contained",
-    "phase1.word.test.testing__engaged__contained",
-    "phase1.phrase.celebrate.big-tiny-win__excited__contained"
+    "phase1.word.work.careful__curious__contained",
+    "phase1.word.test.trial__determined__contained",
+    "phase1.word.test.measure__engaged__contained",
+    "new.d15"
   ],
   "version": 1
 }

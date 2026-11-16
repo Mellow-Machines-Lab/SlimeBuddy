@@ -685,40 +685,29 @@ plays the pack's rig clip for the reply, `character/rig/clips/reply-<name>.json`
 over it, once, on its mixer as it plays the notice's: a nod for yes, a
 shake of the head for no, a shrug for dunno, a head tilt with one eye
 narrowed for huh, a little hop and a sway for hello, a slow sway for bye,
-puffing up tall for thanks, snuggling down with its eyes shut for love,
+puffing up tall for thanks,
 a flinch for ouch, leaning in low for comfort, giggling bounces for
 hehe, looking down at its sign and back up for status, after which a
 status reply about every agent (`show`) has the board bring up the
-agents' drawer, and for notme a
-firm little shake of the head, its eyes off down to one side, then a
-lean that way (not mine: ask the Mac), for hush (ok, I'll be quiet) its
+agents' drawer, and for hush (ok, I'll be quiet) its
 lips pressed together, its eyes squeezed shut, sinking a little in a
-small nod, and for unhush a perk-up, lifting tall with its eyes wide and
-up at you, then a little bounce. The clips move only the body,
+small nod. The clips move only the body,
 eyes and mouth: there's no new drawing, and the face and its sign are
 the Moment's. A reply the pack has no clip for plays the face alone.
 
 The Mac's reply at your lock or unlock of the Mac (not to what you said)
-is the same move, picked by the Mac's rule with no brain (`MomentRule.wave`):
-`bye` for a real wave, at a first lock in an hour and for good night at a
-night's lock, after which Boop's Doing goes to asleep at once; and for a
-routine one `reply-wave`, a sway at about a third of `bye`'s lean with the
-eyes barely softening, over in a second, so it reads as a nod to you going
-by.
+is the same move, picked by the Mac's rule with no brain (`MomentRule.bye`,
+`hello`): `bye` for a real wave, at a first lock in an hour and for good
+night at a night's lock, after which Boop's Doing goes to asleep at once;
+and for a routine one `reply-wave`, a sway at about a third of `bye`'s
+lean with the eyes barely softening, over in a second, so it reads as a
+nod to you going by.
 
-The Mac no longer sends four of these replies: love is thanks now, notme
-is no, and nobody asks Boop to nap or dance. Their clips stay in the rig,
-and the board plays any of them if it's sent, as the scenarios below
-still check; nothing on the Mac asks for them.
-
-A nap and a dance are clips like the rest: `reply-nap` a yawn (stretching
-up, its mouth open and its eyes drooping shut, then sinking flat) and
-`reply-dance` a wiggle (a sway and a bounce on each beat, eyes squeezed),
-with nothing brought out for either. A nap's sleep is the Mac's: Boop's
-Doing goes to asleep at once. While something needs you the face doesn't
-play, so neither does its reply. `tests/scenarios-gel/replies.jsonl`
-catches each partway through, a nap and a dance at work, and the nap at
-a night's lock.
+While something needs you the face doesn't play, so neither does its
+reply, but a reply to what you said, which shows over it.
+`tests/scenarios-gel/replies.jsonl` catches each partway through, a no
+over the needs-you screen, the slight wave at a lock and the bye at a
+night's lock.
 
 ## Tagged pastimes
 
@@ -923,20 +912,6 @@ pixel with the anchor it rides (`OutfitLayer::kSlack`), so it glides
 with the body rather than stepping a pixel at a time; the Zs, drawn with
 one rounded pen (`Raster::zee`), grow from 7 to 16 px as they drift, fading
 in over their first 200 ms and out to nothing by their last.
-
-### Hushed (the board's)
-
-While you've told Boop to be quiet (the Mac's `hushed` tag), it says
-nothing, which the Mac keeps, and the board shows it with zipped lips:
-in the mouth's place and ink, on the face as the mouth is, so it moves,
-squashes and bends over the dome with it, a short closed line
-(`kZipHalf` face units either side of the middle, `render/gel/painter.h`)
-with three little ticks across it (`kZipTicks`), whatever mouth the
-mood's art has, asleep under its closed lids too. A clip that opens the
-mouth (`mouthOpen`, a giggle's or a yawn's) leaves it zipped, and the
-art's mouth comes back the frame the tag goes (`paintArt`, which leaves
-the art's mouth out while `hushed` is on, and `paintZip`, which draws
-the zip). The eyes, the body and every layer play as ever.
 
 ### The work acts (the board's)
 

@@ -1230,13 +1230,13 @@ static void test_each_gesture_plays_its_own_gag() {
 }
 // A reply to what you said (FaceContext::reply, the Mac's `reply`) plays
 // its pack's clip, reply-<name>, over the face it came with, once, as that
-// face starts: each of the fifteen replies has one, and fits the board's
+// face starts: each of the replies has one (the Mac's eleven, and dunno, a huh to a question), and fits the board's
 // buffer for it; a shake of the head swings the body side to side; the
 // same reply still showing doesn't play it again, the next one does; and a
 // reply with no clip plays nothing.
 static void test_a_reply_plays_its_clip_once() {
-  const char* replies[] = {"yes",  "no",      "dunno",  "huh", "hello", "bye",   "thanks", "love",  "ouch",
-                           "hehe", "comfort", "status", "nap", "dance", "notme", "hush",   "unhush"};
+  const char* replies[] = {"yes",    "no",   "dunno", "huh",     "hello",  "bye",
+                           "thanks", "ouch", "hehe",  "comfort", "status", "hush"};
   char name[24];
   for (const char* r : replies) {
     std::snprintf(name, sizeof(name), "reply-%s", r);
@@ -1291,74 +1291,6 @@ static void test_a_reply_plays_its_clip_once() {
   std::snprintf(in.reply, sizeof(in.reply), "%s", "no");
   b.play(in, 1008);
   TEST_ASSERT_TRUE(leaned(1008, 1300) > resting + 80);
-}
-
-// No reply is a pastime's: a nap and a dance are their clips alone, a yawn
-// and a sway, at work or idle, and no pastime plays for them. notme is its
-// clip, its eyes off to one side.
-static void test_a_nap_or_a_dance_is_its_clip_alone() {
-  struct Board {
-    linkkit::Rng rng;
-    app::Behaviour b{std::make_unique<GelFace>()};
-    app::Model m;
-    uint32_t t = 0;
-    Board(SceneState base, uint32_t when) {
-      b.reset(0, rng);
-      m.base = base, m.mood = Mood::kCalm, m.act = SceneState::kWorking;
-      m.when = reached(when);
-      b.onState(m, 0);
-    }
-    GelFace& face() { return static_cast<GelFace&>(b.face()); }
-    Pastime playing() { return face().pastimes(t).playing; }
-    int channel(rig::Channel c) { return face().mixer().channels()[c]; }
-    void say(const char* reply) {
-      app::ReactionIn in;
-      in.expr = true, in.mood = Mood::kHappy, in.said = true;
-      std::snprintf(in.reply, sizeof(in.reply), "%s", reply);
-      TEST_ASSERT_NULL(b.admit(in, t));
-      b.play(in, t);
-    }
-    void listen() {
-      app::ReactionIn in;
-      in.anim = SceneState::kListening;
-      TEST_ASSERT_NULL(b.admit(in, t));
-      b.play(in, t);
-    }
-    void to(uint32_t until, const std::function<void()>& each) {
-      while (t + 16 <= until) {
-        t += 16;
-        if (t % 10000 < 16) b.onState(m, t);
-        b.advance(t, rng);
-        each();
-      }
-    }
-  };
-  // The reply's clip, a yawn and a sway, and no pastime.
-  for (SceneState base : {SceneState::kWorking, SceneState::kIdle})
-    for (const char* r : {"nap", "dance"}) {
-      Board board(base, tagBit("day"));
-      board.to(3008, [] {});
-      board.say(r);
-      int mouth = 0, lean = 0;
-      board.to(board.t + 1600, [&] {
-        TEST_ASSERT_EQUAL_INT_MESSAGE(int(Pastime::kNone), int(board.playing()), r);
-        mouth = std::max(mouth, board.channel(rig::Channel::kMouthOpen));
-        lean = std::max(lean, std::abs(board.channel(rig::Channel::kLean)));
-      });
-      TEST_ASSERT_TRUE_MESSAGE(r[0] == 'n' ? mouth > 800 : lean > 150, r);  // the yawn, wide; the sway
-    }
-  // notme, idle: its eyes off to one side, and no pastime.
-  {
-    Board idle(SceneState::kIdle, tagBit("day"));
-    idle.to(3008, [] {});
-    idle.say("notme");
-    int aside = 0;
-    idle.to(idle.t + 1500, [&] {
-      TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(idle.playing()));
-      aside = std::max(aside, idle.channel(rig::Channel::kGazeX));
-    });
-    TEST_ASSERT_TRUE(aside > 500);
-  }
 }
 
 // The notice state's three takes play the pack's rig clip for it
@@ -1917,64 +1849,6 @@ static void test_the_layers_come_and_go_through_the_stack() {
   for (int y = 0; y < s.height; ++y)
     for (int x = 0; x + 20 < s.width; ++x)
       TEST_ASSERT_EQUAL_HEX16(px[size_t(y) * s.width + x], moved[size_t(y) * s.width + x + 20]);
-}
-
-// Hushed (the `hushed` tag), its lips are zipped: a short line across the
-// mouth's place with kZipTicks ticks across it, in the mouth's ink,
-// whatever its art's mouth or a clip opening it; not hushed, its own.
-static void test_hushed_its_lips_are_zipped() {
-  // after the tiers, before your hands and the Mac's side: the Mac's list (Tags.board) agrees
-  TEST_ASSERT_EQUAL_INT(19, tagIndex("hushed"));
-  TEST_ASSERT_EQUAL_INT(20, tagIndex("typing"));
-  TEST_ASSERT_EQUAL_INT(23, tagIndex("macright"));
-  TEST_ASSERT_EQUAL_INT(24, kTagCount);
-  std::vector<uint16_t> px(502 * 410);
-  Surface s{502, 410, px.data()};
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 960; t += 16) e->step(t);
-  const uint32_t day = tagBit("day"), hush = day | tagBit("hushed");
-  // The face art alone, over black, at rest.
-  PaintControls c;
-  auto art = [&](uint32_t when, bool mouthOpen) {
-    e->setOccasion(when, 0);
-    std::fill(px.begin(), px.end(), 0);
-    paintArt(s, *e, c, mouthOpen);
-    return px;
-  };
-  const auto plain = art(day, false), open = art(day, true), zipped = art(hush, false), zippedOpen = art(hush, true);
-  TEST_ASSERT_TRUE(hushed(*e));
-  TEST_ASSERT_TRUE(plain != open);
-  TEST_ASSERT_TRUE(zipped != plain);
-  TEST_ASSERT_TRUE(zipped == zippedOpen);  // opened, it stays zipped
-  // Its ends and its first tick's tip: inked hushed, bare not.
-  const Projector at(s, c);
-  const int mouthY = scalar(e->face.controls[3]);
-  auto ink = [&](const std::vector<uint16_t>& f, int x, int y) {
-    const Point p = at.face(x, y);
-    return f[size_t(p.y / 16) * 502 + size_t(p.x / 16)];
-  };
-  const int end = kZipHalf - 30, tickX = -kZipHalf + 2 * kZipHalf / (kZipTicks + 1), tip = kZipTick * 7 / 8;
-  for (int x : {-end, end}) {
-    TEST_ASSERT_NOT_EQUAL(0, ink(zipped, x, mouthY));
-    TEST_ASSERT_EQUAL_HEX16(0, ink(plain, x, mouthY));
-  }
-  TEST_ASSERT_NOT_EQUAL(0, ink(zipped, tickX, mouthY + tip));
-  TEST_ASSERT_NOT_EQUAL(0, ink(zipped, tickX, mouthY - tip));
-  TEST_ASSERT_EQUAL_HEX16(0, ink(zipped, tickX / 2, mouthY + tip));  // between the first two ticks, nothing
-  // The whole frame: a clip opening its mouth opens its own, never the
-  // zipped one; the eyes are the same either way.
-  auto frame = [&](uint32_t when, int mouth) {
-    e->setOccasion(when, 0);
-    rig::Channels rig = rig::kRest;
-    rig[rig::Channel::kMouthOpen] = int16_t(mouth);
-    std::fill(px.begin(), px.end(), 0);
-    paint(s, *e, false, 0, 0, nullptr, rig);
-    return px;
-  };
-  TEST_ASSERT_TRUE(frame(day, 0) != frame(day, 1000));
-  TEST_ASSERT_TRUE(frame(hush, 0) == frame(hush, 1000));
-  e->setOccasion(day, 0);
-  TEST_ASSERT_FALSE(hushed(*e));
 }
 
 // A recording (render/gel/raster.h) blends again exactly what its shapes
@@ -3250,8 +3124,6 @@ int main() {
   RUN_TEST(test_a_low_or_cross_mood_keeps_its_face_through_a_gesture);
   RUN_TEST(test_a_notice_plays_its_rig_clip);
   RUN_TEST(test_a_reply_plays_its_clip_once);
-  RUN_TEST(test_hushed_its_lips_are_zipped);
-  RUN_TEST(test_a_nap_or_a_dance_is_its_clip_alone);
   RUN_TEST(test_a_rig_clip_plays_on_the_gel);
   RUN_TEST(test_the_rig_carries_reaches_and_melts_the_gel);
   RUN_TEST(test_every_pastime_has_its_clip_and_its_turn);
