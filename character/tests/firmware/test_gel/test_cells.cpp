@@ -98,15 +98,11 @@ struct Run {
   }
 };
 
-// The prop each state must show, peaking above half: the alert, the start
-// card, listening's, a touch's; the desk for desk states, whole. A result
-// shows no card: a success its trophy, the rest their body alone.
+// The prop each state must show, peaking above half: the alert,
+// listening's, a touch's; the desk for desk states, whole. A result shows
+// no card: a success its trophy, the rest their body alone.
 void showsItsProp(const Run& r, SceneState state, Outcome outcome = Outcome::kNone) {
   if (state == SceneState::kNeedsYou) TEST_ASSERT_TRUE(r.props[Scenes::kAlertProp] > q(.5));
-  if (state == SceneState::kStarting) TEST_ASSERT_TRUE(r.props[Scenes::kStartProp] > q(.5));
-  // Waking and noticing are the start family's body without its card.
-  if (state == SceneState::kWakeUp || state == SceneState::kNotice)
-    TEST_ASSERT_TRUE(r.props[Scenes::kStartProp] == F(0));
   if (state == SceneState::kListening) TEST_ASSERT_TRUE(r.props[Scenes::kListeningProp] > q(.5));
   if (family(state) == Family::kTouch) TEST_ASSERT_TRUE(r.props[Scenes::kTouchProp] > q(.5));
   if (isDesk(state)) TEST_ASSERT_TRUE(r.desk > q(.9));
@@ -116,7 +112,7 @@ void showsItsProp(const Run& r, SceneState state, Outcome outcome = Outcome::kNo
 // the look the board plays it on: working, or idle for waking and a gesture.
 // It plays one pass of its take, then the host clears it. Its signature is
 // the body's lean and squash at 24 points through the take.
-std::vector<F> play(int mood, int row, SceneState state, Outcome outcome, StartCtx ctx, int take, int id) {
+std::vector<F> play(int mood, int row, SceneState state, Outcome outcome, int take, int id) {
   Facts facts;
   facts.base = state == SceneState::kWakeUp || state == SceneState::kGesture ? SceneState::kIdle : SceneState::kWorking;
   Run r(mood, facts);
@@ -126,7 +122,6 @@ std::vector<F> play(int mood, int row, SceneState state, Outcome outcome, StartC
   req.anim = state;
   req.variant = take;
   req.outcome = outcome;
-  req.ctx = ctx;
   // A gesture's and a notice's own faces, which the board borrows for them.
   if (state == SceneState::kGesture) req.expression = slime::kGestureFaces[take];
   if (state == SceneState::kNotice) req.expression = slime::kNoticeFaces[take];
@@ -225,17 +220,14 @@ void test_every_cell_plays_truthfully() {
   int id = 0, cells = 0;
   for (int mood = 0; mood < slime::kCanonical; ++mood) {
     for (int row = 0; row < slime::kRecipeStates; ++row) {
-      const SceneState state = row < kStates       ? SceneState(row)
-                               : row < kStates + 2 ? SceneState::kTaskComplete
-                                                   : SceneState::kStarting;
+      const SceneState state = row < kStates ? SceneState(row) : SceneState::kTaskComplete;
       const Outcome outcome = row == kStates       ? Outcome::kSuccess
                               : row == kStates + 1 ? Outcome::kFailure
                                                    : Outcome::kNone;
-      const StartCtx ctx = row >= kStates + 2 ? StartCtx(row - kStates - 1) : StartCtx::kNone;
       ++cells;
       if (isMoment(state) && state != SceneState::kListening) {
         std::vector<std::vector<F>> played;
-        for (int v = 0; v < takes(row); ++v) played.push_back(play(mood, row, state, outcome, ctx, v, ++id));
+        for (int v = 0; v < takes(row); ++v) played.push_back(play(mood, row, state, outcome, v, ++id));
         // Each take moves the body its own way, but notice's, its one clip's.
         if (state == SceneState::kNotice) continue;
         for (size_t a = 0; a < played.size(); ++a)
@@ -339,14 +331,18 @@ void test_every_cell_plays_truthfully() {
         r.run(400);
         TEST_ASSERT_TRUE(r.e->scenes.route.state == SceneState::kWorking);
       } else {
-        // The desk's looks: working, and what the agents do at it.
+        // The desk's looks: working, and what the agents do at it, one of
+        // four activities, each shown as its one state (router.h). Keys
+        // are pressed only while it types.
         facts.base = SceneState::kWorking;
         facts.act = state;
+        const SceneState shown = deskStateOf(activityOf(state));
         Run r(mood, facts);
-        TEST_ASSERT_EQUAL_INT(3, int(look(r, row, 40000).size()));
+        TEST_ASSERT_EQUAL_INT(3, int(look(r, int(shown), 40000).size()));
         TEST_ASSERT_TRUE(r.moved > q(.0001));
-        if (state != SceneState::kWaiting && state != SceneState::kDelegating) TEST_ASSERT_TRUE(r.keys > 0);
-        if (state == SceneState::kWaiting) TEST_ASSERT_EQUAL_INT(0, r.contacts);
+        if (shown == SceneState::kWorking) TEST_ASSERT_TRUE(r.keys > 0);
+        else TEST_ASSERT_EQUAL_INT(0, r.keys);
+        if (shown == SceneState::kWaiting) TEST_ASSERT_EQUAL_INT(0, r.contacts);
         showsItsProp(r, state);
       }
     }
@@ -386,7 +382,7 @@ void test_ten_minutes_of_work() {
     }
     for (int i = 0; i < 1000; i += 16) {
       r.step();
-      TEST_ASSERT_TRUE(r.e->scenes.route.state == facts.act);
+      TEST_ASSERT_TRUE(r.e->scenes.route.state == deskStateOf(activityOf(facts.act)));
       if (second >= 1) TEST_ASSERT_TRUE(r.e->scenes.desk.x > q(.99));
       picked();
     }
@@ -468,63 +464,6 @@ void test_held_and_interrupted_contacts() {
     TEST_ASSERT_EQUAL_INT(1, r.reveals);
     TEST_ASSERT_EQUAL_INT(1, r.contacts);
     TEST_ASSERT_TRUE(r.success);
-  }
-}
-
-// A card's reveal (the start's): from its reveal contact it rises on a
-// smoothstep over 400 ms, and falls on one over the take's last 480 ms. A
-// card whose reaction ends while it rises or falls carries on as it was
-// going while the card fades out over the props' 200 ms ramp, and is drawn
-// a dozen frames more, then gone.
-void test_card_reveal_trajectory() {
-  Facts working;
-  working.base = SceneState::kWorking;
-  auto start = [&](Run& r) {
-    r.run(320);
-    Request starting;
-    starting.anim = SceneState::kStarting, starting.ctx = StartCtx::kNewTask;
-    starting.variant = 0;
-    r.e->play(starting);
-  };
-  T reveal = -1, duration = 0;
-  {
-    Run r(slime::kHappy, working);
-    start(r);
-    const T began = r.e->scenes.started;
-    duration = r.e->scenes.recipe.duration;
-    for (int i = 0; i < r.e->scenes.recipe.count; ++i)
-      if (r.e->scenes.recipe.contacts[i].kind == kStart) reveal = r.e->scenes.recipe.contacts[i].at;
-    TEST_ASSERT_TRUE(reveal > T(0));
-    const T down = duration - T(480);
-    for (int at = 16; at <= F(duration).integer(); at += 16) {
-      r.step();
-      const T age = r.e->timeMs() - began;
-      const F got = r.e->scenes.slots[Scenes::kStartProp].reveal.value(r.e->timeMs());
-      const F want = age < reveal ? F(0)
-                     : age < down ? smooth((age - reveal) / kCardRevealMs)
-                                  : F(1) - smooth((age - down) / 480);
-      TEST_ASSERT_TRUE(abs(got - want) <= q(.002));
-    }
-  }
-  for (bool rising : {true, false}) {
-    Run r(slime::kHappy, working);
-    start(r);
-    const int until = rising ? F(reveal).integer() + 160 : F(duration).integer() - 320;
-    r.run(until);
-    const F before = r.e->scenes.slots[Scenes::kStartProp].reveal.value(r.e->timeMs());
-    r.e->clear();
-    int shown = 0;
-    F last = before;
-    for (int i = 0; i < 40; ++i) {
-      r.step();
-      const F now = r.e->scenes.slots[Scenes::kStartProp].reveal.value(r.e->timeMs());
-      if (r.e->scenes.visible(Scenes::kStartProp, r.e->timeMs()) == F(0)) continue;  // gone, the card lets it go
-      TEST_ASSERT_TRUE(rising ? now >= last : now <= last);                          // it carries on its way
-      last = now;
-      ++shown;
-    }
-    TEST_ASSERT_TRUE(shown >= 10 && shown <= 14);
-    TEST_ASSERT_TRUE(r.e->scenes.visible(Scenes::kStartProp, r.e->timeMs()) == F(0));
   }
 }
 

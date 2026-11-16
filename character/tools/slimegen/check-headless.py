@@ -91,8 +91,8 @@ with tempfile.TemporaryDirectory(prefix='boop-gel-',dir='/tmp') as folder:
             wait(lambda:any(m.get('base')=='working' for m in captured))
             hook('PreToolUse',tool='Bash',tool_use_id='fixture-tool')
             wait(lambda:any(m.get('act')=='terminal' for m in captured))
-            send({'dev':'mood','mood':'frightened'})
-            wait(lambda:any(m.get('mood')=='frightened' for m in captured))
+            send({'dev':'mood','mood':'sad'})
+            wait(lambda:any(m.get('mood')=='sad' for m in captured))
             hook('PermissionRequest',tool='Bash',tool_use_id='fixture-tool')
             wait(lambda:any('attn' in m for m in captured))
             send({'dev':'mood','mood':'happy'})
@@ -101,7 +101,7 @@ with tempfile.TemporaryDirectory(prefix='boop-gel-',dir='/tmp') as folder:
             if args.native:
                 wait(lambda:any(m.get('t')=='dbg.state' and m.get('mood')=='happy' and m.get('attn') for m in native_messages))
                 assert any(m.get('t')=='hello' and m.get('face')=='gel' for m in native_messages)
-                assert any(m.get('t')=='dbg.state' and m.get('mood')=='frightened' for m in native_messages)
+                assert any(m.get('t')=='dbg.state' and m.get('mood')=='sad' for m in native_messages)
                 wait(lambda:any(m.get('t')=='ev' and m.get('kind')=='ended' for m in native_messages))
         finally:
             process.terminate();process.wait(timeout=10);done.set();worker.join(timeout=2);server.close()

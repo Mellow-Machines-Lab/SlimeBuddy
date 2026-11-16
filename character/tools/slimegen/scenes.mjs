@@ -11,8 +11,7 @@ const cycleMs=[3200,3700,4200];
 export const sceneMoodTraits=Object.freeze({
   happy:Object.freeze({delayMs:0,spacing:1,gain:1.05,lean:.014}),
   grumpy:Object.freeze({delayMs:-40,spacing:.86,gain:1.12,lean:.024}),
-  sad:Object.freeze({delayMs:160,spacing:1.18,gain:.62,lean:-.016}),
-  frightened:Object.freeze({delayMs:240,spacing:1.28,gain:.68,lean:-.018})
+  sad:Object.freeze({delayMs:160,spacing:1.18,gain:.62,lean:-.016})
 });
 const clamp=(value,lo,hi)=>Math.min(hi,Math.max(lo,value));
 const limits=Object.freeze({delayMs:160,spacingMin:.88,spacingMax:1.18,gainMin:.68,gainMax:1.12,lean:.022});
@@ -46,19 +45,13 @@ function deskRecipe(state,variant,profile) {
   const mood=profile.mood;
   let times=[...rhythms[state][variant]],intent=state==='terminal'?'type and inspect':'type and think';
   let gain=1,lean=.018;
-  if(mood==='frightened'){
-    times=[[800,1700,2040],[740,1800,2240,2480],[1080,2380]][variant];
-    intent='hesitate, try, pause, retry';gain=.68;lean=-.018;
-  }else if(mood==='grumpy'&&state==='terminal'){
+  if(mood==='grumpy'&&state==='terminal'){
     times=[[640,800,960],[800,960,1120,2100],[660,820,980,1140,2120]][variant];
     intent='firm compact cluster, then inspect';gain=1.12;lean=.032;
   }else if(mood==='sad'){
     times=times.filter((_,index)=>index%2===0);intent='small effort and longer pause';gain=.62;lean=-.016;
   }else if(mood==='happy'){intent='buoyant working rhythm';gain=1.05;}
-  else if(mood==='crying'&&state==='working'){
-    times=[[760,1780],[640,2120],[1020,2300]][variant];
-    intent='pause, gather, continue through tears';gain=.55;lean=-.024;
-  }else if(mood!=='grumpy'||state!=='working'){
+  else if(mood!=='grumpy'||state!=='working'){
     const traits=profileTraits(profile),first=times[0]||0;
     times=times.map(at=>first+traits.delayMs+(at-first)*traits.spacing);
     gain=traits.gain;lean+=traits.lean;
@@ -102,11 +95,10 @@ function statusResultRecipe(state,variant,profile) {
     contacts:result.contacts.map(contact=>({...contact,kind:state+'_reveal'}))};
 }
 
-function startRecipe(ctx,variant,profile) {
+function startRecipe(variant,profile) {
   const traits=profileTraits(profile),at=[520,820,1080][variant]+traits.delayMs;
   return {duration:cycleMs[variant],intent:['perk and present start','nod into the new work','stretch and resume'][variant],
-    lean:traits.lean,contacts:[{at,kind:'start_reveal',side:0,strength:traits.gain}],
-    label:ctx==='new_task'?'NEW TASK':ctx==='continuation'?'RESUME':ctx==='compacted'?'COMPACTED':'START'};
+    lean:traits.lean,contacts:[{at,kind:'start_reveal',side:0,strength:traits.gain}]};
 }
 // wake_up: the person back at the Mac after a long break. The start family's
 // body without its card: a stretch up and forward (a presentation beat), then
@@ -207,7 +199,7 @@ export function takesOf(state,outcome=null) {
 }
 // The recipe for a profile's state (its outcome or context) and take, and
 // whether the board jitters its contacts (a desk's).
-export function recipe(p,{state,outcome,ctx},v,design){
+export function recipe(p,{state,outcome},v,design){
  let r,jitter=false;
  if(state==='gesture')r=gestureRecipe(design.gestures,v);
  else if(state==='notice')r=noticeRecipe(design.noticeClip);
@@ -215,7 +207,7 @@ export function recipe(p,{state,outcome,ctx},v,design){
  else if(state==='needs_you')r=alertRecipe(v,p);
  else if(state==='task_complete')r=resultRecipe(outcome||null,v,p);
  else if(state==='reply_ready')r=statusResultRecipe(state,v,p);
- else if(state==='starting')r=startRecipe(ctx||null,v,p);
+ else if(state==='starting')r=startRecipe(v,p);
  else if(state==='wake_up')r=wakeRecipe(v,p);
  else if(state==='delegating')r=helpersRecipe(state,v,p);
  else if(['poked','tap_spam'].includes(state))r=touchRecipe(state,v);

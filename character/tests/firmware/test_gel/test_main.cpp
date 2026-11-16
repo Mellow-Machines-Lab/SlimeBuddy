@@ -71,7 +71,7 @@ static void test_frame_replay_is_byte_identical() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
   auto e = std::make_unique<Engine>();
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kWounded);
   e->motion.impulse(false);
   for (int t = 0; t <= 640; t += 16) e->step(t);
   paint(sa, *e);
@@ -90,7 +90,7 @@ static void test_a_helper_draws_the_same_body() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
   auto e = std::make_unique<Engine>();
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kWounded);
   e->motion.impulse(false);
   {
     PaintControls c;
@@ -145,9 +145,9 @@ static void test_one_face_vocabulary_and_latest_facts() {
   b.reset(0, rng);
   TEST_ASSERT_EQUAL_STRING("gel", b.face().name());
   app::Model m;
-  m.mood = Mood::kFrightened;
+  m.mood = Mood::kWounded;
   m.base = SceneState::kWorking;
-  m.act = SceneState::kTerminal;
+  m.act = SceneState::kWorking;
   b.onState(m, 0);
   app::ReactionIn in;
   in.anim = SceneState::kTaskComplete;
@@ -159,11 +159,11 @@ static void test_one_face_vocabulary_and_latest_facts() {
   auto& e = static_cast<GelFace&>(b.face()).engine();
   TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTaskComplete);
   TEST_ASSERT_TRUE(e.scenes.route.outcome == Outcome::kFailure);
-  m.act = SceneState::kTesting;
+  m.act = SceneState::kTerminal;
   b.onState(m, 1600);
   b.advance(5008, rng);
-  TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTesting);
-  TEST_ASSERT_EQUAL_INT(slime::kFrightened, e.emotion);
+  TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTerminal);
+  TEST_ASSERT_EQUAL_INT(slime::kWounded, e.emotion);
 }
 static void test_request_identity_and_cache_bounds() {
   auto e = std::make_unique<Engine>();
@@ -238,7 +238,7 @@ static void test_external_source_holds_without_repeating_reveal() {
   auto e = std::make_unique<Engine>();
   Facts f;
   f.base = SceneState::kWorking;
-  f.act = SceneState::kTesting;
+  f.act = SceneState::kTerminal;
   e->setFacts(f);
   e->step(0);
   Request req;
@@ -255,32 +255,7 @@ static void test_external_source_holds_without_repeating_reveal() {
   TEST_ASSERT_EQUAL_INT(1, reveals);
   TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTaskComplete);
   e->clear();
-  TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTesting);
-}
-// A card revealed late, in its recipe's last 480 ms (no recipe's is yet),
-// still shows: it rises whole over kCardRevealMs, then falls over the
-// recovery, where it never rose at all. The start's, the one card left.
-static void test_a_card_revealed_late_rises_then_falls() {
-  auto e = std::make_unique<Engine>();
-  e->step(0);
-  Request req;
-  req.anim = SceneState::kStarting;
-  req.ctx = StartCtx::kNewTask;
-  e->play(req);
-  e->step(16);
-  slime::Recipe& r = e->scenes.recipe;
-  int moved = 0;
-  for (int i = 0; i < r.count; ++i)
-    if (r.contacts[i].kind == kStart) r.contacts[i].at = r.duration - T(200), ++moved;
-  TEST_ASSERT_EQUAL_INT(1, moved);
-  const int end = F(r.duration + T(1000)).integer();
-  F most = 0;
-  for (int t = 32; t <= end; t += 16) {
-    e->step(uint32_t(t));
-    most = max(most, e->scenes.visible(Scenes::kStartProp, e->timeMs()));
-  }
-  TEST_ASSERT_TRUE(most > q(.99));
-  TEST_ASSERT_TRUE(e->scenes.visible(Scenes::kStartProp, e->timeMs()) == F(0));
+  TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kTerminal);
 }
 // A finished turn's marks (render/gel/done.h). The glow comes over
 // kGlowInMs to kGlowPeak at the panel's edge (a reply's to kGlowPeakFaint),
@@ -379,7 +354,7 @@ static void test_interrupted_alert_signals_exactly_once() {
     }
   }
 }
-// Across every directed edge the
+// From every face to every other the
 // two arts cross over, their weights summing to one, each stepping no more
 // than a slice of the shortest face window's ramp, the new one last; each
 // drawn ratio stays inside (0.75, 4/3) and moves its drawn size no further
@@ -389,17 +364,19 @@ static void test_interrupted_alert_signals_exactly_once() {
 static void test_face_and_props_move_without_jumps() {
   const F weightStep = q(.149), rampStep = q(.134);
   const int controls[] = {2, 4, 5};
-  for (int i = 0; i < slime::kEdgeCount; ++i) {
+  for (int i = 0; i < slime::kCanonical * slime::kCanonical; ++i) {
+    const int from = i / slime::kCanonical, to = i % slime::kCanonical;
+    if (from == to) continue;
     auto e = std::make_unique<Engine>();
-    e->setMood(slime::kEdges[i].from);
+    e->setMood(from);
     for (uint32_t t = 0; t <= 640; t += 16) e->step(t);
-    e->setMood(slime::kEdges[i].to, i % 3);
+    e->setMood(to);
     SemanticFace before = e->face;
     bool crossed = false;
     for (uint32_t t = 656; t <= 1280; t += 16) {
       e->step(t);
       const auto& f = e->face;
-      TEST_ASSERT_EQUAL_INT(slime::kEdges[i].to, f.current().art);
+      TEST_ASSERT_EQUAL_INT(to, f.current().art);
       crossed |= f.count == 2;
       F sum = 0;
       for (int k = 0; k < f.count; ++k) {
@@ -426,7 +403,7 @@ static void test_face_and_props_move_without_jumps() {
     TEST_ASSERT_EQUAL_INT(1, e->face.count);
   }
   SemanticFace face;
-  face.setMood(slime::kFrightened);
+  face.setMood(slime::kWounded);
   for (int i = 0; i < 3; ++i) face.advance(T::ratio(16, 1000));
   const F moving = face.velocity[2];
   TEST_ASSERT_TRUE(abs(moving) > q(.01));
@@ -556,7 +533,7 @@ static void test_it_falls_asleep_squashing_shut() {
   TEST_ASSERT_TRUE(early.shut.x < q(.01));
 }
 // A weight held at zero is flat there (the Hermite's): an art going out
-// fast, into a longer window (a bridge's 460 ms), dips below zero and comes
+// fast, into a longer window (460 ms), dips below zero and comes
 // back up toward it, and a retarget then doesn't bring it back.
 static void test_a_faded_art_never_comes_back() {
   const T frame = T::ratio(16, 1000);
@@ -607,7 +584,7 @@ static int faceInk(const Engine& e, Surface& drawn, Surface& bare) {
 // sleeping face's lids. Each look is laid over the body alone and the two
 // blended (CrossFade), so where both ink a pixel none of the body shows
 // through: the least now is 92%, waking (falling asleep 97%; calm to happy,
-// happy to sad and calm to frightened never less than the fainter face).
+// happy to sad and calm to wounded never less than the fainter face).
 static void test_the_face_never_fades_while_arts_cross_over() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface drawn{502, 410, a.data()}, bare{502, 410, b.data()};
@@ -616,8 +593,8 @@ static void test_the_face_never_fades_while_arts_cross_over() {
     SceneState base, then;
   } cases[] = {{slime::kCalm, slime::kHappy, SceneState::kIdle, SceneState::kIdle},
                {slime::kHappy, slime::kSad, SceneState::kIdle, SceneState::kIdle},
-               // frightened's welling eyes: a pool over a bean, with a glint
-               {slime::kCalm, slime::kFrightened, SceneState::kIdle, SceneState::kIdle},
+               // wounded's thin tears
+               {slime::kCalm, slime::kWounded, SceneState::kIdle, SceneState::kIdle},
                // falling asleep, and waking
                {slime::kCalm, slime::kCalm, SceneState::kIdle, SceneState::kAsleep},
                {slime::kCalm, slime::kCalm, SceneState::kAsleep, SceneState::kIdle}};
@@ -654,18 +631,15 @@ static void test_the_face_never_fades_while_arts_cross_over() {
 }
 // Nothing on the face flickers as moods cross over: a face that comes in
 // at weight zero draws nothing, and moves nothing it shares with the faces
-// already there to its own turn in the draw order. Pins the nine changes
+// already there to its own turn in the draw order. Pins changes like those
 // where it once did, for a frame (32 to 630 pixels of the mouth and
 // tears), and two that never did.
 static void test_a_face_coming_in_moves_nothing() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface with{502, 410, a.data()}, without{502, 410, b.data()};
-  const int changes[][2] = {{slime::kShy, slime::kAffectionate},     {slime::kSad, slime::kWounded},
-                            {slime::kCrying, slime::kWounded},       {slime::kWounded, slime::kSad},
-                            {slime::kWounded, slime::kCrying},       {slime::kFrightened, slime::kWounded},
-                            {slime::kFrightened, slime::kSad},       {slime::kFrightened, slime::kCrying},
-                            {slime::kExhausted, slime::kOverwhelmed}, {slime::kCalm, slime::kHappy},
-                            {slime::kHappy, slime::kSad}};
+  const int changes[][2] = {{slime::kPleased, slime::kAffectionate}, {slime::kSad, slime::kWounded},
+                            {slime::kWounded, slime::kSad},          {slime::kLonely, slime::kWounded},
+                            {slime::kCalm, slime::kHappy},           {slime::kHappy, slime::kSad}};
   std::string report;
   int worst = 0;
   for (const auto& change : changes) {
@@ -795,8 +769,8 @@ static void test_each_cue_carries_its_own_duck() {
   FaceSource s;
   FaceContext c;
   c.base = SceneState::kWorking;
-  c.act = SceneState::kTerminal;
-  s.look = SceneState::kTerminal;
+  c.act = SceneState::kWorking;
+  s.look = SceneState::kWorking;
   f.sync(s, c, 0);
   int routine = 0, alert = 0;
   voice::FxEvent cues[Face::kMaxCues];
@@ -965,9 +939,8 @@ static void test_a_finger_moves_the_dome_its_way() {
     TEST_ASSERT_TRUE(past <= 10);
   }
 }
-// The timing Behaviour plays by is the recipe table's. The
-// outcome and context rows time like their state's own row, which is what
-// loopMs and voiceMs read.
+// The timing Behaviour plays by is the recipe table's. The outcome rows
+// time like their state's own row, which is what loopMs and voiceMs read.
 static void test_timing_comes_from_the_recipe_table() {
   GelFace f;
   constexpr int kStates = int(SceneState::kCount);
@@ -976,19 +949,15 @@ static void test_timing_comes_from_the_recipe_table() {
       const auto& done = slime::kRecipes[p][int(SceneState::kTaskComplete)][v];
       const auto& start = slime::kRecipes[p][int(SceneState::kStarting)][v];
       for (int row : {kStates, kStates + 1}) TEST_ASSERT_TRUE(slime::kRecipes[p][row][v].duration == done.duration);
-      for (int row = kStates + 2; row < kStates + 6; ++row)
-        TEST_ASSERT_TRUE(slime::kRecipes[p][row][v].duration == start.duration);
-      // wake_up stretches in the start family's timing, with no card.
+      // wake_up stretches in the start family's timing.
       const auto& wake = slime::kRecipes[p][int(SceneState::kWakeUp)][v];
       TEST_ASSERT_TRUE(wake.duration == start.duration);
-      TEST_ASSERT_NULL(wake.label);
       TEST_ASSERT_EQUAL_UINT8(kStart, wake.contacts[0].kind);
     }
-  TEST_ASSERT_EQUAL_INT(kStates, recipeState(SceneState::kTaskComplete, Outcome::kSuccess, StartCtx::kNone));
-  TEST_ASSERT_EQUAL_INT(kStates + 1, recipeState(SceneState::kTaskComplete, Outcome::kFailure, StartCtx::kNone));
-  TEST_ASSERT_EQUAL_INT(kStates + 2, recipeState(SceneState::kStarting, Outcome::kNone, StartCtx::kNewTask));
-  TEST_ASSERT_EQUAL_INT(kStates + 4, recipeState(SceneState::kStarting, Outcome::kNone, StartCtx::kContinuation));
-  TEST_ASSERT_EQUAL_INT(kStates + 5, recipeState(SceneState::kStarting, Outcome::kNone, StartCtx::kCompacted));
+  TEST_ASSERT_EQUAL_INT(kStates + 2, slime::kRecipeStates);
+  TEST_ASSERT_EQUAL_INT(kStates, recipeState(SceneState::kTaskComplete, Outcome::kSuccess));
+  TEST_ASSERT_EQUAL_INT(kStates + 1, recipeState(SceneState::kTaskComplete, Outcome::kFailure));
+  TEST_ASSERT_EQUAL_INT(int(SceneState::kStarting), recipeState(SceneState::kStarting, Outcome::kNone));
   TEST_ASSERT_EQUAL_INT(int(Family::kStart), int(family(SceneState::kWakeUp)));
   // Looks rest on one 3.2 s loop whatever the take.
   TEST_ASSERT_EQUAL_UINT32(3200, f.loopMs(Mood::kHappy, SceneState::kIdle, 2));
@@ -1033,19 +1002,16 @@ static void test_timing_comes_from_the_recipe_table() {
 // shares, the yawn and the sneeze, is the face's to deal, as pastimes. A
 // yawn stretches up with its eyes squeezed; the zoomies slide it edge to
 // edge and back; a sneeze is a contact a second in that may sound,
-// lurching it forward, all off the heap; the long yawn ends heavy-lidded,
-// then wakes. Asleep snores only after a round of still
+// lurching it forward, all off the heap. Asleep snores only after a round of still
 // rests, and a lost link never.
 static void test_comedy_plays_in_idle_and_asleep() {
   TEST_ASSERT_EQUAL_INT(4, slime::kMaxGestures);
   TEST_ASSERT_EQUAL_INT(3, Acting::takes(slime::kCalm));
-  for (int p : {slime::kBored, slime::kTired, slime::kLazy, slime::kComfy, slime::kExcited})
-    TEST_ASSERT_EQUAL_INT(4, Acting::takes(p));
+  TEST_ASSERT_EQUAL_INT(4, Acting::takes(slime::kExcited));
   TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 2));
   const int yawning = bitOf(info(Pastime::kYawn)), sneezing = bitOf(info(Pastime::kSneeze));
   TEST_ASSERT_EQUAL_STRING("yawn-and-settle", slime::kGags[yawning].gesture.type);
   TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", slime::kGags[sneezing].gesture.type);
-  TEST_ASSERT_EQUAL_STRING("long-yawn", Acting::gesture(slime::kTired, 3).type);
   TEST_ASSERT_EQUAL_STRING("zoomies", Acting::gesture(slime::kExcited, 3).type);
   // The bag: its first round the three gestures, then every take, never the last again.
   Bag<slime::kMaxGestures> bag;
@@ -1088,8 +1054,6 @@ static void test_comedy_plays_in_idle_and_asleep() {
   for (const auto& f : zoom) most = max(most, f[1]), least = min(least, f[1]);
   TEST_ASSERT_TRUE(most > q(.45) && least < q(-.45) && abs(zoom.back()[1]) < q(.02));
   TEST_ASSERT_TRUE(at(play(slime::kCalm, 0, 2800, sneezing), 1.15)[4] > q(.08));  // the sneeze lurches forward
-  const auto longYawn = play(slime::kTired, 3, 5400);
-  TEST_ASSERT_TRUE(at(longYawn, 3.2)[5] > q(.35) && at(longYawn, 5)[5] < q(.05));
   // A sneeze is one contact, a second in, and allocates nothing.
   auto e = std::make_unique<Engine>();
   e->step(0);
@@ -1141,7 +1105,8 @@ static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
   TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kCalm]);
   TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kHappy]);
   TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kSad]);
-  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kIrritated]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kAnnoyed]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kWounded]);
   TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kGrumpy]);
   linkkit::Rng rng;
   // The face showing a frame into gesture g, played from idle in a mood.
@@ -1163,7 +1128,7 @@ static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
   for (Gesture g : {Gesture::kStroke, Gesture::kNose, Gesture::kTickle, Gesture::kPeekaboo}) {
     TEST_ASSERT_EQUAL_INT(slime::kGestureFaces[int(g)], shown(Mood::kCalm, g));
     TEST_ASSERT_EQUAL_INT(slime::kSad, shown(Mood::kSad, g));
-    TEST_ASSERT_EQUAL_INT(slime::kIrritated, shown(Mood::kIrritated, g));
+    TEST_ASSERT_EQUAL_INT(slime::kAngry, shown(Mood::kAngry, g));
   }
 }
 
@@ -1328,19 +1293,10 @@ static void test_a_reply_plays_its_clip_once() {
   TEST_ASSERT_TRUE(leaned(1008, 1300) > resting + 80);
 }
 
-// The replies that are a pastime's own (kReplyPastimes): a nap is the
-// snuggle under its blanket, a dance the dance. Asked for while the look
-// is idle or asleep, the pastime itself plays at once, with no tier to
-// deal it, over the reply's face, its length, and then the deal's rest
-// starts: the next comes no sooner than kRestMinMs after, and isn't the
-// same one. At work it's the reply's clip alone, a yawn or a wiggle, and
-// no pastime: the blanket stays out of work. notme is its clip, its eyes
-// off to one side, anywhere.
-static void test_a_nap_or_a_dance_plays_its_pastime_when_idle() {
-  TEST_ASSERT_EQUAL_INT(int(Pastime::kSnuggle), int(pastimeFor("nap")));
-  TEST_ASSERT_EQUAL_INT(int(Pastime::kDance), int(pastimeFor("dance")));
-  TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(pastimeFor("notme")));
-  TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(pastimeFor("yes")));
+// No reply is a pastime's: a nap and a dance are their clips alone, a yawn
+// and a sway, at work or idle, and no pastime plays for them. notme is its
+// clip, its eyes off to one side.
+static void test_a_nap_or_a_dance_is_its_clip_alone() {
   struct Board {
     linkkit::Rng rng;
     app::Behaviour b{std::make_unique<GelFace>()};
@@ -1348,7 +1304,7 @@ static void test_a_nap_or_a_dance_plays_its_pastime_when_idle() {
     uint32_t t = 0;
     Board(SceneState base, uint32_t when) {
       b.reset(0, rng);
-      m.base = base, m.mood = Mood::kCalm, m.act = SceneState::kTerminal;
+      m.base = base, m.mood = Mood::kCalm, m.act = SceneState::kWorking;
       m.when = reached(when);
       b.onState(m, 0);
     }
@@ -1377,63 +1333,20 @@ static void test_a_nap_or_a_dance_plays_its_pastime_when_idle() {
       }
     }
   };
-  const uint32_t snuggleMs = rig::kRig.clip("snuggle")->ms, danceMs = rig::kRig.clip("dance")->ms;
-  // Idle, with no tier: nothing dealt, but the nap asked for plays, its
-  // length.
-  {
-    Board idle(SceneState::kIdle, tagBit("day"));
-    idle.to(3008, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(idle.playing())); });
-    idle.say("nap");
-    const uint32_t at = idle.t;
-    idle.to(at + 16, [] {});
-    TEST_ASSERT_EQUAL_INT(int(Pastime::kSnuggle), int(idle.playing()));
-    idle.to(at + snuggleMs - 32, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kSnuggle), int(idle.playing())); });
-    idle.to(at + snuggleMs + 32, [] {});
-    TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(idle.playing()));
-    idle.to(at + snuggleMs + 30000, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kNone), int(idle.playing())); });
-  }
-  // Idle at tier5, where the deal has the snuggle too: asked for over the
-  // one playing, then a rest, and the next isn't another nap.
-  {
-    Board idle(SceneState::kIdle, tagBit("day") | tierBit(5));
-    idle.to(20000, [] {});
-    idle.say("nap");
-    const uint32_t at = idle.t;
-    idle.to(at + 16, [] {});
-    TEST_ASSERT_EQUAL_INT(int(Pastime::kSnuggle), int(idle.playing()));
-    uint32_t ended = 0;
-    Pastime next = Pastime::kNone;
-    idle.to(at + snuggleMs + kRestMaxMs + 1000, [&] {
-      if (!ended && idle.playing() == Pastime::kNone) ended = idle.t;
-      if (ended && next == Pastime::kNone) next = idle.playing();
-    });
-    TEST_ASSERT_UINT32_WITHIN(48, at + snuggleMs, ended);
-    TEST_ASSERT_TRUE(next != Pastime::kNone && next != Pastime::kSnuggle);
-  }
-  // Asleep, after listening as push-to-talk does: the dance, its length,
-  // the look its own.
-  {
-    Board asleep(SceneState::kAsleep, tagBit("night"));
-    asleep.to(3008, [] {});
-    asleep.listen();
-    asleep.to(5008, [] {});
-    asleep.say("dance");
-    const uint32_t at = asleep.t;
-    asleep.to(at + danceMs - 32, [&] { TEST_ASSERT_EQUAL_INT(int(Pastime::kDance), int(asleep.playing())); });
-  }
-  // At work: the reply's clip, a yawn and a sway, and no pastime.
-  for (const char* r : {"nap", "dance"}) {
-    Board work(SceneState::kWorking, tagBit("day"));
-    work.to(3008, [] {});
-    work.say(r);
-    int mouth = 0, lean = 0;
-    work.to(work.t + 1600, [&] {
-      TEST_ASSERT_EQUAL_INT_MESSAGE(int(Pastime::kNone), int(work.playing()), r);
-      mouth = std::max(mouth, work.channel(rig::Channel::kMouthOpen));
-      lean = std::max(lean, std::abs(work.channel(rig::Channel::kLean)));
-    });
-    TEST_ASSERT_TRUE(r[0] == 'n' ? mouth > 800 : lean > 150);  // the yawn, wide; the sway
-  }
+  // The reply's clip, a yawn and a sway, and no pastime.
+  for (SceneState base : {SceneState::kWorking, SceneState::kIdle})
+    for (const char* r : {"nap", "dance"}) {
+      Board board(base, tagBit("day"));
+      board.to(3008, [] {});
+      board.say(r);
+      int mouth = 0, lean = 0;
+      board.to(board.t + 1600, [&] {
+        TEST_ASSERT_EQUAL_INT_MESSAGE(int(Pastime::kNone), int(board.playing()), r);
+        mouth = std::max(mouth, board.channel(rig::Channel::kMouthOpen));
+        lean = std::max(lean, std::abs(board.channel(rig::Channel::kLean)));
+      });
+      TEST_ASSERT_TRUE_MESSAGE(r[0] == 'n' ? mouth > 800 : lean > 150, r);  // the yawn, wide; the sway
+    }
   // notme, idle: its eyes off to one side, and no pastime.
   {
     Board idle(SceneState::kIdle, tagBit("day"));
@@ -1451,7 +1364,7 @@ static void test_a_nap_or_a_dance_plays_its_pastime_when_idle() {
 // The notice state's three takes play the pack's rig clip for it
 // (rig/clips/notice.json) on the face's mixer, each under a face it
 // borrows (kNoticeFaces), dealt by its bag; its scene is the start
-// family's with no card, timed to the clip and 200 ms more, with no bit or
+// family's, timed to the clip and 200 ms more, with no bit or
 // contact of its own. Heard at work, the clip moves what the painter
 // draws: it perks up tall, hops off the ground and lands flat; its eyes go
 // wide and up, then squeeze shut, and its mouth opens; its two cues sound
@@ -1469,7 +1382,7 @@ static void test_a_notice_plays_its_rig_clip() {
   const int row = int(SceneState::kNotice);
   for (int v = 0; v < 3; ++v) {
     const auto& r = take(slime::kGrumpy, row, v);
-    TEST_ASSERT_TRUE(r.gag < 0 && r.count == 0 && r.label == nullptr);
+    TEST_ASSERT_TRUE(r.gag < 0 && r.count == 0);
     TEST_ASSERT_EQUAL_INT(clip->ms + 200, F(r.duration).integer());
     TEST_ASSERT_TRUE(slime::kNoticeFaces[v] >= 0 && slime::kNoticeFaces[v] < slime::kProfiles);
   }
@@ -1479,8 +1392,8 @@ static void test_a_notice_plays_its_rig_clip() {
     FaceSource s;
     FaceContext c;
     c.mood = s.mood = Mood::kCalm;
-    c.base = SceneState::kWorking, c.act = SceneState::kTerminal;
-    s.look = SceneState::kTerminal;
+    c.base = SceneState::kWorking, c.act = SceneState::kWorking;
+    s.look = SceneState::kWorking;
     face.sync(s, c, 0);
     for (uint32_t t = 16; t <= 480; t += 16) face.step(t, rng);
     s.anim = SceneState::kNotice;
@@ -1498,8 +1411,7 @@ static void test_a_notice_plays_its_rig_clip() {
       face.sync(s, c, t + 16);
       face.step(t + 16, rng);
       TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kNotice && e.scenes.variant == v);
-      TEST_ASSERT_TRUE(e.acting.playing < 0);                                      // no gag: the clip moves it
-      TEST_ASSERT_TRUE(e.scenes.visible(Scenes::kStartProp, e.timeMs()) == F(0));  // no card
+      TEST_ASSERT_TRUE(e.acting.playing < 0);  // no gag: the clip moves it
       PaintControls p;
       applyRig(p, face.mixer().channels());
       tallest = std::max(tallest, p.squash), flattest = std::min(flattest, p.squash);
@@ -1520,13 +1432,13 @@ static void test_a_notice_plays_its_rig_clip() {
     s.anim = SceneState::kNone;
     face.sync(s, c, t += 16);
     face.step(t, rng);
-    TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTerminal);
+    TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kWorking);
     TEST_ASSERT_EQUAL_STRING("calm", slime::kProfile[e.expression].id);
     TEST_ASSERT_EQUAL_MEMORY(&rig::kRest, &face.mixer().channels(), sizeof rig::kRest);
   }
 }
 // A clip authored once in the pack's rig/clips/ plays on the gel: work's
-// stretch from tier4, a row of its pastimes (kLimber), through its mixer,
+// stretch from tier2, a row of its pastimes (kStretch), through its mixer,
 // laid over the engine's pose (applyRig). The rig's working look has no
 // occasions of its own: the gel's pastimes are one table. Without the tier
 // it doesn't play; the mixer stays at rest, so nothing it draws changes;
@@ -1534,9 +1446,9 @@ static void test_a_notice_plays_its_rig_clip() {
 static void test_a_rig_clip_plays_on_the_gel() {
   const rig::Clip* stretch = rig::kRig.clip("stretch");
   TEST_ASSERT_NOT_NULL(stretch);
-  TEST_ASSERT_EQUAL_PTR(stretch, clipOf(info(Pastime::kLimber)));
-  TEST_ASSERT_EQUAL_INT(4, info(Pastime::kLimber).tier);
-  TEST_ASSERT_EQUAL_INT(0, rig::kRig.look(SceneState::kWorking)->fitting(tagBit("tier4"), 0));
+  TEST_ASSERT_EQUAL_PTR(stretch, clipOf(info(Pastime::kStretch)));
+  TEST_ASSERT_EQUAL_INT(2, info(Pastime::kStretch).tier);
+  TEST_ASSERT_EQUAL_INT(0, rig::kRig.look(SceneState::kWorking)->fitting(tagBit("tier2"), 0));
   // The tallest squash and the most shut eyes the gel's mixer reaches at
   // work, over five minutes while the stretch plays, and when it first
   // left rest. The Mac's state comes every 10 s, as it does, so the link
@@ -1550,7 +1462,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
     app::Behaviour b(std::make_unique<GelFace>());
     b.reset(0, rng);
     app::Model m;
-    m.base = SceneState::kWorking, m.act = SceneState::kTerminal, m.mood = Mood::kHappy, m.when = when;
+    m.base = SceneState::kWorking, m.act = SceneState::kWorking, m.mood = Mood::kHappy, m.when = when;
     b.onState(m, 0);
     Seen seen;
     for (uint32_t t = 16; t <= 300000u; t += 16) {
@@ -1564,7 +1476,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
       }
       b.advance(t, rng);
       const rig::Channels& c = static_cast<GelFace&>(b.face()).mixer().channels();
-      if (static_cast<GelFace&>(b.face()).pastimes(t).playing == Pastime::kLimber) {
+      if (static_cast<GelFace&>(b.face()).pastimes(t).playing == Pastime::kStretch) {
         seen.squash = std::min<int>(seen.squash, c[rig::Channel::kSquash]);
         seen.open = std::min<int>(seen.open, std::min(c[rig::Channel::kEyeOpenL], c[rig::Channel::kEyeOpenR]));
       }
@@ -1578,13 +1490,13 @@ static void test_a_rig_clip_plays_on_the_gel() {
     }
     return seen;
   };
-  const Seen tier4 = play(tagBit("tier4")), plain = play(tagBit("day"));
-  TEST_ASSERT_TRUE(tier4.squash <= -115);    // up tall: the stretch's -130 at its height
-  TEST_ASSERT_TRUE(tier4.open <= 320);       // eyes squeezed: its -700 on 1000
+  const Seen tier2 = play(reached(tagBit("tier2"))), plain = play(tagBit("day"));
+  TEST_ASSERT_TRUE(tier2.squash <= -115);    // up tall: the stretch's -130 at its height
+  TEST_ASSERT_TRUE(tier2.open <= 320);       // eyes squeezed: its -700 on 1000
   TEST_ASSERT_TRUE(plain.squash >= -30);     // the look's own breathing at most
   TEST_ASSERT_EQUAL_UINT32(0, plain.moved);  // the mixer at rest throughout
-  TEST_ASSERT_TRUE(tier4.moved > 0);
-  play(tagBit("tier4"), tier4.moved + 608);
+  TEST_ASSERT_TRUE(tier2.moved > 0);
+  play(reached(tagBit("tier2")), tier2.moved + 608);
   // On the gel the rig's channels move what the painter draws: taller, its
   // crown higher, and its lids down; at rest, nothing.
   auto e = std::make_unique<Engine>();
@@ -1654,24 +1566,16 @@ void test_a_divisor_divides_exactly();
 void test_every_cell_plays_truthfully();
 void test_ten_minutes_of_work();
 void test_held_and_interrupted_contacts();
-void test_card_reveal_trajectory();
 void test_asleep_rests_still_but_for_a_snore();
 // test_finish.cpp
 void test_a_finish_is_sized_by_its_turn_or_else_its_hold();
-void test_each_mood_takes_turns_between_its_big_finishes();
 void test_the_face_picks_a_finish_and_plays_it_once();
 void test_a_big_finish_cheers_once_and_bounces();
 void test_a_takeover_puts_the_desk_away();
 void test_every_finish_moves_smoothly_and_settles();
 void test_gold_rush_floods_and_little_win_shows_its_trophy();
 void test_only_what_draws_behind_erases_first();
-// test_bridges.cpp
-void test_every_edge_bridges_as_authored();
-void test_a_bridge_follows_its_waveform();
-void test_a_grab_defers_then_expires_the_bridge();
-void test_a_quiet_or_alerting_body_holds_the_bridge();
 void test_a_rapid_chain_settles_on_the_last();
-void test_each_edge_deals_its_own_bag();
 void test_the_semantic_face_numbers();
 // test_motion.cpp
 void test_the_motion_v1_numbers();
@@ -1685,17 +1589,16 @@ void test_each_pastime_draws_and_ends();
 void test_pastimes_are_dealt_by_tier_after_a_rest();
 void test_transitions_play_between_doings_and_anything_urgent_cuts_through();
 void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
-void test_the_kit_is_the_headphones_alone();
 void test_the_eyes_rest_unless_theres_a_reason();
 void test_a_glance_and_then_a_rest();
 void test_a_look_is_a_turn_not_a_dart();
 void test_it_types_along_with_you();
 void test_work_settles_by_tier();
-void test_the_headphones_go_on_where_you_see_them();
 void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
+void test_each_activity_is_a_pose();
 // test_hand.cpp
-void test_the_eyes_follow_a_finger_at_every_size();
+void test_the_eyes_follow_a_finger();
 void test_a_finger_leaves_the_dice_alone();
 void test_a_lean_goes_where_the_finger_is();
 void test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes();
@@ -1710,8 +1613,7 @@ void test_a_hold_on_the_strip_is_the_drawers();
 void test_a_lean_answers_an_ask_that_takes_a_touch();
 void test_an_asks_lane_keeps_its_held_tap();
 void test_a_moment_cuts_a_lean();
-void test_a_drag_goes_by_the_size_it_is();
-void test_to_work_waits_for_a_turns_starting();
+void test_a_drag_starts_where_the_finger_is_on_the_dome();
 void test_a_leans_breath_minds_the_volume();
 void test_a_lean_allocates_nothing();
 void test_a_tilt_sloshes_and_settles();
@@ -1832,13 +1734,13 @@ static void test_tracked_clear_matches_full_clear() {
 // A steady scene runs on the board's heap without touching
 // it. Through Device, as the board runs it (inputs, sound cues, the
 // engine and drawing), 300 frames of working, needs you, the
-// frightened face and asleep allocate nothing; only messages and events
+// wounded face and asleep allocate nothing; only messages and events
 // do, into bounded histories. (ArduinoJson's documents use malloc, so a
 // line's parsing isn't counted here.)
 // The layers (render/gel/layers.h) sit on the anchors of the pose that drew
 // the body: the crown over the brim's ring over the hands'; they move with
-// the body. The outfit is the first that fits its tags, and a night's lids
-// hang lower but asleep.
+// the body. It wears its nightcap at night and nothing for any other tag,
+// and a night's lids hang lower but asleep.
 static void test_layers_follow_the_bodys_anchors() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -1859,35 +1761,24 @@ static void test_layers_follow_the_bodys_anchors() {
     for (const char* n : names) when |= tagBit(n);
     return when;
   };
-  TEST_ASSERT_EQUAL(int(Outfit::kNone), int(outfitFor(tags({"day", "friday"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kNightcap), int(outfitFor(tags({"night", "winter"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kBobble), int(outfitFor(tags({"morning", "winter"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"night", "party"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(outfitFor(tags({"day", "programmers"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(outfitFor(tags({"night", "halloween", "party"}))));
-  // A Sprout's leaves stay on show on a party day; a witch hat is a costume.
-  TEST_ASSERT_EQUAL(int(Outfit::kPartyHat), int(wornHat(tags({"day", "party"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kNone), int(wornHat(tags({"day", "party", "sprout"}))));
-  TEST_ASSERT_EQUAL(int(Outfit::kWitchHat), int(wornHat(tags({"day", "halloween", "sprout"}))));
-  // Shades on a Friday, only by day.
-  TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"day", "friday"}))));
-  TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"night", "friday"}))));
-  TEST_ASSERT_EQUAL(int(Eyewear::kNone), int(eyewearFor(tags({"morning", "friday"}))));  // from noon
-  TEST_ASSERT_EQUAL(int(Eyewear::kShades), int(eyewearFor(tags({"evening", "friday"}))));
+  TEST_ASSERT_TRUE(nightcapFor(tags({"night"})) && nightcapFor(tags({"night", "winter", "party", "halloween"})));
+  for (const char* day : {"morning", "day", "evening"})
+    TEST_ASSERT_FALSE(nightcapFor(tags({day, "friday", "winter", "party", "newyear", "lunar", "programmers", "halloween"})));
   {
-    // The shades come off while it shows a feeling: its eyes are seen.
-    auto friday = std::make_unique<Engine>();
+    // Nothing is worn for a special day, a season or a Friday: the hat's
+    // layer is empty by day and the nightcap's at night, whatever else is on.
+    auto dressed = std::make_unique<Engine>();
     Facts idle;
     idle.base = SceneState::kIdle;
-    friday->setFacts(idle);
-    friday->setOccasion(tags({"day", "friday"}), 0);
-    friday->step(500);
-    TEST_ASSERT_EQUAL_UINT32(uint32_t(Eyewear::kShades), layerContents(*friday).worn);
-    Request r;
-    r.anim = SceneState::kTaskComplete, r.outcome = Outcome::kSuccess;
-    friday->play(r);
-    friday->step(600);
-    TEST_ASSERT_EQUAL_UINT32(0, layerContents(*friday).worn);
+    dressed->setFacts(idle);
+    for (const char* tag : {"friday", "winter", "party", "newyear", "lunar", "programmers", "halloween", "valentines"}) {
+      dressed->setOccasion(tags({"day", tag}), 0);
+      dressed->step(500);
+      TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, layerContents(*dressed).hat, tag);
+      TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, layerContents(*dressed).beside, tag);
+      dressed->setOccasion(tags({"night", tag}), 0);
+      TEST_ASSERT_EQUAL_UINT32_MESSAGE(kNightcap, layerContents(*dressed).hat, tag);
+    }
   }
   // The body's lower rings: the lap's over the hem's, each from the left side to
   // the right, the hem's front the lowest, under the hands'.
@@ -1904,8 +1795,7 @@ static void test_layers_follow_the_bodys_anchors() {
   paint(s, *e, false, 0, 0, &at);
   const size_t over = size_t(at.crown.y / 16 - 4) * 502 + size_t(at.crown.x / 16);
   TEST_ASSERT_NOT_EQUAL(bare[over], px[over]);
-  // Every layer at once, asleep (a hat, what's worn and the Zs), off the
-  // heap.
+  // Every layer at once, asleep (the nightcap and the Zs), off the heap.
   e->setOccasion(tags({"night", "winter", "party", "valentines", "friday"}), 0);
   e->scenes.route.state = SceneState::kAsleep;
   allocCount = 0;
@@ -1915,12 +1805,12 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
 
-// What the gel wears and the Zs come and go through the rig's layer stack
-// (the face's), on the rig's 200 ms fade: a winter evening's bobble fades
-// out at night and the nightcap in after it, and nothing else worn with it;
-// falling asleep, the Zs fade in while the hat stays whole,
-// each layer its own; a sign fades out at its opacity, as Behaviour gives
-// it. Each is drawn at its layer's opacity.
+// The nightcap and the Zs come and go through the rig's layer stack (the
+// face's), on the rig's 200 ms fade: a winter evening wears nothing, the
+// nightcap fades in at night, and nothing else is worn with it; falling
+// asleep, the Zs fade in while the nightcap stays whole, each layer its
+// own; a sign fades out at its opacity, as Behaviour gives it. Each is
+// drawn at its layer's opacity.
 static void test_the_layers_come_and_go_through_the_stack() {
   using rig::Layer;
   static_assert(rig::kFadeMs == 200, "a layer fades over the rig's 200 ms");
@@ -1937,26 +1827,23 @@ static void test_the_layers_come_and_go_through_the_stack() {
     b.onState(m, t);
     b.advance(t, rng);
   };
-  const uint32_t bobble = uint32_t(Outfit::kBobble), nightcap = uint32_t(Outfit::kNightcap);
-  state(SceneState::kIdle, {"evening", "winter"}, 0);
+  const uint32_t nightcap = kNightcap;
+  state(SceneState::kIdle, {"evening", "winter", "party", "friday"}, 0);
   b.advance(1000, rng);
-  TEST_ASSERT_EQUAL_UINT32(bobble, l.content(Layer::kHat, 1000));
-  TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, 1000));
+  TEST_ASSERT_EQUAL_UINT32(0, l.content(Layer::kHat, 1000));
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, 1000));
   state(SceneState::kIdle, {"night", "winter"}, 1008);
+  int lastIn = 0;
   for (uint32_t t = 1008; t <= 1500; t += 16) {
     b.advance(t, rng);
-    const uint32_t into = t - 1008;
-    const int in = ease1000(std::min(int(into), 200), 200);
     TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, t));  // no pyjamas: one thing worn
-    if (into < rig::kFadeMs) {
-      TEST_ASSERT_EQUAL_UINT32(bobble, l.content(Layer::kHat, t));
-      TEST_ASSERT_EQUAL_INT(1000 - ease1000(int(into), 200), l.opacity(Layer::kHat, t));
-    } else {
-      TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, t));
-      TEST_ASSERT_EQUAL_INT(ease1000(std::min(int(into) - 200, 200), 200), l.opacity(Layer::kHat, t));
-    }
+    const int in = l.content(Layer::kHat, t) == nightcap ? l.opacity(Layer::kHat, t) : 0;
+    TEST_ASSERT_TRUE(in >= lastIn);  // fading in, never popping back
+    if (t <= 1008 + 32) TEST_ASSERT_TRUE(in < 500);
+    lastIn = in;
   }
+  TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, 1500));
+  TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, 1500));
   state(SceneState::kAsleep, {"night", "winter"}, 2000);
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kBeside, 2000));
   for (uint32_t t = 2016; t <= 2400; t += 16) {
@@ -2036,8 +1923,11 @@ static void test_the_layers_come_and_go_through_the_stack() {
 // mouth's place with kZipTicks ticks across it, in the mouth's ink,
 // whatever its art's mouth or a clip opening it; not hushed, its own.
 static void test_hushed_its_lips_are_zipped() {
-  TEST_ASSERT_EQUAL_INT(22, tagIndex("hushed"));  // after the stages, before your hands and the Mac's side: the Mac's list (Tags.board) agrees
-  TEST_ASSERT_EQUAL_INT(27, kTagCount);
+  // after the tiers, before your hands and the Mac's side: the Mac's list (Tags.board) agrees
+  TEST_ASSERT_EQUAL_INT(19, tagIndex("hushed"));
+  TEST_ASSERT_EQUAL_INT(20, tagIndex("typing"));
+  TEST_ASSERT_EQUAL_INT(23, tagIndex("macright"));
+  TEST_ASSERT_EQUAL_INT(24, kTagCount);
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -2209,7 +2099,7 @@ static void test_text_glides_between_pixels() {
   }
 }
 
-// The outfit is drawn into a recording and blended from it
+// The nightcap is drawn into a recording and blended from it
 // (OutfitLayer): while the body moves, a frame shows it as kept within
 // kSlack (12 sixteenths) of where it is; once it's still (the same time,
 // a frame over kMovingMs (100 ms) after the last, or anchors unmoved for
@@ -2229,7 +2119,7 @@ static void test_the_outfit_is_kept_while_the_body_moves() {
   e->setOccasion(night, 0);
   // The nightcap alone, whole, at `at`, `ms` into the engine's clock.
   rig::Layers cap;
-  cap.show(rig::Layer::kHat, uint32_t(Outfit::kNightcap), 0);
+  cap.show(rig::Layer::kHat, kNightcap, 0);
   auto frame = [&](const rig::Anchors& at, uint32_t ms) {
     std::fill(px.begin(), px.end(), 0);
     s.invalidate();
@@ -2282,11 +2172,11 @@ static void test_the_outfit_is_kept_while_the_body_moves() {
 }
 
 // The screen's rule, part one (render/gel/layers.h): nothing hangs behind
-// the body or drifts round it for a time of day, a season or a holiday. A
-// morning, and a Valentine's Day, draw nothing at all over the body; a
-// winter's day only its bobble hat, a party only its hat, a night only its
-// nightcap: nothing above the crown's hat or out to the sides. The Zs are
-// the one thing beside it, only while it sleeps at night.
+// the body or drifts round it for a time of day, a season or a holiday,
+// and it wears nothing for one. A morning, a winter's day, a party, New
+// Year's, a Friday, Halloween and a Valentine's Day draw nothing at all
+// over the body; a night only its nightcap, nothing out to the sides. The
+// Zs are the one thing beside it, only while it sleeps at night.
 static void test_nothing_hangs_in_the_sky_or_the_air() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -2319,11 +2209,14 @@ static void test_nothing_hangs_in_the_sky_or_the_air() {
   for (SceneState state : {SceneState::kIdle, SceneState::kWorking, SceneState::kAsleep}) {
     TEST_ASSERT_EQUAL_INT(0, drawn(tags({"morning"}), state).all);
     TEST_ASSERT_EQUAL_INT(0, drawn(tags({"day"}), state).all);
-    TEST_ASSERT_EQUAL_INT(0, drawn(tags({"day", "valentines"}), state).all);
-    for (uint32_t when : {tags({"day", "winter"}), tags({"day", "party"}), tags({"evening", "newyear"}), tags({"night"})}) {
+    for (const char* day : {"valentines", "winter", "party", "newyear", "lunar", "programmers", "halloween", "friday"}) {
+      TEST_ASSERT_EQUAL_INT_MESSAGE(0, drawn(tags({"day", day}), state).all, day);
+      TEST_ASSERT_EQUAL_INT_MESSAGE(0, drawn(tags({"evening", day}), state).all, day);
+    }
+    for (uint32_t when : {tags({"night"}), tags({"night", "party", "winter", "halloween"})}) {
       const Drawn d = drawn(when, state);
-      TEST_ASSERT_TRUE(d.all > 1000);  // its hat
-      if (state != SceneState::kAsleep || when != tags({"night"})) TEST_ASSERT_EQUAL_INT(0, d.far);
+      TEST_ASSERT_TRUE(d.all > 1000);  // its nightcap
+      if (state != SceneState::kAsleep) TEST_ASSERT_EQUAL_INT(0, d.far);
     }
   }
   auto beside = [&](const char* tag, SceneState state) {
@@ -2348,11 +2241,11 @@ static void test_steady_frames_allocate_nothing() {
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"busy\":1,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"vol\":0,\"attn\":{\"agent\":\"claude\",\"project\":"
       "\"boop\",\"name\":\"Fix a very long test name\",\"id\":7}}",
-      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"frightened\",\"busy\":2,\"vol\":0}",
+      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"wounded\",\"busy\":2,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"vol\":0}",
       // The pastimes and their kit.
-      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier5\"]}",
-      "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier5\"]}",
+      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
+      "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
   };
   setenv("BOOP_SIM_FACE", "gel", 1);
   Hal hal;
@@ -2667,8 +2560,8 @@ static void test_the_working_spinner_turns_once_a_second() {
 // What a frame keeps from its surface's last (a card's
 // opaque inside, an unchanged lane) is exactly what clearing it whole and
 // drawing afresh leaves. Two surfaces taking turns, as the board's do,
-// through needs you rising and holding with its strip, a finish's card,
-// the start card, a bubble coming and going, the strip's count changing
+// through needs you rising and holding with its strip, a finish, a bubble
+// coming and going, the strip's count changing
 // and a finished turn's low sign and glow coming, holding and going (render/
 // gel/done.h), on the AMOLED's rounded panel, equal a third cleared whole
 // before every frame; and the keeps happened.
@@ -2680,7 +2573,7 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
   auto e = std::make_unique<Engine>();
   Facts f;
   f.base = SceneState::kWorking;
-  f.act = SceneState::kTerminal;
+  f.act = SceneState::kWorking;
   e->setFacts(f);
   Strip asking, working;
   asking.agent = "claude", asking.name = "Fix a test", asking.more = 1, asking.busy = 2;
@@ -2691,7 +2584,7 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
     if (i == 20) {  // needs you
       f.attention = {true, "7", "claude", "boop", "Fix a test", 1};
       e->setFacts(f);
-    } else if (i == 140) {  // answered; a finish with its card
+    } else if (i == 140) {  // answered; a finish
       f.attention = {};
       e->setFacts(f);
       Request r;
@@ -2699,9 +2592,6 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
       e->play(r);
     } else if (i == 260) {
       e->clear();
-      Request r;
-      r.anim = SceneState::kStarting;
-      e->play(r);
     }
     e->step(t += 33);
     const char* bubble = i >= 300 && i < 330 ? "Technical difficulties" : nullptr;
@@ -2741,97 +2631,6 @@ static void test_kept_cards_and_lanes_match_a_fresh_frame() {
   TEST_ASSERT_TRUE(knockKeeps > 0);
   TEST_ASSERT_TRUE(doneFrames > 150);
   TEST_ASSERT_TRUE(glowKeeps > 20);  // a lane under a steady glow is kept, glow and all
-}
-// A card kept from the last frame is drawn whole again from the first
-// row anything drew over it after it, the frame before: a work-stream
-// word falling across the start card, as at a session's first prompt,
-// left stamped copies of itself in it for two seconds. Two surfaces
-// taking turns, each frame equal to a third cleared whole first.
-static void test_what_falls_over_a_kept_card_doesnt_stay_in_it() {
-  constexpr int kW = 502, kH = 410;
-  std::vector<uint16_t> pa(kW * kH), pb(pa.size()), pf(pa.size());
-  Surface turns[2] = {{kW, kH, pa.data()}, {kW, kH, pb.data()}}, fresh{kW, kH, pf.data()};
-  for (Surface* s : {&turns[0], &turns[1], &fresh}) s->corner = 110;
-  auto e = std::make_unique<Engine>();
-  Facts f;
-  f.base = SceneState::kWorking;
-  e->setFacts(f);
-  Request r;
-  r.anim = SceneState::kStarting;
-  e->play(r);
-  Stream stream;
-  Stream::Lane lane;
-  lane.slot = 1, lane.count = 1, std::strcpy(lane.word, "read");
-  uint32_t t = 0;
-  int over = 0;
-  for (int i = 0; i < 90; ++i) {
-    if (i == 10) stream.setLanes(&lane, 1, true, false, t);
-    if (i == 12) stream.startCall("read", 1, CallStyle::kLand, t);  // it comes forward and lands on the crown
-    e->step(t += 33);
-    Surface& s = turns[i % 2];
-    const uint32_t kept = s.cardKey;
-    paintFrame(s, *e, false, 0, nullptr, {}, Strip{}, {}, rig::kRest, nullptr, t, &stream, t);
-    over += kept && s.cardKeyTo < (1 << 30);
-    fresh.invalidate();
-    paintFrame(fresh, *e, false, 0, nullptr, {}, Strip{}, {}, rig::kRest, nullptr, t, &stream, t);
-    if (std::memcmp(s.pixels, fresh.pixels, s.bytes())) {
-      size_t at = 0;
-      while (s.pixels[at] == fresh.pixels[at]) ++at;
-      TEST_FAIL_MESSAGE(("kept frame differs from a fresh one at " + std::to_string(i) + ", first at (" +
-                         std::to_string(at % kW) + ", " + std::to_string(at / kW) + ")")
-                            .c_str());
-    }
-  }
-  TEST_ASSERT_TRUE(over > 0);  // the word did fall over the card
-}
-// An act's still part that a surface shows already (the tests' hold,
-// Surface::stillKey) is kept, not drawn again. Two surfaces taking turns, each
-// frame equal to a third cleared whole first, from the act's start to its
-// hold; and the keeps happened.
-static void test_a_kept_act_matches_a_fresh_frame() {
-  constexpr int kW = 502, kH = 410;
-  std::vector<uint16_t> pa(kW * kH, 0x1234), pb(pa.size(), 0x5678), pf(pa.size());
-  Surface turns[2] = {{kW, kH, pa.data()}, {kW, kH, pb.data()}}, fresh{kW, kH, pf.data()};
-  for (Surface* s : {&turns[0], &turns[1], &fresh}) s->corner = 110;
-  auto e = std::make_unique<Engine>();
-  const SignShow none;
-  const Strip strip;
-  Stream stream;
-  Stream::ActIn start;
-  start.kind = ActKind::kTests, start.full = true;
-  std::strcpy(start.text, "running tests");
-  stream.setAct(start, false, 0);
-  int keeps = 0;
-  uint32_t t = 0;
-  for (int i = 0; i < 300; ++i) {
-    e->step(t += 33);
-    Surface& s = turns[i % 2];
-    Box still;
-    const uint32_t key = actKeeps(s, stream.actNow(t), still);
-    keeps += key && s.keeps(key);
-    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
-    fresh.invalidate();
-    paintFrame(fresh, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
-    if (std::memcmp(s.pixels, fresh.pixels, s.bytes())) {
-      size_t at = 0;
-      while (s.pixels[at] == fresh.pixels[at]) ++at;
-      TEST_FAIL_MESSAGE(("kept frame differs from a fresh one at " + std::to_string(i) + ", first at (" +
-                         std::to_string(at % kW) + ", " + std::to_string(at / kW) + ")")
-                            .c_str());
-    }
-  }
-  TEST_ASSERT_TRUE(keeps > 100);
-  // So a kept frame can differ: a pixel spoilt in the kept part stays spoilt.
-  Surface& s = turns[0];
-  e->step(t += 66);
-  Box still;
-  const uint32_t key = actKeeps(s, stream.actNow(t), still);
-  TEST_ASSERT_TRUE(key && s.keeps(key));
-  const int x = (still.x0 + still.x1) / 2, y = still.y0 + 2;
-  s.pixels[y * kW + x] ^= 0xffff;
-  const uint16_t spoilt = s.pixels[y * kW + x];
-  paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, t, &stream, t);
-  TEST_ASSERT_EQUAL_HEX16(spoilt, s.pixels[y * kW + x]);
 }
 // A still card a surface already shows isn't drawn again;
 // its inside is what the surface kept. A surface that lost its pixels
@@ -3157,99 +2956,145 @@ static void test_rgb565_opacity_rounds_to_nearest() {
         TEST_ASSERT_EQUAL_HEX16(channel(11, 31) | channel(5, 63) | channel(0, 31), mix565(old, ink, a));
       }
 }
-// The work stream on the gel: a lane's words drawn behind the body show
-// only where it doesn't cover them; a word forward is drawn over it; the
-// body answers a hit as it lands, knocked and its lids shut, opening again
-// after the daze; and drawing it all takes nothing from the heap.
-// A work act (render/gel/act.h): it runs on its state and its opening plays
-// whatever the command does; a result that comes early waits for the opening;
-// the rocket takes the body off the screen and the sign says what's running;
-// it ends by its own clock; a needs-you leaves it to come back where it got to;
-// and no frame of it takes from the heap.
-static void test_a_work_act_plays_by_its_state() {
+// A work act (render/gel/act.h) is its low sign: what's running, with dots,
+// then how it ended, a tick or a cross, for kActResultMs. It runs on its
+// state; a result that comes before kActLeadMs waits for it; a needs-you
+// leaves it to come back where it got to; the desk and the work stream stay
+// as they are; and no frame of it takes from the heap.
+static void test_a_work_act_shows_its_sign_by_its_state() {
+  static_assert(kActLeadMs == 900 && kActResultMs == 2600, "the times this test pins, the Mac's too (WorkStream)");
   Stream stream;
   Stream::ActIn in;
-  in.kind = ActKind::kPush, in.full = true;
+  in.kind = ActKind::kPush;
   std::strcpy(in.text, "git push");
   stream.setAct(in, false, 1000);
   Stream::ActNow now = stream.actNow(1500);
   TEST_ASSERT_TRUE(now.shows());
   TEST_ASSERT_EQUAL_INT(500, now.ageMs);
+  // Running: its words, with dots.
   TEST_ASSERT_EQUAL_STRING("git push", actSign(now).text);
-  std::vector<uint16_t> px(502 * 410);
-  Surface s{502, 410, px.data()};
-  TEST_ASSERT_FALSE(actPose(s, stream.actNow(1500)).away);
-  TEST_ASSERT_TRUE(actPose(s, stream.actNow(1000 + kPushGoneMs)).away);
+  TEST_ASSERT_TRUE(actSign(now).mark == LowSign::Mark::kDots);
+  TEST_ASSERT_EQUAL_INT(-1, actSign(now).leftMs);
+  TEST_ASSERT_FALSE(actSign(Stream::ActNow{}).shows());
   // Held away, it runs on unseen; back, where it got to.
   Stream::ActIn none;
-  stream.setAct(none, true, 2000);
-  TEST_ASSERT_FALSE(stream.actNow(2000).shows());
-  stream.setAct(in, false, 3000);
-  TEST_ASSERT_EQUAL_INT(2000, stream.actNow(3000).ageMs);
-  // The command ends early: its result waits for the opening's end.
+  stream.setAct(none, true, 1600);
+  TEST_ASSERT_FALSE(stream.actNow(1600).shows());
+  stream.setAct(in, false, 1700);
+  TEST_ASSERT_EQUAL_INT(700, stream.actNow(1700).ageMs);
+  // The command ends early: its result waits for kActLeadMs.
   in.result = ActResult::kPass;
   std::strcpy(in.text, "shipped!");
-  stream.setAct(in, false, 3100);
-  TEST_ASSERT_EQUAL_INT(int(ActResult::kRunning), int(stream.actNow(3100).result));
-  TEST_ASSERT_EQUAL_STRING("git push", stream.actNow(3100).text);
-  const uint32_t begins = 1000 + actLeadMs(ActKind::kPush, true);
-  TEST_ASSERT_EQUAL_INT(int(ActResult::kPass), int(stream.actNow(begins).result));
-  TEST_ASSERT_EQUAL_STRING("shipped!", stream.actNow(begins).text);
-  TEST_ASSERT_EQUAL_INT(int(actResultMs(true)), stream.actNow(begins).leftMs);
-  TEST_ASSERT_FALSE(stream.actNow(begins + actResultMs(true)).shows());
-  // Each kind's opening is held for, and the small version's is short.
-  TEST_ASSERT_EQUAL_UINT32(1800, actLeadMs(ActKind::kTests, true));
-  TEST_ASSERT_EQUAL_UINT32(900, actLeadMs(ActKind::kTests, false));
+  stream.setAct(in, false, 1750);
+  TEST_ASSERT_EQUAL_INT(int(ActResult::kRunning), int(stream.actNow(1750).result));
+  TEST_ASSERT_EQUAL_STRING("git push", stream.actNow(1750).text);
+  const uint32_t begins = 1000 + kActLeadMs;
+  now = stream.actNow(begins);
+  TEST_ASSERT_EQUAL_INT(int(ActResult::kPass), int(now.result));
+  TEST_ASSERT_EQUAL_STRING("shipped!", actSign(now).text);
+  TEST_ASSERT_TRUE(actSign(now).mark == LowSign::Mark::kTick);
+  TEST_ASSERT_EQUAL_INT(int(kActResultMs), actSign(now).leftMs);
+  TEST_ASSERT_FALSE(stream.actNow(begins + kActResultMs).shows());
+  // A failure's sign has a cross.
+  Stream failing;
+  in.result = ActResult::kFail;
+  std::strcpy(in.text, "fail");
+  failing.setAct(in, false, 0);
+  TEST_ASSERT_TRUE(actSign(failing.actNow(kActLeadMs)).mark == LowSign::Mark::kCross);
+  TEST_ASSERT_EQUAL_STRING("fail", actSign(failing.actNow(kActLeadMs)).text);
   // The state gone and nothing else holding the screen: it's over.
   stream.setAct(none, false, begins + 100);
   TEST_ASSERT_FALSE(stream.actNow(begins + 100).shows());
 
   auto e = std::make_unique<Engine>();
+  Facts working;
+  working.base = SceneState::kWorking, working.act = SceneState::kWorking;
+  e->setFacts(working);
   for (int t = 0; t <= 960; t += 16) e->step(t);
   const SignShow sign;
   const Strip strip;
+  std::vector<uint16_t> px(502 * 410);
+  Surface s{502, 410, px.data()};
+  // An act is its sign alone: above the lane, the desk, the body and the
+  // words falling are drawn as with none.
+  {
+    Stream plain, acting;
+    Stream::Lane lane;
+    lane.slot = 0, lane.count = 1, std::strcpy(lane.word, "make");
+    plain.setLanes(&lane, 1, true, false, 0);
+    acting.setLanes(&lane, 1, true, false, 0);
+    Stream::ActIn tests;
+    tests.kind = ActKind::kTests;
+    std::strcpy(tests.text, "running tests");
+    acting.setAct(tests, false, 0);
+    s.invalidate();
+    paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &plain, 600);
+    const std::vector<uint16_t> bare(px);
+    s.invalidate();
+    paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &acting, 600);
+    const size_t lane0 = size_t(502) * (410 * kLaneTop / kHeight);
+    TEST_ASSERT_EQUAL_MEMORY(bare.data(), px.data(), lane0 * 2);
+    TEST_ASSERT_TRUE(std::memcmp(bare.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2) != 0);
+  }
   // Every beat of every result, off the heap.
   allocCount = 0;
   allocCounting = true;
   for (const ActKind kind : {ActKind::kTests, ActKind::kPush, ActKind::kBuild})
-    for (const bool full : {true, false})
-      for (const ActResult result : {ActResult::kRunning, ActResult::kPass, ActResult::kFail}) {
-        Stream run;
-        Stream::ActIn start;
-        start.kind = kind, start.full = full;
-        std::strcpy(start.text, "git push");
-        run.setAct(start, false, 0);
-        start.result = result;
-        if (result != ActResult::kRunning) run.setAct(start, false, 4000);
-        for (uint32_t t = 0; t < 30000; t += 137)
-          paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &run, t);
-      }
+    for (const ActResult result : {ActResult::kRunning, ActResult::kPass, ActResult::kFail}) {
+      Stream run;
+      Stream::ActIn start;
+      start.kind = kind;
+      std::strcpy(start.text, "git push");
+      run.setAct(start, false, 0);
+      start.result = result;
+      if (result != ActResult::kRunning) run.setAct(start, false, 4000);
+      for (uint32_t t = 0; t < 8000; t += 137)
+        paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &run, t);
+    }
   allocCounting = false;
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
-// A full act holds the screen, the body gone from its place: no wish's bubble
-// over it, as no reaction's sign. A small act leaves it.
-static void test_a_full_act_hides_the_wish() {
-  std::vector<uint16_t> px(502 * 410);
-  Surface s{502, 410, px.data()};
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 960; t += 16) e->step(t);
-  WishShow wish;
-  wish.kind = WishShow::kPet;
-  const SignShow none;
-  const Strip strip;
-  for (const bool full : {true, false}) {
-    Stream stream;
-    Stream::ActIn start;
-    start.kind = ActKind::kPush, start.full = full;
-    std::strcpy(start.text, "git push");
-    stream.setAct(start, false, 0);
-    const uint32_t t = 2500;
-    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t);
-    const std::vector<uint16_t> bare(px);
-    paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, t, nullptr, nullptr, nullptr, &wish);
-    TEST_ASSERT_EQUAL(full, px == bare);
-  }
+
+// The body answers a work act's result once, as its sign changes
+// (GelFace::answerAct): a pleased hop up at a pass, a flinch down at a
+// fail, and then it settles while the result still shows.
+static void test_the_body_answers_an_acts_result_once() {
+  // How squashed the body is (the pull's second axis) `after` ms into the
+  // result, with the act ended as `result`.
+  auto squash = [](ActResult result, uint32_t after) {
+    linkkit::Rng rng;
+    app::Behaviour b(std::make_unique<GelFace>());
+    b.reset(0, rng);
+    b.face().watch(&b.stream());  // as Device does before it draws
+    app::Model m;
+    m.base = SceneState::kWorking, m.act = SceneState::kWorking, m.mood = Mood::kCalm;
+    b.onState(m, 0);
+    uint32_t t = 0;
+    auto to = [&](uint32_t until) {
+      while (t + 16 <= until) b.advance(t += 16, rng);
+    };
+    to(2000);
+    m.workAct.kind = ActKind::kTests;
+    std::strcpy(m.workAct.text, "running tests");
+    b.onState(m, t);
+    to(4000);
+    if (result != ActResult::kRunning) {
+      m.workAct.result = result;
+      std::strcpy(m.workAct.text, result == ActResult::kPass ? "pass" : "fail");
+      b.onState(m, t);
+    }
+    to(4000 + after);
+    return static_cast<GelFace&>(b.face()).engine().pull[1].x;
+  };
+  const F running = squash(ActResult::kRunning, 112), pass = squash(ActResult::kPass, 112),
+          fail = squash(ActResult::kFail, 112);
+  TEST_ASSERT_TRUE(pass < running - q(.01));  // up
+  TEST_ASSERT_TRUE(fail > running + q(.01));  // down
+  // Still showing its result (kActResultMs), and at rest again: once.
+  static_assert(kActResultMs > 2000, "the result outlasts the jolt");
+  const F later = squash(ActResult::kRunning, 2000);
+  TEST_ASSERT_TRUE(abs(squash(ActResult::kPass, 2000) - later) < q(.01));
+  TEST_ASSERT_TRUE(abs(squash(ActResult::kFail, 2000) - later) < q(.01));
 }
 
 // A running act's sign holds the lane, but what Boop says takes it, as it does
@@ -3263,7 +3108,7 @@ static void test_words_take_the_lane_from_a_running_act() {
   const Strip strip;
   Stream stream;
   Stream::ActIn start;
-  start.kind = ActKind::kTests, start.full = true;
+  start.kind = ActKind::kTests;
   std::strcpy(start.text, "running tests");
   stream.setAct(start, false, 0);
   const uint32_t t = 2500;
@@ -3278,6 +3123,10 @@ static void test_words_take_the_lane_from_a_running_act() {
   TEST_ASSERT_TRUE(px != said);
 }
 
+// The work stream on the gel: a lane's words drawn behind the body show
+// only where it doesn't cover them; a word forward is drawn over it; the
+// body answers a hit as it lands, knocked and its lids shut, opening again
+// after the daze; and drawing it all takes nothing from the heap.
 static void test_the_work_stream_falls_behind_and_hits_in_front() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -3350,74 +3199,28 @@ static void test_a_daze_ends_across_the_clock_wrap() {
   TEST_ASSERT_TRUE(e->daze() == F(0));
 }
 
-// A stage change is over once it's over, for good: `moving` going stale would
-// read a clock gone round 24.9 days later as before the change began.
-static void test_a_stage_change_ends_across_the_clock_wrap() {
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 96; t += 16) e->step(t);
-  const uint32_t day = render::tagBit("day");
-  e->setOccasion(day | render::tagBit("hatchling"), 0);
-  e->setOccasion(day | render::tagBit("sprout"), 0);
-  TEST_ASSERT_TRUE(e->bodyChange.moving);
-  uint32_t t = 112;
-  const uint32_t end = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64;
-  for (; t <= end; t += 16) e->step(t);
-  TEST_ASSERT_FALSE(e->bodyChange.moving);  // over, so no frame takes the growth path
-  e->elapsedMs = e->bodyChange.at + 0x80000000u;  // the clock half way round: now - at reads negative
-  TEST_ASSERT_EQUAL_INT(kSproutBody.size, e->body().size);
-  TEST_ASSERT_EQUAL_INT(0, e->bodyChange.glow(e->elapsedMs));
-  // And with the tags held back (Engine::bodyWaits) it still ends.
-  e->setOccasion(day | render::tagBit("chonk"), 0);
-  e->bodyWaits = true;
-  e->setOccasion(day | render::tagBit("chonk"), 0);
-  for (const uint32_t until = t + kGrowGlowMs + kGrowPopMs + kGrowSettleMs + 64; t <= until; t += 16) e->step(t);
-  TEST_ASSERT_FALSE(e->bodyChange.moving);
-}
-
-// A small body stands up on its sign, or the card would cover its face: most
-// at a Hatchling, not at all at a Chonk, easing with the card.
-static void test_a_small_body_rises_for_its_sign() {
+// It stands up on its sign, or the card would cover its mouth, easing with
+// the card; not for a low sign.
+static void test_it_rises_for_its_sign() {
   const SignShow up{"<3", kSignRiseMs, 1000};
-  TEST_ASSERT_EQUAL_INT(SignLayer::kHopPx, signHop(up, kHatchlingBody));
-  const int sprout = signHop(up, kSproutBody);
-  TEST_ASSERT_TRUE(sprout > SignLayer::kBuddyHopPx && sprout < SignLayer::kHopPx);
-  TEST_ASSERT_EQUAL_INT(SignLayer::kBuddyHopPx, signHop(up, kBuddyBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop(up, kChonkBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 0, 1000}, kHatchlingBody));
-  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 2000, 0}, kHatchlingBody));
+  TEST_ASSERT_EQUAL_INT(14, SignLayer::kHopPx);
+  TEST_ASSERT_EQUAL_INT(SignLayer::kHopPx, signHop(up));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 0, 1000}));
+  TEST_ASSERT_EQUAL_INT(0, signHop({"<3", 2000, 0}));
   SignShow low = up;
   low.low = true;
-  TEST_ASSERT_EQUAL_INT(0, signHop(low, kHatchlingBody));
-}
-
-// The desk's turn clock: nothing in the first minute, minutes and seconds
-// to the hour, then hours and minutes, never wrapping (it once showed
-// "5:00" after 1 h 45 m).
-static void test_the_desk_clock_shows_hours_from_the_hour() {
-  char clock[kDeskClockBytes];
-  const struct {
-    uint32_t secs;
-    const char* shows;
-  } kClocks[] = {{0, ""},           {59, ""},          {60, "1:00"},         {3599, "59:59"},
-                 {3600, "1h00"},     {6300, "1h45"},    {359999, "99h59"}, {360000, "99h59"},
-                 {0xFFFFFFFFu, "99h59"}};
-  for (const auto& c : kClocks) {
-    deskClock(c.secs, clock);
-    TEST_ASSERT_EQUAL_STRING(c.shows, clock);
-  }
+  TEST_ASSERT_EQUAL_INT(0, signHop(low));
 }
 
 int main() {
   UNITY_BEGIN();
   RUN_TEST(test_fixed_math_and_motion);
-  RUN_TEST(test_a_full_act_hides_the_wish);
   RUN_TEST(test_words_take_the_lane_from_a_running_act);
   RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
-  RUN_TEST(test_a_work_act_plays_by_its_state);
+  RUN_TEST(test_a_work_act_shows_its_sign_by_its_state);
+  RUN_TEST(test_the_body_answers_an_acts_result_once);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
-  RUN_TEST(test_a_stage_change_ends_across_the_clock_wrap);
-  RUN_TEST(test_a_small_body_rises_for_its_sign);
-  RUN_TEST(test_the_desk_clock_shows_hours_from_the_hour);
+  RUN_TEST(test_it_rises_for_its_sign);
   RUN_TEST(test_software_clock_matches_binary64);
   RUN_TEST(test_a_divisor_divides_exactly);
   RUN_TEST(test_all_expressions_draw_inside_native_surface);
@@ -3427,7 +3230,6 @@ int main() {
   RUN_TEST(test_request_identity_and_cache_bounds);
   RUN_TEST(test_grid_voice_lead_and_late_cues);
   RUN_TEST(test_external_source_holds_without_repeating_reveal);
-  RUN_TEST(test_a_card_revealed_late_rises_then_falls);
   RUN_TEST(test_interrupted_alert_signals_exactly_once);
   RUN_TEST(test_face_and_props_move_without_jumps);
   RUN_TEST(test_it_falls_asleep_squashing_shut);
@@ -3449,7 +3251,7 @@ int main() {
   RUN_TEST(test_a_notice_plays_its_rig_clip);
   RUN_TEST(test_a_reply_plays_its_clip_once);
   RUN_TEST(test_hushed_its_lips_are_zipped);
-  RUN_TEST(test_a_nap_or_a_dance_plays_its_pastime_when_idle);
+  RUN_TEST(test_a_nap_or_a_dance_is_its_clip_alone);
   RUN_TEST(test_a_rig_clip_plays_on_the_gel);
   RUN_TEST(test_the_rig_carries_reaches_and_melts_the_gel);
   RUN_TEST(test_every_pastime_has_its_clip_and_its_turn);
@@ -3457,23 +3259,20 @@ int main() {
   RUN_TEST(test_pastimes_are_dealt_by_tier_after_a_rest);
   RUN_TEST(test_transitions_play_between_doings_and_anything_urgent_cuts_through);
   RUN_TEST(test_a_tagged_pastime_plays_only_while_its_tag_is_on);
-  RUN_TEST(test_the_kit_is_the_headphones_alone);
   RUN_TEST(test_the_eyes_rest_unless_theres_a_reason);
   RUN_TEST(test_a_glance_and_then_a_rest);
   RUN_TEST(test_a_look_is_a_turn_not_a_dart);
   RUN_TEST(test_it_types_along_with_you);
   RUN_TEST(test_work_settles_by_tier);
-  RUN_TEST(test_the_headphones_go_on_where_you_see_them);
   RUN_TEST(test_moves_are_rare);
   RUN_TEST(test_the_paws_type_on_the_keys);
+  RUN_TEST(test_each_activity_is_a_pose);
   RUN_TEST(test_the_layers_come_and_go_through_the_stack);
   RUN_TEST(test_gel_draws_natively);
   RUN_TEST(test_face_projection_and_pose_bounds);
   RUN_TEST(test_tracked_clear_matches_full_clear);
   RUN_TEST(test_histories_stay_off_the_heap);
   RUN_TEST(test_kept_cards_and_lanes_match_a_fresh_frame);
-  RUN_TEST(test_what_falls_over_a_kept_card_doesnt_stay_in_it);
-  RUN_TEST(test_a_kept_act_matches_a_fresh_frame);
   RUN_TEST(test_a_finished_turn_glows);
   RUN_TEST(test_the_low_sign_stays_in_the_lane_and_holds_a_long_name);
   RUN_TEST(test_the_strip_gives_way_to_the_finishs_sign);
@@ -3506,24 +3305,16 @@ int main() {
   RUN_TEST(test_every_cell_plays_truthfully);
   RUN_TEST(test_ten_minutes_of_work);
   RUN_TEST(test_held_and_interrupted_contacts);
-  RUN_TEST(test_card_reveal_trajectory);
   RUN_TEST(test_asleep_rests_still_but_for_a_snore);
   // test_finish.cpp
   RUN_TEST(test_a_finish_is_sized_by_its_turn_or_else_its_hold);
-  RUN_TEST(test_each_mood_takes_turns_between_its_big_finishes);
   RUN_TEST(test_the_face_picks_a_finish_and_plays_it_once);
   RUN_TEST(test_a_big_finish_cheers_once_and_bounces);
   RUN_TEST(test_a_takeover_puts_the_desk_away);
   RUN_TEST(test_every_finish_moves_smoothly_and_settles);
   RUN_TEST(test_gold_rush_floods_and_little_win_shows_its_trophy);
   RUN_TEST(test_only_what_draws_behind_erases_first);
-  // test_bridges.cpp
-  RUN_TEST(test_every_edge_bridges_as_authored);
-  RUN_TEST(test_a_bridge_follows_its_waveform);
-  RUN_TEST(test_a_grab_defers_then_expires_the_bridge);
-  RUN_TEST(test_a_quiet_or_alerting_body_holds_the_bridge);
   RUN_TEST(test_a_rapid_chain_settles_on_the_last);
-  RUN_TEST(test_each_edge_deals_its_own_bag);
   RUN_TEST(test_the_semantic_face_numbers);
   // test_motion.cpp
   RUN_TEST(test_the_motion_v1_numbers);
@@ -3538,7 +3329,7 @@ int main() {
   RUN_TEST(test_a_request_sounds_once_whatever_changes);
   RUN_TEST(test_sound_draws_change_nothing_drawn);
   // test_hand.cpp
-  RUN_TEST(test_the_eyes_follow_a_finger_at_every_size);
+  RUN_TEST(test_the_eyes_follow_a_finger);
   RUN_TEST(test_a_finger_leaves_the_dice_alone);
   RUN_TEST(test_a_lean_goes_where_the_finger_is);
   RUN_TEST(test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes);
@@ -3553,8 +3344,7 @@ int main() {
   RUN_TEST(test_a_lean_answers_an_ask_that_takes_a_touch);
   RUN_TEST(test_an_asks_lane_keeps_its_held_tap);
   RUN_TEST(test_a_moment_cuts_a_lean);
-  RUN_TEST(test_a_drag_goes_by_the_size_it_is);
-  RUN_TEST(test_to_work_waits_for_a_turns_starting);
+  RUN_TEST(test_a_drag_starts_where_the_finger_is_on_the_dome);
   RUN_TEST(test_a_leans_breath_minds_the_volume);
   RUN_TEST(test_a_lean_allocates_nothing);
   RUN_TEST(test_a_tilt_sloshes_and_settles);

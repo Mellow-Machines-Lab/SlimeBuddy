@@ -27,5 +27,5 @@
 {"mood": "lonely", "after": 0}
 {"brain": {"react.face": "lonely", "say": "quiet"}}
 {"you": "gesture", "kind": "stroke", "after": 4}
-{"mood": "comfy", "after": 0}
+{"mood": "calm", "after": 0}
 {"brain": {"react.face": "affectionate", "say": "glad", "react.intensity": "medium"}}

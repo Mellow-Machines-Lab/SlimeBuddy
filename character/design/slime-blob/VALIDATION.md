@@ -19,15 +19,16 @@ None of them contacts Jev, a paid API or a device.
 
 `slimegen.mjs` checks the design before it bakes it (`check.mjs`), and
 `--check` fails unless every generated file is the one checked in:
-`slime.h`, `slime_art.h`, `slime_mesh.h` and [MOODS.md](MOODS.md). It
+`slime.h`, `slime_art.h` and `slime_mesh.h`. It
 fails, naming what's wrong, when:
 
-- in the pack's `character.json`, a move goes to a mood that isn't a
-  lasting one, or to itself, or twice; or the ordinary moves alone don't
-  reach every lasting mood from every other;
-- a canonical mood has no expression of its own or no sound profile, an
-  expression hasn't three gestures, a mood names a bit there isn't, or a
-  notice take borrows an expression there isn't;
+- a face the pack's `character.json` names has no expression of its own
+  or no sound profile, or the first expressions aren't those faces; a
+  lasting mood rests in a face there isn't, or a face is of no lasting
+  mood;
+- an expression hasn't three gestures or is of no face, a face names a
+  bit there isn't, or a gesture or a notice take borrows an expression
+  there isn't;
 - two pastimes' bodies share an id, or one has neither a bit of its own
   nor a recipe;
 - a sound sketch renders differently from one seed, doesn't start from
@@ -51,25 +52,17 @@ ramps and springs can, and no jolt at an event. By file:
   shown, only a successful finish's trophy and proud's gift, quiet states
   silent but for comedy and still but for a snore, each take moving the
   body its own way; ten minutes at work; contacts a finger or an alert
-  interrupts; a card's reveal on its own ramp; asleep's stillness.
+  interrupts; asleep's stillness.
 - `test_finish.cpp`: a successful finish's size by its loops and its
-  turn's tier (the cap short of tier2, the tier4 and tier5 floors, a sad
-  one small);
-  each mood's two big finishes taking turns, the Mac's choice and a proud
-  board's spotlight; the face's pure pick, a finish above small played
+  turn's tier (small short of tier1, the confetti at tier1, Gold Rush from
+  tier2, a sad one small); the face's pure pick, a finish above small played
   once, its length and its `say`'s start; one cheer and its bounces, never
   the fanfare; the desk put away by a takeover and no card; every finish
   moving smoothly and settling by its end; Gold Rush's flood above the
   lane and Little Win's trophy; only what draws behind the body erasing the
   frame whole first, less the rows the flood covers.
-- `test_bridges.cpp`: every directed edge in each of its three variants
-  (the retarget changing no spring and nothing drawn, its primitive,
-  windows, amplitude and direction, the controls between their ends, every
-  sixteenth of its window passed through, the variants moving differently);
-  each primitive's waveform and spring; a grab deferring then expiring the
-  bridge; a quiet or alerting body holding it; a rapid chain settling on
-  its last; each edge's own bag; the semantic face's spring, windows and
-  saturation.
+- `test_face.cpp`: the semantic face's spring, windows and saturation,
+  and a rapid chain of faces settling on its last.
 - `test_motion.cpp`: the accepted V1 springs, impulses, breath, blink,
   gaze and clock (the motion contract: changing the motion means editing
   this test); a finger's springs, reach and fling; acting's timing and
@@ -82,7 +75,7 @@ ramps and springs can, and no jolt at an event. By file:
   request sounding once whatever changes, and sound's randomness changing
   nothing drawn.
 - `test_hand.cpp`: your hand on the whole board, the device with the gel's
-  face. A finger: the eyes following it and a drag at every stage's size; at
+  face. A finger: the eyes following it and where a drag starts on the dome; at
   rest the lean, then the doze, and lifting it
   (`test_a_finger_at_rest_leans_then_dozes_and_lifting_wakes`,
   `test_lifting_a_doze_wakes_it_with_a_start`), which allocates nothing. What
@@ -122,17 +115,14 @@ ramps and springs can, and no jolt at an event. By file:
   each cue, no bit), a reply's clip (`test_a_reply_plays_its_clip_once`:
   every reply has one, 1 to 1.8 s, its name fits the board's buffer, a
   shake of the head leans the body, once for each reply, nothing for a
-  reply with no clip, from a `ReactionIn` too), a nap or a dance asked
-  for (`test_a_nap_or_a_dance_plays_its_pastime_when_idle`: idle with no
-  tier the snuggle plays at once, its length, and nothing after; at
-  `tier5` the rest follows it and the next dealt isn't another; asleep,
-  after listening, the dance; at work the yawn and the sway and no
-  pastime; notme's eyes off to one side), hushed lips
+  reply with no clip, from a `ReactionIn` too; a nap or a dance its clip
+  alone, the yawn and the sway, and no pastime; notme's eyes off to one
+  side), hushed lips
   (`test_hushed_its_lips_are_zipped`: `hushed` the tags' last, the zip's
   ends and its ticks' tips inked only while it's on, nothing between the
   ticks, and the same frame whether a clip opens the mouth or not), the
-  rig's stretch from `tier4` on both faces (a row of the gel's pastimes,
-  over its pose, and on Pixel's rig face, faded out by a Moment), the
+  rig's stretch on both faces (a row of the gel's pastimes, over its
+  pose, and on Pixel's rig face, faded out by a Moment), the
   pastimes (`test_pastimes.cpp`: each row's body in the pack and its
   turn, each with a clip drawing above the lane and over at its clip's
   end, 45 minutes at `tier2` dealing only working ones of `tier1` and
@@ -141,13 +131,9 @@ ramps and springs can, and no jolt at an event. By file:
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
   bit and work's and asleep's as the scene's take, busier typing only
-  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime); the kit, the headphones
-  alone, by the tiers, the hat winning the head, none while something
-  needs you, drawn the same at every moment (nothing floats off them);
-  the headphones put on first, coming down over
-  its ears with its paws away, and on again after a needs-you; the moves
-  at least 5 minutes apart over two hours at `tier5`, the paws theirs while
-  they play; working's base by tier, its lids lower the further in and
+  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose); none dealt while something
+  needs you; the move, the melt, at least 5 minutes apart at `tier3`, the
+  paws its while it plays; working's base by tier, its lids lower the further in and
   faded out under a Moment or while something needs you; and the paws
   lifting before each key contact and tapping softly between), the rig's
   `x`, `reach` and `melt` on the gel
@@ -173,7 +159,7 @@ ramps and springs can, and no jolt at an event. By file:
   clearing and kept cards and lanes matching a fresh frame, a finished
   turn's low sign and glow coming and going over them, a word falling over
   a kept card not staying in it
-  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), an act's still part kept the same (`test_a_kept_act_matches_a_fresh_frame`), steady frames
+  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
   allocating nothing, and the work stream
   (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
   lanes' columns behind the body, a hit's knock and daze and its lids
@@ -207,31 +193,34 @@ ramps and springs can, and no jolt at an event. By file:
   long yawn, the zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT handing you an agent, a stroke, a boop
   on the nose, a shake and peekaboo, each by the board's own input, its
-  variation expected), the tagged pastimes (`occasions.jsonl`: asked for by name, a
-  party's bounce, a night's drowse, frantic typing, in a nightcap and a party hat, and
-  `tier4`'s bare desk), the pastimes (`pastimes.jsonl`: the bare desk at
-  `tier5` and the headphones on it later, the done beat's tick, reading closely
-  with the glass fogged, the headphones coming down, a puddle mid-melt,
-  a stretch break's empty desk and its stretch, idle with nothing beside
-  it and a pastime beside it, and needs you's wave), the
+  variation expected), the tagged pastimes (`occasions.jsonl`: frantic typing, asked for by name, and
+  `tier3`'s bare desk), the pastimes (`pastimes.jsonl`: the bare desk at
+  `tier3`, 20 s in and later, the done beat's paw on Enter and its sitting
+  back, a stretch, a puddle mid-melt, idle with nothing beside it, a look
+  around, a hopeful look, a hop and a snooze's Zs, asleep a snore's bubble
+  and a roll over, and needs you with no pastime after two minutes), the
   replies (`replies.jsonl`: each reply's clip partway through under its
-  face and sign, and a nap and a dance idle, asleep and at work), hushed
+  face and sign, a nap and a dance at work, and the nap at a night's lock), hushed
   (`hush.jsonl`: the zipped lips idle, happy and asleep, still zipped
   through a giggle that opens the mouth, the hush reply's squeeze and
   nod, and unhush's perk-up with its own mouth back), the
-  gaze (`gaze.jsonl`: at work forward, a glance at a word and down it, forward again and no glance inside its rest; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, nothing asleep, a Chonk's), the
-  layers (`layers.jsonl`: each outfit by its tags, Zs asleep at
-  night, a morning and a Valentine's Day with nothing behind or round
-  it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
+  gaze (`gaze.jsonl`: at work typing, forward, a glance at a word and down it, forward again and no glance inside its rest; looking, running and waiting with the same word falling and no glance; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
+  layers (`layers.jsonl`: the nightcap at night and on a party night, Zs
+  asleep at night, a morning and each special day with nothing worn and
+  nothing behind or round it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
-  work acts (`acts.jsonl`: each act's opening, its middle, its pass, its
-  fail and its small version; a needs-you and back), the
-  work stream (`stream.jsonl`: two lanes' words falling, the to-do bar and
-  the clock, a thought cloud, and every style as it lands: bonk and its dizzy
-  eyes, bonk3, shrug, shatter, helper and back (landing as a word does), an edit's bars, and the whole turn's
-  moments: a compaction's cube, a freeze, a drop, buried, and a turn's
-  end gathering its words after the stream goes), and
+  four activities (`activities.jsonl`: each pose from plain working at
+  0.2, 0.6, 1, 1.6 and 2.4 s, the three typing tiers, and four changes of
+  pose a frame every 50 ms), the
+  work acts (`acts.jsonl`: the low sign running with the words still
+  falling, a pass with its hop, a fail with its flinch, a push shipped; a
+  needs-you and back), the
+  work stream (`stream.jsonl`: two lanes' words falling, nothing of them on
+  the monitor, 20 s quiet with nothing beside it, and every style as it
+  lands: bonk and its dizzy eyes, bonk3, shrug, shatter, helper and back
+  (landing as a word does), an edit, and the whole turn's moments: a drop,
+  and a turn's end gathering its words after the stream goes), and
   a finger in idle (`swipes.jsonl`), and the agents' drawer
   (`drawer.jsonl`: shut with the strip's grabber, pulled part way, open
   with the body squeezed flat and its paw over the edge, a row picked,
@@ -258,8 +247,8 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
 ## For the eye
 
 The Character Studio's **Gel on the board** card is the board's firmware:
-its **Tools** record the review sets (24 representative activities, 13
-directed mood bridges, `character/studio/review-sets.json`) from the
+its **Tools** record the review set (24 representative activities,
+`character/studio/review-sets.json`) from the
 board as silent WebM clips, and play the sound sketches each on its own.
 The studio's server saves the clips only with `--capture-dir DIR`, only
 those the pack names, from its own page with its token, at most 8 MiB
@@ -272,7 +261,7 @@ art evidence, not owner approval.
 
 - V3 artwork and the SFX sketches need the owner's art and listening
   review on the board.
-- The owner approved the representative set; the directed bridges' clips
-  are for the owner's spot-check.
+- The owner approved the representative set before the cut to 18 faces;
+  curious's new face needs the owner's look on the board.
 - Real touch hardware and physical audio latency are separate tests, and
   so is the board's frame time (`boopctl ping`'s `draw_us`).

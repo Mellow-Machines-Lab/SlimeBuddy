@@ -1,0 +1,14 @@
+{
+  "about": "Working, looking (a read, a search): it leans well in to the monitor at its left and cranes up, its paws off the keys, and its eyes scan a line left to right, step down to the next, four lines, and again.",
+  "ms": 2800,
+  "loop": true,
+  "tracks": {
+    "lean": [[0, -430], [1400, -470], [2800, -430]],
+    "x": [[0, -34], [2800, -34]],
+    "lift": [[0, 8], [2800, 8]],
+    "squash": [[0, -120], [1400, -145], [2800, -120]],
+    "gazeX": [[0, -900], [600, -350, "linear"], [700, -900], [1300, -350, "linear"], [1400, -900], [2000, -350, "linear"], [2100, -900], [2700, -350, "linear"], [2800, -900]],
+    "gazeY": [[0, 250], [600, 250], [700, 400], [1300, 400], [1400, 550], [2000, 550], [2100, 700], [2700, 700], [2800, 250]],
+    "eyeOpen": [[0, -120], [2800, -120]]
+  }
+}

@@ -1,7 +1,7 @@
 #include "render/gel/scenes.h"
 namespace render::gel {
 namespace {
-int recipeState(const Route& r) { return gel::recipeState(r.state, r.outcome, r.ctx); }
+int recipeState(const Route& r) { return gel::recipeState(r.state, r.outcome); }
 Scenes::Saved* find(Scenes::Saved& saved, uint64_t key) { return saved.key == key ? &saved : nullptr; }
 slime::Recipe realize(const slime::Recipe& source, Random& random) {
   auto recipe = source;
@@ -61,8 +61,6 @@ bool Scenes::wants(Prop prop) const {
   switch (prop) {
     case kAlertProp:
       return route.state == SceneState::kNeedsYou;
-    case kStartProp:
-      return route.state == SceneState::kStarting;
     case kListeningProp:
       return route.state == SceneState::kListening;
     default:
@@ -84,9 +82,6 @@ void Scenes::refresh(Prop prop) {
       alertProp.known = true;
       break;
     }
-    case kStartProp:
-      startProp.label = recipe.label;
-      break;
     case kListeningProp:
       listeningPulse = focus();
       break;
@@ -94,24 +89,8 @@ void Scenes::refresh(Prop prop) {
       touchKind = route.state;
   }
 }
-// A card's reveal is its slot's own ramp: up over kCardRevealMs from its
-// reveal contact, down over the recovery, each from its time on the route's
-// clock, but not down before it's up: revealed late in the recipe, it rises
-// whole, then falls. Once the route ends, nothing retargets it, so it
-// carries on as it was going while the slot's ramp fades the card out.
-void Scenes::cardReveal(Ramp& reveal) const {
-  if (!resultRevealed) {
-    reveal.reset();
-    return;
-  }
-  const T down = max(recipe.duration - T(480), revealAt + T(kCardRevealMs));
-  if (ageMs >= down)
-    reveal.retarget(0, started + down, 480);
-  else
-    reveal.retarget(1, started + revealAt, kCardRevealMs);
-}
-// A prop whose route ends fades out with its last content (a card's reveal
-// going on as it was), so it never stops dead. New content (a new
+// A prop whose route ends fades out with its last content, so it never
+// stops dead. New content (a new
 // request) waits until nothing of the old is drawn, then fades in from
 // zero.
 void Scenes::updateProps(T time) {
@@ -124,13 +103,11 @@ void Scenes::updateProps(T time) {
       slot.on = want;
       if (want) slot.key = key;
       slot.ramp.reset();
-      slot.reveal.reset();
       same = true;
     }
     if (want && same) {
       refresh(prop);
       slot.ramp.retarget(1, time);
-      if (card(prop)) cardReveal(slot.reveal);
     } else {
       slot.ramp.retarget(0, time);
     }
@@ -290,6 +267,8 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
     int index = cursor++;
     const auto& c = recipe.contacts[index];
     if ((route.quiet && c.kind != kBreath) || (grab && !reveals(c.kind))) continue;
+    // Keys are pressed only while it types.
+    if (c.kind == kKey && activityOf(route.state) != Activity::kTyping) continue;
     last = {
         key,
         generation,
@@ -331,7 +310,7 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
       recoveryPose[channel] += c.velocity * gain[channel] * square(sin(pi * age / q(.48)));
     }
   }
-  F wave = (route.state == SceneState::kWaiting || route.state == SceneState::kListening)
+  F wave = route.state == SceneState::kListening
                ? q(.65) + q(.35) * sin(ageMs / recipe.duration * pi * 2 * recipe.focus)
                : F(1);
   F target[] = {
@@ -356,8 +335,11 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
   for (int i = 0; i < 3; ++i) integrate(activity[i], dt, active ? target[i] : i == 1 ? swell : F(0), 12, 10, limits[i], q(1.2));
   const FinishShow finish = finishShow();
   const bool party = finish.on && takesOver(finish.finish);
-  prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party && !clearStage ? 1 : 0, 10, 14);
+  prop(desk, dt, (isDesk(route.state) || isDesk(route.baseState)) && !party ? 1 : 0, 10, 14);
   prop(quietMix, dt, route.quiet ? 1 : 0, 12, 10);
+  const SceneState deskState = isDesk(route.state) ? route.state : route.baseState;
+  for (int a = 0; a < kActivities; ++a)
+    prop(pose[a], dt, isDesk(deskState) && activityOf(deskState) == Activity(a) ? 1 : 0, 9, 18);
   updateProps(time);
 }
 }  // namespace render::gel

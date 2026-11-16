@@ -3,7 +3,7 @@
 // the bar carries on through the reply.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":40,"wish":"chat"}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":40,"wish":"chat"}
 {"clock":50}
 {"clock":100}
 {"clock":150}
@@ -48,7 +48,7 @@
 {"clock":2000}
 {"shot":"listening"}
 {"t":"do","id":2,"name":"wish_met","args":{"sign":"<3"}}
-{"t":"state","vol":0,"when":["day","sprout"],"base":"idle","mood":"calm","idle":1,"xp":46}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":46}
 {"clock":2050}
 {"clock":2100}
 {"clock":2150}

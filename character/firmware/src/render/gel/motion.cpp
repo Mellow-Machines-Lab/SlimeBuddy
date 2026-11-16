@@ -41,10 +41,10 @@ constexpr int kSized[3] = {2, 4, 5};
 constexpr F kSleep[3] = {q(.004), q(.018), q(.008)};
 // a / b as `/` gives it, for positive a and b, at compile time.
 constexpr F quotient(F a, F b) { return F::fromRaw(a.raw * F::scale / b.raw); }
-// The sleeping face's size over the tired art's, which it is drawn from.
-constexpr F kSleepScale[3] = {quotient(kSleep[0], slime::kProfile[slime::kTired].face[2]),
-                              quotient(kSleep[1], slime::kProfile[slime::kTired].face[4]),
-                              quotient(kSleep[2], slime::kProfile[slime::kTired].face[5])};
+// The sleeping face's size over the sleeping art's, which it is drawn from.
+constexpr F kSleepScale[3] = {quotient(kSleep[0], slime::kProfile[slime::kCalmAsleep].face[2]),
+                              quotient(kSleep[1], slime::kProfile[slime::kCalmAsleep].face[4]),
+                              quotient(kSleep[2], slime::kProfile[slime::kCalmAsleep].face[5])};
 // A Divisor is exact for divisors from 1/2 and dividends under 128: every
 // size a ratio is over is at least 1/2 at kScale, and the controls there,
 // under 35, are far inside.
@@ -92,7 +92,7 @@ void SemanticFace::weigh(F s) {
   for (int i = 0; i < count; ++i) layers[i].weight = layers[i].weight / sum;
 }
 void SemanticFace::aim() {
-  const int art = targetSleeping ? slime::kTired : targetId;
+  const int art = targetSleeping ? slime::kCalmAsleep : targetId;
   for (int i = 0; i < 8; ++i) target[i] = slime::kProfile[art].face[i];
   if (targetSleeping) {
     target[2] = kSleep[0];
@@ -105,7 +105,7 @@ void SemanticFace::aim() {
 }
 void SemanticFace::retarget(T ms) {
   aim();
-  const int art = targetSleeping ? slime::kTired : targetId;
+  const int art = targetSleeping ? slime::kCalmAsleep : targetId;
   // Every layer starts again from its value and slope now, toward zero; the
   // new art, last, toward one (one still fading comes back from its value).
   const F s = elapsedMs / durationMs;

@@ -8,16 +8,20 @@
 //    tag), and stays turned while it waits. With no side told, it rests.
 // 2. Typing along with you (render/gel/face.h), idle or at work, while its
 //    paws tap: down at the keys, so no glances then: heads down, as you are.
-// 3. At work: a glance at a word as it starts to fall, followed down for
-//    kGlanceMs, then forward again for at least kRestMs before the next;
-//    kWatchRestMs while you're at the Mac with your hands still (the
+// 3. At work in an activity's own pose, looking, running or waiting: rest.
+//    The pose's clip moves the eyes itself (the rig's gazeX and gazeY: down
+//    a page, fixed on the monitor, out at you), and a glance on top would
+//    pull against it. One it was in the middle of is dropped.
+// 4. At work, typing: a glance at a word as it starts to fall, followed
+//    down for kGlanceMs, then forward again for at least kRestMs before the
+//    next; kWatchRestMs while you're at the Mac with your hands still (the
 //    `reading` tag), when it watches the work with you.
 //
 // The first that applies wins, and none applies while anything else has
-// the eyes: a finger, a Moment, a pastime, a transition, a word forward, a
-// work act, sleep. A new kind of look is one more rule here and nothing
-// anywhere else: the face gathers the facts (GelFace::showGaze) and the
-// engine turns the eyes (Engine::attend), slower than they follow a finger.
+// the eyes: a finger, a Moment, a pastime, a transition, a word forward,
+// sleep. A new kind of look is one more rule here and nothing anywhere
+// else: the face gathers the facts (GelFace::showGaze) and the engine turns
+// the eyes (Engine::attend), slower than they follow a finger.
 #pragma once
 #include <cstdint>
 
@@ -30,6 +34,7 @@ struct GazeFacts {
   uint32_t lookMs = 0;
   int mac = 0;            // the Mac's side: -1 left, 1 right, 0 not told
   bool along = false;     // typing along with you, its paws tapping
+  bool posed = false;     // at work in a pose whose clip has the eyes: looking, running, waiting
   bool watching = false;  // at work, and you're there with your hands still
   bool word = false;      // the newest word falling: when it dropped, where
   uint32_t wordBorn = 0;  // it is now, px of the 502 by 410 screen, and how

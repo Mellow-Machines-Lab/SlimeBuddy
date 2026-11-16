@@ -103,12 +103,14 @@ struct Acting {
   }
   void advance(T dt, T time, bool grab, Random& random);
 };
-enum class Primitive { kSoft, kGather, kBlink, kRecoil };
-struct Bridge {
+// The body's small beat at a change of mood: a change of face within one
+// mood (happy to pleased) has none. One of three, dealt afresh each time.
+enum class Primitive { kSoft, kGather, kBlink };
+struct MoodBeat {
   Spring channels[3];
-  Bag<3> bags[slime::kEdgeCount];
   bool active = false, quiet = false, grab = false, attention = false, suppressed = false, expired = false;
-  int from = -1, to = -1, edge = -1, variant = 0, category = -1, direction = 0;
+  int from = -1, to = -1, variant = 0, direction = 0;
+  bool moves = false;
   Primitive primitive = Primitive::kSoft;
   F amplitude;
   T elapsedMs, durationMs, deferredMs;
@@ -118,7 +120,9 @@ struct Bridge {
     attention = isAttention;
     if (active && (quiet || attention)) suppressed = true;
   }
-  T retarget(int source, int target, T time, Random& random, int forced = -1);
+  // Starts the beat for a change from one face to another, and returns how
+  // long the face takes to cross over.
+  T retarget(int source, int target, Random& random);
   void advance(T dt);
   F progress() const { return active ? elapsedMs / durationMs : F(1); }
 };

@@ -1,4 +1,6 @@
-// All 23 gel states, plus explicit failure and neutral finish.
+// The gel's states: its looks, the four activities at work (plain working and
+// tool_use are both typing; the poses over time are in activities.jsonl) and
+// each reaction, plus explicit failure and neutral finish.
 // The stopped and neutral finish shots wait 200 ms longer, and the error and
 // failure shots 400 ms, for their card to finish rising;
 // no app draws a frame 200 ms before its shot, for its lane to fade in.
@@ -20,21 +22,16 @@
 {"shot":"idle"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0}
+{"t":"state","base":"working","mood":"wounded","vol":0}
 {"t":"do","id":103,"name":"listening","args":{}}
 {"clock":1504}
 {"shot":"listening"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0}
-{"t":"do","id":104,"name":"starting","args":{"ctx":"new_task"}}
+{"t":"do","id":104,"name":"starting","args":{}}
 {"clock":1504}
 {"shot":"starting"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"grumpy","vol":0,"act":"planning"}
-{"clock":1504}
-{"shot":"planning"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0}
@@ -42,7 +39,7 @@
 {"shot":"working"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"act":"terminal"}
+{"t":"state","base":"working","mood":"wounded","vol":0,"act":"terminal"}
 {"clock":1504}
 {"shot":"terminal"}
 {"t":"dbg.reset"}
@@ -52,24 +49,9 @@
 {"shot":"tool_use"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"grumpy","vol":0,"act":"searching"}
-{"clock":1504}
-{"shot":"searching"}
-{"t":"dbg.reset"}
-{"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0,"act":"analyzing"}
 {"clock":1504}
 {"shot":"analyzing"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"act":"testing"}
-{"clock":1504}
-{"shot":"testing"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"happy","vol":0,"act":"delegating"}
-{"clock":1504}
-{"shot":"delegating"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0,"act":"waiting"}
@@ -77,7 +59,7 @@
 {"shot":"waiting"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"attn":{"id":7,"agent":"codex","project":"Boop","name":"Native gel","more":1}}
+{"t":"state","base":"working","mood":"wounded","vol":0,"attn":{"id":7,"agent":"codex","project":"Boop","name":"Native gel","more":1}}
 {"clock":1504}
 {"shot":"needs_you"}
 {"t":"dbg.reset"}
@@ -116,16 +98,10 @@
 {"shot":"failure"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0}
+{"t":"state","base":"working","mood":"wounded","vol":0}
 {"t":"do","id":123,"name":"task_complete","args":{}}
 {"clock":1704}
 {"shot":"neutral_finish"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"happy","vol":0}
-{"t":"do","id":124,"name":"starting","args":{"ctx":"compacted"}}
-{"clock":1504}
-{"shot":"starting_compacted"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0}

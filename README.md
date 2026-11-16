@@ -27,10 +27,10 @@ theatrical, easily wounded and secretly a bit needy. A tiny dramatic
 coworker who keeps doing the job while it tells you how it feels about
 every turn your agents take.
 
-- 💤 **Naps** while no agent is open. Idle, it blows bubbles, reads and counts sheep.
+- 💤 **Naps** while no agent is open. Idle, it looks around, hops and snoozes.
 - ⌨️ **Works along** while they do: every command an agent runs falls
-  past it as a word, and some of them hit it. On a long stretch it puts
-  its headphones on and writes itself a sticky note.
+  past it as a word, and some of them hit it. On a long stretch it
+  stretches, and melts into a puddle for a moment.
 - 🟧 **Glows amber and knocks** when an agent needs your approval, and
   says who. Hold a finger on it to put the request away.
 - 🏆 **Celebrates** a finish that earns it, bigger the longer the work,
@@ -38,16 +38,16 @@ every turn your agents take.
 - 👉 **Feels your touch.** Stroke it and it calms down, rub it the wrong
   way and it ruffles, boop it and it's tickled, shake it and it gets dizzy.
   Hold its button and talk to it: it answers.
-- 📔 **Keeps a diary**, a line a day about the one before, and dresses for
-  the day: a nightcap at night, a hat on a holiday.
+- 📔 **Keeps a diary**, a line a day about the one before, and puts on
+  its nightcap at night.
 
 It's cheeky: it teases the agents and the work, never you, and it's
-always on your side. It has moods of its own, 42 of them, and there's no
+always on your side. It has moods of its own, seven of them, and 18 faces, and there's no
 reset button. It only watches: it never approves, denies or blocks
 anything an agent does.
 
 <p align="center">
-  <img src="media/moods.gif" width="760" alt="Eight of the slime's moods, each labelled: excited, proud, curious, calm, grumpy, sad, tired and wounded">
+  <img src="media/moods.gif" width="760" alt="Eight of the slime's faces, each labelled: excited, proud, curious, calm, grumpy, sad, wounded and focused">
 </p>
 
 A menu-bar app on your Mac does the thinking; the board is its body. The

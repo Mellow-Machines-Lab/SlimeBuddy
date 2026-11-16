@@ -17,6 +17,10 @@ GazePoint Gaze::look(const GazeFacts& f, uint32_t t) {
     glancing_ = false;
     return {true, kMidX, kKeysY};
   }
+  if (f.posed) {
+    glancing_ = false;
+    return {};
+  }
   if (glancing_) {
     if (t - glanceAt_ < kGlanceMs) return {true, glanceX_, glanceY_ + int(int64_t(t - glanceAt_) * glanceSpeed_ / 1000)};
     glancing_ = false, rested_ = false, restFrom_ = t;

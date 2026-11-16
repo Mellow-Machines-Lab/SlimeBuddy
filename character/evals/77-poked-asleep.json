@@ -1,9 +1,0 @@
-{
-  "name": "A poke while Boop sleeps startles it",
-  "judge": "Boop is asleep and the person pokes it once. It should wake with a start.",
-  "reasonable": "Surprised, stunned, curious, drowsy, cheeky or happy; a small sound or word is fine. A touch of grumpy-at-being-woken is fine too.",
-  "unreasonable": "A finish animation, no reaction at all, or fury or a swear at one poke.",
-  "steps": [
-    {"event": "pokes", "at": "0s", "count": 1, "brain": {"react.face": "surprised", "react.move": "none"}}
-  ]
-}

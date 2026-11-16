@@ -7,16 +7,16 @@ export {states};
 export const kinds=['key_contact','screen_knock','body_contact','alert_reveal','success_reveal','failure_reveal','result_reveal','start_reveal','reply_ready_reveal',
  'sneeze_contact','breath_contact','zoom_contact'];
 export function recipes(profiles,q,t,{design,gagIds}){
- const specs=[...states.map(state=>({state})),{state:'task_complete',outcome:'success'},{state:'task_complete',outcome:'failure'},...['new_task','session','continuation','compacted'].map(ctx=>({state:'starting',ctx}))];
+ const specs=[...states.map(state=>({state})),{state:'task_complete',outcome:'success'},{state:'task_complete',outcome:'failure'}];
  const takes=specs.map(spec=>takesOf(spec.state,spec.outcome||null)),fourth=[];
  specs.forEach((spec,row)=>{if(takes[row]===4)fourth.push(row);});
  // A recipe; its gag, one acting plays with it (a gesture's, a
  // pastime's), as kGags numbers it, or -1.
- const write=(r,jitter)=>'{'+[t(r.duration),q(r.lean)].join(',')+','+[r.label?JSON.stringify(r.label):'nullptr',r.contacts.length,r.focusCycles||r.pulseCycles||1,r.helperCount||0,r.helperDirection||1,jitter,Boolean(r.gift),r.gag?gagIds.indexOf(r.gag):-1,'{'+r.contacts.map(c=>'{'+[t(c.at),kinds.indexOf(c.kind),c.side,q(c.strength)].join(',')+'}').join(',')+'}'].join(',')+'}';
+ const write=(r,jitter)=>'{'+[t(r.duration),q(r.lean)].join(',')+','+[r.contacts.length,r.focusCycles||r.pulseCycles||1,r.helperCount||0,r.helperDirection||1,jitter,Boolean(r.gift),r.gag?gagIds.indexOf(r.gag):-1,'{'+r.contacts.map(c=>'{'+[t(c.at),kinds.indexOf(c.kind),c.side,q(c.strength)].join(',')+'}').join(',')+'}'].join(',')+'}';
  const emit=(p,spec,v)=>{const {r,jitter}=recipe(p,spec,v,design);return write(r,jitter);};
- // A recipe's label is what its start card says; a gift is proud's bug beside its trophy.
+ // A gift is proud's bug beside its trophy.
  let out='struct Contact {T at;uint8_t kind;int8_t side;F strength;};\n'+
-  'struct Recipe {T duration;F lean;const char* label;uint8_t count,focus,helpers;int8_t direction;bool jitter,gift;int8_t gag;Contact contacts[6];};\n';
+  'struct Recipe {T duration;F lean;uint8_t count,focus,helpers;int8_t direction;bool jitter,gift;int8_t gag;Contact contacts[6];};\n';
  out+='constexpr int kContactKinds='+kinds.length+';\n';
  // Their names, which a rig clip's cues name the contact they sound by.
  out+='constexpr const char* kContactKindNames[kContactKinds]={'+kinds.map(k=>JSON.stringify(k)).join(',')+'};\n';

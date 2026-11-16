@@ -25,11 +25,12 @@ class Engine {
   }
   // The most cues a rig clip sounds in one step.
   static constexpr int kClipCues = 4;
+  // How far curious leans toward what it peers at.
+  static constexpr F kCuriousLean = q(.045);
   Random random, soundRandom;
   Motion motion;
   SemanticFace face;
   Acting acting;
-  Bridge bridge;
   Router router;
   Scenes scenes;
   int emotion = slime::kCalm, expression = slime::kCalm;
@@ -38,19 +39,16 @@ class Engine {
   Spring pull[3];
   // The mood posture's weights, critically damped outside the
   // locked blocks (Motion's weights still time those).
+  MoodBeat moodBeat;
   Spring postureWeights[slime::kProfiles];
   std::vector<SoundCue> cues;
-  // Its stage's body, and changing stage (render/gel/painter.h).
-  BodyChange bodyChange;
-  BodySettings body() const { return bodyChange.shown(elapsedMs); }
-  bool bodyWaits = false;
   uint32_t elapsedMs = 0;
-  void sync(int forcedBridge = -1);
+  void sync();
   void step(uint32_t ms);
-  void setMood(int id, int forced = -1) {
+  void setMood(int id) {
     if (id >= 0 && id < slime::kProfiles && id != emotion) {
       emotion = id;
-      sync(forced);
+      sync();
     }
   }
   void setFacts(const Facts& value) {
@@ -62,7 +60,6 @@ class Engine {
   void setOccasion(uint32_t when, uint32_t lookMs) {
     scenes.when = when;
     scenes.lookMs = lookMs;
-    if (!bodyWaits) bodyChange.see(when, elapsedMs);
   }
   // A pastime's body the face dealt (render/gel/pastimes.h): a bit, which
   // acting plays in place of its next gesture, or a take, which the scene

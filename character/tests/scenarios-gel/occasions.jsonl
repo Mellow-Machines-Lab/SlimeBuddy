@@ -1,24 +1,10 @@
-// The gel's occasions, its pastimes that need a tag (CONTINUITY.md,
-// Occasions), each on a frozen clock after a reset and asked for by name:
-// a party day's idle bounces (lifted mid-hop, eyes squinting), a night's
-// idle drowses (lids heavy, sunk a little), five agents at work type
-// frantically, and five minutes into the agents' work (tier4) the desk has
-// nothing on it but the work (the pastimes' pictures: pastimes.jsonl).
+// The gel's pastimes that need a tag (CONTINUITY.md, Occasions), on a
+// frozen clock after a reset and asked for by name: five agents at work
+// type frantically. And 15 minutes into the agents' work (tier3) the desk
+// has nothing on it but the work, and nothing is worn; nor a minute in
+// (tier1) or 5 (tier2), two agents' words falling and a to-do list
+// counted on the strip: Boop, the desk, the words and the strip.
 // A state every 20 s keeps the link alive.
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"idle","mood":"happy","vol":0,"when":["day","party"]}
-{"clock":1000}
-{"t":"dbg.pastime","name":"pastime:party-bounce"}
-{"clock":1872}
-{"shot":"party"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}
-{"clock":1000}
-{"t":"dbg.pastime","name":"pastime:night-drowse"}
-{"clock":3200}
-{"shot":"night"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","busy":5,"vol":0,"when":["day"]}
@@ -28,6 +14,28 @@
 {"shot":"frantic"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","act":"terminal","mood":"happy","vol":0,"when":["day","tier4"]}
+{"t":"state","base":"working","mood":"happy","vol":0,"when":["day","tier3"]}
 {"clock":1000}
-{"shot":"tier4"}
+{"shot":"tier3"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier1"],"todo":{"done":3,"total":7},"calls":[[0,1,"grep"],[1,1,"edit +18"]]}
+{"clock":400}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier1"],"todo":{"done":3,"total":7},"calls":[[0,3,"sed"],[1,2,"git log"]]}
+{"clock":900}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier1"],"todo":{"done":3,"total":7},"calls":[[0,4,"python"],[1,3,"rg"]]}
+{"clock":25000}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier1"],"todo":{"done":3,"total":7},"calls":[[0,5,"Core.swift"],[1,4,"read"]]}
+{"clock":26200}
+{"shot":"tier1-stream"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier2"],"todo":{"done":3,"total":7},"calls":[[0,1,"grep"],[1,1,"edit +18"]]}
+{"clock":400}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier2"],"todo":{"done":3,"total":7},"calls":[[0,3,"sed"],[1,2,"git log"]]}
+{"clock":900}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier2"],"todo":{"done":3,"total":7},"calls":[[0,4,"python"],[1,3,"rg"]]}
+{"clock":25000}
+{"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier2"],"todo":{"done":3,"total":7},"calls":[[0,5,"Core.swift"],[1,4,"read"]]}
+{"clock":26200}
+{"shot":"tier2-stream"}

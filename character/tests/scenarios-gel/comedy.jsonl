@@ -3,8 +3,7 @@
 // The yawn and the sneeze every mood shares are the face's pastimes: calm,
 // asked for each, yawns (a second in: stretched, eyes squeezed) and winds
 // up a sneeze. A mood's own gags its bag deals from its second round:
-// comfy's long yawn comes at 57 s
-// and excited's zoomies at 43.5 s, at the left edge, then the right. Asleep
+// excited's zoomies come at 43.5 s, at the left edge, then the right. Asleep
 // snores from 19.3 s (a breath's swell). A happy finish's sixth take is its
 // fourth, the hiccups, at the first; proud's third is its lifted one, with
 // the gift. A state every 20 s keeps the link alive.
@@ -24,16 +23,6 @@
 {"t":"dbg.pastime","name":"sneeze-and-shake"}
 {"clock":52640}
 {"shot":"sneeze"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"idle","mood":"comfy","vol":0}
-{"clock":20000}
-{"t":"state","base":"idle","mood":"comfy","vol":0}
-{"clock":40000}
-{"t":"state","base":"idle","mood":"comfy","vol":0}
-{"clock":58800}
-{"expect":{"screen":"face","mood":"comfy","moment":null}}
-{"shot":"long_yawn"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"excited","vol":0}

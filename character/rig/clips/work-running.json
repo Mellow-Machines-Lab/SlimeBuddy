@@ -1,0 +1,12 @@
+{
+  "about": "Working, running (a command, the tests, a build, helpers): it sits back and up, away from the monitor, its paws held together off the keys, eyes fixed on the monitor, breathing slow, with a tiny rock of anticipation.",
+  "ms": 4000,
+  "loop": true,
+  "tracks": {
+    "lean": [[0, 230], [1000, 260], [3000, 200], [4000, 230]],
+    "x": [[0, 30], [4000, 30]],
+    "squash": [[0, -200], [2000, -240], [4000, -200]],
+    "gazeX": [[0, -750], [4000, -750]],
+    "gazeY": [[0, 300], [4000, 300]]
+  }
+}

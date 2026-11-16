@@ -103,8 +103,8 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
       x = side * eyeX + c.gaze + int(int64_t(x - side * l.baseX) * c.eyeSize / 4096);
       y = eyeY + c.gazeUp + int(int64_t(y - l.baseY) * l.eye * (4096 - c.blink) / (4096 * 4096) * c.eyeSize / 4096);
     } else if (group == 3) {
-      x = int(int64_t(x) * l.mouthWidth / 4096 * c.mouthSize / 4096);
-      y = mouthY + int(int64_t(y - l.baseM) * l.mouthHeight / 4096 * c.mouthSize / 4096);
+      x = int(int64_t(x) * l.mouthWidth / 4096);
+      y = mouthY + int(int64_t(y - l.baseM) * l.mouthHeight / 4096);
     }
     return Point{x, y};
   };
@@ -129,7 +129,7 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
     const auto& path = slime::kArtPaths[placed[i].range->first + k];
     const int g = path.group;
     return pairs.oldest[i][k] && path.count <= kMaxPoints && path.clipCount <= kMaxPoints &&
-           (c.eyes || (g != 1 && g != 2)) && !(zipped && g == 3) && classWeight(i, k) > 0;
+           !(zipped && g == 3) && classWeight(i, k) > 0;
   };
   // Each group's shapes, drawn as one look for each shape the layers give
   // it; a group with two or more cross-fades. Its looks are drawn together

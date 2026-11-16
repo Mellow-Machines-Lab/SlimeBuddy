@@ -27,7 +27,7 @@ struct Board {
     b.reset(0, rng);
     m.mood = Mood::kCalm;
     m.base = look;
-    m.act = SceneState::kTerminal;
+    m.act = SceneState::kToolUse;  // typing: no activity's pose has the body
     m.when = reached(when);
     b.onState(m, 0);
   }
@@ -55,7 +55,9 @@ struct Board {
 
 // Pins the rules and their order: nothing while something else has the
 // eyes; needs you is up at you for kNoticeMs, then the Mac's side, and
-// rest with no side told; typing along is down at the keys; else rest.
+// rest with no side told; typing along is down at the keys; at work in an
+// activity's own pose (looking, running, waiting) the pose's clip has the
+// eyes, so no glance starts and one under way is dropped; else rest.
 void test_the_eyes_rest_unless_theres_a_reason() {
   static_assert(Gaze::kNoticeMs == 1200, "the look at you this test pins");
   Gaze g;
@@ -85,6 +87,21 @@ void test_the_eyes_rest_unless_theres_a_reason() {
   TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX && p.y > Gaze::kEyesY);  // down at the keys
   f.needsYou = true;
   TEST_ASSERT_TRUE(g.look(f, 160).y < 0);  // needs you first
+  // A pose's clip has the eyes: a new word isn't glanced at, and a glance
+  // begun while typing ends as the pose comes.
+  Gaze posed;
+  f = GazeFacts{};
+  f.free = f.posed = true;
+  f.word = true, f.wordBorn = 1000, f.wordX = 420, f.wordSpeed = 125;
+  TEST_ASSERT_FALSE(posed.look(f, 1016).on);
+  f.posed = false, f.wordBorn = 2000;
+  TEST_ASSERT_TRUE(posed.look(f, 2016).on);  // typing again: the next word is
+  f.posed = true;
+  TEST_ASSERT_FALSE(posed.look(f, 2032).on);
+  f.posed = false;
+  TEST_ASSERT_FALSE(posed.look(f, 2048).on);  // and it isn't picked up again
+  f.posed = f.needsYou = true, f.mac = 1, f.lookMs = Gaze::kNoticeMs;
+  TEST_ASSERT_TRUE(posed.look(f, 2064).x > 502);  // needs you comes before a pose
 }
 
 // Pins kGlanceMs, kRestMs, kWatchRestMs and kCatchMs, the rule against
@@ -167,8 +184,9 @@ void test_a_look_is_a_turn_not_a_dart() {
 // hands busy, its keyboard comes out over the rig's fade and its paws tap;
 // you stop, they rest and the keyboard stays 4 s, then goes; no pastime is
 // dealt while it's out. Something needs you: gone. At work its paws type
-// briskly with you at its desk; asleep, nothing. It waits for a pastime
-// playing to end, and never cuts one.
+// briskly with you at its desk, in its typing pose alone: looking, running
+// or waiting, its paws are off the keys and stay off. Asleep, nothing. It
+// waits for a pastime playing to end, and never cuts one.
 void test_it_types_along_with_you() {
   static_assert(GelFace::kAlongLingerMs == 4000, "the linger this test pins");
   const uint32_t day = tagBit("day"), typing = tagBit("typing");
@@ -231,13 +249,28 @@ void test_it_types_along_with_you() {
   board.tags(day);
   board.to(board.t + 64);
   TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
+  // In another activity's pose it doesn't type with you, and the gaze
+  // leaves the eyes to the pose's clip; back at typing, it does again.
+  for (SceneState act : {SceneState::kAnalyzing, SceneState::kTerminal, SceneState::kWaiting}) {
+    board.m.act = act;
+    board.tags(day | typing);
+    board.to(board.t + 2000, [&] {
+      TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
+    });
+    TEST_ASSERT_NULL(face.passing(board.t));
+  }
+  board.m.act = SceneState::kToolUse;
+  board.state();
+  board.to(board.t + 64);
+  TEST_ASSERT_TRUE(face.pastimes(board.t).tapping);
+  board.tags(day);
   // Asleep: nothing, your typing or not.
   board.m.base = SceneState::kAsleep;
   board.tags(day | typing);
   board.to(board.t + 3000, [&] { TEST_ASSERT_TRUE(face.pastimes(board.t).keys == 0 && !face.pastimes(board.t).tapping); });
   // Brisk is twice as often and higher than the agents' soft typing.
   // Size, not speed: no quicker than the soft typing, and far bigger.
-  static_assert(kBriskMs >= 300 && kBriskLift > 5 * kTypeLift && kAlongSize >= 3686, "typing with you is big, not fast");
+  static_assert(kBriskMs >= 300 && kBriskLift > 5 * kTypeLift, "typing with you is big, not fast");
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kBriskTapMs / 2, -1, true));
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kBriskTapMs / 2, 1, true));
   // A pastime playing as you start: it plays out first.

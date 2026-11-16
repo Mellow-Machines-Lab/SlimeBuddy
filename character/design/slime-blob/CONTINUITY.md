@@ -5,11 +5,11 @@ Updated 2026-11-15. The slime's one engine is the C++ in
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
 scene family is implemented; idle, sleep and a finish have their comedy
-(Comedy, below), a successful finish comes in four sizes (Finishes), the
+(Comedy, below), a successful finish comes in three sizes (Finishes), the
 board's touches have a take each (Gestures), the
 face deals its pastimes, tagged ones too, from one table (Pastimes,
 Tagged pastimes), and one face flows into the next
-(Directed edge bridges: its arts morph or cross-fade, never closing). Q1
+(The mood beat: its arts morph or cross-fade, never closing). Q1
 representative art review was approved on 2026-10-02. Each rule below
 names the code that keeps it; [VALIDATION.md](VALIDATION.md) names the
 test that pins it. Contact-synchronized sound is implemented; timbres
@@ -61,7 +61,7 @@ Preserve current displacement and velocity when changing any target.
 Eye and mouth geometry, cheek opacity and tear amount move on springs
 (`gel/motion.cpp` `SemanticFace`). While one face gives way to another,
 the board draws both arts, features of the same shape morphing and the
-others cross-fading (Directed edge bridges, below), so the face never
+others cross-fading (The mood beat, below), so the face never
 closes or fades. The mood posture reads its own critically damped weights.
 
 ## One engine, driven as the board drives it
@@ -115,11 +115,11 @@ same 1/240 s substeps: it starts from rest without a jump in velocity, and a ret
 keeps both its position and its velocity. Cheek and tear opacity stay in
 [0, 1]. The controls' endpoints are each face's (slimegen's `face.mjs`,
 read off the painter's primitives); the board draws each of the face's
-layers at its ratios (Directed edge bridges, below), so settled faces keep
+layers at its ratios (The mood beat, below), so settled faces keep
 their authored proportions.
 
-The mood posture (the per-mood squash, and the excited, scared, frightened,
-crying and irritated oscillations, `gel/engine.cpp` `posture`) is weighted
+The mood posture (the per-face squash, curious's lean toward its bigger
+eye and excited's bounce, `gel/engine.cpp` `posture`) is weighted
 by one critically damped spring per expression, ω = 10, whose target is one
 for the current expression and zero for the others. The weights sum to one,
 so the posture eases between moods with no step in velocity, and it reads
@@ -130,8 +130,9 @@ after the quiet blend.
 The first owner review covered working, terminal, needs-you,
 task-complete success/failure and the quiet rest alias. Q1 approved that
 representative art on 2026-10-02, allowing the rest of the matrix to be
-implemented: happy, grumpy, sad and frightened in six cases each (success
-and failure separately), 24 cases in 20 mood/state cells, the Studio's
+implemented: four moods in six cases each (success
+and failure separately), 24 cases in 20 mood/state cells, now happy,
+grumpy, sad and wounded, the Studio's
 **Representative activities** review set
 (`character/studio/review-sets.json`). Sleeping is a justified
 shared alias, not three newly authored sleep animations; its one addition
@@ -139,8 +140,10 @@ is a snore (Comedy, below).
 
 Priority is explicit no-app, listening, needs-you, the Moment held,
 then the latest Doing and activity (`gel/router.cpp`). An activity applies only
-to working; unknown activity falls back to working and an unknown Doing to
-idle. Attention identity follows the device: a new activation or changed
+to working, and the gel shows four, each as one state (`Activity`,
+`Facts::look`): typing as working, looking as analyzing, running as
+terminal, and waiting; unknown activity falls back to working and an
+unknown Doing to idle. Attention identity follows the device: a new activation or changed
 id, agent or project; changing mood, display name or more leaves the
 request's reveal consumed. Attention cuts future decorative contacts
 immediately. Clearing and showing the same request id again creates a new
@@ -197,8 +200,8 @@ the sleeping one's size, the cheeks and tears fading; once it's 0.9 shut,
 about a second on, the shared sleeping face crosses in over 360 ms, its
 lids easing in over the lines, alone by about 1.3 s. How shut it is,
 `shut`, springs on the controls' spring, and an awake art's drawn sizes
-follow the controls below their saturation that far (Directed edge
-bridges, Drawn ratios). Waking stays quick: the face's own 180 ms and
+follow the controls below their saturation that far (The mood beat,
+Drawn ratios). Waking stays quick: the face's own 180 ms and
 spring, ω = 20, the eyes opening from lines; woken before it's a line, the
 same art simply opens again. The sleeping face's semantic targets are eye
 openness 0.004, mouth width 0.018, curve 0.008, and zero cheek/tear
@@ -235,7 +238,7 @@ there is with no chips; the helpers and the to-do list wait until
 nothing needs you. A finished turn with no thread names its agent
 alone, with no dot after it.
 
-Every other prop (the alert, result and start cards, the listening cue,
+Every other prop (the alert's card, the listening cue,
 a mic in a breathing ring with LISTENING beside it in the large font
 to read at arm's length, in a row over the head,
 and the touch marks) has a **200 ms visibility ramp** for
@@ -243,10 +246,9 @@ entry and exit (`gel/scenes.h` `Ramp`): a cubic Hermite from its current
 value and slope to the target, so from rest it is a smoothstep and a
 reversal keeps its velocity; it ends exactly. Held within zero and one,
 it's flat where it's held, so a retarget never brings back what it held at
-zero. Each prop's visibility is its drawn opacity: the ramp, times a
-card's reveal. When its route ends, a prop fades out still carrying the
+zero. Each prop's visibility is its drawn opacity. When its route ends, a prop fades out still carrying the
 content it last showed (the alert's request, agent, project, name and
-count; a card's state, label and outcome; the listening pulse; the touch
+count; the listening pulse; the touch
 kind). New content (another request) waits until nothing of the old is
 drawn, then fades in from zero; the alert's content follows the
 current request at once. Contact envelopes (the knock, the key and touch
@@ -259,13 +261,12 @@ slimegen's `scenes.mjs`:
 | --- | --- | --- | --- |
 | Working | 580, 780, 1040 | 560, 760, 1680, 1880 | 1100, 2220 |
 | Terminal | 600, 780, 960 | 780, 1810, 2090 | 580, 740, 900, 1060, 1960, 2120 |
-| Frightened working/terminal | 800, 1700, 2040 | 740, 1800, 2240, 2480 | 1080, 2380 |
 | Grumpy terminal | 640, 800, 960 | 800, 960, 1120, 2100 | 660, 820, 980, 1140, 2120 |
 
 Sad work keeps every other contact of its ordinary rhythm, starting with
 the first, for longer pauses. Keyboard strength/lean are 1.05/0.018 for
-happy, 1.12/0.032 for grumpy terminal, 0.62/−0.016 for sad and 0.68/−0.018
-for frightened; other work uses 1/0.018. Contact side alternates. The body
+happy, 1.12/0.032 for grumpy terminal and 0.62/−0.016 for sad; other work
+uses 1/0.018. Contact side alternates. The body
 uses the contact envelope and strength for side lean 0.024, squash −0.052
 and forward 0.045. A successful reveal targets squash/forward 0.036/0.025;
 a failed reveal −0.048/−0.035, before the activity bounds.
@@ -286,15 +287,7 @@ The first knock receives the delay, subsequent spacing is multiplied, and
 the alert reveal follows the last knock by 240 ms. Its card ramps in from
 the request's arrival, with no opacity floor, and ramps out when attention
 clears. Its reveal strength is invariant at 1. A result receives the mood's
-delay and strength while its success or failure remains factual. A card's
-reveal is its own, a second ramp of its prop's: up over 400 ms from its
-reveal contact (`kCardRevealMs`, twice the prop ramp, so it rises in rather
-than appears) and down over the recovery's 480 ms, each from its time on
-the route's clock, but not down before it's up: one revealed in the
-recovery rises whole, then falls; it is cleared before an explicitly
-repeated loop. A route that ends while its card rises or falls leaves the
-reveal going as it was while the card's ramp fades it out, so it never
-stops dead. Contacts carry unique request, generation, iteration and index
+delay and strength while its success or failure remains factual. Contacts carry unique request, generation, iteration and index
 identity; the sound cues take each once (sound/README.md).
 
 Suggested composition order: base shape → mood posture → activity pose →
@@ -308,9 +301,8 @@ safe envelope or produce competing repeated impacts.
 ## Full activity scene matrix
 
 The engine implements all 22 factual states in the nine scene families of
-[STATES.md](STATES.md): 42 canonical moods × 22 states, 924 cells,
-including 84 quiet aliases for asleep/no-app, starting in each of its four
-contexts and task-complete with success and failure. Every active cell has
+[STATES.md](STATES.md): 18 faces × 22 states, 396 cells,
+including 36 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
 all its takes: three, a successful finish's four, a gesture's ten (each
 asked for, as the board does), and idle's (an expression's three gestures
 and its comedy, six or seven); quiet aliases keep the mood and use the
@@ -370,9 +362,8 @@ The additional desk rhythms before mood shaping and jitter are:
 | Testing | 560 | 480, 720 | 740, 1840 |
 | Waiting | None | None | None |
 
-The frightened contact-bearing desk modes share its hesitant rhythm;
-sad desk modes keep every other ordinary contact, beginning with the
-first. Waiting overrides contacts to an empty list and uses lean targets
+Sad desk modes keep every other contact of the usual rhythm, beginning
+with the first. Waiting overrides contacts to an empty list and uses lean targets
 [0.006, 0.014, −0.010]. Its focus cycles are [1, 2, 3] per recipe. Listening
 also has no contacts, uses lean [0.022, −0.012, 0.008] and pulse cycles
 [2, 1, 3]. For both, lean is modulated by
@@ -387,7 +378,7 @@ timings above:
 
 | Family/state | Authored contacts before mood delay | Visible meaning |
 | --- | --- | --- |
-| Starting | Reveal at [520, 820, 1080] ms by variant | `new_task` → NEW TASK, `session` → START, `continuation` → RESUME, `compacted` → COMPACTED; missing context stays neutral START |
+| Starting | Reveal at [520, 820, 1080] ms by variant | It perks up, with no card, whatever its context; the Mac sends none |
 | Wake up | Stretch [560], [760], [900, 1500] ms, then settle [1180], [1240, 1420], none | You back after a long break: the start family's body, with no card. The stretch is a start reveal (the second of variant 2 at 0.7 strength); a settle is a body contact of strength 0.35, sides 0, then ±1 |
 | Delegating | [660, 1040], [540, 880, 1220], [820, 1640] ms | It sends [2, 3, 2] helpers off, a contact each, on its own: none is drawn beside it |
 | Reply ready | Reveal at [680, 960, 1240] ms | A neutral reveal, with no card and no trophy |
@@ -406,10 +397,9 @@ displacement or layer state. Duplicate or refused requests apply no
 impulse.
 
 The start and reply reveal envelope adds squash 0.018 and forward
-0.018. The start card reveals while dragging; body contacts are consumed silently during the
+0.018. Body contacts are consumed silently during the
 grab. A reply stays neutral, and only explicit task success permits the
-trophy, which a successful finish shows (Finishes). No Moment but a
-start shows a card. A state change cancels pending contacts at once
+trophy, which a successful finish shows (Finishes). A state change cancels pending contacts at once
 and resolves the latest facts.
 
 ## Comedy
@@ -420,7 +410,6 @@ a stretch, a tilt, a slide or a rebound.
 | Comedy | Where | Its takes | Sound |
 | --- | --- | --- | --- |
 | Yawn and settle (2.9 s), sneeze and shake it off (2.7 s) | Idle, every expression, from `tier1` | The face's pastimes (`kYawn`, `kSneeze`) | The sneeze's one contact |
-| A long, slow yawn (4.2 s) | Idle, bored, tired, lazy and comfy (and comfy's rosy face) | Their own take 4 | None |
 | Zoomies, edge to edge (2.6 s) | Idle, excited | Its own take 4 | A landing (`bounce`) at each edge |
 | A snore: two breaths, each a slight swell | Asleep | Asleep's fourth take | Each breath |
 | Hiccups: Little Win's hop and trophy, then three small hiccups | A small successful finish | Its fourth take | The fanfare, then three squishes |
@@ -487,17 +476,16 @@ of sleep only breaths, each fewer than half of its contacts.
 
 ## Finishes
 
-A successful finish comes in four sizes (`gel/finish.h`), so the more
+A successful finish comes in three sizes (`gel/finish.h`), so the more
 work, the bigger the party: the tier its turn reached (the `do`'s `turn`,
-characters/CHARACTER.md §9, the tiers the tags count: `tier2` a minute,
-`tier4` 5 minutes, `tier5` 10) chooses it as the board picks the
+characters/CHARACTER.md §9, the tiers the tags count: `tier1` a minute,
+`tier2` 5 minutes) chooses it as the board picks the
 variation (`GelFace::pick`), so the Mac never names a design, and the
 brain decides only whether to celebrate and in which face. A turn short
-of `tier2` is small, to `tier4` medium, to `tier5` big, and from `tier5`
-biggest, however long it's held. A finish with no turn (growing a stage,
-onboarding's) is sized by how long it's held (`loops`) instead: once
-small, twice medium, three times big, four times or more biggest. A
-success in a sad mood (disappointed, sad, crying, whiny, wounded) is
+of `tier1` is small, to `tier2` medium, and from `tier2` big, however
+long it's held. A finish with no turn (onboarding's) is sized by how long it's held (`loops`) instead: once
+small, twice medium, three times or more big. A
+success in a sad face (sad, wounded) is
 small whatever else: tearful but valid. A failure never plays one: its
 row keeps its card and its three takes, unless the finish names whose
 turn it was, when its low sign takes the card's place (A finished turn,
@@ -508,47 +496,31 @@ below).
 | Small | Little Win | The row's own takes (and hiccups for a fourth): a hop at its reveal, a little trophy popping up over its head, a ring of sparkles |
 | Medium | Confetti | Little Win's hop and trophy, a second hop, and confetti cannons from both bottom corners, twice |
 | Big | Gold Rush | It steps back to 0.84 of its size, the gold floods out from behind it with turning rays, it leaps, the trophy lands on its head, confetti from both corners, and the gold drains away |
-| Big | Jelly Fireworks | Star eyes, hops and a sway while six rockets burst over the black, the last the biggest |
-| Big | Mini-Boop Parade | It hops and shrinks, splits into five little ones (each under a third of its size, each with its face) that bounce across the screen, then they jump back together and it lands whole, with a ring of sparkles |
-| Big | Proud Spotlight | A spotlight, a podium rising under it at 0.74 of its size, a crown dropping onto its head, its smug sway, gold stars twinkling |
-| Biggest | Mega Boop | It puffs up to 2.2 times its size, its face kept in the middle of the board, wobbles, pops back past its size with a boing, and splashes jelly drops, confetti and TA-DA! |
-
-**The big one is the mood's.** Each mood takes turns between two
-(`bigFinishes`), never opening on the one that played last: excited
-Fireworks then Gold Rush, happy and pleased Gold Rush then the parade,
-amused the parade then Fireworks, proud the spotlight then Gold Rush,
-every other mood Gold Rush then Fireworks. A proud board takes the
-spotlight whatever the Moment's emotion. The Mac may ask for one of a
-mood's two (`variant` 1 or 2), as onboarding's finale does.
 
 **Variations.** A success's variations are Little Win's four takes, then
-one for each finish above small (`finishVariant`): the confetti 5, Gold
-Rush 6, Jelly Fireworks 7, Mega Boop 8, the parade 9 and the spotlight 10,
-from 1. A finish above small plays once, whatever its loops (`plays`), for
-its recipe's length, 3.6 to 5 s; its recipe (`finishRecipe`) holds its
+one for each finish above small (`finishVariant`): the confetti 5 and Gold
+Rush 6, from 1. A finish above small plays once, whatever its loops (`plays`), for
+its recipe's length, 3.6 or 4.6 s; its recipe (`finishRecipe`) holds its
 reveal, where its `say` starts as a card's does, and its landings.
 
 **Its body.** A finish moves, scales and squashes the whole body, its face
 and its anchors with it (PaintControls' `scale` about where it stands, its
 `offset`, and its squash and lean), as a pure function of how far into it
 it is, so the board, the simulator and the mirror draw the same frame.
-Every finish moves under 16 px and a tenth of its size a frame, but where
-the parade's little ones take its place and give it back, and is back at
-rest by its end. A finish that covers the screen (all but Little Win and
-the confetti) puts the desk away while it plays. Gold Rush's flood and
-rays and the spotlight are drawn behind the body, so the frame is erased
+Every finish moves under 16 px and a tenth of its size a frame, and is back at
+rest by its end. Gold Rush, which covers the screen, puts the desk away
+while it plays. Its flood and rays are drawn behind the body, so the frame is erased
 whole before them, not band by band with the body (`drawsBehind`), less
 the rows the flood covers whole once it reaches every corner
-(`finishCovers`, `Surface::forget`); the fireworks, the trophy, the crown,
-the podium, confetti, sparkles, jelly drops, the star eyes and the words
+(`finishCovers`, `Surface::forget`); the trophy, confetti and sparkles
 over it, all above the lane.
 
 **Its cost.** A finish draws dozens of small shapes a frame, so it fills
-them itself: confetti, sparkles and sparks as convex spans sampled four
+them itself: confetti and sparkles as convex spans sampled four
 times a pixel, dots by their distance, Gold Rush's gold and rays a row at a
 time with each pixel written once, outlines as a second, larger fill, and
 its sines from a quarter wave's table. On the AMOLED's profiling build
-each big finish plays at about 23 to 29 frames a second, Little Win and
+Gold Rush plays at about 23 to 29 frames a second, Little Win and
 the confetti at 33 to 37, where the look alone draws 40.
 
 **Its sound.** Little Win's reveal plays the fanfare (`complete`); a finish
@@ -611,10 +583,10 @@ mood too.
 | ruffle (stroked slowly the wrong way, upward) | Bristles in ripples, then huffs | annoyed | 2.2 s |
 | nose | Squished in at the nose, pops back | surprised | 1.8 s |
 | tickle | Giggles, jiggling side to side, eyes squeezed | excited | 2.4 s |
-| dizzy (shaken) | Wobbles round, sliding and rolling side to side | baffled | 3.2 s |
+| dizzy (shaken) | Wobbles round, sliding and rolling side to side | surprised | 3.2 s |
 | pickup | Stretches up tall | surprised | 2.2 s |
-| putdown | Lands squashed and settles | relieved | 2 s |
-| startle (a thump on the desk) | Flinches, jumps, lands | stunned | 1.9 s |
+| putdown | Lands squashed and settles | pleased | 2 s |
+| startle (a thump on the desk) | Flinches, jumps, lands | surprised | 1.9 s |
 | peekaboo (turned face up again) | Squashed low with eyes shut, then rises | happy | 2.6 s |
 
 A scene lasts its bit and 200 ms more. **A recipe may carry a bit.**
@@ -667,8 +639,7 @@ back up as it was. `tests/scenarios-gel/drawer.jsonl` pulls it.
 ## A finger at rest
 
 While a finger is down the eyes go toward it (`GelFace::finger`,
-`Motion::gazeTarget`, `gazeUpTarget`): measured from where the eyes are at the
-stage's height, by the eyes' size, half way there at 40 canvas px off and never
+`Motion::gazeTarget`, `gazeUpTarget`): measured from where the eyes are, half way there at 40 canvas px off and never
 past `kGazeReach`. They don't follow with the eyes shut or asleep. When it
 goes, they drift back at the wander's rate, and the wander's dice go on as
 before under a finger.
@@ -680,7 +651,7 @@ own half-widths, so at any size a finger on its edge pulls as far, up to
 breathing. It wears a stroke's shut eyes, or, in a mood that keeps its face
 through a touch, its own eyes under lids (`kLeanLids`). Past `kDozeMs` (5 s) it
 slumps further under the sleeping face. Lifting wakes it, with a small start up
-if it dozed. A Moment, the needs-you screen, a finish, listening or a work act
+if it dozed. A Moment, the needs-you screen, a finish or listening
 takes the body from it at once, and the finger drags as any finger does.
 
 The bank has no purr. A lean's sound is the snore's soft `breath` (every 1.8 s,
@@ -732,28 +703,19 @@ is the same move: `bye` or `hello` for a bigger moment, and for a small
 one `reply-wave`, a sway at about a third of `bye`'s lean with the eyes
 barely softening, over in a second, so it reads as a nod to you going by.
 
-A nap and a dance are tricks the gel already knows, its pastimes (below,
-Pastimes): the pack's table `kReplyPastimes` (`render/gel/pastimes.h`)
-maps `nap` to the snuggle under its blanket and `dance` to the dance
-under its disco ball. Asked for while the look is idle or asleep and
-shows with nothing over it, the face plays that pastime itself at once,
-with its drawing, whatever the tier and outside the deal
-(`GelFace::reply`, which starts it as a dealt one starts): it cuts short
-the one playing, counts as the last dealt, so the deal doesn't play it
-again next, and the rest before the next starts as it ends. Asleep at
-night, the snuggle leaves its Zs to the look's. At work its clip plays
-instead, `reply-nap` a yawn (stretching up, its mouth open and its eyes
-drooping shut, then sinking flat) and `reply-dance` a wiggle (a sway and
-a bounce on each beat, eyes squeezed), and no pastime: the blanket stays
-out of work. While something needs you the face doesn't play, so
-neither does its reply. `tests/scenarios-gel/replies.jsonl` catches each
-partway through, and a nap and a dance idle, asleep and at work.
+A nap and a dance are clips like the rest: `reply-nap` a yawn (stretching
+up, its mouth open and its eyes drooping shut, then sinking flat) and
+`reply-dance` a wiggle (a sway and a bounce on each beat, eyes squeezed),
+with nothing brought out for either. A nap's sleep is the Mac's: Boop's
+Doing goes to asleep at once. While something needs you the face doesn't
+play, so neither does its reply. `tests/scenarios-gel/replies.jsonl`
+catches each partway through, a nap and a dance at work, and the nap at
+a night's lock.
 
 ## Tagged pastimes
 
-A tagged pastime is one that needs a tag (`render/tags.h`: the part of
-the day, the holidays, `party`, `busy` and `frantic`), or asleep a long
-wait: a row of the face's one table (Pastimes, below), dealt by its one
+A tagged pastime is one that needs a tag (`render/tags.h`: `night`,
+`busy` and `frantic`), or asleep a long wait: a row of the face's one table (Pastimes, below), dealt by its one
 dealer like any other. A row that needs a tag needs no tier: it fits
 whenever its tag is on, and while it fits it's the newest, dealt 60% of
 the deals after another (never twice running), about three in eight of
@@ -764,20 +726,12 @@ each and says when it fits:
 
 | Doing | Pastime | Needs | What plays |
 | --- | --- | --- | --- |
-| idle | morning-stretch | morning | A big stretch up, eyes squeezed, a lean each way |
-| idle | night-drowse | night | Heavy lids, sunk a little, a slow sway |
-| idle | party-bounce | any of party, newyear, lunar, programmers | Three hops side to side, eyes squinting; each landing a bounce at comedy's chance |
-| idle | friday-sway | friday | A little dance, leaning and sliding |
-| idle | winter-shiver | winter | Huddled down, shivering |
-| idle | halloween-wobble | halloween | A slow spooky roll and drift, lids half shut |
-| idle | valentines-swoon | valentines | Eyes shut, lifted, a lean |
 | working, while it types | busy-typing | busy | Two quick three-key bursts, leaning in |
 | working, while it types | frantic-typing | frantic | Six keys in 0.6 s, leaning in harder |
 | asleep | deep-snore | night | Three deeper breaths |
 | asleep | dream | 1,800 s asleep | Two soft breaths and a twitch-and-wriggle bit |
 
-Idle's are bits acting plays in place of its next gesture; the others are
-takes the scene plays at once as the Doing's next (numbered after the
+They are takes the scene plays at once as the Doing's next (numbered after the
 row's takes), the same in every mood, and a jittered one takes the desk's
 jitter. A take at work plays only while it types (working, terminal or
 tool use). A gesture or a host's Moment never takes one. A tagged pastime
@@ -786,6 +740,43 @@ channel, so no pastime tints the gel. The working looks' quicker pace
 while the agents are busy is the board's (`render::workPace`), not a
 tagged pastime.
 
+### The four activities (the board's)
+
+At arm's length the monitor is too small to say what the agents do, so
+the whole body says it, with no prop, costume or change of scene: a
+change of activity changes the silhouette. The Mac sends four
+(`Act`); the board still knows the eight older state names, and the gel
+shows each as one of the four (`activityOf`: planning and tool_use as
+typing, searching as looking, testing and delegating as running).
+
+| Activity | Body (the rig's clip, `looks.json`'s `acts`) | Eyes | Paws (`paintProps`) | Monitor |
+| --- | --- | --- | --- | --- |
+| typing | Upright over the keys, the tier's base (below), a small dip at each key | On the keys | Typing | Three lines of text typed out, then cleared |
+| looking | `work-looking`: leant well in to the monitor at its left (lean −430 to −470, x −34 px, lift 8) and up tall (squash −120 to −145) | Scanning a line left to right, stepping down, four lines in 2.8 s; lids a little lower | Off the keys, still on the desk, to the monitor's side (`kLookingPaws`) | A page of four lines, the one being read lit, stepping down |
+| running | `work-running`: sat back and up, away from the monitor (lean 200 to 260, x 30 px, squash −200 to −240), a slow breath and a small rock over 4 s | Fixed on the monitor | Lifted off the keys and held together in front (`kRunningPaws`) | One bar filling over 2.4 s, and again |
+| waiting | `work-waiting`: slumped (squash 260 to 300), swaying side to side (lean ±160) over 6 s | Up and out at you, half-lidded, a slow blink | Flat on the keys, still (`kWaitingPaws`) | Three dots, each brighter in its turn |
+
+- **Activity beats tier.** The tiers vary only the typing pose; pace
+  (`busy`, `frantic`) only speeds things up.
+- **A change is a move, not a jump.** The look's clip changes over
+  `kPoseMs` (400 ms, the mixer's `setLook`), the paws ease on a spring as
+  quick (`Scenes::pose`), and typing's taps go with typing's share. The
+  monitor cuts.
+- **Keys only while it types.** A recipe's key contacts, their clicks and
+  the paws' taps play in typing alone (`Scenes::advance`); the rows of
+  `slime.h` for the states never shown (planning, tool_use, searching,
+  testing, delegating) are still generated and never played.
+- **Pastimes.** Off typing, only the stretch is dealt: the done beat is a
+  paw on Enter, a take is typing, and a melt from a pose to one side
+  would leave the screen.
+- **The Mac holds them** so the body doesn't rock: running and looking
+  show at least 3 s (`Core.poseHoldMs`), typing and waiting 1.5 s.
+- A work act (`wact`) runs under the running pose; its result's hop or
+  flinch plays over it.
+
+Pinned by `test_each_activity_is_a_pose` and shot by
+`tests/scenarios-gel/activities.jsonl`.
+
 ### Calm work (the board's)
 
 Work is the Doing on screen most of the day, so it works calmly and
@@ -793,12 +784,12 @@ settles deeper the longer the agents work: effort shows as the eyes
 settling, never as strain. While working shows (no Moment over it) the
 gel loops the rig's base for the last tier reached (`looks.json`'s
 `tiers`): at `tier1` an easy sway with its eyes open on the keys
-(`work-easy`), leaning in toward the monitor with its lids a little
-lower at `tier2`, focused at `tier3`, settled with a slower sway at
-`tier4`, and at `tier5`, in the zone, low calm lids, a slow wide sway
-and a deep breath. Under a
+(`work-easy`), focused at `tier2` (`work-focused`), and at `tier3`, in
+the zone, low calm lids, a slow wide sway and a deep breath
+(`work-zone`). These are the typing pose's; another activity loops its
+own (above). Under a
 Moment, or while something needs you, the base fades out over the
-mixer's 150 ms, and back after. The desk's paws type: before each key
+mixer's 150 ms, and back after. While it types, the desk's paws type: before each key
 contact of the recipe (its keyboard click) a paw lifts and lands on it
 (`kTapMs`, `kTapLift`), and between them they tap softly by turns,
 lower and without a sound (`kTypeMs`, `kTypeLift`), so the paws work
@@ -808,64 +799,42 @@ even between the recipe's bursts. A pastime may take them (below).
 
 A little something now and then, however long the agents work or you're
 away (`render/gel/pastimes.h`): the pastimes are one table, a row each.
-Calm comes first: beside the face at most one thing moves at a time, and
-nothing stands about for no reason (the screen's rule, in `layers.h` and
-`pastimes.h`).
-A row's body is a clip of the pack's rig (`rig/clips/`, the body: a sip,
-a hop, a lean to look, the eyes following something round) and what the
-board draws with it, in time with it; or a bit or a take of the engine's
-(the comedy every mood shares, and the tagged ones, above). The kit, the
-headphones alone, stays while its tiers last, apart from the table, as the
-outfits do. The tiers
-are the Mac's (`tier1` from 30 seconds, `tier2` from a minute, `tier3`
-from 2, `tier4` from 5, `tier5` from 10): of the agents' working stretch
-at work, of their rest idle. The face (`GelFace`) deals one at a time,
-while the engine shows the look itself and nothing holds the body (a
-finger, a word of the work stream in flight), after a rest of 20 to 45 s
-(`kRestMinMs`, `kRestMaxMs`; it was 4 to 10 s until 2026-11-15, which kept
-something moving beside the face nearly all the time),
-the newest 60% of the time (the highest tier, then the longest wait, and
-a tagged one above any) and an older one's the rest, never the same twice
-running; and holds the engine's own idle gestures off while a clip plays.
-Work's stretch from `tier4` (eyes squeezed, up tall, a lean each way) is
-the rig's `stretch`, a row like the rest (`kLimber`), over whatever desk
-take plays; the gel's `looks.json` has no `occasions`. The one playing
-fades out when the look gives way. A reply may ask for the snuggle or the
-dance outside the deal (Replies, above). Two of work's are **moves**,
-the whole body going somewhere on the rig's `x` or `melt`, and
-none starts within 5 minutes of the last (`kMoveGapMs`). While a pastime uses
-the desk's paws they're where it puts them (`pawsFor`): the right one up
-for Enter, both up at its head with the headphones, spread out flat in
-the puddle, away on a stretch break.
+Calm comes first: a pastime is the body's own move, and it brings
+nothing, holds nothing and leaves nothing beside the face or on the
+monitor (the screen's rule, in `layers.h` and `pastimes.h`). The working
+screen is Boop, the desk, the falling words, the strip and, while a
+command worth naming runs, one low sign.
+A row's body is a clip of the pack's rig (`rig/clips/`: a stretch, a hop,
+a look round), or a bit or a take of the engine's (the comedy every mood
+shares, and the tagged ones, above). The tiers are the Mac's (`tier1`
+from a minute, `tier2` from 5, `tier3` from 15): of the agents' working
+stretch at work, of their rest idle. The face (`GelFace`) deals one at a
+time, while the engine shows the look itself and nothing holds the body
+(a finger, a word of the work stream in flight), after a rest of 20 to
+45 s (`kRestMinMs`, `kRestMaxMs`), the newest 60% of the time (the
+highest tier, then the longest wait, and a tagged one above any) and an
+older one's the rest, never the same twice running; and holds the
+engine's own idle gestures off while a clip plays. The gel's `looks.json`
+has no `occasions`. The one playing fades out when the look gives way.
+One of work's is a **move**, the whole body melting on the rig's `melt`,
+and none starts within 5 minutes of the last (`kMoveGapMs`), nor in its
+nightcap. While a pastime uses the desk's paws they're where it puts
+them (`pawsFor`): the right one up for Enter, spread out flat in the
+puddle.
 
-| Look | From | Kit | Pastimes |
-| --- | --- | --- | --- |
-| working | tier1 | | A peek up at you and a heart; humming, notes floating up; the done beat: a paw up, Enter, a tick on the monitor with a sparkle off its corner, and a sit back, eyes shut, nodding |
-| working | tier2 | | Wondering, a "?" cloud, then a lightbulb and a hop; reading closely: it leans over the monitor and up, reads line by line, each lit as its eyes reach it, and sits back with a nod; nodding along as ticks pop from the monitor |
-| working | tier3 | Headphones over its ears, cups side-on, put on first: it looks up as they come down from 120 px above its ears, a hand at each cup and the desk's paws away, on in 1.3 s, and they're on from then while it wants them | Bopping to the music, eyes shut, notes off the cups; drumming on the desk; a sticky note slapped on the monitor |
-| working | tier4 | | The rig's stretch; a cookie in three bites; reading closely fogs the glass now; **the melt** (a move): eyes shut, it melts down into a puddle as drips run down its sides, its headphones off its head, peeks round with bubbles rising in it, then pulls itself back up tall, overshoots and wobbles into shape (not in a hat) |
-| working | tier5 | | **The stretch break** (a move): it gets up, walks off the screen's right edge, the desk empty while the screen works on, walks back, squeezes down, stretches up tall with its hands high and its mouth open in a yawn, bends each way, and boings back to work |
-| idle | tier1 | | Looking round; looking up at you, "...?"; three hops; a yawn; a sneeze |
-| idle | tier2 | | A bubble blown and popped; a heart drawn on the glass |
-| idle | tier3 | | A book, its page turning; a handheld game, WIN |
-| idle | tier4 | | A "brb" sign, peeking over it; a tower of blocks that topples; a dance under a disco ball; a paper plane that bonks its head |
-| idle | tier5 | | Snoozing, a snore bubble; counting sheep; a nap tucked in, a plaid blanket pulled up from the floor to near the top of its head, a sheet turned down over it, never over its head, where it reads as a hat; and a daydream of sheep |
-| needs you | 30 s, 2, 5, 10 minutes | | A wave; tapping on the glass; checking its watch and sighing; nodding off and jerking awake |
-| asleep | 1, 2, 4 minutes | | Rolling over, mumbling; counting sheep; a snore bubble |
+| Look | From | Pastimes |
+| --- | --- | --- |
+| working | tier1 | The done beat: a paw up, Enter, and a sit back, eyes shut, nodding |
+| working | tier2 | The rig's stretch: eyes squeezed, up tall, a lean each way |
+| working | tier3 | **The melt** (a move): eyes shut, it melts down into a puddle, its paws spreading, peeks round, then pulls itself back up tall, overshoots and wobbles into shape |
+| idle | tier1 | Looking round; looking up at you; three hops; a yawn; a sneeze |
+| idle | tier3 | Snoozing, Zs rising beside it |
+| asleep | 1, 4 minutes | Rolling over; a snore bubble |
 
-The hat wins the head: the headphones stay off while it wears one, and
-peekaboo's gesture takes them off as it does the hat.
-The headphones sit low, their cups on its sides between its eyes and its
-brim, so a card over its head hides only the top of the band and they
-still read as headphones.
-What it holds, throws, blows and dreams goes in front, at the body's
-anchors, and the headphones over what it wears, before the cards. Cut
-on 2026-11-15, each a second or third thing beside the face that needed
-explaining: the mug on the desk and its stack, the motes in the zone, the
-plant, the notes floating off the headphones, and the pastimes that used
-them (the sip, the refill, the coffee reach, watering the plant). No sounds
-of their own but a few landings (`body_contact`), and none while
-something needs you or asleep.
+Nothing is dealt while something needs you: the amber screen is the
+message. The only things a pastime draws are sleep's, in front, at the
+body's anchors: a snooze's Zs and a snore's bubble. No sounds of their
+own but a few landings (`body_contact`), and none asleep.
 
 ### Where it looks, and typing along (the board's)
 
@@ -880,12 +849,16 @@ quick as they follow a finger, so a look is a turn and never a dart.
 | --- | --- | --- |
 | Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag; forward with neither) | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
 | Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
-| At work, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
+| At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests, and drops a glance it was in | While the pose lasts |
+| At work, typing, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
 | Otherwise | Forward, with the engine's own small wander | |
 
 Nothing of it applies while anything else has the eyes: a finger, a
-Moment, a pastime, a transition, a word forward, a work act, listening or
-sleep. A minute of the busiest stream has at most seven glances.
+Moment, a pastime, a transition, a word forward, listening or sleep. A
+minute of the busiest stream has at most seven glances. The rig's gaze
+tracks are added to the engine's own, so a glance over a pose's clip
+would pull its eyes off the page or the monitor: that's why the pose
+comes before the glance in the list.
 
 **Typing along** (`GelFace::showAlong`): while your hands are busy at the
 Mac (the `typing` tag), it types with you, and so that you can see it on a
@@ -893,18 +866,18 @@ small screen across a desk, by size and not by speed: its whole body rocks
 slowly over the keys, to one side and then the other, dipping onto each
 beat and springing up off it with a little hop, a beat every 600 ms (the
 rig's looping `type-along` clip); its paws swing 70 high, one every 300 ms
-(`kBriskLift`, `kBriskMs`), against the agents' soft 12 every 340; and the
-keyboard and paws are drawn no smaller than 95% of a Buddy's
-(`kAlongSize`), eased in, so a Hatchling's show too. The keys under the
+(`kBriskLift`, `kBriskMs`), against the agents' soft 12 every 340. The keys under the
 paws light as they land, which a small screen barely shows. At work that's at its desk, which
 is out already, and its eyes drop to the keys in place of the glances; you
-stop, and it's back to the soft typing. Idle, its keyboard comes out for
+stop, and it's back to the soft typing. Only its typing pose types with
+you: looking, running or waiting, its paws are off the keys, the pose has
+the body, and your typing changes nothing until it types again. Idle, its keyboard comes out for
 it over the rig's fade; you stop, and its paws rest; the keyboard stays
 `kAlongLingerMs` (4 s) more, so a pause doesn't put it away and bring it
 back, and then goes, with a pastime's rest before the next pastime. It is
 the lowest thing there is: it waits for a pastime or a transition to end
 and never cuts one, and it goes at once for a finger, a Moment, a word
-forward, a work act, needs you or sleep. No pastime is dealt over the
+forward, needs you or sleep. No pastime is dealt over the
 keyboard alone; at work they're dealt as ever. The Mac says only that your
 hands are busy, never what they type.
 
@@ -912,41 +885,33 @@ hands are busy, never what they type.
 
 The engine draws no costume, but the board draws layers over the body by
 the same tags, after the face art and before the props
-(`gel/layers.h`): a hat by the first tag that has one (Halloween's witch
-hat; a party hat for party, New Year's, Lunar New Year and Programmers'
-Day; a striped nightcap at night, flopping down its left side to a
-tassel by its cheek, and no pyjamas with it; a bobble hat in winter), shades on a Friday from noon to
-night, off while it shows a feeling (a Moment, a face the Mac lends
-it, needs you, listening) so its eyes are seen, Zs beside it asleep at
-night, and last the sign a Moment holds up. That's all: the face comes
-first, and a time of day, a season or a holiday shows as one thing worn.
-Nothing hangs in the sky behind it (no sun, moon or stars), nothing
-drifts through the air (no snow, confetti or hearts; a finish keeps its
-own confetti) and it holds no morning coffee: each was scenery that said
-nothing you act on, and up to four of them shared the screen with the
-face (cut 2026-11-15; `test_nothing_hangs_in_the_sky_or_the_air` pins
-it). Each sits on anchors the painter takes from
+(`gel/layers.h`): a striped nightcap at night (`nightcapFor`), flopping
+down its left side to a tassel by its cheek, and no pyjamas with it, Zs
+beside it asleep at night, and last the sign a Moment holds up. That's
+all: the face comes first, and nothing is put on the screen for a season
+or a holiday. It wears no hat or shades for a special day (the Mac's sign
+says the day), nothing hangs in the sky behind it (no sun, moon or
+stars), nothing drifts through the air (no snow, confetti or hearts; a
+finish keeps its own confetti) and it holds no morning coffee. Each sits on anchors the painter takes from
 the very vertices it projects for the body (the rig's `Anchors`, both
 faces' one type: the dome's apex, ring 6's sides and front for a brim,
 ring 15's front for the hands) and the face art's eye centres, so a layer
 leans, squashes, dips under a finger and slides off the screen with the
-body and is cut off there with it. Peekaboo's gesture hides the hat. At
+body and is cut off there with it. Peekaboo's gesture hides the nightcap. At
 night the lids hang a little lower (`kNightLids`) on the awake face,
 easing out as it squashes shut, gone by when it's a line, and back as it
 wakes. Each part comes and goes through the rig's layer stack
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §15, The layer stack), which the
-face keeps: what's worn over the eyes, the hat
-and what's beside it (the Zs) each fade in and out over 200 ms, a new one only once the old
-has gone (a winter evening's bobble fades out at night, then the
-nightcap in), each on its own, so falling
+face keeps: the nightcap
+and what's beside it (the Zs) each fade in and out over 200 ms, each on its own, so falling
 asleep at night brings the Zs while the nightcap stays. The
 sign fades out over 200 ms once it's down, at the opacity Behaviour
 gives it. It's held at the body's front, but a lean or a finish carrying
 the body sideways carries it only as far as keeps it whole on the
 panel, its hands `SignLayer::kEdge` in from the sides and clear of the
-rounded corners, so the longest sign still reads. The layers read the engine and never change it. What's worn
+rounded corners, so the longest sign still reads. The layers read the engine and never change it. The nightcap
 is kept drawn and blended again each frame, moved to the sixteenth of a
-pixel with the anchor it rides (`OutfitLayer::kSlack`), so a hat glides
+pixel with the anchor it rides (`OutfitLayer::kSlack`), so it glides
 with the body rather than stepping a pixel at a time; the Zs, drawn with
 one rounded pen (`Raster::zee`), grow from 7 to 16 px as they drift, fading
 in over their first 200 ms and out to nothing by their last.
@@ -967,60 +932,30 @@ the zip). The eyes, the body and every layer play as ever.
 
 ### The work acts (the board's)
 
-A command Boop plays out for as long as it runs (`gel/act.h`, on `state`'s
-`wact`): the whole frame, as a finish holds it, its body moved and scaled the
-same way, the desk gone (`Scenes::clearStage`), no pastime, no sign of a
-Moment's. The low sign says what's running, then how it ended, in its place. What Boop says takes the
-lane from it while it runs, and the whole scene hides the falling words, the
-wish's bubble and a reaction's sign.
-
-**The push.** 0.8 s: the rocket comes up from below and Boop shrinks onto it,
-in front of its hull. To 1.7 s: it lights, smoke along the ground, a rumble.
-To 3.2 s: it lifts, stretching, the flame long, and leaves by the top. Then
-only the stars, the smoke's trail and the sign; from 20 s on, every 26 s, a
-tiny Boop on a tiny rocket drifts by in orbit. A result that comes before
-3.4 s waits for it. Pass, 2.5 s: down on a parachute, swaying, happy; it lets
-go at the thump, dust either side, and Boop grows to its own size, proud.
-Fail, 0.5 s: down fast, stunned, with the rocket; a burst, clods, the rocket
-nose down in a heap of ground, smoking, Boop flat with soot smears and stars
-that goes on to disappointed. A cross or low mood keeps its own face.
-The small version is the low sign alone over Doing.
-
-**The tests.** 0.9 s: a yellow helmet with a target comes down on it, it
-shrinks onto a sled that rolls in from a start line, belted, targets on its
-sides, and a hazard wall comes in on the right. Then it puffs up and shakes,
-cheeks pink, sweat running, holding its breath, and the sled inches on for as
-long as the tests take, slowing, never reaching the wall. Pass: the sled rushes
-to just short of it and stops; it lurches, lets it all out, "phew" goes up in a
-bubble, a thumb comes up, and it goes from relieved to proud. Fail: the sled
-rushes on, it flies against the wall, thin and tall, a burst, the wall cracks
-and keeps a splat of gel, and it slides down into a flat heap, stars round its
-askew helmet. The small version is the helmet and the sign over Doing; a
-failure after a minute gets the full ending.
-
-**The build.** 0.7 s: a hard hat comes down, Boop shrinks to the right, and a
-course of bricks lies on the floor to the left. Then it hammers in a loop, a
-blow every 0.76 s with sparks, in a gel hand, its aim rising with the wall, and
-the house goes up course by course, the door and windows at last, then the
-roof, over about 75 s. Pass: what's left goes up at once, a flag rises, and it
-holds the hammer up, proud. Fail: the courses slide and break into rubble, the
-roof comes down on them, its hat tilts and its hammer drops. The small version
-is the hard hat and the sign over Doing; a failure after a minute gets the
-full ending.
+A command worth naming, the tests, the build or a push, for as long as
+it runs (`gel/act.h`, on `state`'s `wact`). All the gel shows of one is
+the low sign, in the strip's place: what's running, with its dots
+(`running tests`, `building`, `git push`), then how it ended, with a tick
+or a cross (`pass`, `built`, `shipped!`, or `fail`). It shows as running
+for at least 900 ms and its result for 2.6 s (`kActLeadMs`,
+`kActResultMs`). The desk, the falling words and everything else stay as
+they are. As the result shows, the body answers once
+(`GelFace::answerAct`, through `Engine::jolt`): a hop at a pass, a flinch
+with its lids squeezed at a fail; nothing while a finger, a Moment or a
+needs-you has the body. What Boop says takes the lane from the sign while
+it runs, and a needs-you takes the screen from it; after it the sign
+comes back, still running.
 
 ### Transitions (the board's)
 
 A short clip on the way from one Doing to another, instead of a cut
 (`GelFace::showTransition`): `to-work` (it tucks each side, as if rolling up
 its sleeves, and settles down at the keys), `to-rest` (it sits back tall and
-stretches), `act-on` and `act-off` (it springs up onto a full work act, and
-shakes as the prop goes), and `to-sleep` (a slow stretch with its eyes shutting,
+stretches), and `to-sleep` (a slow stretch with its eyes shutting,
 and it settles). Each is half a second to a second, on the body only, over the
 new look, which has already come, so it delays nothing. A reaction, a needs-you,
 a finger or a word forward cuts through it, and with one of those up, or the Mac
-gone, it doesn't start. Only `to-work` waits: a turn's start comes with its
-`starting` Moment, so it's owed until the Moment is over, for 6 s at most, if it's
-still at work. The mouth is one size of "o", so `to-sleep`'s yawn is
+gone, it doesn't start. The mouth is one size of "o", so `to-sleep`'s yawn is
 more stretch than mouth.
 
 ### The work stream (the board's)
@@ -1041,12 +976,8 @@ rather than steps (`render::gel::text16`; what moves in front, the word
 forward and the listening ring, does too). They're drawn after the body, onto the
 background's black only, so the body, its props and what it wears cover
 them, and a word hidden behind it costs nothing to draw, clear or push.
-On the desk, while the Mac sends lanes: the to-do list's progress along
-the monitor's foot, the turn's clock in its corner from the first
-minute, in minutes and seconds ("12:05") and from the first hour in
-hours and minutes ("1h45", at most "99h59"; `deskClock`), amber from
-`tier4`, and, in the working look with no
-call for 20 s, a thought cloud. When the agents stop, the words on
+Nothing of the stream is drawn on the desk or its monitor, and nothing
+comes up while no call comes. When the agents stop, the words on
 screen linger 1.5 s (`Stream::kEndMs`), falling where they dropped, and a
 word may still come forward in that time, as a turn's end does to gather
 them; something needing you clears everything at once.
@@ -1058,15 +989,12 @@ everything gone by 2.5 s:
 
 | Move | Styles | What plays |
 | --- | --- | --- |
-| Sink | land, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too); an edit's lines grow as green and red bars on the monitor |
-| Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s; the monitor cracks up the ladder |
-| Shrug | shrug | Beside the head, an empty bubble over it |
-| Shatter | shatter | Bursting into its glyphs, swallowed, and a burp |
+| Sink | land, helper, back | Onto the crown, sinking in under a spreading ring (a helper's going and its coming back too) |
+| Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s |
+| Shrug | shrug | Its word beside the head, as the body shrugs |
+| Shatter | shatter | Bursting into its glyphs, swallowed |
 | Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
-| Compact | compact | Its context compacted: the words squashed together over its head into a cube that thuds onto the desk |
-| Drop | drop | Stopped, or failed: the words fall away grey, switched off |
-| Freeze | freeze | A rate limit or an overload: the words falling held where they are, icy, a snowflake turning, and it leans in to poke one; they fall on after |
-| Buried | buried | Its context full: bricks of its words piling up to its eyes |
+| Drop | drop | Stopped, or failed (`failed`, `context full`, `rate limit`, `overloaded`): the words fall away grey, switched off |
 
 As it lands the body answers through the engine (`Engine::jolt`): a push
 on the finger's pull springs, as a fling let go (knocked back and
@@ -1081,74 +1009,63 @@ worst (3.5 ms).
 
 ## States share one scene
 
-Build a persistent desk and computer once. Working, terminal, searching,
-analyzing, testing, planning and generic tool use are activity submodes,
+Build a persistent desk and computer once. Typing, looking, running and
+waiting (The four activities, above) are activity submodes,
 not swaps to unrelated sets. Keep desk positions and parent transforms
-stable, change screen cue/cards and contact choreography. Waiting simply
-pauses the work action. Every state ([STATES.md](STATES.md)) still has its own
+stable, change the body's pose, the paws and the monitor's one shape. Every state ([STATES.md](STATES.md)) still has its own
 meaning, variations and audio policy.
 
 An action recipe has phases `enter → act → recover → sustain`. Start
 from the current pose, blend in, perform its contacts, recover toward the
 current state target, and sustain. A state change cancels future contacts
-from the old recipe but leaves physical velocities alive. Bridge from
+from the old recipe but leaves physical velocities alive. Start from
 current controls, not from a hard-coded neutral first frame. A loopable
 authored offset starts/ends at zero offset and compatible derivative;
 the continuing physical body need not return to a frozen identical frame.
 
-Never reset face/mood when terminal becomes searching. Never destroy the
+Never reset face/mood when running becomes looking. Never destroy the
 desk between work variations. A completion reveal may raise a card in
 front of the same hero; after the Moment, return toward the **latest**
 host snapshot, not a stale state saved before the animation.
 
-## Directed edge bridges
+## The mood beat
 
-The engine's `Bridge` (`gel/acting.cpp`) plays each of the pack's moves
-between its lasting moods (slimegen's `kEdges`, from `character.json`)
-in three variants; a face-only mood moves as the lasting mood it settles
-into (`kSettles`). A shuffle bag per directed edge selects variants without an
-adjacent repeat. This is an animation catalogue, not host graph gating: the
-host still decides whether a transition is justified. A retarget outside
-the graph uses the soft primitive and does not create a new graph edge.
+There is no mood graph. When the face changes, its arts cross over; and
+when the change is a change of mood, the body gives one small beat
+(the engine's `MoodBeat`, `gel/acting.cpp`). A change of face within one
+mood (happy to pleased, annoyed to grumpy) has none: slimegen's `kMoodOf`
+says which lasting mood each face is of, from the pack's
+`character.json`. Each change of mood deals its beat afresh, one of three:
 
-| Category | Variant 0 | Variant 1 | Variant 2 |
+| | Variant 0 | Variant 1 | Variant 2 |
 | --- | --- | --- | --- |
-| Ordinary primitive | Soft retarget | Gather/settle | Blink retarget |
-| Ordinary body duration (ms) | 420 | 680 | 360 |
-| Ordinary face window (ms) | 320 | 360 | 460 |
-| Dramatic primitive | Recoil/compress | Recoil/compress, second motion | Blink retarget with a short hold |
-| Dramatic body duration (ms) | 760 | 920 | 560 |
-| Dramatic face window (ms) | 240 | 280 | 340 |
+| Beat | Soft | Gather and settle | Blink: a short hold |
+| Body duration (ms) | 420 | 680 | 360 |
+| Face window (ms) | 320 | 360 | 460 |
 
-The blink retarget keeps its name from when the face closed behind a
-blink to swap its art; now its face window crosses over as the others do,
-and the name is its body's hold. Direction follows the authored source and
+A change of face with no beat is the soft one's, its face window 320 ms.
+Direction follows the authored source and
 destination profiles. Using their lean `L`, strength `G`, delay `D`, eye
 openness `E` and mouth width `M`, the directional score is
 `(Lto − Lfrom) + (Gto − Gfrom) × 0.025 + (Dfrom − Dto) / 10000 + (Eto − Efrom) × 0.01 + (Mto − Mfrom) × 0.005`.
 Direction is its sign and amplitude is `clamp(0.8 + abs(score) × 4, 0.8, 1.2)`.
-Reversing an edge reverses its directional lean; it does not reuse an
-undirected transition identity. Face dimensions distinguish otherwise
+Going back reverses the lean. Face dimensions distinguish otherwise
 equal authored body profiles.
 
-Let `p` be normalized body-bridge progress clamped to [0, 1],
+Let `p` be the beat's progress, clamped to [0, 1],
 `P = sin²(πp)`, and `H = 0` before progress 0.25, otherwise
 `sin²(π(p − 0.25) / 0.75)`. The additive target coefficients are:
 
 | Primitive | Lean | Squash | Forward |
 | --- | --- | --- | --- |
-| Soft retarget | direction × 0.009 × P | 0.004 × P | 0.003 × P |
-| Gather/settle | direction × 0.026 × P | −0.032 × P | 0.012 × sin(2πp) × P |
-| Ordinary blink retarget | direction × 0.006 × H | −0.014 × H | −0.004 × H |
-| Dramatic blink retarget | direction × 0.026 × H | −0.035 × H | −0.014 × H |
-| Dramatic recoil, variant 0 | −direction × 0.045 × sin(2πp) × P | −0.038 × P | −0.032 × P |
-| Dramatic compression, variant 1 | direction × 0.022 × P | −0.048 × P | 0.026 × sin(2πp) × P |
+| Soft | direction × 0.009 × P | 0.004 × P | 0.003 × P |
+| Gather and settle | direction × 0.026 × P | −0.032 × P | 0.012 × sin(2πp) × P |
+| Blink | direction × 0.006 × H | −0.014 × H | −0.004 × H |
 
 Targets multiply the directional amplitude, limited per primitive so that
 no target leaves its channel's displacement bound: the amplitude is at most
-each bound over the primitive's largest coefficient on that channel. Only
-the dramatic compression is affected; its squash limits it to
-0.05 / 0.048 ≈ 1.042. The bridge owns three additive springs with
+each bound over the beat's largest coefficient on that channel, which none
+of the three reaches at 1.2. The beat owns three additive springs with
 frequency 14, damping 12, velocity bound 1, displacement bounds 0.06
 lean, 0.05 squash and 0.04 forward, integrated in at most 1/240 s substeps.
 These channels compose with the current activity, mood posture and
@@ -1208,20 +1125,20 @@ arts crossing over are drawn near one size as the controls move. Falling
 asleep, an awake art below one is drawn as far toward the control itself
 as the face is shut, `soft − (soft − r) × shut`, its eyes' `r` no smaller
 than the line (half the lids' pen, 0.015, over the eye's half height). The
-shared sleeping face is the tired art drawn at its own squashed size (eye
+shared sleeping face is its own art (`calm:asleep`) drawn at its own squashed size (eye
 0.004, mouth 0.018 × 0.008), so its ratios also settle at one. Pen widths
 never stretch with a feature's scale. The board draws a second art only
 while one crosses over.
 
-Quiet rest and active attention permanently suppress the current bridge's
+Quiet rest and active attention permanently suppress the current beat's
 body gesture, with its springs settling toward zero. Clearing an alert or
 waking does not replay it. The face still retargets, and the attention
 request, card and consumed reveal keep their identity. A grab defers the
-current body bridge while the face continues: progress may be held for at
+current beat while the face continues: progress may be held for at
 most 320 ms of accumulated grab time. Releasing sooner lets the current
-bridge continue from its springs; reaching the limit expires its body
-gesture permanently. There is only one current bridge, so a newer retarget
-replaces deferred work and release never drains a gesture backlog. Bridges
+beat continue from its springs; reaching the limit expires its body
+gesture permanently. There is only one current beat, so a newer retarget
+replaces deferred work and release never drains a gesture backlog. Beats
 emit no contacts or sound cues.
 
 ## Continuity of what is drawn
@@ -1230,8 +1147,7 @@ Every frame `test_gel` drives is held to these (`tests/firmware/test_gel/frames.
 over every mood in every state and take, every directed edge in all three
 variants, and the interruptions: for each channel the board draws (the
 eight face controls, each layer's weight and drawn sizes, the mood
-posture's lean and squash, every prop's visibility and a card's reveal
-while the card is drawn):
+posture's lean and squash and every prop's visibility):
 
 - **No jolt at an event.** Let `Δ²` be a frame's change in per-frame
   velocity, `x[n+1] − 2x[n] + x[n−1]`. In the frame after the host says
@@ -1263,8 +1179,8 @@ while the card is drawn):
   black, so that is scaling the pixels it wrote, in place, with no buffer,
   and a hole (the working mark's open half, a mini's eyes) stays one.
 - **The face never fades.** Through a cross-fade between differently
-  shaped arts (calm to happy, happy to sad, calm to frightened's welling
-  eyes, falling asleep's swap and waking), the board's frames, 40 ms apart,
+  shaped arts (calm to happy, happy to sad, calm to wounded's thin tears,
+  falling asleep's swap and waking), the board's frames, 40 ms apart,
   keep at least 85% of the visible ink of the fainter of the two faces it
   crosses between: the pixels the face takes at least a quarter of the way
   from the body's luminance to the ink's, eyes and mouth (a water eye's
@@ -1272,7 +1188,7 @@ while the card is drawn):
   Falling asleep, those are the lines it squashed to and the sleeping face:
   the eyes closing is the morph, not a fade. The least is 90%, waking
   (falling asleep's swap 96%, happy to sad 99%; calm to happy and to
-  frightened show more than the fainter end, both arts showing). Where two
+  wounded show more than the fainter end, both arts showing). Where two
   shapes don't overlap, the frames half way are dimmer by a stricter count,
   each shape at about half its strength, which is the cross-fade.
 - **The body never teleports.** Each V1 body mode's position and velocity

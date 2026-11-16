@@ -7,7 +7,7 @@
 // (design/slime-blob/sound/sfx.js), on its own.
 (() => {
   const board = StudioBoard.adapter('boop', 'gel');
-  const SETS = {activities: 'Representative activities', bridges: 'Directed mood bridges'};
+  const SETS = {activities: 'Representative activities'};
   const SKETCHES = {squish: 'Gel squish', bounce: 'Soft landing', wobble: 'Elastic wobble', poke: 'Tiny poke',
     keyboard: 'Crisp key', tear: 'Tear plip', knock_ding: 'Knock → ding', complete: 'Success swell',
     failed: 'Failure cue', sneeze: 'Little sneeze', breath: 'Snore breath'};
@@ -16,10 +16,8 @@
   const loadCases = () => cases ??= fetch(new URL('review-sets.json', here))
     .then(r => r.ok ? r.json() : Promise.reject(Error('No review sets'))).then(j => j.cases);
 
-  // A case's frames: an activity from a reset, 6.4 s; a bridge 1.6 s in its
-  // first mood, then 4.8 s after the change.
-  const framesOf = (instance, c) => instance.record(c.to ? {from: c.from, to: c.to, before: 40, after: 120}
-                                                         : {from: c.from, before: 50, after: 110});
+  // A case's frames: an activity from a reset, 6.4 s.
+  const framesOf = (instance, c) => instance.record({from: c.from, before: 50, after: 110});
   // Recorded frames, played at their own pace into a silent WebM, the case's
   // id over them.
   async function webm(frames, id) {

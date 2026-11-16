@@ -2,7 +2,6 @@
 #include "render/gel/painter.h"
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
-#include "render/gel/act.h"
 #include "render/gel/finish.h"
 #include "render/gel/frame.h"
 #include "render/gel/geometry.h"
@@ -571,61 +570,6 @@ void applyMove(PaintControls& c, const Surface& s, const FinishPose& move) {
   c.lean = std::clamp(c.lean + move.lean, -5120, 5120);
 }
 
-BodySettings bodySettings(uint32_t when) {
-  static constexpr BodySettings kBodies[] = {kHatchlingBody, kSproutBody, kBuddyBody, kChonkBody};
-  return kBodies[growthStage(when) - 1];
-}
-Outfit wornHat(uint32_t when) {
-  const Outfit hat = outfitFor(when);
-  return hat == Outfit::kPartyHat && growthStage(when) == 2 ? Outfit::kNone : hat;
-}
-namespace {
-constexpr int easeQ(int age, int ms) {
-  const int t = age >= ms ? 4096 : 4096 * age / ms;
-  return t * t / 4096 * (3 * 4096 - 2 * t) / 4096;
-}
-BodySettings between(const BodySettings& a, const BodySettings& b, int k) {
-  return {lerp(a.size, b.size, k), lerp(a.eyes, b.eyes, k), lerp(a.squash, b.squash, k), lerp(a.mouth, b.mouth, k)};
-}
-}  // namespace
-void BodyChange::see(uint32_t when, uint32_t now) {
-  constexpr uint32_t parts = 1u << tagIndex("morning") | 1u << tagIndex("day") | 1u << tagIndex("evening") | 1u << tagIndex("night");
-  const int next = growthStage(when);
-  if (!told) {
-    stage = next;
-    to = bodySettings(when);
-    told = when & parts;
-    return;
-  }
-  if (next == stage) return;
-  from = shown(now);
-  growing = next > stage;
-  stage = next;
-  to = bodySettings(when);
-  at = now, moving = true;
-}
-BodySettings BodyChange::shown(uint32_t now) const {
-  if (!moving) return to;
-  const int age = int32_t(now - at);
-  if (!growing) return age >= kShrinkMs ? to : between(from, to, easeQ(age, kShrinkMs));
-  BodySettings drawn = from, past = to;
-  drawn.size = from.size * kGrowDraw / 4096;
-  past.size = to.size * kGrowPast / 4096;
-  if (age < kGrowGlowMs) return between(from, drawn, easeQ(age, kGrowGlowMs));
-  if (age < kGrowGlowMs + kGrowPopMs) return between(drawn, past, easeQ(age - kGrowGlowMs, kGrowPopMs));
-  const int settle = age - kGrowGlowMs - kGrowPopMs;
-  return settle >= kGrowSettleMs ? to : between(past, to, easeQ(settle, kGrowSettleMs));
-}
-int BodyChange::glow(uint32_t now) const {
-  const int age = int32_t(now - at);
-  if (!moving || !growing || age >= kGrowGlowMs + kGrowPopMs) return 0;
-  return age < kGrowGlowMs ? 255 * age / kGrowGlowMs : 255 - 255 * (age - kGrowGlowMs) / kGrowPopMs;
-}
-int BodyChange::burst(uint32_t now) const {
-  const int age = int32_t(now - at) - kGrowGlowMs;
-  if (!moving || !growing || age <= 0 || age >= kGrowPopMs + kGrowSettleMs) return 0;
-  return 255 * age / (kGrowPopMs + kGrowSettleMs);
-}
 void applyRig(PaintControls& c, const rig::Channels& rig) {
   using rig::Channel;
   const auto off = [&](Channel ch) { return rig[ch] - rig::kRest[ch]; };
@@ -644,7 +588,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
-           const DrawerPose* squeeze, const Stream::ActNow* act, int duck) {
+           const DrawerPose* squeeze, int duck) {
   auto pose = e.pose();
   auto life = e.life();
   PaintControls c;
@@ -679,39 +623,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   if (finish.on) {
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
     applyMove(c, surface, move);
-    c.eyes = !move.starEyes;
   }
-  // A work act moves it the same way, unless a finish holds it.
-  const bool acting = act && actTakesOver(*act) && !finish.on && !squeeze;
-  ActPose actMove;
-  if (acting) {
-    actMove = actPose(surface, *act);
-    applyMove(c, surface, actMove);
-  }
-  // The stage's body, within what a finish or an act does to it: the one
-  // scale about where it stands, and what the other's anchor moved kept as
-  // an offset, so what's drawn on the anchors follows.
-  const int finishX = c.anchorX, finishY = c.anchorY;
-  BodySettings grown = e.body();
-  // Mega Boop fills the board the same at every stage: as it puffs up it comes
-  // to Buddy's own proportions, which its zoom is laid out for.
-  if (finish.on && finish.finish == Finish::kMegaBoop && move.scale > 4096)
-    grown = between(grown, kBuddyBody, std::min(4096, (move.scale - 4096) * 4096 / kMegaPuff));
-  // A melted Chonk spreads no further than a Buddy, which is the board's width.
-  if (c.melt && grown.size > kBuddyBody.size) grown = between(grown, kBuddyBody, c.melt);
-  if (grown.size != 4096) {
-    const int standX = surface.width * 8, standY = restBodyBottom(surface.height) * 16;
-    if (c.scale != 4096) {
-      c.offsetX += int(int64_t(c.anchorX - standX) * (4096 - c.scale) / 4096);
-      c.offsetY += int(int64_t(c.anchorY - standY) * (4096 - c.scale) / 4096);
-    }
-    c.anchorX = standX, c.anchorY = standY;
-    c.scale = c.scale * grown.size / 4096;
-  }
-  c.eyeSize = c.eyeSize * grown.eyes / 4096;
-  c.mouthSize = grown.mouth;
-  c.squash = std::clamp(c.squash + grown.squash, -5407, 5407);
-  const bool body = !move.minis && !actMove.away;  // it's on the screen, itself
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -719,12 +631,6 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.body);
     Box cards[Surface::kMaxKeep];
     int kept = bodyAlone ? 0 : opaqueCards(surface, e, cards);
-    // An act's still part this surface shows already is kept, not erased
-    // and drawn again.
-    Box still;
-    const uint32_t stillKey = acting && kept < Surface::kMaxKeep ? actKeeps(surface, *act, still) : 0;
-    const bool keepStill = stillKey && surface.keeps(stillKey);
-    if (keepStill) cards[kept++] = still;
     // What the last frame wrote is erased with the body, row by row, unless
     // something is drawn behind it first: then all of it, at once.
     Surface::Erasing erasing;
@@ -732,7 +638,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       Measure clear(profile.clear);
       erasing = surface.beginClear(cards, kept, keepLane);
     }
-    const bool behind = (finish.on && drawsBehind(finish.finish)) || move.minis || acting;
+    const bool behind = finish.on && drawsBehind(finish.finish);
     if (behind) {
       Measure measure(profile.behind);
       // Rows a finish covers whole aren't erased first.
@@ -745,42 +651,22 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
       Measure measure(profile.behind);
       if (finish.on)
         paintFinishBehind(surface, finish.finish, finish.ageMs, finish.revealMs, hasTag(e.scenes.when, "night"));
-      if (keepStill) surface.touch(still.x0, still.y0, still.x1, still.y1);
-      if (acting) paintActBehind(surface, *act, keepStill);
-      if (stillKey) surface.drewStill(stillKey, still);
     }
-    if (body) drawBody(surface, c, anchors, behind ? nullptr : &erasing);
+    drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
-  if (move.minis) {
-    // The parade: its little ones stand in for it, each with its face.
-    FinishPose minis[kParadeMinis];
-    const int n = finishMinis(surface, finish.ageMs, minis);
-    for (int i = 0; i < n; ++i) {
-      PaintControls m = c;
-      m.anchorX = finishX, m.anchorY = finishY;
-      m.offsetX = minis[i].dx16, m.offsetY = minis[i].dy16, m.scale = minis[i].scale;
-      m.squash = std::clamp(c.squash + minis[i].squash, -5407, 5407);
-      m.lean = std::clamp(c.lean + minis[i].lean, -5120, 5120);
-      paintBody(surface, m);
-      paintArt(surface, e, m, mouth);
-    }
-  } else if (!actMove.away) {
+  {
     Measure measure(profile.art);
     paintArt(surface, e, c, mouth, anchors);
   }
-  if (body) {
+  {
     Measure measure(profile.layers);
     paintLayers(surface, e, *anchors, layers, t);
-    if (pastimes) paintWorn(surface, *pastimes, *anchors);
-    if (!act || !act->shows()) paintSprout(surface, e, *anchors, c.scale);
-    paintGrowing(surface, e, *anchors);
   }
   {
     Measure measure(profile.front);
     if (finish.on)
       paintFinishFront(surface, finish.finish, finish.ageMs, finish.revealMs, *anchors, c.scale, finish.gift);
-    if (act && !finish.on && !squeeze) paintActFront(surface, *act, *anchors);
   }
   {
     Measure measure(profile.props);

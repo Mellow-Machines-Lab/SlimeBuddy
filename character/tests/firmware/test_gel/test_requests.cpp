@@ -108,8 +108,9 @@ void test_requests_route_by_priority() {
   }
   for (SceneState act : {SceneState::kTesting, SceneState::kDelegating, SceneState::kTerminal, SceneState::kSearching,
                          SceneState::kAnalyzing, SceneState::kToolUse, SceneState::kWaiting, SceneState::kPlanning}) {
+    // Each act shows as its activity's one state.
     e->setFacts(look(SceneState::kWorking, act));
-    expect(*e, act);
+    expect(*e, deskStateOf(activityOf(act)));
   }
   e->setFacts(look(SceneState::kIdle, SceneState::kTesting));
   expect(*e, SceneState::kIdle);
@@ -142,7 +143,9 @@ void test_requests_route_by_priority() {
     TEST_ASSERT_TRUE(single->play(ask(anim, Outcome::kFailure)));
     expect(*single, anim);
   }
-  TEST_ASSERT_EQUAL_INT(int(SceneState::kCount), int(reached.size()));
+  // Every state but the five acts the gel shows as another's (planning,
+  // tool_use, searching, testing, delegating).
+  TEST_ASSERT_EQUAL_INT(int(SceneState::kCount) - 5, int(reached.size()));
   // A borrowed face over a finish: the finish, its outcome and its pass
   // stay; the lasting mood stays; a bare reaction has nothing to play.
   auto finish = engine(look(SceneState::kWorking));
@@ -180,7 +183,6 @@ void test_requests_route_by_priority() {
   // A start holds its last until it's cleared, then shows the latest facts.
   auto start = engine(look(SceneState::kWorking));
   Request starting = ask(SceneState::kStarting);
-  starting.ctx = StartCtx::kNewTask;
   start->play(starting);
   TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
   start->setFacts(look(SceneState::kWorking, SceneState::kTerminal));
@@ -250,7 +252,7 @@ void test_a_request_keeps_its_identity() {
     for (const auto& c : e->scenes.contacts) TEST_ASSERT_TRUE(c.kind != kKey);
   });
   const int pass = e->scenes.iteration, generation = e->scenes.generation;
-  for (int mood : {slime::kHappy, slime::kGrumpy, slime::kFrightened}) {
+  for (int mood : {slime::kHappy, slime::kGrumpy, slime::kSad}) {
     e->setMood(mood);
     const std::string name = std::string("Renamed ") + slime::kProfile[mood].id;
     e->setFacts(asking("777", "codex", "slime", name.c_str(), 3));
@@ -355,7 +357,7 @@ void test_a_request_sounds_once_whatever_changes() {
   };
   e->setFacts(asking("7", "codex", "a"));
   run(*e, t, 2400, listen);
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kSad);
   e->setFacts(asking("7", "codex", "a", "Renamed", 3));
   run(*e, t, 4800, listen);
   e->linkTimedOut(true);

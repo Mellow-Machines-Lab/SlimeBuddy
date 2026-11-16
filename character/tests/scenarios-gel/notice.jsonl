@@ -12,7 +12,7 @@
 {"shot":"idle"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"engaged","busy":1,"vol":0,"when":["day"]}
+{"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["day"]}
 {"clock":1000}
 {"t":"do","name":"notice","play":"now","args":{}}
 {"clock":1300}

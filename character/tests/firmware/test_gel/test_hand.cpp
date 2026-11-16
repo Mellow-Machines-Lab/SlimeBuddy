@@ -99,15 +99,13 @@ struct Board {
   }
 };
 
-constexpr const char* kStages[] = {"hatchling", "sprout", nullptr, "chonk"};
-
-// A gel face at a stage, settled in the look.
-void settle(GelFace& f, uint32_t& t, const char* stage) {
+// A gel face, settled in the look.
+void settle(GelFace& f, uint32_t& t) {
   linkkit::Rng rng;
   f.reset(0, rng);
   FaceContext c;
   c.base = SceneState::kIdle;
-  c.when = tagBit("day") | (stage ? tagBit(stage) : 0);
+  c.when = tagBit("day");
   FaceSource s;
   s.look = SceneState::kIdle;
   f.sync(s, c, 0);
@@ -122,60 +120,48 @@ void runFace(GelFace& f, uint32_t& t, uint32_t ms) {
 }  // namespace
 
 // The eyes go toward a finger at each of the screen's corners, the way it is
-// from the eyes at that stage's size, no further than kGazeReach by the eyes'
-// size, and drift back when it goes.
-void test_the_eyes_follow_a_finger_at_every_size() {
+// from the eyes, no further than kGazeReach, and drift back when it goes.
+void test_the_eyes_follow_a_finger() {
   const struct {
     int x, y, across, up;
   } corners[] = {{10, 10, -1, 1}, {310, 10, 1, 1}, {10, 200, -1, -1}, {310, 200, 1, -1}};
-  for (const char* stage : kStages)
-    for (const auto& c : corners) {
-      GelFace f;
-      uint32_t t = 0;
-      settle(f, t, stage);
-      f.finger(true, c.x, c.y);
-      runFace(f, t, 800);
-      const Motion& m = f.engine().motion;
-      TEST_ASSERT_EQUAL_INT(c.across, m.gaze > F(0) ? 1 : -1);
-      TEST_ASSERT_EQUAL_INT(c.up, m.gazeUp > F(0) ? 1 : -1);
-      TEST_ASSERT_TRUE(abs(m.gaze) > q(.04));
-      TEST_ASSERT_TRUE(abs(m.gaze) < q(.16));
-      TEST_ASSERT_TRUE(abs(m.gazeUp) < q(.12));
-      f.finger(false, 0, 0);
-      runFace(f, t, 2000);
-      TEST_ASSERT_TRUE(abs(f.engine().motion.gazeUp) < q(.005));
-      TEST_ASSERT_TRUE(abs(f.engine().motion.gaze) < q(.02));  // its own wander's
-    }
-  // Over the eyes, it looks straight on: the target's measured from them at
-  // that size, a Hatchling's far lower than a Buddy's.
+  for (const auto& c : corners) {
+    GelFace f;
+    uint32_t t = 0;
+    settle(f, t);
+    f.finger(true, c.x, c.y);
+    runFace(f, t, 800);
+    const Motion& m = f.engine().motion;
+    TEST_ASSERT_EQUAL_INT(c.across, m.gaze > F(0) ? 1 : -1);
+    TEST_ASSERT_EQUAL_INT(c.up, m.gazeUp > F(0) ? 1 : -1);
+    TEST_ASSERT_TRUE(abs(m.gaze) > q(.04));
+    TEST_ASSERT_TRUE(abs(m.gaze) < q(.16));
+    TEST_ASSERT_TRUE(abs(m.gazeUp) < q(.12));
+    f.finger(false, 0, 0);
+    runFace(f, t, 2000);
+    TEST_ASSERT_TRUE(abs(f.engine().motion.gazeUp) < q(.005));
+    TEST_ASSERT_TRUE(abs(f.engine().motion.gaze) < q(.02));  // its own wander's
+  }
+  // Over the eyes, it looks straight on: the target's measured from them.
   GelFace f;
   uint32_t t = 0;
-  settle(f, t, "hatchling");
-  f.finger(true, 160, 160);
+  settle(f, t);
+  f.finger(true, 160, kDeskRow - kEyesOverDesk);
   runFace(f, t, 800);
   TEST_ASSERT_TRUE(abs(f.engine().motion.gazeUp) < q(.012));
 }
 
-// A finger takes the dome where it stands at its stage: where on it the finger
-// went down, and how far it's moved, are in that stage's own size.
-void test_a_drag_goes_by_the_size_it_is() {
-  const struct {
-    const char* stage;
-    int size;
-  } sizes[] = {{"hatchling", kHatchlingBody.size}, {nullptr, kBuddyBody.size}, {"chonk", kChonkBody.size}};
-  for (const auto& c : sizes) {
-    GelFace f;
-    uint32_t t = 0;
-    settle(f, t, c.stage);
-    const BodySettings body = f.engine().body();
-    const int midY = kDeskRow - (kDeskRow - 129) * heightOf(body) / 4096;
-    // Half way out on its half-width, on its middle's row.
-    const int half = kPxPerUnit * 11 / 10 * c.size / 4096 / 2;
-    f.finger(true, 160 + half, midY);
-    TEST_ASSERT_TRUE(abs(f.engine().point[0] - q(.5)) < q(.03));
-    TEST_ASSERT_TRUE(abs(f.engine().point[1]) < q(.03));
-    f.finger(false, 0, 0);
-  }
+// A finger takes the dome where it stands: where on it the finger went down
+// is in its own half-width and half-height.
+void test_a_drag_starts_where_the_finger_is_on_the_dome() {
+  GelFace f;
+  uint32_t t = 0;
+  settle(f, t);
+  // Half way out on its half-width, on its middle's row.
+  f.finger(true, 160 + kPxPerUnit * 11 / 10 / 2, 129);
+  TEST_ASSERT_TRUE(abs(f.engine().point[0] - q(.5)) < q(.03));
+  TEST_ASSERT_TRUE(abs(f.engine().point[1]) < q(.03));
+  f.finger(false, 0, 0);
 }
 
 // The eyes' wander draws its dice with or without a finger, so a touch changes
@@ -192,30 +178,25 @@ void test_a_finger_leaves_the_dice_alone() {
   TEST_ASSERT_TRUE(left.nextLook == right.nextLook);
 }
 
-// The lean is toward where the finger is, in the body's own half-widths, so a
-// finger on a Hatchling's left edge pulls it left as far as one on a Chonk's.
+// The lean is toward where the finger is, in the body's own half-widths: a
+// finger on its edge, 93 px from its middle, pulls it the whole reach.
 void test_a_lean_goes_where_the_finger_is() {
-  const struct {
-    const char* stage;
-    int halfWidth;
-  } sizes[] = {{"hatchling", 51}, {"sprout", 65}, {nullptr, 93}, {"chonk", 104}};
-  for (const auto& s : sizes)
-    for (int side : {-1, 1}) {
-      GelFace f;
-      uint32_t t = 0;
-      settle(f, t, s.stage);
-      f.finger(true, 160 + side * s.halfWidth, 130);
-      f.lean(Face::Lean::kIn, t);
-      runFace(f, t, 1500);
-      const F reach = f.engine().pull[0].x * side;
-      TEST_ASSERT_TRUE(reach > Engine::kLeanReach * q(.85));
-      TEST_ASSERT_TRUE(reach < Engine::kLeanReach * q(1.15));
-      TEST_ASSERT_TRUE(f.engine().pull[2].x > q(.25));  // and forward, into it
-    }
+  for (int side : {-1, 1}) {
+    GelFace f;
+    uint32_t t = 0;
+    settle(f, t);
+    f.finger(true, 160 + side * 93, 130);
+    f.lean(Face::Lean::kIn, t);
+    runFace(f, t, 1500);
+    const F reach = f.engine().pull[0].x * side;
+    TEST_ASSERT_TRUE(reach > Engine::kLeanReach * q(.85));
+    TEST_ASSERT_TRUE(reach < Engine::kLeanReach * q(1.15));
+    TEST_ASSERT_TRUE(f.engine().pull[2].x > q(.25));  // and forward, into it
+  }
   // A finger past it pulls no further than its edge.
   GelFace f;
   uint32_t t = 0;
-  settle(f, t, "hatchling");
+  settle(f, t);
   f.finger(true, 318, 130);
   f.lean(Face::Lean::kIn, t);
   runFace(f, t, 1500);

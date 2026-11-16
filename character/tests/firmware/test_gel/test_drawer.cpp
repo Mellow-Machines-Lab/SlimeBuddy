@@ -218,7 +218,7 @@ void test_it_shuts_itself_and_says_its_open_till_then() {
 // as a pull does, and shuts itself kDrawerShutMs on.
 constexpr const char* kShowDo =
     "{\"t\":\"do\",\"name\":\"react\",\"play\":\"now\",\"args\":{\"sign\":\"2 working, 1 "
-    "idle\",\"reply\":\"status\",\"show\":\"drawer\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}";
+    "idle\",\"reply\":\"status\",\"show\":\"drawer\",\"say\":{},\"mood\":\"focused\",\"loops\":1}}";
 
 void test_a_reaction_shows_the_drawer_once_its_sign_is_read() {
   Board b;
@@ -267,7 +267,7 @@ void test_a_finger_or_a_request_first_keeps_it_shut() {
 
   Board plain;
   plain.line("{\"t\":\"do\",\"name\":\"react\",\"play\":\"now\",\"args\":{\"sign\":\"claude: done!\",\"reply\":"
-             "\"status\",\"say\":{},\"mood\":\"engaged\",\"loops\":1}}");
+             "\"status\",\"say\":{},\"mood\":\"focused\",\"loops\":1}}");
   plain.run(app::Device::kShowDrawerMs + app::Device::kDrawerMs);
   TEST_ASSERT_EQUAL_INT(0, plain.open());
 

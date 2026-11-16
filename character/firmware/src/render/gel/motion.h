@@ -83,7 +83,7 @@ struct SemanticFace {
   void drop(int i);
 };
 // How a layer's art is drawn, from its ratios: the sleeping face is the
-// tired art squashed to its own size.
+// sleeping art (calm:asleep) squashed to its own size.
 std::array<F, 3> drawnScale(const SemanticFace& face, const SemanticFace::Layer& layer);
 // Slope one at one, saturating inside (0.75, 4/3).
 F softRatio(F value);

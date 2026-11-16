@@ -17,7 +17,6 @@ struct PaintControls {
   // A rig clip's eyes (applyRig): their size about their middles, Q12, and
   // how far up they look, in face units (how far across is in gaze).
   int eyeSize = 4096, gazeUp = 0;
-  int mouthSize = 4096;  // the mouth's art, as eyeSize is the eyes'; both on top of `scale`
   // Pressed under the agents' drawer (render/gel/drawer.h): the rows the
   // body fills at rest (restBodyTop, restBodyBottom) mapped onto
   // [squeezeTop, squeezeBottom), in px, and spread wider by `widen` (Q12);
@@ -25,63 +24,12 @@ struct PaintControls {
   int squeezeTop = 0, squeezeBottom = 0, widen = 4096;
   // A finish's (render/gel/finish.h): the whole body scaled (Q12) about
   // (anchorX, anchorY) and moved by (offsetX, offsetY), in sixteenths of a
-  // pixel, its face and anchors with it; and its eyes left undrawn, for
-  // the finish's own.
+  // pixel, its face and anchors with it.
   int scale = 4096, anchorX = 0, anchorY = 0, offsetX = 0, offsetY = 0;
-  bool eyes = true;
 };
-// A growth stage's body, on every animation, as the stage's tag says
-// (render/tags.h): its size, about where it stands on the desk, and its
-// eyes' size about their middles and its mouth's, Q12, and how far it's
-// squashed (as PaintControls' squash). Every stage draws the same art; Buddy, with no tag,
-// is the size the art is laid out at. The Chonk is a wider Buddy, about as
-// tall as ever: the hats, the sign over its head and the needs-you card
-// have no room above it to grow into.
-struct BodySettings {
-  int size = 4096, eyes = 4096, squash = 0, mouth = 4096;
-};
-constexpr BodySettings kHatchlingBody{2253, 6349, 0, 5734}, kSproutBody{2867, 5120, 0, 4915}, kBuddyBody{},
-    kChonkBody{4588, 4096, -867};
-BodySettings bodySettings(uint32_t when);
-// The hat it wears now: as the tags say (render/tags.h), but a Sprout's leaves
-// are its party: a party hat would hide them on the very day they came.
-Outfit wornHat(uint32_t when);
-// How far the nose sinks at these settings, on the canvas's 240 rows: it
-// stands this far above where the body stands at Buddy's height.
-constexpr int kNoseOverDesk = 54;
-// How tall it stands at these settings, Q12 of Buddy's.
-constexpr int heightOf(const BodySettings& b) { return b.size * (4096 + b.squash * 2130 / 4096) / 4096; }
-constexpr int noseDropFor(const BodySettings& b) { return kNoseOverDesk - kNoseOverDesk * heightOf(b) / 4096; }
 // The canvas row the body stands on (restBodyBottom), and how far above it
-// its eyes are, at Buddy's height.
+// its eyes are.
 constexpr int kDeskRow = 188, kEyesOverDesk = 50;
-// Changing stage. Growing: it glows and draws in, pops past its new size and
-// settles. Shrinking: it sinks, with no show. The first tags it's told only
-// say what it is: it isn't growing up every time the Mac connects. A
-// function of the engine's clock, so the board, the simulator and the mirror
-// draw the same frame.
-constexpr int kGrowGlowMs = 900, kGrowPopMs = 260, kGrowSettleMs = 520, kShrinkMs = 1600;
-// How far under its old size it draws in, and past its new one it pops, in Q12.
-constexpr int kGrowDraw = 3768, kGrowPast = 4588;
-struct BodyChange {
-  BodySettings from, to;
-  int stage = 3;  // growthStage's, of `to`
-  uint32_t at = 0;
-  bool told = false, moving = false, growing = false;
-  void see(uint32_t when, uint32_t now);
-  // Ends a change that's over, from every step: see() may be held back, and
-  // an old `at` would read as the future once the clock's gone round.
-  void settle(uint32_t now) {
-    if (moving && int32_t(now - at) >= (growing ? kGrowGlowMs + kGrowPopMs + kGrowSettleMs : kShrinkMs)) moving = false;
-  }
-  BodySettings shown(uint32_t now) const;
-  // Whether it's at its new stage yet: a stage's feature comes with the pop.
-  bool arrived(uint32_t now) const { return !moving || !growing || int32_t(now - at) >= kGrowGlowMs; }
-  // How much it glows, and how far the burst is through, 0 … 255: both 0 out
-  // of a growth.
-  int glow(uint32_t now) const;
-  int burst(uint32_t now) const;
-};
 // The rows the body fills at rest, laid out on the AMOLED's 410.
 inline int restBodyTop(int height) { return height * 92 / 410; }
 inline int restBodyBottom(int height) { return height * 322 / 410; }
@@ -120,22 +68,21 @@ constexpr int kRigGaze = 205, kRigMouthOpen = 300;
 // (paint). At rest, none moves.
 void applyRig(PaintControls& c, const rig::Channels& rig);
 class Engine;
-// The body, the face art, what it wears and the air around it
+// The body, the face art, its nightcap and the Zs beside it
 // (render/gel/layers.h) as the layer stack shows them at t (whole in the
-// engine's tags and state with none), the pastimes' kit it wears, then the
-// props, with the rig's channels on the engine's controls; a lane that
+// engine's tags and state with none), then the props, their paws where the
+// pastime playing puts them, with the rig's channels on the engine's controls; a lane that
 // shows `keepLane` is kept
 // from this surface's last frame. Its anchors into `anchors`.
 // Pressed under the agents' drawer (`squeeze`, render/gel/drawer.h), it
 // draws flattened, and with its eyes squeezed shut it draws the body alone.
 struct DrawerPose;
-// A work act (render/gel/act.h) moves the body as a finish does, and draws
-// behind it and over it. Ducking `duck` px (under the needs-you card), its
+// Ducking `duck` px (under the needs-you card), its
 // crown comes down that far and its foot stays where it stands.
 void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t keepLane = 0,
            rig::Anchors* anchors = nullptr, const rig::Channels& rig = rig::kRest, const rig::Layers* layers = nullptr,
            uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
-           const Stream::ActNow* act = nullptr, int duck = 0);
+           int duck = 0);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
 // Hushed (the `hushed` tag, render/tags.h), its lips are zipped: in the
 // mouth's place, in its ink and following the face as it does, whatever
@@ -152,10 +99,6 @@ extern int crossingPeak;
 // typing with none.
 struct Paws;
 void paintProps(Surface&, const Engine&, const Paws* paws = nullptr);
-// What a stage wears, over the body and what's on it: a Sprout's sprout on
-// its crown, kept off under a hat. And changing stage, the glow and the burst.
-void paintSprout(Surface&, const Engine&, const rig::Anchors&, int scale);
-void paintGrowing(Surface&, const Engine&, const rig::Anchors&);
 // A paw types: before each of its key contacts in the recipe playing it
 // lifts and comes back down over kTapMs, kTapLift thousandths of the
 // surface's height at the top, landing on the contact (whose sound and
@@ -169,9 +112,18 @@ int tapLift(const Scenes& scenes, int side);
 // `brisk`, while you type and it types with you (GelFace::showAlong): size,
 // not speed. A paw comes down every kBriskMs, a little slower than the soft
 // typing, swinging kBriskLift high over kBriskTapMs, and its key lights as
-// it lands; and the keyboard and paws are drawn no smaller than kAlongSize
-// of a Buddy's (Q12), however small the body, so a Hatchling's show too.
-constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 70, kBriskTapMs = 280, kAlongSize = 3891;
+// it lands.
+constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 70, kBriskTapMs = 280;
+// Where each activity that isn't typing holds the paws (0 left, 1 right),
+// in the thousandths paintProps draws them in: lifted, and moved right.
+struct PawPose {
+  int lift[2], dx[2];
+};
+constexpr PawPose kLookingPaws{{-14, -14}, {-96, -40}}, kRunningPaws{{40, 40}, {66, -30}},
+    kWaitingPaws{{-8, -8}, {-10, 10}};
+// A change of activity's pose takes this long (the rig's look, and so the
+// body's lean; the paws' spring settles as fast).
+constexpr uint32_t kPoseMs = 400;
 int typeLift(uint32_t ms, int side, bool brisk = false);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.

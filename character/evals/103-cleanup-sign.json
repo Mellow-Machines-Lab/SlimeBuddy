@@ -1,9 +1,0 @@
-{
-  "name": "A clean-up gets glee and a sign",
-  "judge": "The person asks the agent to delete old code. Boop loves deleted code and should look glad about it.",
-  "reasonable": "Glee, mischief or pleasure, such as excited, happy, proud or amused. A sign about the code going is ideal; any glad or teasing sign, or none, is fine.",
-  "unreasonable": "Sad, worried or cross about the deletion, a sign mourning the code, or a finish animation before the work is done.",
-  "steps": [
-    {"event": "turn started", "at": "0s", "prompt": "delete the old exporter, we don't need it anymore", "reading": {"kind": "cleanup"}, "brain": {"react.face": "excited", "react.sign": "bye bye code"}}
-  ]
-}

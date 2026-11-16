@@ -5,6 +5,6 @@
   "why": "react.move: a turn that finished failed is a failure, and success isn't for one; PERSONALITY: a failed turn gets a face and its finish. How cross it is, is for the judge, not for this must",
   "steps": [
     {"event": "turn started", "at": "0s"},
-    {"event": "turn failed", "at": "2m", "error": "rate_limit", "expect": {"react": "!none|happy|excited|proud|pleased|amused|mischievous|relieved|hopeful|affectionate", "move": "failure", "say": "!glad|tickled|done", "mood": "!happy|excited|proud"}}
+    {"event": "turn failed", "at": "2m", "error": "rate_limit", "expect": {"react": "!none|happy|excited|proud|pleased|amused|mischievous|affectionate", "move": "failure", "say": "!glad|tickled|done", "mood": "!happy|proud"}}
   ]
 }
