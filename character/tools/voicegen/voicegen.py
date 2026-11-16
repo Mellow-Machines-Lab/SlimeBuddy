@@ -107,10 +107,18 @@ MOOD_OF = {"relieved": "happy", "weary": "whiny", "amused": "happy",
 FEELING = {"frustration": "upset", "setback": "upset", "deflate": "upset",
            "celebrate": "glad", "delight": "glad", "relief": "glad", "pride": "glad", "insight": "glad",
            "poke": "tickled"}
-ABOUT = {"begin": "start", "delegate": "helpers", "return": "helper back", "retry": "retry",
+ABOUT = {"begin": "work", "delegate": "helpers", "return": "helper back", "retry": "retry",
          "work": "work", "effort": "work", "test": "tests", "terminal": "command", "tool": "tool",
          "search": "looking", "analyze": "looking", "ponder": "looking", "plan": "planning",
          "success": "done", "reply": "answer", "stop": "stopped", "wait": "waiting", "idle": "quiet"}
+# The topics `say` no longer offers (MomentOutput.topics keeps hello, work,
+# tests, done, retry and quiet): their takes stay in voice.bin, which keeps
+# its version, and are left out of takes.tsv, so nothing picks them.
+UNSAID = {"helpers", "helper back", "command", "tool", "looking", "planning", "answer", "stopped", "waiting"}
+# The replies that merged into another (their recorded words go with
+# them), and the ones Boop no longer makes, left out as UNSAID's are.
+REPLY_AS = {"love": "thanks", "notme": "no"}
+UNMADE = {"dance", "nap"}
 # Entries whose words name a fact that belongs to another topic, whatever
 # the bank's intent: "Passed" is about tests, so it's only said about them
 # (and only on a success); the greetings, recorded for pokes and needs you,
@@ -139,8 +147,8 @@ REPLY_OF = {
     "word.celebrate.yay": ["thanks", "unhush"], "word.celebrate.sweet": ["thanks"], "word.celebrate.nice": ["thanks"],
     "phrase.pride.no-biggie": ["thanks"], "phrase.pride.heh-obviously": ["thanks"], "phrase.success.we-did-it": ["thanks"],
     "phrase.success.nice-one": ["thanks"], "phrase.success.good-stuff": ["thanks"],
-    "phrase.poke.boop-back": ["love"], "phrase.celebrate.happy-circuits": ["love"], "nonverbal.delight.eep": ["love"],
-    "word.poke.boop": ["love"],
+    "phrase.poke.boop-back": ["thanks"], "phrase.celebrate.happy-circuits": ["thanks"], "nonverbal.delight.eep": ["thanks"],
+    "word.poke.boop": ["thanks"],
     "word.setback.ouch": ["ouch"], "phrase.frustration.why-though": ["ouch"],
     "nonverbal.deflate.aww": ["comfort"], "nonverbal.deflate.mm": ["comfort"], "phrase.setback.oh-dear": ["comfort"],
     "nonverbal.delight.heh": ["hehe"], "nonverbal.delight.hehehe": ["hehe"], "nonverbal.delight.ha": ["hehe"],
@@ -148,10 +156,7 @@ REPLY_OF = {
     "phrase.analyze.let-me-see": ["status"], "phrase.analyze.looky-look": ["status"], "phrase.reply.here-you-go": ["status"],
     "word.search.look": ["status"], "word.search.peek": ["status"], "phrase.return.tiny-report": ["status"],
     "phrase.return.mission-update": ["status"],
-    "word.idle.comfy": ["nap"], "word.idle.cozy": ["nap"], "word.idle.mellow": ["nap"],
     "word.idle.quiet": ["hush"],
-    "nonverbal.delight.whee": ["dance"], "phrase.test.here-we-go": ["dance"], "phrase.celebrate.oh-yeah": ["dance"],
-    "phrase.celebrate.boom-shakalaka": ["dance"], "word.celebrate.woohoo": ["dance"],
     "nonverbal.relief.ahh": ["unhush"], "nonverbal.relief.phew": ["unhush"], "word.celebrate.hooray": ["unhush"],
 }
 # Entries that are also how Boop feels when it's shaken (the `shaken`
@@ -193,7 +198,8 @@ def answer(entry: dict) -> tuple[str, str]:
     if intent in ABOUT:
         return "about", ABOUT[intent]
     if intent.startswith("talk."):
-        return "reply", intent[len("talk."):]
+        reply = intent[len("talk."):]
+        return "reply", REPLY_AS.get(reply, reply)
     if intent == "attention":
         return "attention", "attention"
     raise SystemExit(f"voicegen: {entry['id']} has intent {intent!r}, which answers neither question; map it in FEELING or ABOUT")
@@ -359,7 +365,9 @@ def main() -> None:
         missing = set(table_of) - {rec["entryId"] for rec in recs}
         if missing:
             raise SystemExit(f"voicegen: {name} names entries with no recording: {', '.join(sorted(missing))}")
-    table = write_table(ver, takes + replies + shaken)
+    said = [t for t in takes + replies + shaken
+            if not (t["part"] == "about" and t["meaning"] in UNSAID) and not (t["part"] == "reply" and t["meaning"] in UNMADE)]
+    table = write_table(ver, said)
     write_pack(args.pack / PACK, ver, takes, clips, mouths)
     (args.pack / TABLE).parent.mkdir(parents=True, exist_ok=True)
     (args.pack / TABLE).write_text(table)

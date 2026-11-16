@@ -6,18 +6,18 @@
   "steps": [
     {"event": "turn started", "at": "0m"},
     {"event": "command", "at": "0m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "0m30s", "brain": {"react.face": "happy", "react.move": "success", "mood": "calm"}},
+    {"event": "turn finished", "at": "0m30s", "brain": {"react.face": "happy", "mood": "calm"}},
     {"event": "turn started", "at": "1m"},
     {"event": "command", "at": "1m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "1m30s", "brain": {"react.face": "pleased", "react.move": "success", "mood": "calm"}},
+    {"event": "turn finished", "at": "1m30s", "brain": {"react.face": "pleased", "mood": "calm"}},
     {"event": "turn started", "at": "2m"},
     {"event": "command", "at": "2m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "2m30s", "brain": {"react.face": "excited", "react.move": "success", "mood": "calm"}},
+    {"event": "turn finished", "at": "2m30s", "brain": {"react.face": "excited", "mood": "calm"}},
     {"event": "turn started", "at": "3m"},
     {"event": "command", "at": "3m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "3m30s", "brain": {"react.face": "amused", "react.move": "success", "mood": "calm"}},
+    {"event": "turn finished", "at": "3m30s", "brain": {"react.face": "amused", "mood": "calm"}},
     {"event": "turn started", "at": "4m"},
     {"event": "command", "at": "4m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "4m30s", "brain": {"react.face": "proud", "react.move": "success", "mood": "calm"}}
+    {"event": "turn finished", "at": "4m30s", "brain": {"react.face": "proud", "mood": "calm"}}
   ]
 }

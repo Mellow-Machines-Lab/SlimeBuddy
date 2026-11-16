@@ -699,9 +699,17 @@ eyes and mouth: there's no new drawing, and the face and its sign are
 the Moment's. A reply the pack has no clip for plays the face alone.
 
 The Mac's reply at your lock or unlock of the Mac (not to what you said)
-is the same move: `bye` or `hello` for a bigger moment, and for a small
-one `reply-wave`, a sway at about a third of `bye`'s lean with the eyes
-barely softening, over in a second, so it reads as a nod to you going by.
+is the same move, picked by the Mac's rule with no brain (`MomentRule.wave`):
+`bye` for a real wave, at a first lock in an hour and for good night at a
+night's lock, after which Boop's Doing goes to asleep at once; and for a
+routine one `reply-wave`, a sway at about a third of `bye`'s lean with the
+eyes barely softening, over in a second, so it reads as a nod to you going
+by.
+
+The Mac no longer sends four of these replies: love is thanks now, notme
+is no, and nobody asks Boop to nap or dance. Their clips stay in the rig,
+and the board plays any of them if it's sent, as the scenarios below
+still check; nothing on the Mac asks for them.
 
 A nap and a dance are clips like the rest: `reply-nap` a yawn (stretching
 up, its mouth open and its eyes drooping shut, then sinking flat) and

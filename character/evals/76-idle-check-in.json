@@ -6,6 +6,6 @@
   "steps": [
     {"event": "turn started", "at": "0s"},
     {"event": "turn finished", "at": "30s"},
-    {"event": "wait", "at": "50m", "brain": {"react.face": "calm", "react.move": "none"}}
+    {"event": "wait", "at": "50m", "brain": {"react.face": "calm"}}
   ]
 }

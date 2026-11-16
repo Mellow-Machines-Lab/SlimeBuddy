@@ -1,4 +1,4 @@
-<!-- Boop's replies' signs: what it holds up replying to what you said on push-to-talk (MomentOutput's replies, react.move's answers to what you said). It holds up its bye lines too at your lock of the Mac, and its hello lines at your unlock, when it waves. Each line's first tag is the reply it's for (yes, no, huh, and dunno, a huh to a question; hello, bye, thanks, love, ouch, comfort, hehe, nap, hush, unhush, dance, notme; status holds up what the agents are doing instead), and any more are the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9) or the moment's: working (an agent works), waiting (something waits on you), makeup (within 10 minutes of an ouch), nobrain (the shrug with no brain to answer, no Jev key yet). {words} is a phrase of what you said, at most 12 characters ("hello" from "Hello!"): such a line is offered once for each. For each reply, only the lines with the most of the moment's tags that fit are offered, the calendar's among the plain ones (a night line is one of several, not the only one), never the one shown last while another fits; the brain (react.sign) picks the one that best answers what you said, of those for the reply it makes, and with no brain's pick the app picks one at random, never your words. At most 18 characters once filled, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
+<!-- Boop's replies' signs: what it holds up replying to what you said on push-to-talk (MomentOutput's replies, react.reply's answers). It holds up its bye lines too at your lock of the Mac, when it really waves (MomentRule.wave). Each line's first tag is the reply it's for (yes, no, huh, and dunno, a huh to a question; hello, bye, thanks, ouch, comfort, hehe, hush, unhush; status holds up what the agents are doing instead), and any more are the calendar's (morning, night, friday, party…, characters/CHARACTER.md §9) or the moment's: working (an agent works), waiting (something waits on you), nobrain (the shrug with no brain to answer, no Jev key yet). {words} is a phrase of what you said, at most 12 characters ("hello" from "Hello!"): such a line is offered once for each. For each reply, only the lines with the most of the moment's tags that fit are offered, the calendar's among the plain ones (a night line is one of several, not the only one), never the one shown last while another fits; the brain (react.sign) picks the one that best answers what you said, of those for the reply it makes, and with no brain's pick the app picks one at random, never your words. At most 18 characters once filled, printable ASCII only. Read-only at runtime; the app bundles a copy. -->
 - [yes] yep!
 - [yes] uh-huh
 - [yes] mhm!
@@ -35,11 +35,9 @@
 - [thanks] yay!
 - [thanks] {words}? me?!
 - [thanks] we rock
-- [love] <3
-- [love] love u too
-- [love] aww
-- [love makeup] ...fine
-- [love makeup] forgiven <3
+- [thanks] <3
+- [thanks] love u too
+- [thanks] aww
 - [ouch] :(
 - [ouch] rude.
 - [comfort] *hug*
@@ -51,18 +49,10 @@
 - [hehe] hehe
 - [hehe] lol
 - [hehe] {words} lol
-- [nap] zzz
-- [nap] nap time
-- [nap working] after this
-- [nap working] not now, busy
 - [hush] ok, shh
 - [hush] *zips lips*
 - [hush] fine. hmph.
 - [unhush] i can talk!
 - [unhush] words! yay!
-- [dance] *wiggle*
-- [dance] look at me go
-- [dance] wheee
-- [notme] ask them!
-- [notme] not my job
-- [notme waiting] that's ur job
+- [no] ask them!
+- [no waiting] that's ur job

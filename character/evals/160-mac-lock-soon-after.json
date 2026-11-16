@@ -1,8 +1,11 @@
 {
-  "name": "Locking the Mac soon after the last: a slight silent wave",
-  "judge": "The person locks the Mac, unlocks it two minutes later and locks it again. Routine. Boop should notice, barely.",
-  "reasonable": "A small wave in silence with a calm or content face, no sign, at the lock and at the unlock. Now and then a sound, or another small face.",
-  "unreasonable": "No reaction at all, a big moment, words at each lock, a finish, a lonely or sad face or mood at a routine lock.",
+  "name": "Locking the Mac: a real wave the first time, a slight silent one soon after",
+  "case": "The person locks the Mac, unlocks it two minutes later and locks it again. The first lock in a while gets a real wave with a word and a sign; the unlock and the lock soon after are routine: a slight wave in silence, no sign.",
+  "why": "MomentRule.wave: a lock an hour or more after the last, or the first, is a real wave, medium; any other lock and every unlock a slight one, small. The rule makes the moment, so no Jev is asked.",
+  "scripted": true,
+  "checks": {
+    "reactions": "3"
+  },
   "steps": [
     {
       "event": "session started",
@@ -11,19 +14,35 @@
     {
       "event": "lock",
       "at": "1m",
-      "brain": {
-        "react.face": "calm",
-        "react.move": "wave",
-        "react.intensity": "small"
+      "expect": {
+        "react": "calm",
+        "move": "bye",
+        "intensity": "medium",
+        "said": "some",
+        "sign": "bye bye|see ya!"
       }
     },
     {
       "event": "unlock",
-      "at": "3m"
+      "at": "3m",
+      "expect": {
+        "react": "calm",
+        "move": "wave",
+        "intensity": "small",
+        "said": "none",
+        "sign": "none"
+      }
     },
     {
       "event": "lock",
-      "at": "8m"
+      "at": "8m",
+      "expect": {
+        "react": "calm",
+        "move": "wave",
+        "intensity": "small",
+        "said": "none",
+        "sign": "none"
+      }
     }
   ]
 }

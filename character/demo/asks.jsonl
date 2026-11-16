@@ -2,19 +2,19 @@
 // answers in the lane, you tap one and it keeps the answer, and a day later, idle, it muses about a snack.
 {"demo": 1, "title": "Fav snack?"}
 {"agent": "prompt", "text": "Fix the login bug", "after": 2}
-{"brain": {"react.face": "curious", "say": "start"}}
+{"brain": {"react.face": "curious", "say": "work"}}
 {"agent": "run", "cmd": "npm test", "about": "Run the tests", "after": 3}
 {"agent": "reply", "text": "Fixed the login bug; the tests pass.", "after": 4}
-{"brain": {"react.face": "happy", "react.move": "success", "say": "glad"}}
+{"brain": {"react.face": "happy", "say": "glad"}}
 {"you": "wait", "minutes": 70, "after": 4, "note": "A quiet hour later"}
 {"brain": {"react.face": "curious", "react.sign": "fav snack?"}}
 {"you": "answer", "pick": "a", "after": 4}
 {"brain": {"react.face": "happy", "react.sign": "nom nom", "say": "glad"}}
 {"you": "back", "minutes": 900, "after": 4, "note": "The next morning"}
-{"brain": {"react.face": "happy", "react.move": "wake up", "say": "hello"}}
+{"brain": {"react.face": "happy", "say": "hello"}}
 {"agent": "prompt", "text": "Add a dark mode", "after": 4}
-{"brain": {"react.face": "curious", "say": "start"}}
+{"brain": {"react.face": "curious", "say": "work"}}
 {"agent": "reply", "text": "Dark mode is in.", "after": 3}
-{"brain": {"react.face": "happy", "react.move": "success", "say": "glad"}}
+{"brain": {"react.face": "happy", "say": "glad"}}
 {"you": "wait", "minutes": 31, "after": 4, "note": "A quiet half hour"}
 {"brain": {"react.face": "happy", "react.sign": "snack time?"}}

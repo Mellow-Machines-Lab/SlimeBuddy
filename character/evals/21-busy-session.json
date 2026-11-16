@@ -15,7 +15,7 @@
     {"event": "command", "at": "5m30s", "topic": "tests", "failed": false},
     {"event": "turn finished", "at": "6m"},
     {"event": "turn started", "at": "7m"},
-    {"event": "turn finished", "at": "19m", "brain": {"react.move": "success", "mood": "happy"}},
+    {"event": "turn finished", "at": "19m", "brain": {"mood": "happy"}},
     {"event": "turn started", "at": "20m"},
     {"event": "command", "at": "20m20s", "topic": "tests", "failed": false},
     {"event": "turn finished", "at": "20m40s"},

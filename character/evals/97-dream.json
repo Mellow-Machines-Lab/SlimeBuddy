@@ -15,9 +15,9 @@
     {"event": "gesture", "at": "45m", "kind": "stroke"},
     {"event": "poke", "at": "50m"},
     {"event": "away", "at": "3h"},
-    {"event": "turn started", "at": "16h", "workspace": "api", "expect": {"dream": "none"}},
+    {"event": "turn started", "at": "16h", "workspace": "api", "prompt": "carry on", "expect": {"dream": "none"}},
     {"event": "turn finished", "at": "16h5m", "workspace": "api", "expect": {"dream": "none"}},
-    {"event": "back", "at": "18h", "expect": {"dream": "told"}, "brain": {"react.move": "wake up", "react.sign": "dreamt of u"}},
+    {"event": "back", "at": "18h", "expect": {"dream": "told"}, "brain": {"react.sign": "dreamt of u"}},
     {"event": "poke", "at": "18h1m", "expect": {"dream": "none"}}
   ]
 }

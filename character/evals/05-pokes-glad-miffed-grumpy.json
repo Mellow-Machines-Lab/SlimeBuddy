@@ -5,9 +5,9 @@
   "unreasonable": "Growing happier with each poke, no change at all by the third, swearing at the person, or leaping straight from fury to joy.",
   "steps": [
     {"event": "session started", "at": "0s"},
-    {"event": "poke", "at": "0s", "expect": {"offered": "calm|happy|focused|proud|cross|sad"}, "brain": {"react.face": "curious", "react.move": "none", "mood": "calm"}},
-    {"event": "poke", "at": "1s", "brain": {"react.face": "annoyed", "react.move": "none", "say": "upset", "mood": "cross"}},
-    {"event": "poke", "at": "2s", "brain": {"react.face": "grumpy", "react.move": "none", "say": "upset", "mood": "cross"}},
-    {"event": "turn started", "at": "4m", "brain": {"react.face": "none", "mood": "cross"}}
+    {"event": "poke", "at": "0s", "expect": {"offered": "calm|happy|focused|proud|cross|sad"}, "brain": {"react.face": "curious", "mood": "calm"}},
+    {"event": "poke", "at": "1s", "brain": {"react.face": "annoyed", "say": "upset", "mood": "cross"}},
+    {"event": "poke", "at": "2s", "brain": {"react.face": "grumpy", "say": "upset", "mood": "cross"}},
+    {"event": "turn started", "at": "4m", "prompt": "carry on", "brain": {"react.face": "none", "mood": "cross"}}
   ]
 }

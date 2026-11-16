@@ -5,6 +5,6 @@
   "unreasonable": "Sad, hurt or cross at them, a finish animation with no turn ended, or no reaction at all.",
   "steps": [
     {"event": "away", "at": "0s"},
-    {"event": "back", "at": "3h", "brain": {"react.face": "happy", "react.move": "wake up", "say": "glad"}}
+    {"event": "back", "at": "3h", "brain": {"react.face": "happy", "say": "glad"}}
   ]
 }
