@@ -343,8 +343,7 @@ const slime::Recipe kFinishRecipes[kBigFinishes] = {
 Point finishAnchor(const Surface& s) { return {s.width * 8, floorY(s) * 16}; }
 
 FinishSize finishSize(int loops, int turn, int mood) {
-  const bool sad = mood == slime::kDisappointed || mood == slime::kSad || mood == slime::kCrying ||
-                   mood == slime::kWhiny || mood == slime::kWounded;
+  const bool sad = mood == slime::kSad || mood == slime::kWounded;
   if (sad) return FinishSize::kSmall;
   if (turn < 0) return FinishSize(std::clamp(loops - 1, 0, 2));
   if (turn >= kBigTier) return FinishSize::kBig;

@@ -6,7 +6,7 @@
 // a board.
 {"t": "dbg.reset"}
 {"clock": 0}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]]}
 {"clock": 50}
 {"clock": 100}
 {"clock": 150}
@@ -28,7 +28,7 @@
 {"clock": 950}
 {"clock": 1000}
 // The tests run: the sign rises in the strip's place, and nothing else changes.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "running tests"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 1, "edit"]], "wact": ["tests", "running tests"]}
 {"expect": {"wact": "running tests"}}
 {"clock": 1050}
 {"clock": 1100}
@@ -44,7 +44,7 @@
 {"clock": 1600}
 {"shot": "tests-running"}
 // The agents work on under it: their words fall as they did.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["tests", "running tests"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["tests", "running tests"]}
 {"clock": 1650}
 {"clock": 1700}
 {"clock": 1750}
@@ -75,7 +75,7 @@
 {"clock": 3000}
 {"shot": "tests-running-stream"}
 // They pass: the words change in the sign's place, with a tick, and it hops.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["tests", "pass", "p"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["tests", "pass", "p"]}
 {"expect": {"wact": "pass"}}
 {"clock": 3050}
 {"clock": 3100}
@@ -134,7 +134,7 @@
 {"clock": 5600}
 {"clock": 5650}
 {"clock": 5700}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
 {"expect": {"wact": null}}
 {"clock": 5750}
 {"clock": 5800}
@@ -152,7 +152,7 @@
 {"clock": 6400}
 {"shot": "tests-over"}
 // A build that fails: a cross, and a flinch.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["build", "building"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["build", "building"]}
 {"expect": {"wact": "building"}}
 {"clock": 6450}
 {"clock": 6500}
@@ -175,7 +175,7 @@
 {"clock": 7350}
 {"clock": 7400}
 {"shot": "build-running"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["build", "fail", "f"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["build", "fail", "f"]}
 {"expect": {"wact": "fail"}}
 {"clock": 7450}
 {"clock": 7500}
@@ -233,7 +233,7 @@
 {"clock": 10000}
 {"clock": 10050}
 {"clock": 10100}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
 {"clock": 10150}
 {"clock": 10200}
 {"clock": 10250}
@@ -245,7 +245,7 @@
 {"clock": 10550}
 {"clock": 10600}
 // A push that goes through.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
 {"expect": {"wact": "git push"}}
 {"clock": 10650}
 {"clock": 10700}
@@ -268,7 +268,7 @@
 {"clock": 11550}
 {"clock": 11600}
 {"shot": "push-running"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "shipped!", "p"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "shipped!", "p"]}
 {"expect": {"wact": "shipped!"}}
 {"clock": 11650}
 {"clock": 11700}
@@ -325,7 +325,7 @@
 {"clock": 14200}
 {"clock": 14250}
 {"clock": 14300}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
 {"clock": 14350}
 {"clock": 14400}
 {"clock": 14450}
@@ -338,7 +338,7 @@
 {"clock": 14800}
 // A needs-you takes the screen from an act at once; after it the act's sign
 // comes back, still running.
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
 {"clock": 14850}
 {"clock": 14900}
 {"clock": 14950}
@@ -355,7 +355,7 @@
 {"clock": 15500}
 {"clock": 15550}
 {"clock": 15600}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [], "attn": {"agent": "claude", "project": "boop", "id": 3}}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [], "attn": {"agent": "claude", "project": "boop", "id": 3}}
 {"clock": 15650}
 {"clock": 15700}
 {"clock": 15750}
@@ -385,7 +385,7 @@
 {"clock": 16950}
 {"clock": 17000}
 {"shot": "push-needs-you"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]], "wact": ["push", "git push"]}
 {"clock": 17050}
 {"clock": 17100}
 {"clock": 17150}
@@ -411,4 +411,4 @@
 {"clock": 18150}
 {"clock": 18200}
 {"shot": "push-after-needs-you"}
-{"t": "state", "base": "working", "act": "terminal", "mood": "engaged", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}
+{"t": "state", "base": "working", "act": "terminal", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 2, "Core.swift"]]}

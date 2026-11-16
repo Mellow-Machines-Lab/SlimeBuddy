@@ -90,25 +90,16 @@ void Acting::advance(T dt, T time, bool grab, Random& random) {
   integrate(slide, dt, target[kSlide], 10, 9, q(.7), 5);
   integrate(lids, dt, target[kLids], 24, 48, 1, 20);
 }
-T Bridge::retarget(int source, int target, T time, Random& random, int forced) {
+T MoodBeat::retarget(int source, int target, Random& random) {
   from = source;
   to = target;
-  edge = -1;
   const auto& a = slime::kProfile[source];
   const auto& b = slime::kProfile[target];
-  // A face-only mood moves as the lasting mood it settles into.
-  const int moving = slime::kSettles[a.canonical], into = slime::kSettles[b.canonical];
-  for (int i = 0; i < slime::kEdgeCount; ++i)
-    if (slime::kEdges[i].from == moving && slime::kEdges[i].to == into) {
-      edge = i;
-      break;
-    }
-  category = edge < 0 ? 2 : slime::kEdges[edge].dramatic ? 1 : 0;
-  variant = edge < 0 ? 0 : forced >= 0 ? forced : bags[edge].next(random);
-  primitive = variant == 2    ? Primitive::kBlink
-              : category == 1 ? Primitive::kRecoil
-              : variant == 1  ? Primitive::kGather
-                              : Primitive::kSoft;
+  // Only a change of mood moves the body: a face of the same mood crosses
+  // over softly.
+  moves = slime::kMoodOf[a.canonical] != slime::kMoodOf[b.canonical];
+  variant = moves ? Bag<3>().next(random) : 0;
+  primitive = variant == 2 ? Primitive::kBlink : variant == 1 ? Primitive::kGather : Primitive::kSoft;
   F score = (b.traits[3] - a.traits[3]) + (b.traits[2] - a.traits[2]) * q(.025) + (a.traits[0] - b.traits[0]) / 10000 +
             (b.face[2] - a.face[2]) * q(.01) + (b.face[4] - a.face[4]) * q(.005);
   direction = score > F(0) ? 1 : score < F(0) ? -1 : 0;
@@ -116,28 +107,21 @@ T Bridge::retarget(int source, int target, T time, Random& random, int forced) {
   // Each channel's bound over the primitive's
   // largest coefficient on it, so no target leaves its bound.
   constexpr F limits[] = {
-      q(std::min({.06 / .009, .05 / .004, .04 / .003})),  // soft retarget
-      q(std::min({.06 / .026, .05 / .032, .04 / .012})),  // gather/settle
-      q(std::min({.06 / .006, .05 / .014, .04 / .004})),  // ordinary blink retarget
-      q(std::min({.06 / .026, .05 / .035, .04 / .014})),  // dramatic blink retarget
-      q(std::min({.06 / .045, .05 / .038, .04 / .032})),  // dramatic recoil
-      q(std::min({.06 / .022, .05 / .048, .04 / .026}))   // dramatic compression
+      q(std::min({.06 / .009, .05 / .004, .04 / .003})),  // soft
+      q(std::min({.06 / .026, .05 / .032, .04 / .012})),  // gather and settle
+      q(std::min({.06 / .006, .05 / .014, .04 / .004}))   // blink
   };
-  const int shape = primitive == Primitive::kSoft     ? 0
-                    : primitive == Primitive::kGather ? 1
-                    : primitive == Primitive::kBlink  ? (category == 1 ? 3 : 2)
-                                                      : (variant == 0 ? 4 : 5);
-  amplitude = min(amplitude, limits[shape]);
-  constexpr int durations[2][3] = {{420, 680, 360}, {760, 920, 560}}, faces[2][3] = {{320, 360, 460}, {240, 280, 340}};
+  amplitude = min(amplitude, limits[variant]);
+  constexpr int durations[3] = {420, 680, 360}, faces[3] = {320, 360, 460};
   active = true;
   elapsedMs = 0;
-  durationMs = durations[category == 1 ? 1 : 0][variant];
+  durationMs = durations[variant];
   deferredMs = 0;
   expired = false;
   suppressed = quiet || attention;
-  return faces[category == 1 ? 1 : 0][variant];
+  return faces[variant];
 }
-void Bridge::advance(T dt) {
+void MoodBeat::advance(T dt) {
   F target[3]{};
   if (active) {
     if (grab && elapsedMs < durationMs && !suppressed && !expired) {
@@ -155,20 +139,11 @@ void Bridge::advance(T dt) {
         target[0] = q(.026) * direction * pulse;
         target[1] = q(-.032) * pulse;
         target[2] = q(.012) * sin(pi * 2 * p) * pulse;
-      } else if (primitive == Primitive::kBlink) {
-        F held = p < q(.25) ? F(0) : square(sin(pi * (p - q(.25)) / q(.75)));
-        bool dramatic = category == 1;
-        target[0] = (dramatic ? q(.026) : q(.006)) * direction * held;
-        target[1] = (dramatic ? q(-.035) : q(-.014)) * held;
-        target[2] = (dramatic ? q(-.014) : q(-.004)) * held;
-      } else if (variant == 0) {
-        target[0] = q(-.045) * direction * sin(pi * 2 * p) * pulse;
-        target[1] = q(-.038) * pulse;
-        target[2] = q(-.032) * pulse;
       } else {
-        target[0] = q(.022) * direction * pulse;
-        target[1] = q(-.048) * pulse;
-        target[2] = q(.026) * sin(pi * 2 * p) * pulse;
+        F held = p < q(.25) ? F(0) : square(sin(pi * (p - q(.25)) / q(.75)));
+        target[0] = q(.006) * direction * held;
+        target[1] = q(-.014) * held;
+        target[2] = q(-.004) * held;
       }
       for (auto& v : target) v *= amplitude;
     }

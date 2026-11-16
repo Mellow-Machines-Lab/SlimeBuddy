@@ -252,7 +252,7 @@ void test_a_request_keeps_its_identity() {
     for (const auto& c : e->scenes.contacts) TEST_ASSERT_TRUE(c.kind != kKey);
   });
   const int pass = e->scenes.iteration, generation = e->scenes.generation;
-  for (int mood : {slime::kHappy, slime::kGrumpy, slime::kFrightened}) {
+  for (int mood : {slime::kHappy, slime::kGrumpy, slime::kSad}) {
     e->setMood(mood);
     const std::string name = std::string("Renamed ") + slime::kProfile[mood].id;
     e->setFacts(asking("777", "codex", "slime", name.c_str(), 3));
@@ -357,7 +357,7 @@ void test_a_request_sounds_once_whatever_changes() {
   };
   e->setFacts(asking("7", "codex", "a"));
   run(*e, t, 2400, listen);
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kSad);
   e->setFacts(asking("7", "codex", "a", "Renamed", 3));
   run(*e, t, 4800, listen);
   e->linkTimedOut(true);

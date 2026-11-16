@@ -74,7 +74,7 @@ inline bool within(F value, F bound) { return abs(value) <= bound; }
 inline void check(const Engine& e, const Frame* before = nullptr) {
   static const F kDeskStep = q(deskStep() + .0001);
   // The body's four modes (motion.cpp), the gestures' springs, a bit's slide
-  // and lids (acting.cpp), the bridge's (acting.cpp), a finger's pull
+  // and lids (acting.cpp), the beat's (acting.cpp), a finger's pull
   // (engine.h) and a scene's activity (scenes.cpp).
   for (const auto& m : e.motion.modes) TEST_ASSERT_TRUE(within(m.x, q(.72)) && within(m.v, 9));
   const F gesture[] = {q(.42), q(.42), q(.42), q(.24), q(.12), q(.18)};
@@ -82,9 +82,9 @@ inline void check(const Engine& e, const Frame* before = nullptr) {
     TEST_ASSERT_TRUE(within(e.acting.channels[i].x, gesture[i]) && within(e.acting.channels[i].v, 5));
   TEST_ASSERT_TRUE(within(e.acting.slide.x, q(.7)) && within(e.acting.slide.v, 5));
   TEST_ASSERT_TRUE(within(e.acting.lids.x, 1) && within(e.acting.lids.v, 20));
-  const F bridge[] = {q(.06), q(.05), q(.04)}, activity[] = {q(.08), q(.06), q(.05)};
+  const F beat[] = {q(.06), q(.05), q(.04)}, activity[] = {q(.08), q(.06), q(.05)};
   for (int i = 0; i < 3; ++i) {
-    TEST_ASSERT_TRUE(within(e.bridge.channels[i].x, bridge[i]) && within(e.bridge.channels[i].v, 1));
+    TEST_ASSERT_TRUE(within(e.moodBeat.channels[i].x, beat[i]) && within(e.moodBeat.channels[i].v, 1));
     TEST_ASSERT_TRUE(within(e.scenes.activity[i].x, activity[i]) && within(e.scenes.activity[i].v, q(1.2)));
     TEST_ASSERT_TRUE(within(e.pull[i].x, Engine::kGrabLimit) && within(e.pull[i].v, Engine::kGrabVelocity));
     TEST_ASSERT_TRUE(within(e.target[i], Engine::kGrabReach));
@@ -151,14 +151,7 @@ inline void check(const Engine& e, const Frame* before = nullptr) {
 // and the props. Jolts keeps the runs'
 // largest changes; each run's Track feeds it.
 struct Jolts {
-  enum {
-    kControls = 0,
-    kPosture = 8,
-    kProps = 10,
-    kDesk = kProps + Scenes::kProps,
-    kWeight = kDesk + 1,
-    kFamilies
-  };
+  enum { kControls = 0, kPosture = 8, kProps = 10, kDesk = kProps + Scenes::kProps, kWeight = kDesk + 1, kFamilies };
   double event[kFamilies]{}, steady[kFamilies]{};
   void finish(double factor = 2) const {
     for (int f = 0; f < kFamilies; ++f) {
@@ -188,8 +181,8 @@ struct Track {
   };
   static Said said(const Engine& e) {
     const auto& r = e.router;
-    return {r.facts.base, r.facts.act, r.facts.attention.on, r.reacting,    r.timedOut, r.listening,
-            e.grab,       r.facts.attention.id, r.reactions,  r.expression, e.emotion};
+    return {r.facts.base, r.facts.act,          r.facts.attention.on, r.reacting,   r.timedOut, r.listening,
+            e.grab,       r.facts.attention.id, r.reactions,          r.expression, e.emotion};
   }
   Said last{};
   Frame frames[2];

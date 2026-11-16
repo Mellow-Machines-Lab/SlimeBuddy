@@ -6,51 +6,51 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0.001,
+      "at": 0.002,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.119,
+      "at": 2.008,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.122,
+      "at": 2.01,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Add keyboard shortcuts”"
       }
     },
     {
-      "at": 2.447,
-      "effect": "Boop makes a curious face and says “Hop”",
-      "line": "{\"t\":\"do\",\"id\":99163429,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.borrowed.hop__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
+      "at": 2.336,
+      "effect": "Boop makes a curious face and says “Start”",
+      "line": "{\"t\":\"do\",\"id\":1396051418,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.begin.start__curious__contained\"},\"mood\":\"curious\",\"loops\":2}}"
     },
     {
-      "at": 6.679,
+      "at": 6.607,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 11.979,
+      "at": 11.942,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 11.979,
+      "at": 11.942,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the tests"
       }
     },
     {
-      "at": 12.284,
-      "effect": "Boop makes a happy face and says “Heh...”",
-      "line": "{\"t\":\"do\",\"id\":99163430,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass\",\"say\":{\"take\":\"phase1.nonverbal.delight.heh__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
+      "at": 12.262,
+      "effect": "Boop makes a happy face and says “Whee!”",
+      "line": "{\"t\":\"do\",\"id\":1396051419,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests pass\",\"say\":{\"take\":\"phase1.nonverbal.delight.whee__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
     },
     {
-      "at": 15.002,
+      "at": 15.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"npm test\"]]}"
     },
     {
-      "at": 18.682,
+      "at": 18.664,
       "cause": {
         "kind": "tap",
         "text": "You poke Boop"
@@ -58,127 +58,127 @@
       "input": "tap"
     },
     {
-      "at": 24.983,
+      "at": 24.998,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,2,\"deploy\"]],\"wact\":[\"push\",\"deploy\"]}"
     },
     {
-      "at": 25.184,
+      "at": 25.212,
       "effect": "Boop shows that it needs you",
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"keyboard-shortcuts\",\"more\":0,\"id\":687685455,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"keyboard-shortcuts\",\"more\":0,\"id\":1391222125,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 36.006,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"keyboard-shortcuts\",\"more\":0,\"id\":687685455,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "at": 36.007,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"keyboard-shortcuts\",\"more\":0,\"id\":1391222125,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 37.974,
+      "at": 37.998,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"wact\":[\"push\",\"fail\",\"f\"]}"
     },
     {
-      "at": 37.974,
+      "at": 37.998,
       "cause": {
         "kind": "tool_failed",
         "text": "Claude: deploy, and it fails"
       }
     },
     {
-      "at": 38.296,
+      "at": 38.32,
       "effect": "Boop makes an annoyed face and says “Pfft”",
-      "line": "{\"t\":\"do\",\"id\":99163431,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"phase1.nonverbal.frustration.pfft__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
+      "line": "{\"t\":\"do\",\"id\":1396051420,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"say\":{\"take\":\"previous.pfft\"},\"mood\":\"annoyed\",\"loops\":1}}"
     },
     {
-      "at": 41.001,
+      "at": 41.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 45.76,
+      "at": 45.788,
       "cause": {
         "kind": "talk",
         "text": "You say “how's it going?”"
       }
     },
     {
-      "at": 45.76,
+      "at": 45.788,
       "effect": "Boop listens",
-      "line": "{\"t\":\"do\",\"id\":99163432,\"name\":\"listening\",\"play\":\"now\"}"
+      "line": "{\"t\":\"do\",\"id\":1396051421,\"name\":\"listening\",\"play\":\"now\"}"
     },
     {
-      "at": 47.361,
-      "line": "{\"t\":\"do\",\"id\":99163433,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
+      "at": 47.39,
+      "line": "{\"t\":\"do\",\"id\":1396051422,\"name\":\"stop_listening\",\"play\":\"if_free\"}"
     },
     {
-      "at": 48.11,
+      "at": 48.14,
       "effect": "Boop makes a determined face",
-      "line": "{\"t\":\"do\",\"id\":99163434,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"deploy failed\",\"reply\":\"status\",\"say\":{},\"mood\":\"determined\",\"loops\":3}}"
+      "line": "{\"t\":\"do\",\"id\":1396051423,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"deploy failed\",\"reply\":\"status\",\"say\":{},\"mood\":\"determined\",\"loops\":3}}"
     },
     {
       "at": 51.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 56.636,
+      "at": 56.676,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"deploy\"]],\"wact\":[\"push\",\"deploy\"]}"
     },
     {
-      "at": 60.001,
+      "at": 59.997,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"deploy\"]],\"wact\":[\"push\",\"deploy\"]}"
     },
     {
-      "at": 61.971,
+      "at": 61.998,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"deploy\"]],\"wact\":[\"push\",\"shipped!\",\"p\"]}"
     },
     {
-      "at": 61.971,
+      "at": 61.999,
       "cause": {
         "kind": "tool",
         "text": "Claude: deploy again"
       }
     },
     {
-      "at": 62.28,
-      "effect": "Boop makes a happy face and says “Ha!”",
-      "line": "{\"t\":\"do\",\"id\":99163435,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"push went out\",\"say\":{\"take\":\"phase1.nonverbal.delight.ha__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
+      "at": 62.321,
+      "effect": "Boop makes a happy face and says “Mm-hm”",
+      "line": "{\"t\":\"do\",\"id\":1396051424,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"push went out\",\"say\":{\"take\":\"phase1.nonverbal.delight.mm-hm__happy__contained\"},\"mood\":\"happy\",\"loops\":1}}"
     },
     {
       "at": 63.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"deploy\"]],\"wact\":[\"push\",\"shipped!\",\"p\"]}"
     },
     {
-      "at": 65.006,
+      "at": 65.007,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"deploy\"]]}"
     },
     {
-      "at": 70.379,
+      "at": 70.428,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 70.381,
+      "at": 70.429,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 70.685,
-      "effect": "Boop celebrates and says “Big tiny win”",
-      "line": "{\"t\":\"do\",\"id\":99163436,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"keyboard-shortcuts\"},\"say\":{\"take\":\"phase1.phrase.celebrate.big-tiny-win__excited__contained\"},\"mood\":\"excited\",\"loops\":3}}"
+      "at": 70.75,
+      "effect": "Boop celebrates and says “Bada bing bada boom”",
+      "line": "{\"t\":\"do\",\"id\":1396051425,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"keyboard-shortcuts\"},\"say\":{\"take\":\"new.d15\"},\"mood\":\"excited\",\"loops\":3}}"
     },
     {
-      "at": 80.983,
+      "at": 80.997,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 87,
+  "length": 87.01,
   "name": "Boop",
   "script": "13976110452d4fbd9d19db4370195479f2b24bfbda9b82dd1d26683345774dad",
   "takes": [
-    "phase1.borrowed.hop__curious__contained",
-    "phase1.nonverbal.delight.heh__happy__contained",
-    "phase1.nonverbal.frustration.pfft__annoyed__contained",
-    "phase1.nonverbal.delight.ha__happy__contained",
-    "phase1.phrase.celebrate.big-tiny-win__excited__contained"
+    "phase1.word.begin.start__curious__contained",
+    "phase1.nonverbal.delight.whee__happy__contained",
+    "previous.pfft",
+    "phase1.nonverbal.delight.mm-hm__happy__contained",
+    "new.d15"
   ],
   "version": 1
 }

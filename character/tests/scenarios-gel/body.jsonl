@@ -58,7 +58,7 @@
 {"shot":"asleep"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"engaged","busy":2,"calls":[[0,1,"grep"],[1,1,"edit +18"]]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"focused","busy":2,"calls":[[0,1,"grep"],[1,1,"edit +18"]]}
 {"clock":250}
 {"clock":500}
 {"clock":750}
@@ -171,11 +171,11 @@
 {"shot":"gold"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day"],"base":"working","mood":"engaged","busy":1,"calls":[[0,1,"edit"]]}
+{"t":"state","vol":0,"when":["day"],"base":"working","mood":"focused","busy":1,"calls":[[0,1,"edit"]]}
 {"clock":250}
 {"clock":500}
 {"clock":600}
-{"t":"state","vol":0,"when":["day"],"wact":["tests","running tests"],"base":"working","mood":"engaged","busy":1,"calls":[[0,1,"edit"]]}
+{"t":"state","vol":0,"when":["day"],"wact":["tests","running tests"],"base":"working","mood":"focused","busy":1,"calls":[[0,1,"edit"]]}
 {"clock":650}
 {"clock":700}
 {"clock":750}

@@ -164,8 +164,7 @@ void test_the_motion_v1_numbers() {
     for (uint32_t t = 16; t <= 8000; t += 16) {
       if (t == 3008 || t == 3200) {
         const auto before = modes(e->motion);
-        TEST_ASSERT_TRUE(
-            e->play(request(t == 3008 ? SceneState::kPoked : SceneState::kTapSpam)));
+        TEST_ASSERT_TRUE(e->play(request(t == 3008 ? SceneState::kPoked : SceneState::kTapSpam)));
         const double dv[2][4] = {{-2.6, -3.5, 3.5, 4.8}, {4.5, -2.6, 5, 0}};
         for (int i = 0; i < 4; ++i) {
           TEST_ASSERT_TRUE(e->motion.modes[i].x == before[i].x);
@@ -260,7 +259,7 @@ void test_the_finger_numbers() {
     // At rest, let go: nothing that moves is touched but the target.
     const auto kept = modes(e->motion);
     const auto acting = e->acting;
-    const auto bridge = e->bridge;
+    const auto moodBeat = e->moodBeat;
     Spring activity[3], pull[3];
     for (int i = 0; i < 3; ++i) activity[i] = e->scenes.activity[i], pull[i] = e->pull[i];
     e->dragEnd();
@@ -270,7 +269,7 @@ void test_the_finger_numbers() {
     TEST_ASSERT_TRUE(same(e->acting.slide, acting.slide) && same(e->acting.lids, acting.lids));
     for (int i = 0; i < 3; ++i) {
       TEST_ASSERT_TRUE(same(e->scenes.activity[i], activity[i]) && same(e->pull[i], pull[i]));
-      TEST_ASSERT_TRUE(same(e->bridge.channels[i], bridge.channels[i]) && e->target[i] == F(0));
+      TEST_ASSERT_TRUE(same(e->moodBeat.channels[i], moodBeat.channels[i]) && e->target[i] == F(0));
     }
     TEST_ASSERT_TRUE(e->pose() == pose);
     TEST_ASSERT_TRUE(e->acting.nextPerformance >= e->motion.time + T(3));
@@ -406,7 +405,7 @@ namespace {
 // Every spring in the engine, and what its face eases.
 struct Springs {
   std::array<Spring, 4> modes;
-  Spring acting[6], slide, lids, activity[3], bridge[3], pull[3], desk, quietMix;
+  Spring acting[6], slide, lids, activity[3], beat[3], pull[3], desk, quietMix;
   Spring posture[slime::kProfiles];
   std::array<F, 8> controls, velocity;
   T time;
@@ -418,7 +417,7 @@ Springs springs(const Engine& e) {
   s.slide = e.acting.slide;
   s.lids = e.acting.lids;
   for (int i = 0; i < 3; ++i)
-    s.activity[i] = e.scenes.activity[i], s.bridge[i] = e.bridge.channels[i], s.pull[i] = e.pull[i];
+    s.activity[i] = e.scenes.activity[i], s.beat[i] = e.moodBeat.channels[i], s.pull[i] = e.pull[i];
   s.desk = e.scenes.desk;
   s.quietMix = e.scenes.quietMix;
   for (int i = 0; i < slime::kProfiles; ++i) s.posture[i] = e.postureWeights[i];
@@ -436,7 +435,7 @@ bool same(const Springs& a, const Springs& b, bool kicked = false) {
     ok &= a.modes[i].x == b.modes[i].x && (kicked ? abs(b.modes[i].v) <= F(8) : a.modes[i].v == b.modes[i].v);
   for (int i = 0; i < 6; ++i) ok &= same(a.acting[i], b.acting[i]);
   for (int i = 0; i < 3; ++i)
-    ok &= same(a.activity[i], b.activity[i]) && same(a.bridge[i], b.bridge[i]) && same(a.pull[i], b.pull[i]);
+    ok &= same(a.activity[i], b.activity[i]) && same(a.beat[i], b.beat[i]) && same(a.pull[i], b.pull[i]);
   for (int i = 0; i < slime::kProfiles; ++i) ok &= same(a.posture[i], b.posture[i]);
   return ok;
 }
@@ -542,7 +541,7 @@ void test_setters_keep_springs_and_replay() {
     Request r;
     switch (k.kind) {
       case kHappy: e.setMood(slime::kHappy); break;
-      case kGrumpy: e.setMood(slime::kGrumpy, 1); break;
+      case kGrumpy: e.setMood(slime::kGrumpy); break;
       case kSad: e.setMood(slime::kSad); break;
       case kWorking: e.setFacts(facts(SceneState::kWorking)); break;
       case kTesting: e.setFacts(facts(SceneState::kWorking, SceneState::kTesting)); break;

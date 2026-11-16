@@ -1,34 +1,17 @@
 {
-  "why": "TEMPORARY, until the voice has takes of its own for every mood. The recorded voice covers 13 of the universal moods; each other mood plays the takes of one of those 13, the same table Pixel's faces borrow designs by. voicegen lends the takes with it. Delete a line once its mood has its own takes; delete the file with the last.",
+  "why": "The voice bank was recorded in 13 moods. Three of them are no longer faces: `plays` says which face each one's takes play in. `borrows` is TEMPORARY, until the voice has takes of its own for every face: each face there plays the takes of the one it names. voicegen lends the takes with it. Delete a line once its face has its own takes.",
+  "plays": {
+    "engaged": "focused",
+    "irritated": "grumpy",
+    "whiny": "sad"
+  },
   "borrows": {
-    "comfy": "calm",
-    "lazy": "calm",
-    "bored": "calm",
     "pleased": "happy",
     "mischievous": "proud",
-    "shy": "curious",
-    "uncomfortable": "annoyed",
     "angry": "grumpy",
-    "disappointed": "sad",
-    "crying": "sad",
-    "uneasy": "wounded",
-    "scared": "wounded",
-    "frightened": "wounded",
     "surprised": "curious",
-    "stunned": "curious",
-    "speechless": "curious",
     "amused": "happy",
-    "hopeful": "determined",
-    "relieved": "calm",
-    "confused": "curious",
-    "baffled": "curious",
-    "skeptical": "curious",
-    "embarrassed": "wounded",
     "affectionate": "happy",
-    "lonely": "sad",
-    "tired": "calm",
-    "exhausted": "calm",
-    "overwhelmed": "wounded",
-    "disgusted": "annoyed"
+    "lonely": "sad"
   }
 }

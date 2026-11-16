@@ -18,6 +18,6 @@
     {"event": "turn finished", "at": "3m30s", "brain": {"react.face": "amused", "react.move": "success", "mood": "calm"}},
     {"event": "turn started", "at": "4m"},
     {"event": "command", "at": "4m20s", "topic": "tests", "failed": false},
-    {"event": "turn finished", "at": "4m30s", "brain": {"react.face": "comfy", "react.move": "success", "mood": "calm"}}
+    {"event": "turn finished", "at": "4m30s", "brain": {"react.face": "proud", "react.move": "success", "mood": "calm"}}
   ]
 }

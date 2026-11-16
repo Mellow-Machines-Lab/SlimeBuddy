@@ -58,23 +58,20 @@ frame to make it sound random breaks synchronization.
 
 ## Mood changes the performance, not the notification identity
 
-- Calm/comfy/lazy/bored: routine resting/idle silent. A notable gesture
+- Calm: routine resting/idle silent. A notable gesture
   may use a tiny gel accent where permitted; no periodic idle soundtrack.
 - Happy/excited/amused/pleased: buoyant rounded contacts, modestly brighter
   resonance; excited gestures can be busier but the sound gate stays sparse.
-- Curious/engaged/determined/confused/baffled/skeptical: precise contacts,
+- Curious/focused/determined: precise contacts,
   thoughtful pauses; determined is steady, not angry percussion.
 - Proud/mischievous: firm clean accent and small settling wobble, no
   prerecorded laugh or spoken expression in this phase.
-- Annoyed/irritated/grumpy/angry: compact lower/stronger contacts with
+- Annoyed/grumpy/angry: compact lower/stronger contacts with
   bounded clustering; don't make every aggressive movement audible.
-- Disappointed/sad/crying/whiny/wounded: softer, lower, slower contacts;
+- Sad/wounded: softer, lower, slower contacts;
   liquid tear accents, not sobbing recordings or guilt sounds.
-- Uneasy/scared/frightened: airy short recoil; no real-danger siren.
-- Surprised/stunned/speechless: one brief pop/freeze then silence.
-- Shy/embarrassed/affectionate/lonely: timid soft touches, long spaces.
-- Tired/exhausted, hopeful/relieved, uncomfortable/disgusted/overwhelmed:
-  use their distinct settling/strained/recovery direction; many cues silent.
+- Surprised: one brief pop/freeze then silence.
+- Affectionate/lonely: timid soft touches, long spaces.
 
 For needs_you, grumpy taps more firmly/in a short cluster, determined
 steadily, sad lightly/slowly, excited at several surface positions. Taps

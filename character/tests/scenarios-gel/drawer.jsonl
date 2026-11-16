@@ -81,7 +81,7 @@
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","busy":1,"idle":2,"vol":0}
 {"clock":1000}
-{"t":"do","name":"react","play":"now","args":{"sign":"1 working, 2 idle","reply":"status","show":"drawer","say":{},"mood":"engaged","loops":1}}
+{"t":"do","name":"react","play":"now","args":{"sign":"1 working, 2 idle","reply":"status","show":"drawer","say":{},"mood":"focused","loops":1}}
 {"clock":1400}
 {"shot":"asked"}
 {"expect":{"drawer":{"open":0}}}

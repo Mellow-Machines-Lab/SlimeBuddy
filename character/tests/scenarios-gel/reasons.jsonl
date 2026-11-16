@@ -795,7 +795,7 @@
 {"clock":72400}
 {"clock":72500}
 {"shot":"act-running"}
-{"t":"do","id":8,"name":"react","args":{"mood":"engaged","reason":"claude runs tests"}}
+{"t":"do","id":8,"name":"react","args":{"mood":"focused","reason":"claude runs tests"}}
 {"clock":72600}
 {"clock":72700}
 {"clock":72800}

@@ -40,12 +40,13 @@ in a cross mood, listed again as that feeling. Six takes were recorded in
 moods Boop doesn't have; MOOD_OF gives them one, by the owner's word
 (2026-09-29).
 
-The takes were recorded in 13 of the universal moods. Every mood needs
-takes, so each of the others plays the takes of the one it borrows, by
-the temporary table in borrowed.json beside this script: a take's
-moods are the one it was
-recorded in, then those that borrow it. Only takes.tsv says so; the
-audio and the version don't change.
+The takes were recorded in 13 moods, which MOODS keeps as the bank has
+them. Boop draws 18 faces: borrowed.json beside this script says which
+face a recorded mood that's no longer one plays in (`plays`: engaged's
+takes are focused's), and, temporarily, which recorded face each face
+with no takes of its own borrows (`borrows`). A take's moods in the table
+are the face it plays in, then those that borrow it. Only takes.tsv says
+so; the audio and the version don't change.
 
 Placeholder takes, which placeholders.py speaks for lines not recorded
 yet, are built like any other.
@@ -70,8 +71,10 @@ from pathlib import Path
 PACK_DIR = Path(__file__).resolve().parents[2]
 BANK = PACK_DIR / "design" / "assets" / "boop-voice-v1"
 PACK, TABLE = "voice/voice.bin", "mac/takes.tsv"  # in a character pack
-# TEMPORARY: the moods with no takes of their own, and the one each borrows.
-BORROWS = json.loads((Path(__file__).resolve().parent / "borrowed.json").read_text())["borrows"]
+# The face each recorded mood that's no longer one plays in; and, TEMPORARY,
+# the faces with no takes of their own, and the one each borrows.
+_BORROWED = json.loads((Path(__file__).resolve().parent / "borrowed.json").read_text())
+PLAYS, BORROWS = _BORROWED["plays"], _BORROWED["borrows"]
 CARD_PATH = "boop/voice.bin"  # where the board looks on its card
 
 RATE = 11025        # the takes' sample rate on the board
@@ -298,9 +301,10 @@ def write_pack(path: Path, ver: str, takes: list[dict], clips: list[bytes], mout
 
 
 def lent(mood: str) -> list[str]:
-    """The moods a take recorded in `mood` plays in: that one, then those
-    that borrow its takes."""
-    return [mood] + [m for m, lender in BORROWS.items() if lender == mood]
+    """The faces a take recorded in `mood` plays in: its own (`PLAYS`), then
+    those that borrow that one's takes."""
+    face = PLAYS.get(mood, mood)
+    return [face] + [m for m, lender in BORROWS.items() if lender == face]
 
 
 def write_table(ver: str, takes: list[dict]) -> str:

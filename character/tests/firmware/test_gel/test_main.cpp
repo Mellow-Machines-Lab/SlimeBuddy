@@ -71,7 +71,7 @@ static void test_frame_replay_is_byte_identical() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
   auto e = std::make_unique<Engine>();
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kWounded);
   e->motion.impulse(false);
   for (int t = 0; t <= 640; t += 16) e->step(t);
   paint(sa, *e);
@@ -90,7 +90,7 @@ static void test_a_helper_draws_the_same_body() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
   auto e = std::make_unique<Engine>();
-  e->setMood(slime::kFrightened);
+  e->setMood(slime::kWounded);
   e->motion.impulse(false);
   {
     PaintControls c;
@@ -145,7 +145,7 @@ static void test_one_face_vocabulary_and_latest_facts() {
   b.reset(0, rng);
   TEST_ASSERT_EQUAL_STRING("gel", b.face().name());
   app::Model m;
-  m.mood = Mood::kFrightened;
+  m.mood = Mood::kWounded;
   m.base = SceneState::kWorking;
   m.act = SceneState::kWorking;
   b.onState(m, 0);
@@ -163,7 +163,7 @@ static void test_one_face_vocabulary_and_latest_facts() {
   b.onState(m, 1600);
   b.advance(5008, rng);
   TEST_ASSERT_TRUE(e.scenes.route.state == SceneState::kTerminal);
-  TEST_ASSERT_EQUAL_INT(slime::kFrightened, e.emotion);
+  TEST_ASSERT_EQUAL_INT(slime::kWounded, e.emotion);
 }
 static void test_request_identity_and_cache_bounds() {
   auto e = std::make_unique<Engine>();
@@ -354,7 +354,7 @@ static void test_interrupted_alert_signals_exactly_once() {
     }
   }
 }
-// Across every directed edge the
+// From every face to every other the
 // two arts cross over, their weights summing to one, each stepping no more
 // than a slice of the shortest face window's ramp, the new one last; each
 // drawn ratio stays inside (0.75, 4/3) and moves its drawn size no further
@@ -364,17 +364,19 @@ static void test_interrupted_alert_signals_exactly_once() {
 static void test_face_and_props_move_without_jumps() {
   const F weightStep = q(.149), rampStep = q(.134);
   const int controls[] = {2, 4, 5};
-  for (int i = 0; i < slime::kEdgeCount; ++i) {
+  for (int i = 0; i < slime::kCanonical * slime::kCanonical; ++i) {
+    const int from = i / slime::kCanonical, to = i % slime::kCanonical;
+    if (from == to) continue;
     auto e = std::make_unique<Engine>();
-    e->setMood(slime::kEdges[i].from);
+    e->setMood(from);
     for (uint32_t t = 0; t <= 640; t += 16) e->step(t);
-    e->setMood(slime::kEdges[i].to, i % 3);
+    e->setMood(to);
     SemanticFace before = e->face;
     bool crossed = false;
     for (uint32_t t = 656; t <= 1280; t += 16) {
       e->step(t);
       const auto& f = e->face;
-      TEST_ASSERT_EQUAL_INT(slime::kEdges[i].to, f.current().art);
+      TEST_ASSERT_EQUAL_INT(to, f.current().art);
       crossed |= f.count == 2;
       F sum = 0;
       for (int k = 0; k < f.count; ++k) {
@@ -401,7 +403,7 @@ static void test_face_and_props_move_without_jumps() {
     TEST_ASSERT_EQUAL_INT(1, e->face.count);
   }
   SemanticFace face;
-  face.setMood(slime::kFrightened);
+  face.setMood(slime::kWounded);
   for (int i = 0; i < 3; ++i) face.advance(T::ratio(16, 1000));
   const F moving = face.velocity[2];
   TEST_ASSERT_TRUE(abs(moving) > q(.01));
@@ -531,7 +533,7 @@ static void test_it_falls_asleep_squashing_shut() {
   TEST_ASSERT_TRUE(early.shut.x < q(.01));
 }
 // A weight held at zero is flat there (the Hermite's): an art going out
-// fast, into a longer window (a bridge's 460 ms), dips below zero and comes
+// fast, into a longer window (460 ms), dips below zero and comes
 // back up toward it, and a retarget then doesn't bring it back.
 static void test_a_faded_art_never_comes_back() {
   const T frame = T::ratio(16, 1000);
@@ -582,7 +584,7 @@ static int faceInk(const Engine& e, Surface& drawn, Surface& bare) {
 // sleeping face's lids. Each look is laid over the body alone and the two
 // blended (CrossFade), so where both ink a pixel none of the body shows
 // through: the least now is 92%, waking (falling asleep 97%; calm to happy,
-// happy to sad and calm to frightened never less than the fainter face).
+// happy to sad and calm to wounded never less than the fainter face).
 static void test_the_face_never_fades_while_arts_cross_over() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface drawn{502, 410, a.data()}, bare{502, 410, b.data()};
@@ -591,8 +593,8 @@ static void test_the_face_never_fades_while_arts_cross_over() {
     SceneState base, then;
   } cases[] = {{slime::kCalm, slime::kHappy, SceneState::kIdle, SceneState::kIdle},
                {slime::kHappy, slime::kSad, SceneState::kIdle, SceneState::kIdle},
-               // frightened's welling eyes: a pool over a bean, with a glint
-               {slime::kCalm, slime::kFrightened, SceneState::kIdle, SceneState::kIdle},
+               // wounded's thin tears
+               {slime::kCalm, slime::kWounded, SceneState::kIdle, SceneState::kIdle},
                // falling asleep, and waking
                {slime::kCalm, slime::kCalm, SceneState::kIdle, SceneState::kAsleep},
                {slime::kCalm, slime::kCalm, SceneState::kAsleep, SceneState::kIdle}};
@@ -629,18 +631,15 @@ static void test_the_face_never_fades_while_arts_cross_over() {
 }
 // Nothing on the face flickers as moods cross over: a face that comes in
 // at weight zero draws nothing, and moves nothing it shares with the faces
-// already there to its own turn in the draw order. Pins the nine changes
+// already there to its own turn in the draw order. Pins changes like those
 // where it once did, for a frame (32 to 630 pixels of the mouth and
 // tears), and two that never did.
 static void test_a_face_coming_in_moves_nothing() {
   std::vector<uint16_t> a(502 * 410), b(a.size());
   Surface with{502, 410, a.data()}, without{502, 410, b.data()};
-  const int changes[][2] = {{slime::kShy, slime::kAffectionate},     {slime::kSad, slime::kWounded},
-                            {slime::kCrying, slime::kWounded},       {slime::kWounded, slime::kSad},
-                            {slime::kWounded, slime::kCrying},       {slime::kFrightened, slime::kWounded},
-                            {slime::kFrightened, slime::kSad},       {slime::kFrightened, slime::kCrying},
-                            {slime::kExhausted, slime::kOverwhelmed}, {slime::kCalm, slime::kHappy},
-                            {slime::kHappy, slime::kSad}};
+  const int changes[][2] = {{slime::kPleased, slime::kAffectionate}, {slime::kSad, slime::kWounded},
+                            {slime::kWounded, slime::kSad},          {slime::kLonely, slime::kWounded},
+                            {slime::kCalm, slime::kHappy},           {slime::kHappy, slime::kSad}};
   std::string report;
   int worst = 0;
   for (const auto& change : changes) {
@@ -1003,19 +1002,16 @@ static void test_timing_comes_from_the_recipe_table() {
 // shares, the yawn and the sneeze, is the face's to deal, as pastimes. A
 // yawn stretches up with its eyes squeezed; the zoomies slide it edge to
 // edge and back; a sneeze is a contact a second in that may sound,
-// lurching it forward, all off the heap; the long yawn ends heavy-lidded,
-// then wakes. Asleep snores only after a round of still
+// lurching it forward, all off the heap. Asleep snores only after a round of still
 // rests, and a lost link never.
 static void test_comedy_plays_in_idle_and_asleep() {
   TEST_ASSERT_EQUAL_INT(4, slime::kMaxGestures);
   TEST_ASSERT_EQUAL_INT(3, Acting::takes(slime::kCalm));
-  for (int p : {slime::kBored, slime::kTired, slime::kLazy, slime::kComfy, slime::kExcited})
-    TEST_ASSERT_EQUAL_INT(4, Acting::takes(p));
+  TEST_ASSERT_EQUAL_INT(4, Acting::takes(slime::kExcited));
   TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 2));
   const int yawning = bitOf(info(Pastime::kYawn)), sneezing = bitOf(info(Pastime::kSneeze));
   TEST_ASSERT_EQUAL_STRING("yawn-and-settle", slime::kGags[yawning].gesture.type);
   TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", slime::kGags[sneezing].gesture.type);
-  TEST_ASSERT_EQUAL_STRING("long-yawn", Acting::gesture(slime::kTired, 3).type);
   TEST_ASSERT_EQUAL_STRING("zoomies", Acting::gesture(slime::kExcited, 3).type);
   // The bag: its first round the three gestures, then every take, never the last again.
   Bag<slime::kMaxGestures> bag;
@@ -1058,8 +1054,6 @@ static void test_comedy_plays_in_idle_and_asleep() {
   for (const auto& f : zoom) most = max(most, f[1]), least = min(least, f[1]);
   TEST_ASSERT_TRUE(most > q(.45) && least < q(-.45) && abs(zoom.back()[1]) < q(.02));
   TEST_ASSERT_TRUE(at(play(slime::kCalm, 0, 2800, sneezing), 1.15)[4] > q(.08));  // the sneeze lurches forward
-  const auto longYawn = play(slime::kTired, 3, 5400);
-  TEST_ASSERT_TRUE(at(longYawn, 3.2)[5] > q(.35) && at(longYawn, 5)[5] < q(.05));
   // A sneeze is one contact, a second in, and allocates nothing.
   auto e = std::make_unique<Engine>();
   e->step(0);
@@ -1111,7 +1105,8 @@ static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
   TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kCalm]);
   TEST_ASSERT_FALSE(slime::kKeepsFaceThroughGestures[slime::kHappy]);
   TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kSad]);
-  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kIrritated]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kAnnoyed]);
+  TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kWounded]);
   TEST_ASSERT_TRUE(slime::kKeepsFaceThroughGestures[slime::kGrumpy]);
   linkkit::Rng rng;
   // The face showing a frame into gesture g, played from idle in a mood.
@@ -1133,7 +1128,7 @@ static void test_a_low_or_cross_mood_keeps_its_face_through_a_gesture() {
   for (Gesture g : {Gesture::kStroke, Gesture::kNose, Gesture::kTickle, Gesture::kPeekaboo}) {
     TEST_ASSERT_EQUAL_INT(slime::kGestureFaces[int(g)], shown(Mood::kCalm, g));
     TEST_ASSERT_EQUAL_INT(slime::kSad, shown(Mood::kSad, g));
-    TEST_ASSERT_EQUAL_INT(slime::kIrritated, shown(Mood::kIrritated, g));
+    TEST_ASSERT_EQUAL_INT(slime::kAngry, shown(Mood::kAngry, g));
   }
 }
 
@@ -1580,13 +1575,7 @@ void test_a_takeover_puts_the_desk_away();
 void test_every_finish_moves_smoothly_and_settles();
 void test_gold_rush_floods_and_little_win_shows_its_trophy();
 void test_only_what_draws_behind_erases_first();
-// test_bridges.cpp
-void test_every_edge_bridges_as_authored();
-void test_a_bridge_follows_its_waveform();
-void test_a_grab_defers_then_expires_the_bridge();
-void test_a_quiet_or_alerting_body_holds_the_bridge();
 void test_a_rapid_chain_settles_on_the_last();
-void test_each_edge_deals_its_own_bag();
 void test_the_semantic_face_numbers();
 // test_motion.cpp
 void test_the_motion_v1_numbers();
@@ -1741,7 +1730,7 @@ static void test_tracked_clear_matches_full_clear() {
 // A steady scene runs on the board's heap without touching
 // it. Through Device, as the board runs it (inputs, sound cues, the
 // engine and drawing), 300 frames of working, needs you, the
-// frightened face and asleep allocate nothing; only messages and events
+// wounded face and asleep allocate nothing; only messages and events
 // do, into bounded histories. (ArduinoJson's documents use malloc, so a
 // line's parsing isn't counted here.)
 // The layers (render/gel/layers.h) sit on the anchors of the pose that drew
@@ -2245,7 +2234,7 @@ static void test_steady_frames_allocate_nothing() {
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"busy\":1,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"vol\":0,\"attn\":{\"agent\":\"claude\",\"project\":"
       "\"boop\",\"name\":\"Fix a very long test name\",\"id\":7}}",
-      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"frightened\",\"busy\":2,\"vol\":0}",
+      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"wounded\",\"busy\":2,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"vol\":0}",
       // The pastimes and their kit.
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
@@ -3314,13 +3303,7 @@ int main() {
   RUN_TEST(test_every_finish_moves_smoothly_and_settles);
   RUN_TEST(test_gold_rush_floods_and_little_win_shows_its_trophy);
   RUN_TEST(test_only_what_draws_behind_erases_first);
-  // test_bridges.cpp
-  RUN_TEST(test_every_edge_bridges_as_authored);
-  RUN_TEST(test_a_bridge_follows_its_waveform);
-  RUN_TEST(test_a_grab_defers_then_expires_the_bridge);
-  RUN_TEST(test_a_quiet_or_alerting_body_holds_the_bridge);
   RUN_TEST(test_a_rapid_chain_settles_on_the_last);
-  RUN_TEST(test_each_edge_deals_its_own_bag);
   RUN_TEST(test_the_semantic_face_numbers);
   // test_motion.cpp
   RUN_TEST(test_the_motion_v1_numbers);

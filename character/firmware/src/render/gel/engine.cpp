@@ -18,12 +18,12 @@ void Engine::contact(const char* kind) {
       return;
     }
 }
-void Engine::sync(int forced) {
+void Engine::sync() {
   const Route route = router.resolve();
   int next = route.expression < 0 ? emotion : route.expression;
-  bridge.context(route.quiet, grab, route.state == SceneState::kNeedsYou);
+  moodBeat.context(route.quiet, grab, route.state == SceneState::kNeedsYou);
   if (next != expression) {
-    T ms = bridge.retarget(expression, next, timeMs(), random, forced);
+    T ms = moodBeat.retarget(expression, next, random);
     expression = next;
     motion.emotion = next;
     acting.setMood(next, motion.time);
@@ -46,7 +46,7 @@ void Engine::step(uint32_t ms) {
   T dt = T::ratio(delta, 1000);
   motion.advance(dt, motion.time + dt, random);
   sync();
-  bridge.advance(dt);
+  moodBeat.advance(dt);
   scenes.advance(dt, timeMs(), grab, random);
   acting.advance(dt, motion.time, grab, random);
   // Held, the pull follows the finger quickly; let go, it settles back on a
@@ -85,8 +85,8 @@ void Engine::step(uint32_t ms) {
 std::array<F, 4> Engine::pose() const {
   auto out = motion.pose();
   const auto mood = posture();
-  out[0] += acting.channels[0].x + mood[0] + scenes.activity[0].x + bridge.channels[0].x;
-  out[1] += acting.channels[1].x + mood[1] + scenes.activity[1].x + bridge.channels[1].x;
+  out[0] += acting.channels[0].x + mood[0] + scenes.activity[0].x + moodBeat.channels[0].x;
+  out[1] += acting.channels[1].x + mood[1] + scenes.activity[1].x + moodBeat.channels[1].x;
   out[2] += acting.channels[2].x;
   // The pull leans and squashes the whole body, inside its bounds.
   out[0] += kGrabLean * pull[0].x;
@@ -108,35 +108,24 @@ std::array<F, 2> Engine::posture() const {
     int m = slime::kProfile[i].canonical;
     F s = 0;
     switch (m) {
-      case slime::kLazy: s = q(-.04); break;
-      case slime::kBored: s = q(-.022); break;
-      case slime::kTired: s = q(-.032); break;
-      case slime::kExhausted: s = q(-.1); break;
-      case slime::kDisappointed: s = q(-.035); break;
       case slime::kSad:
       case slime::kWounded: s = q(-.055); break;
-      case slime::kCrying:
-      case slime::kFrightened: s = q(-.045); break;
-      case slime::kShy: s = q(-.025); break;
-      case slime::kComfy: s = q(-.02); break;
       case slime::kProud: s = q(.05); break;
       case slime::kDetermined: s = q(.022); break;
-      case slime::kHopeful: s = q(.025); break;
-      case slime::kEngaged: s = q(.012); break;
+      case slime::kFocused: s = q(.012); break;
+      case slime::kCurious: s = q(.03); break;
     }
     squash += w * s;
+    // Curious leans toward what it peers at, the side of its bigger eye.
+    if (m == slime::kCurious) lean += w * kCuriousLean;
     F t = motion.time;
     if (m == slime::kExcited) squash += w * q(.012) * sin(t * q(4.3));
-    if (m == slime::kScared || m == slime::kFrightened)
-      lean += w * (m == slime::kScared ? q(.014) : q(.026)) * sin(t * 13) * (q(.35) + q(.65) * square(sin(t * q(.75))));
-    if (m == slime::kCrying) squash += w * q(.01) * sin(t * q(3.1));
-    if (m == slime::kIrritated) lean += w * q(.008) * sin(t * q(6.1)) * square(square(max(0, sin(t * q(.7)))));
   }
   return {lean * (1 - scenes.quietMix.x), squash * (1 - scenes.quietMix.x)};
 }
 std::array<F, 3> Engine::life() const {
   return {clamp(max(0, acting.channels[3].x), q(-.24), q(.24)), clamp(acting.channels[4].x, q(-.12), q(.12)),
-          clamp(acting.channels[5].x + scenes.activity[2].x + bridge.channels[2].x, q(-.23), q(.23))};
+          clamp(acting.channels[5].x + scenes.activity[2].x + moodBeat.channels[2].x, q(-.23), q(.23))};
 }
 bool Engine::admits(const ContactEvent& c, SceneState state, bool quiet, bool protect) {
   // Comedy sounds even in a quiet state, with the routine chance.
@@ -165,8 +154,7 @@ void Engine::consumeCues() {
   }
   const bool quiet = state == SceneState::kIdle || state == SceneState::kAsleep || state == SceneState::kNoApp ||
                      state == SceneState::kListening || state == SceneState::kWaiting;
-  const bool protect =
-      state == SceneState::kNeedsYou || state == SceneState::kTaskComplete;
+  const bool protect = state == SceneState::kNeedsYou || state == SceneState::kTaskComplete;
   static const char* recipes[] = {"keyboard", "knock",  "squish", "ding",   "complete", "failed",
                                   nullptr,    "squish", "squish", "sneeze", "breath",   "bounce"};
   static_assert(std::size(recipes) == slime::kContactKinds, "a recipe, or none, for every contact kind");

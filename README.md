@@ -42,12 +42,12 @@ every turn your agents take.
   its nightcap at night.
 
 It's cheeky: it teases the agents and the work, never you, and it's
-always on your side. It has moods of its own, 42 of them, and there's no
+always on your side. It has moods of its own, seven of them, and 18 faces, and there's no
 reset button. It only watches: it never approves, denies or blocks
 anything an agent does.
 
 <p align="center">
-  <img src="media/moods.gif" width="760" alt="Eight of the slime's moods, each labelled: excited, proud, curious, calm, grumpy, sad, tired and wounded">
+  <img src="media/moods.gif" width="760" alt="Eight of the slime's faces, each labelled: excited, proud, curious, calm, grumpy, sad, wounded and focused">
 </p>
 
 A menu-bar app on your Mac does the thinking; the board is its body. The

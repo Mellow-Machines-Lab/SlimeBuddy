@@ -14,234 +14,244 @@
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.01,
+      "at": 1.009,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Fix the typo in the README”"
       }
     },
     {
-      "at": 2.018,
+      "at": 2.078,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 3.085,
+      "at": 3.146,
       "cause": {
         "kind": "tool",
         "text": "Claude edits README.md"
       }
     },
     {
-      "at": 4.786,
+      "at": 4.853,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 4.786,
-      "line": "{\"t\":\"do\",\"id\":308607572,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 4.853,
+      "line": "{\"t\":\"do\",\"id\":1810334192,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 4.787,
+      "at": 4.854,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 5.093,
-      "effect": "Boop celebrates and says “Eep!”",
-      "line": "{\"t\":\"do\",\"id\":308607573,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"phase1.nonverbal.delight.eep__happy__contained\"},\"mood\":\"pleased\",\"loops\":1}}"
+      "at": 5.181,
+      "effect": "Boop celebrates and says “Mwahaha...”",
+      "line": "{\"t\":\"do\",\"id\":1810334193,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"phase1.nonverbal.delight.mwahaha__happy__contained\"},\"mood\":\"pleased\",\"loops\":1}}"
     },
     {
-      "at": 6.162,
+      "at": 6.251,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 6.163,
+      "at": 6.252,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Add a dark mode toggle to the settings page”"
       }
     },
     {
-      "at": 7.229,
+      "at": 7.319,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 9.288,
+      "at": 9.453,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/settings/Theme.tsx"
       }
     },
     {
-      "at": 10.338,
+      "at": 10.518,
       "cause": {
         "kind": "wait",
         "text": "3 minutes later"
       }
     },
     {
-      "at": 10.339,
+      "at": 10.518,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
     },
     {
-      "at": 12.002,
+      "at": 12.224,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 12.002,
-      "line": "{\"t\":\"do\",\"id\":308607574,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.224,
+      "line": "{\"t\":\"do\",\"id\":1810334194,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 12.003,
+      "at": 12.225,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 12.308,
-      "effect": "Boop celebrates and says “Sweet”",
-      "line": "{\"t\":\"do\",\"id\":308607575,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"phase1.word.celebrate.sweet__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
+      "at": 12.549,
+      "effect": "Boop celebrates and says “Heh... Evviva”",
+      "line": "{\"t\":\"do\",\"id\":1810334195,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":1,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"previous.heh\",\"then\":\"phase1.borrowed.evviva__happy__contained\"},\"mood\":\"happy\",\"loops\":2}}"
     },
     {
-      "at": 13.367,
+      "at": 13.617,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"]}"
     },
     {
-      "at": 13.368,
+      "at": 13.617,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Find out why the checkout test is flaky”"
       }
     },
     {
-      "at": 14.436,
+      "at": 14.686,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 16.568,
+      "at": 16.821,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
     },
     {
-      "at": 16.568,
+      "at": 16.821,
       "cause": {
         "kind": "tool_failed",
         "text": "Claude: run the checkout tests, and it fails"
       }
     },
     {
-      "at": 16.89,
-      "effect": "Boop makes an annoyed face and says “Tsk...”",
-      "line": "{\"t\":\"do\",\"id\":308607576,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.nonverbal.frustration.tsk__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
+      "at": 17.142,
+      "effect": "Boop makes an annoyed face and says “Oh...”",
+      "line": "{\"t\":\"do\",\"id\":1810334196,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.nonverbal.deflate.oh__annoyed__contained\"},\"mood\":\"annoyed\",\"loops\":1}}"
     },
     {
-      "at": 16.892,
+      "at": 17.144,
       "effect": "Boop's mood is now annoyed",
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,1,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
     },
     {
-      "at": 17.944,
+      "at": 18.211,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 19.986,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"annoyed\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
+      "at": 20.345,
+      "effect": "Boop's mood is now grumpy",
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"grumpy\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 19.987,
+      "at": 20.346,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"grumpy\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
+    },
+    {
+      "at": 20.346,
       "cause": {
         "kind": "tool_failed",
         "text": "Claude: run the checkout tests again, and it fails"
       }
     },
     {
-      "at": 20.299,
-      "effect": "Boop makes a determined face and says “Ouch”",
-      "line": "{\"t\":\"do\",\"id\":308607577,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.word.setback.ouch__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
+      "at": 20.668,
+      "effect": "Boop makes a determined face and says “Drat”",
+      "line": "{\"t\":\"do\",\"id\":1810334197,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"tests failed\",\"say\":{\"take\":\"phase1.word.setback.drat__determined__contained\"},\"mood\":\"determined\",\"loops\":2}}"
     },
     {
-      "at": 20.3,
-      "effect": "Boop's mood is now determined",
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
+      "at": 20.67,
+      "effect": "Boop's mood is now focused",
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,2,\"npm test\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
     },
     {
-      "at": 21.368,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,3,\"edit +1 -1\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
+      "at": 21.739,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,3,\"edit +1 -1\"]],\"wact\":[\"tests\",\"fail\",\"f\"]}"
     },
     {
-      "at": 22.998,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,3,\"edit +1 -1\"]]}"
+      "at": 23.004,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,3,\"edit +1 -1\"]]}"
     },
     {
-      "at": 23.485,
+      "at": 23.873,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,3,\"edit +1 -1\"]]}"
+    },
+    {
+      "at": 23.873,
       "cause": {
         "kind": "tool",
         "text": "Claude edits test/checkout.test.js"
       }
     },
     {
-      "at": 24.547,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
+      "at": 24.939,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"running tests\"]}"
     },
     {
-      "at": 26.68,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
+      "at": 26.995,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier1\"],\"calls\":[[0,4,\"npm test\"]],\"wact\":[\"tests\",\"pass\",\"p\"]}"
     },
     {
-      "at": 26.681,
+      "at": 26.995,
       "cause": {
         "kind": "tool",
         "text": "Claude: run the checkout tests"
       }
     },
     {
-      "at": 27.744,
+      "at": 28.004,
       "cause": {
         "kind": "wait",
         "text": "Sixteen minutes in: the third tier"
       }
     },
     {
-      "at": 27.745,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"determined\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,4,\"npm test\"]]}"
+      "at": 28.005,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"focused\",\"busy\":1,\"vol\":6,\"when\":[\"day\",\"tier3\"],\"calls\":[[0,4,\"npm test\"]]}"
     },
     {
-      "at": 29.406,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"determined\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
+      "at": 29.71,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"focused\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 29.406,
-      "line": "{\"t\":\"do\",\"id\":308607578,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 29.71,
+      "line": "{\"t\":\"do\",\"id\":1810334198,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 29.408,
+      "at": 29.711,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 29.715,
-      "effect": "Boop celebrates and says “Very nice”",
-      "line": "{\"t\":\"do\",\"id\":308607579,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"phase1.phrase.pride.very-nice__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
+      "at": 30.033,
+      "effect": "Boop celebrates and says “Heh, obviously”",
+      "line": "{\"t\":\"do\",\"id\":1810334199,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":3,\"who\":{\"agent\":\"claude\",\"thread\":\"the-finish-ladder\"},\"say\":{\"take\":\"phase1.phrase.pride.heh-obviously__proud__contained\"},\"mood\":\"proud\",\"loops\":3}}"
     },
     {
-      "at": 29.716,
+      "at": 30.034,
       "effect": "Boop's mood is now proud",
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"proud\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     }
   ],
   "face": "gel",
-  "length": 35.99,
+  "length": 36.43,
   "name": "Boop",
-  "script": "eca4bc142d2695a09f19c0f70ae3dde6e1a0e4151e091c9adc4791e88641d907",
+  "script": "58a93c62d5f16db6944e44d1c2162fd6c4a42acae5817fd9b51cef25d5340d73",
   "takes": [
-    "phase1.nonverbal.delight.eep__happy__contained",
-    "phase1.word.celebrate.sweet__happy__contained",
-    "phase1.nonverbal.frustration.tsk__annoyed__contained",
-    "phase1.word.setback.ouch__determined__contained",
-    "phase1.phrase.pride.very-nice__proud__contained"
+    "phase1.nonverbal.delight.mwahaha__happy__contained",
+    "previous.heh",
+    "phase1.borrowed.evviva__happy__contained",
+    "phase1.nonverbal.deflate.oh__annoyed__contained",
+    "phase1.word.setback.drat__determined__contained",
+    "phase1.phrase.pride.heh-obviously__proud__contained"
   ],
   "version": 1
 }

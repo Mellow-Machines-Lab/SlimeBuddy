@@ -5,35 +5,25 @@
 
 const fail=(what)=>{throw Error('slimegen: '+what);};
 
-// The pack's mood graph (character.json), over its lasting moods: every
-// edge goes to another lasting mood, once; and the ordinary edges alone
-// reach every lasting mood from every other.
-function graphRules(character) {
-  const lasting=character.moods.filter(m=>m.meaning),ids=lasting.map(m=>m.id),by=new Map(lasting.map(m=>[m.id,m]));
-  for(const m of lasting){
-    const to=[...m.moves.ordinary,...m.moves.dramatic];
-    for(const next of to)if(!ids.includes(next)||next===m.id)fail(`${m.id} → ${next} isn't an edge to another lasting mood`);
-    if(new Set(to).size!==to.length)fail(`${m.id} names an edge twice`);
-    const reached=new Set([m.id]),pending=[m.id];
-    while(pending.length)for(const next of by.get(pending.pop()).moves.ordinary)if(!reached.has(next))reached.add(next),pending.push(next);
-    if(reached.size!==ids.length)fail(`the ordinary edges from ${m.id} reach ${reached.size} of ${ids.length} lasting moods`);
-  }
-}
-
-// The expressions: one for each mood, of that mood, with its three
-// gestures, its sound's pitch and gain, and only gags that exist; and the
-// notice takes' faces, each an expression.
-function expressionRules(graph,design,sound) {
-  for(const id of Object.keys(graph.nodes)){
-    const e=design.expressions[id];
-    if(!e||e.mood!==id)fail(`${id} has no expression of its own`);
+// The expressions: one for each face the pack names (character.json's
+// `moods`), of that face, before any alternate; each
+// with its three gestures, its sound's pitch and gain, and only gags that
+// exist. Every lasting mood rests in faces that exist; and the gestures' and
+// the notice takes' faces are each an expression.
+function expressionRules(character,design,sound) {
+  const ids=character.moods.map(m=>m.id);
+  if(JSON.stringify(Object.keys(design.expressions).slice(0,ids.length).sort())!==JSON.stringify([...ids].sort()))fail('the first expressions aren\'t the pack\'s faces');
+  for(const id of ids){
+    if(design.expressions[id].mood!==id)fail(`${id} has no expression of its own`);
     if(!sound.moodProfiles[id])fail(`${id} has no sound profile`);
   }
+  for(const m of character.lasting)for(const face of m.levels||[m.id])if(!ids.includes(face))fail(`${m.id} rests in no face ${face}`);
   for(const [id,e] of Object.entries(design.expressions)){
+    if(!ids.includes(e.mood))fail(`${id} is of no face ${e.mood}`);
     if(e.performances.length!==3)fail(`${id} has ${e.performances.length} gestures, not three`);
     for(const gag of e.gags||[])if(!design.gags[gag])fail(`${id} names no gag ${gag}`);
   }
-  for(const n of design.notices)if(!design.expressions[n.face])fail(`${n.id} borrows no expression ${n.face}`);
+  for(const n of [...design.notices,...design.gestures])if(!design.expressions[n.face])fail(`${n.id} borrows no expression ${n.face}`);
 }
 
 // The pastimes' bodies: each its own id, and a gag or a recipe.
@@ -59,9 +49,8 @@ function soundRules(sfx) {
   }
 }
 
-export function checkDesign({character,graph,design,sound,sfx}) {
-  graphRules(character);
-  expressionRules(graph,design,sound);
+export function checkDesign({character,design,sound,sfx}) {
+  expressionRules(character,design,sound);
   pastimeRules(design);
   soundRules(sfx);
 }

@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "default_mood": "calm",
   "startup_mood": "happy",
-  "claims_a_fix": ["Fixed"],
+  "claims_a_fix": [
+    "Fixed"
+  ],
   "remember_word": "Hey",
   "faces": {
     "amoled206": "gel"
@@ -26,391 +28,98 @@
       "fail": "{name} flinches: its sign says fail."
     }
   },
+  "lasting": [
+    {
+      "id": "calm",
+      "meaning": "Settled, the resting mood: nothing much is happening."
+    },
+    {
+      "id": "happy",
+      "meaning": "Glad: things are going well, a win, kind words, or you came back.",
+      "fade": {
+        "minutes": 10
+      }
+    },
+    {
+      "id": "focused",
+      "meaning": "Absorbed in the work: a long turn works on, or it's hard and a retry is under way.",
+      "not_for": "A turn that has ended, or a poke.",
+      "fade": {
+        "minutes": 3,
+        "holds": "working"
+      }
+    },
+    {
+      "id": "proud",
+      "meaning": "Proud: something hard finally worked.",
+      "fade": {
+        "minutes": 5,
+        "to": "happy"
+      }
+    },
+    {
+      "id": "cross",
+      "meaning": "Cross: a failure, pokes or shakes that keep coming, an interruption, or being hushed.",
+      "not_for": "An agent giving up or a very long turn failing: that's sad. Rude words to Boop: sad too.",
+      "levels": [
+        "annoyed",
+        "grumpy",
+        "angry"
+      ],
+      "fade": {
+        "minutes": 3
+      }
+    },
+    {
+      "id": "sad",
+      "meaning": "Down or hurt: a very long turn failed, the agent gave up, sad news, or unkind words to Boop.",
+      "fade": {
+        "minutes": 10
+      }
+    },
+    {
+      "id": "lonely",
+      "meaning": "Rare. Missing you: at an idle check-in when CONTEXT says its wish is \"waiting 1 h\" or more, in hours (its \"waiting 40 min\" is too soon), or when NOW says you came back after 20 to 40 hours.",
+      "not_for": "A finish, a check, a prompt, a quiet spell (that's rest: Boop dozes).",
+      "fade": {
+        "minutes": 20,
+        "holds": "away"
+      }
+    }
+  ],
   "moods": [
     {
       "id": "calm",
-      "meaning": "Settled, the resting mood: nothing much is happening.",
       "family": "settled",
-      "moves": {
-        "ordinary": [
-          "comfy",
-          "curious",
-          "engaged",
-          "happy",
-          "lazy",
-          "annoyed",
-          "lonely"
-        ],
-        "dramatic": [
-          "surprised",
-          "wounded",
-          "excited",
-          "sad"
-        ]
-      },
       "face": "A calm face: all is well, and nothing stands out."
     },
     {
-      "id": "comfy",
-      "meaning": "Cosy: all is quiet, and it feels safe and snug.",
-      "family": "settled",
-      "moves": {
-        "ordinary": [
-          "calm",
-          "lazy",
-          "happy",
-          "lonely"
-        ],
-        "dramatic": [
-          "surprised"
-        ]
-      },
-      "face": "A cosy face: all quiet and snug."
+      "id": "focused",
+      "family": "cognition",
+      "face": "A focused face: following work that's going well.",
+      "face_not_for": "A failure."
     },
     {
-      "id": "lazy",
-      "meaning": "Can't be bothered: low effort for show, though the work still gets done.",
-      "family": "settled",
-      "moves": {
-        "ordinary": [
-          "comfy",
-          "calm",
-          "engaged",
-          "lonely"
-        ],
-        "dramatic": [
-          "surprised"
-        ]
-      },
-      "face": "A lazy face: taking it easy."
+      "id": "happy",
+      "family": "joy",
+      "face": "A happy face: glad, a turn went fine or a small win."
     },
     {
-      "id": "bored",
-      "family": "settled",
-      "settles": "lazy",
-      "face": "A bored face: nothing to see.", "face_not_for": "Most idle check-ins: they get MOOD's own face."
+      "id": "excited",
+      "family": "joy",
+      "settles": "happy",
+      "face": "An excited face: something big just went right, or NOW says you came back after days."
     },
     {
       "id": "pleased",
       "family": "joy",
       "settles": "happy",
-      "face": "A pleased face: that went nicely."
-    },
-    {
-      "id": "happy",
-      "meaning": "Glad: things are going well, or something small went right.",
-      "family": "joy",
-      "moves": {
-        "ordinary": [
-          "excited",
-          "proud",
-          "curious",
-          "comfy",
-          "calm",
-          "engaged",
-          "annoyed"
-        ],
-        "dramatic": [
-          "sad",
-          "surprised",
-          "wounded"
-        ]
-      },
-      "face": "A happy face: pleased, a turn went fine or a small win."
-    },
-    {
-      "id": "excited",
-      "meaning": "Thrilled: a big piece of work just finished well, or NOW says you came back after days.",
-      "family": "joy",
-      "moves": {
-        "ordinary": [
-          "happy",
-          "proud",
-          "curious",
-          "determined"
-        ],
-        "dramatic": [
-          "surprised",
-          "grumpy",
-          "wounded",
-          "sad"
-        ]
-      },
-      "face": "An excited face: something big just went right, or NOW says you came back after days."
-    },
-    {
-      "id": "curious",
-      "meaning": "Interested: something new or puzzling, or a poke.",
-      "family": "cognition",
-      "moves": {
-        "ordinary": [
-          "calm",
-          "engaged",
-          "happy",
-          "annoyed",
-          "surprised",
-          "excited",
-          "determined"
-        ],
-        "dramatic": [
-          "wounded",
-          "sad"
-        ]
-      },
-      "face": "A curious face: a poke, a question, or something new or puzzling.",
-      "face_not_for": "A failure."
-    },
-    {
-      "id": "engaged",
-      "meaning": "Absorbed: steady work is going well.",
-      "family": "cognition",
-      "moves": {
-        "ordinary": [
-          "calm",
-          "curious",
-          "determined",
-          "happy",
-          "annoyed",
-          "lazy",
-          "proud"
-        ],
-        "dramatic": [
-          "excited",
-          "sad"
-        ]
-      },
-      "face": "An engaged face: following work that's going well.",
-      "face_not_for": "A failure."
-    },
-    {
-      "id": "determined",
-      "meaning": "Pushing on: the work is hard, or a retry is under way.",
-      "family": "cognition",
-      "moves": {
-        "ordinary": [
-          "engaged",
-          "proud",
-          "annoyed",
-          "irritated",
-          "sad",
-          "happy"
-        ],
-        "dramatic": [
-          "grumpy",
-          "excited"
-        ]
-      },
-      "face": "A determined face: a check failed and the agent is trying again, or long work goes on.",
-      "face_not_for": "A turn that has ended."
+      "face": "A pleased face: that went nicely, or phew, it worked out."
     },
     {
       "id": "proud",
-      "meaning": "Proud: something hard finally worked.",
       "family": "confidence",
-      "moves": {
-        "ordinary": [
-          "happy",
-          "engaged",
-          "determined",
-          "excited",
-          "annoyed"
-        ],
-        "dramatic": [
-          "wounded",
-          "comfy",
-          "grumpy",
-          "sad"
-        ]
-      },
       "face": "A proud face: something long or hard just finished, or finally worked."
-    },
-    {
-      "id": "mischievous",
-      "family": "confidence",
-      "settles": "happy",
-      "face": "A cheeky face: up to something."
-    },
-    {
-      "id": "shy",
-      "family": "social",
-      "settles": "comfy",
-      "face": "A shy face: all that attention."
-    },
-    {
-      "id": "uncomfortable",
-      "family": "strain",
-      "settles": "annoyed",
-      "face": "An uncomfortable face: this feels off."
-    },
-    {
-      "id": "annoyed",
-      "meaning": "A little put out: a small failure, an interruption, or being hushed.",
-      "family": "frustration",
-      "moves": {
-        "ordinary": [
-          "calm",
-          "engaged",
-          "irritated",
-          "sad",
-          "surprised",
-          "determined"
-        ],
-        "dramatic": [
-          "grumpy",
-          "wounded"
-        ]
-      },
-      "face": "An annoyed face: a small failure, or poked twice in a row, a little miffed.", "face_not_for": "A win."
-    },
-    {
-      "id": "irritated",
-      "meaning": "Losing patience: problems keep coming.",
-      "family": "frustration",
-      "moves": {
-        "ordinary": [
-          "annoyed",
-          "grumpy",
-          "determined",
-          "sad",
-          "engaged"
-        ],
-        "dramatic": [
-          "wounded",
-          "calm",
-          "proud"
-        ]
-      },
-      "face": "An irritated face: a turn that failed, or failures or pokes that keep coming.",
-      "face_not_for": "An agent giving up: that's sad. A win."
-    },
-    {
-      "id": "grumpy",
-      "meaning": "Fed up: trouble keeps piling up.",
-      "family": "frustration",
-      "moves": {
-        "ordinary": [
-          "irritated",
-          "sad",
-          "determined",
-          "annoyed"
-        ],
-        "dramatic": [
-          "wounded",
-          "surprised",
-          "calm",
-          "proud"
-        ]
-      },
-      "face": "A grumpy face: Boop is poked three or more times in a row, or failures pile up on failures.",
-      "face_not_for": "An agent giving up, or a single failed turn: that's irritated."
-    },
-    {
-      "id": "angry",
-      "family": "frustration",
-      "settles": "grumpy",
-      "face": "An angry face: a big comic huff."
-    },
-    {
-      "id": "disappointed",
-      "family": "sadness",
-      "settles": "sad",
-      "face": "A disappointed face: that fell short."
-    },
-    {
-      "id": "sad",
-      "meaning": "Down: the work failed, or was given up.",
-      "family": "sadness",
-      "moves": {
-        "ordinary": [
-          "wounded",
-          "calm"
-        ],
-        "dramatic": [
-          "grumpy",
-          "determined",
-          "happy"
-        ]
-      },
-      "face": "A sad face: a very long turn ended failed, or the agent gave up, stuck.",
-      "face_not_for": "A shorter turn failing with an error, or a check failing."
-    },
-    {
-      "id": "crying",
-      "family": "sadness",
-      "settles": "sad",
-      "face": "A crying face: too sad to hold in."
-    },
-    {
-      "id": "whiny",
-      "family": "sadness",
-      "settles": "sad",
-      "face": "A whiny face: things keep going wrong, and Boop feels sorry for itself."
-    },
-    {
-      "id": "wounded",
-      "meaning": "Hurt: unkind words, or a failure after a lot of work.",
-      "family": "sadness",
-      "moves": {
-        "ordinary": [
-          "sad",
-          "comfy",
-          "calm",
-          "surprised",
-          "annoyed"
-        ],
-        "dramatic": [
-          "grumpy",
-          "happy",
-          "determined"
-        ]
-      },
-      "face": "A wounded face: rude words to Boop, or a big failure after a lot of work."
-    },
-    {
-      "id": "uneasy",
-      "family": "alarm",
-      "settles": "annoyed",
-      "face": "An uneasy face: a little worried."
-    },
-    {
-      "id": "scared",
-      "family": "alarm",
-      "settles": "surprised",
-      "face": "A scared face: that looks dangerous."
-    },
-    {
-      "id": "frightened",
-      "family": "alarm",
-      "settles": "surprised",
-      "face": "A frightened face: fear takes over."
-    },
-    {
-      "id": "surprised",
-      "meaning": "Surprised, for a moment: something unexpected happened.",
-      "family": "surprise",
-      "moves": {
-        "ordinary": [
-          "curious",
-          "happy",
-          "annoyed"
-        ],
-        "dramatic": [
-          "grumpy"
-        ]
-      },
-      "face": "A surprised face: that was unexpected."
-    },
-    {
-      "id": "stunned",
-      "family": "surprise",
-      "settles": "surprised",
-      "face": "A stunned face: frozen by a big surprise."
-    },
-    {
-      "id": "speechless",
-      "family": "surprise",
-      "settles": "surprised",
-      "face": "A speechless face: no words."
     },
     {
       "id": "amused",
@@ -419,87 +128,74 @@
       "face": "An amused face: that was funny."
     },
     {
-      "id": "hopeful",
-      "family": "recovery",
-      "settles": "happy",
-      "face": "A hopeful face: maybe this time."
-    },
-    {
-      "id": "relieved",
-      "family": "recovery",
-      "settles": "happy",
-      "face": "A relieved face: phew."
-    },
-    {
-      "id": "confused",
-      "family": "cognition",
-      "settles": "curious",
-      "face": "A confused face: wait, what?"
-    },
-    {
-      "id": "baffled",
-      "family": "cognition",
-      "settles": "annoyed",
-      "face": "A baffled face: makes no sense."
-    },
-    {
-      "id": "skeptical",
-      "family": "cognition",
-      "settles": "annoyed",
-      "face": "A doubtful face: really?"
-    },
-    {
-      "id": "embarrassed",
-      "family": "social",
-      "settles": "comfy",
-      "face": "An embarrassed face: oops."
-    },
-    {
       "id": "affectionate",
       "family": "social",
-      "settles": "comfy",
+      "settles": "happy",
       "face": "A fond face: warm and friendly."
     },
     {
+      "id": "mischievous",
+      "family": "confidence",
+      "settles": "happy",
+      "face": "A cheeky face: up to something."
+    },
+    {
+      "id": "curious",
+      "family": "cognition",
+      "settles": "focused",
+      "face": "A curious face: a poke, a question, or something new or puzzling.",
+      "face_not_for": "A failure."
+    },
+    {
+      "id": "determined",
+      "family": "cognition",
+      "settles": "focused",
+      "face": "A determined face: a check failed and the agent is trying again, long work goes on, or you sound fed up and it's with you.",
+      "face_not_for": "A turn that has ended."
+    },
+    {
+      "id": "surprised",
+      "family": "surprise",
+      "settles": "calm",
+      "face": "A surprised face: that was unexpected."
+    },
+    {
+      "id": "annoyed",
+      "family": "frustration",
+      "settles": "cross",
+      "face": "An annoyed face: a small failure, a doubtful look, or poked twice in a row, a little miffed.",
+      "face_not_for": "A win."
+    },
+    {
+      "id": "grumpy",
+      "family": "frustration",
+      "settles": "cross",
+      "face": "A grumpy face: a turn that failed, or failures or pokes that keep coming.",
+      "face_not_for": "An agent giving up: that's sad. A win."
+    },
+    {
+      "id": "angry",
+      "family": "frustration",
+      "settles": "cross",
+      "face": "An angry face: a big comic huff, when trouble piles on trouble or the pokes won't stop.",
+      "face_not_for": "A single failure, or a win."
+    },
+    {
+      "id": "sad",
+      "family": "sadness",
+      "face": "A sad face: a very long turn ended failed, the agent gave up, stuck, or sad news.",
+      "face_not_for": "A shorter turn failing with an error, or a check failing."
+    },
+    {
+      "id": "wounded",
+      "family": "sadness",
+      "settles": "sad",
+      "face": "A wounded face: rude words to Boop, or a big failure after a lot of work."
+    },
+    {
       "id": "lonely",
-      "meaning": "Rare. Missing you: at an idle check-in when CONTEXT says its wish is \"waiting 1 h\" or more, in hours (its \"waiting 40 min\" is too soon), or when NOW says you came back after 20 to 40 hours.",
-      "not_for": "A finish, a check, a prompt, a quiet spell (that's rest: Boop dozes).",
       "family": "social",
-      "moves": {
-        "ordinary": [
-          "sad",
-          "calm",
-          "comfy"
-        ],
-        "dramatic": [
-          "happy"
-        ]
-      },
       "face": "Rare. A lonely face: when CONTEXT says its wish is \"waiting 1 h\" or more, in hours, or NOW says you came back after 20 to 40 hours."
-    },
-    {
-      "id": "tired",
-      "family": "energy",
-      "settles": "lazy",
-      "face": "A tired face: a long stretch."
-    },
-    {
-      "id": "exhausted",
-      "family": "energy",
-      "settles": "lazy",
-      "face": "An exhausted face: all worn out."
-    },
-    {
-      "id": "overwhelmed",
-      "family": "strain",
-      "settles": "engaged",
-      "face": "An overwhelmed face: too much at once."
-    },
-    {
-      "id": "disgusted",
-      "family": "strain",
-      "settles": "annoyed",
-      "face": "A disgusted face: yuck."
     }
   ],
   "studio": [
@@ -516,10 +212,6 @@
         "settled": {
           "label": "Settled · low stimulation",
           "colour": "#7fb7a4"
-        },
-        "energy": {
-          "label": "Energy · fatigue",
-          "colour": "#9a8fc4"
         },
         "joy": {
           "label": "Joy · humor",
@@ -545,21 +237,9 @@
           "label": "Disappointment · sorrow",
           "colour": "#5a7fc2"
         },
-        "alarm": {
-          "label": "Uncertainty · fear",
-          "colour": "#a46ad6"
-        },
         "surprise": {
           "label": "Surprise · freeze",
           "colour": "#36b9c9"
-        },
-        "recovery": {
-          "label": "Anticipation · release",
-          "colour": "#8cc152"
-        },
-        "strain": {
-          "label": "Discomfort · aversion",
-          "colour": "#a0896b"
         }
       }
     }

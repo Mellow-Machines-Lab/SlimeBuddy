@@ -9,7 +9,7 @@ scene family is implemented; idle, sleep and a finish have their comedy
 board's touches have a take each (Gestures), the
 face deals its pastimes, tagged ones too, from one table (Pastimes,
 Tagged pastimes), and one face flows into the next
-(Directed edge bridges: its arts morph or cross-fade, never closing). Q1
+(The mood beat: its arts morph or cross-fade, never closing). Q1
 representative art review was approved on 2026-10-02. Each rule below
 names the code that keeps it; [VALIDATION.md](VALIDATION.md) names the
 test that pins it. Contact-synchronized sound is implemented; timbres
@@ -61,7 +61,7 @@ Preserve current displacement and velocity when changing any target.
 Eye and mouth geometry, cheek opacity and tear amount move on springs
 (`gel/motion.cpp` `SemanticFace`). While one face gives way to another,
 the board draws both arts, features of the same shape morphing and the
-others cross-fading (Directed edge bridges, below), so the face never
+others cross-fading (The mood beat, below), so the face never
 closes or fades. The mood posture reads its own critically damped weights.
 
 ## One engine, driven as the board drives it
@@ -115,11 +115,11 @@ same 1/240 s substeps: it starts from rest without a jump in velocity, and a ret
 keeps both its position and its velocity. Cheek and tear opacity stay in
 [0, 1]. The controls' endpoints are each face's (slimegen's `face.mjs`,
 read off the painter's primitives); the board draws each of the face's
-layers at its ratios (Directed edge bridges, below), so settled faces keep
+layers at its ratios (The mood beat, below), so settled faces keep
 their authored proportions.
 
-The mood posture (the per-mood squash, and the excited, scared, frightened,
-crying and irritated oscillations, `gel/engine.cpp` `posture`) is weighted
+The mood posture (the per-face squash, curious's lean toward its bigger
+eye and excited's bounce, `gel/engine.cpp` `posture`) is weighted
 by one critically damped spring per expression, ω = 10, whose target is one
 for the current expression and zero for the others. The weights sum to one,
 so the posture eases between moods with no step in velocity, and it reads
@@ -130,8 +130,9 @@ after the quiet blend.
 The first owner review covered working, terminal, needs-you,
 task-complete success/failure and the quiet rest alias. Q1 approved that
 representative art on 2026-10-02, allowing the rest of the matrix to be
-implemented: happy, grumpy, sad and frightened in six cases each (success
-and failure separately), 24 cases in 20 mood/state cells, the Studio's
+implemented: four moods in six cases each (success
+and failure separately), 24 cases in 20 mood/state cells, now happy,
+grumpy, sad and wounded, the Studio's
 **Representative activities** review set
 (`character/studio/review-sets.json`). Sleeping is a justified
 shared alias, not three newly authored sleep animations; its one addition
@@ -199,8 +200,8 @@ the sleeping one's size, the cheeks and tears fading; once it's 0.9 shut,
 about a second on, the shared sleeping face crosses in over 360 ms, its
 lids easing in over the lines, alone by about 1.3 s. How shut it is,
 `shut`, springs on the controls' spring, and an awake art's drawn sizes
-follow the controls below their saturation that far (Directed edge
-bridges, Drawn ratios). Waking stays quick: the face's own 180 ms and
+follow the controls below their saturation that far (The mood beat,
+Drawn ratios). Waking stays quick: the face's own 180 ms and
 spring, ω = 20, the eyes opening from lines; woken before it's a line, the
 same art simply opens again. The sleeping face's semantic targets are eye
 openness 0.004, mouth width 0.018, curve 0.008, and zero cheek/tear
@@ -260,13 +261,12 @@ slimegen's `scenes.mjs`:
 | --- | --- | --- | --- |
 | Working | 580, 780, 1040 | 560, 760, 1680, 1880 | 1100, 2220 |
 | Terminal | 600, 780, 960 | 780, 1810, 2090 | 580, 740, 900, 1060, 1960, 2120 |
-| Frightened working/terminal | 800, 1700, 2040 | 740, 1800, 2240, 2480 | 1080, 2380 |
 | Grumpy terminal | 640, 800, 960 | 800, 960, 1120, 2100 | 660, 820, 980, 1140, 2120 |
 
 Sad work keeps every other contact of its ordinary rhythm, starting with
 the first, for longer pauses. Keyboard strength/lean are 1.05/0.018 for
-happy, 1.12/0.032 for grumpy terminal, 0.62/−0.016 for sad and 0.68/−0.018
-for frightened; other work uses 1/0.018. Contact side alternates. The body
+happy, 1.12/0.032 for grumpy terminal and 0.62/−0.016 for sad; other work
+uses 1/0.018. Contact side alternates. The body
 uses the contact envelope and strength for side lean 0.024, squash −0.052
 and forward 0.045. A successful reveal targets squash/forward 0.036/0.025;
 a failed reveal −0.048/−0.035, before the activity bounds.
@@ -301,8 +301,8 @@ safe envelope or produce competing repeated impacts.
 ## Full activity scene matrix
 
 The engine implements all 22 factual states in the nine scene families of
-[STATES.md](STATES.md): 42 canonical moods × 22 states, 924 cells,
-including 84 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
+[STATES.md](STATES.md): 18 faces × 22 states, 396 cells,
+including 36 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
 all its takes: three, a successful finish's four, a gesture's ten (each
 asked for, as the board does), and idle's (an expression's three gestures
 and its comedy, six or seven); quiet aliases keep the mood and use the
@@ -362,9 +362,8 @@ The additional desk rhythms before mood shaping and jitter are:
 | Testing | 560 | 480, 720 | 740, 1840 |
 | Waiting | None | None | None |
 
-The frightened contact-bearing desk modes share its hesitant rhythm;
-sad desk modes keep every other ordinary contact, beginning with the
-first. Waiting overrides contacts to an empty list and uses lean targets
+Sad desk modes keep every other contact of the usual rhythm, beginning
+with the first. Waiting overrides contacts to an empty list and uses lean targets
 [0.006, 0.014, −0.010]. Its focus cycles are [1, 2, 3] per recipe. Listening
 also has no contacts, uses lean [0.022, −0.012, 0.008] and pulse cycles
 [2, 1, 3]. For both, lean is modulated by
@@ -411,7 +410,6 @@ a stretch, a tilt, a slide or a rebound.
 | Comedy | Where | Its takes | Sound |
 | --- | --- | --- | --- |
 | Yawn and settle (2.9 s), sneeze and shake it off (2.7 s) | Idle, every expression, from `tier1` | The face's pastimes (`kYawn`, `kSneeze`) | The sneeze's one contact |
-| A long, slow yawn (4.2 s) | Idle, bored, tired, lazy and comfy (and comfy's rosy face) | Their own take 4 | None |
 | Zoomies, edge to edge (2.6 s) | Idle, excited | Its own take 4 | A landing (`bounce`) at each edge |
 | A snore: two breaths, each a slight swell | Asleep | Asleep's fourth take | Each breath |
 | Hiccups: Little Win's hop and trophy, then three small hiccups | A small successful finish | Its fourth take | The fanfare, then three squishes |
@@ -487,7 +485,7 @@ brain decides only whether to celebrate and in which face. A turn short
 of `tier1` is small, to `tier2` medium, and from `tier2` big, however
 long it's held. A finish with no turn (onboarding's) is sized by how long it's held (`loops`) instead: once
 small, twice medium, three times or more big. A
-success in a sad mood (disappointed, sad, crying, whiny, wounded) is
+success in a sad face (sad, wounded) is
 small whatever else: tearful but valid. A failure never plays one: its
 row keeps its card and its three takes, unless the finish names whose
 turn it was, when its low sign takes the card's place (A finished turn,
@@ -585,10 +583,10 @@ mood too.
 | ruffle (stroked slowly the wrong way, upward) | Bristles in ripples, then huffs | annoyed | 2.2 s |
 | nose | Squished in at the nose, pops back | surprised | 1.8 s |
 | tickle | Giggles, jiggling side to side, eyes squeezed | excited | 2.4 s |
-| dizzy (shaken) | Wobbles round, sliding and rolling side to side | baffled | 3.2 s |
+| dizzy (shaken) | Wobbles round, sliding and rolling side to side | surprised | 3.2 s |
 | pickup | Stretches up tall | surprised | 2.2 s |
-| putdown | Lands squashed and settles | relieved | 2 s |
-| startle (a thump on the desk) | Flinches, jumps, lands | stunned | 1.9 s |
+| putdown | Lands squashed and settles | pleased | 2 s |
+| startle (a thump on the desk) | Flinches, jumps, lands | surprised | 1.9 s |
 | peekaboo (turned face up again) | Squashed low with eyes shut, then rises | happy | 2.6 s |
 
 A scene lasts its bit and 200 ms more. **A recipe may carry a bit.**
@@ -975,7 +973,7 @@ meaning, variations and audio policy.
 An action recipe has phases `enter → act → recover → sustain`. Start
 from the current pose, blend in, perform its contacts, recover toward the
 current state target, and sustain. A state change cancels future contacts
-from the old recipe but leaves physical velocities alive. Bridge from
+from the old recipe but leaves physical velocities alive. Start from
 current controls, not from a hard-coded neutral first frame. A loopable
 authored offset starts/ends at zero offset and compatible derivative;
 the continuing physical body need not return to a frozen identical frame.
@@ -985,54 +983,44 @@ desk between work variations. A completion reveal may raise a card in
 front of the same hero; after the Moment, return toward the **latest**
 host snapshot, not a stale state saved before the animation.
 
-## Directed edge bridges
+## The mood beat
 
-The engine's `Bridge` (`gel/acting.cpp`) plays each of the pack's moves
-between its lasting moods (slimegen's `kEdges`, from `character.json`)
-in three variants; a face-only mood moves as the lasting mood it settles
-into (`kSettles`). A shuffle bag per directed edge selects variants without an
-adjacent repeat. This is an animation catalogue, not host graph gating: the
-host still decides whether a transition is justified. A retarget outside
-the graph uses the soft primitive and does not create a new graph edge.
+There is no mood graph. When the face changes, its arts cross over; and
+when the change is a change of mood, the body gives one small beat
+(the engine's `MoodBeat`, `gel/acting.cpp`). A change of face within one
+mood (happy to pleased, annoyed to grumpy) has none: slimegen's `kMoodOf`
+says which lasting mood each face is of, from the pack's
+`character.json`. Each change of mood deals its beat afresh, one of three:
 
-| Category | Variant 0 | Variant 1 | Variant 2 |
+| | Variant 0 | Variant 1 | Variant 2 |
 | --- | --- | --- | --- |
-| Ordinary primitive | Soft retarget | Gather/settle | Blink retarget |
-| Ordinary body duration (ms) | 420 | 680 | 360 |
-| Ordinary face window (ms) | 320 | 360 | 460 |
-| Dramatic primitive | Recoil/compress | Recoil/compress, second motion | Blink retarget with a short hold |
-| Dramatic body duration (ms) | 760 | 920 | 560 |
-| Dramatic face window (ms) | 240 | 280 | 340 |
+| Beat | Soft | Gather and settle | Blink: a short hold |
+| Body duration (ms) | 420 | 680 | 360 |
+| Face window (ms) | 320 | 360 | 460 |
 
-The blink retarget keeps its name from when the face closed behind a
-blink to swap its art; now its face window crosses over as the others do,
-and the name is its body's hold. Direction follows the authored source and
+A change of face with no beat is the soft one's, its face window 320 ms.
+Direction follows the authored source and
 destination profiles. Using their lean `L`, strength `G`, delay `D`, eye
 openness `E` and mouth width `M`, the directional score is
 `(Lto − Lfrom) + (Gto − Gfrom) × 0.025 + (Dfrom − Dto) / 10000 + (Eto − Efrom) × 0.01 + (Mto − Mfrom) × 0.005`.
 Direction is its sign and amplitude is `clamp(0.8 + abs(score) × 4, 0.8, 1.2)`.
-Reversing an edge reverses its directional lean; it does not reuse an
-undirected transition identity. Face dimensions distinguish otherwise
+Going back reverses the lean. Face dimensions distinguish otherwise
 equal authored body profiles.
 
-Let `p` be normalized body-bridge progress clamped to [0, 1],
+Let `p` be the beat's progress, clamped to [0, 1],
 `P = sin²(πp)`, and `H = 0` before progress 0.25, otherwise
 `sin²(π(p − 0.25) / 0.75)`. The additive target coefficients are:
 
 | Primitive | Lean | Squash | Forward |
 | --- | --- | --- | --- |
-| Soft retarget | direction × 0.009 × P | 0.004 × P | 0.003 × P |
-| Gather/settle | direction × 0.026 × P | −0.032 × P | 0.012 × sin(2πp) × P |
-| Ordinary blink retarget | direction × 0.006 × H | −0.014 × H | −0.004 × H |
-| Dramatic blink retarget | direction × 0.026 × H | −0.035 × H | −0.014 × H |
-| Dramatic recoil, variant 0 | −direction × 0.045 × sin(2πp) × P | −0.038 × P | −0.032 × P |
-| Dramatic compression, variant 1 | direction × 0.022 × P | −0.048 × P | 0.026 × sin(2πp) × P |
+| Soft | direction × 0.009 × P | 0.004 × P | 0.003 × P |
+| Gather and settle | direction × 0.026 × P | −0.032 × P | 0.012 × sin(2πp) × P |
+| Blink | direction × 0.006 × H | −0.014 × H | −0.004 × H |
 
 Targets multiply the directional amplitude, limited per primitive so that
 no target leaves its channel's displacement bound: the amplitude is at most
-each bound over the primitive's largest coefficient on that channel. Only
-the dramatic compression is affected; its squash limits it to
-0.05 / 0.048 ≈ 1.042. The bridge owns three additive springs with
+each bound over the beat's largest coefficient on that channel, which none
+of the three reaches at 1.2. The beat owns three additive springs with
 frequency 14, damping 12, velocity bound 1, displacement bounds 0.06
 lean, 0.05 squash and 0.04 forward, integrated in at most 1/240 s substeps.
 These channels compose with the current activity, mood posture and
@@ -1092,20 +1080,20 @@ arts crossing over are drawn near one size as the controls move. Falling
 asleep, an awake art below one is drawn as far toward the control itself
 as the face is shut, `soft − (soft − r) × shut`, its eyes' `r` no smaller
 than the line (half the lids' pen, 0.015, over the eye's half height). The
-shared sleeping face is the tired art drawn at its own squashed size (eye
+shared sleeping face is its own art (`calm:asleep`) drawn at its own squashed size (eye
 0.004, mouth 0.018 × 0.008), so its ratios also settle at one. Pen widths
 never stretch with a feature's scale. The board draws a second art only
 while one crosses over.
 
-Quiet rest and active attention permanently suppress the current bridge's
+Quiet rest and active attention permanently suppress the current beat's
 body gesture, with its springs settling toward zero. Clearing an alert or
 waking does not replay it. The face still retargets, and the attention
 request, card and consumed reveal keep their identity. A grab defers the
-current body bridge while the face continues: progress may be held for at
+current beat while the face continues: progress may be held for at
 most 320 ms of accumulated grab time. Releasing sooner lets the current
-bridge continue from its springs; reaching the limit expires its body
-gesture permanently. There is only one current bridge, so a newer retarget
-replaces deferred work and release never drains a gesture backlog. Bridges
+beat continue from its springs; reaching the limit expires its body
+gesture permanently. There is only one current beat, so a newer retarget
+replaces deferred work and release never drains a gesture backlog. Beats
 emit no contacts or sound cues.
 
 ## Continuity of what is drawn
@@ -1146,8 +1134,8 @@ posture's lean and squash and every prop's visibility):
   black, so that is scaling the pixels it wrote, in place, with no buffer,
   and a hole (the working mark's open half, a mini's eyes) stays one.
 - **The face never fades.** Through a cross-fade between differently
-  shaped arts (calm to happy, happy to sad, calm to frightened's welling
-  eyes, falling asleep's swap and waking), the board's frames, 40 ms apart,
+  shaped arts (calm to happy, happy to sad, calm to wounded's thin tears,
+  falling asleep's swap and waking), the board's frames, 40 ms apart,
   keep at least 85% of the visible ink of the fainter of the two faces it
   crosses between: the pixels the face takes at least a quarter of the way
   from the body's luminance to the ink's, eyes and mouth (a water eye's
@@ -1155,7 +1143,7 @@ posture's lean and squash and every prop's visibility):
   Falling asleep, those are the lines it squashed to and the sleeping face:
   the eyes closing is the morph, not a fade. The least is 90%, waking
   (falling asleep's swap 96%, happy to sad 99%; calm to happy and to
-  frightened show more than the fainter end, both arts showing). Where two
+  wounded show more than the fainter end, both arts showing). Where two
   shapes don't overlap, the frames half way are dimmer by a stricter count,
   each shape at about half its strength, which is the cross-fade.
 - **The body never teleports.** Each V1 body mode's position and velocity

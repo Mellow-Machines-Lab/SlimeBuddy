@@ -22,7 +22,7 @@
 {"shot":"idle"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0}
+{"t":"state","base":"working","mood":"wounded","vol":0}
 {"t":"do","id":103,"name":"listening","args":{}}
 {"clock":1504}
 {"shot":"listening"}
@@ -39,7 +39,7 @@
 {"shot":"working"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"act":"terminal"}
+{"t":"state","base":"working","mood":"wounded","vol":0,"act":"terminal"}
 {"clock":1504}
 {"shot":"terminal"}
 {"t":"dbg.reset"}
@@ -59,7 +59,7 @@
 {"shot":"waiting"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0,"attn":{"id":7,"agent":"codex","project":"Boop","name":"Native gel","more":1}}
+{"t":"state","base":"working","mood":"wounded","vol":0,"attn":{"id":7,"agent":"codex","project":"Boop","name":"Native gel","more":1}}
 {"clock":1504}
 {"shot":"needs_you"}
 {"t":"dbg.reset"}
@@ -98,7 +98,7 @@
 {"shot":"failure"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"frightened","vol":0}
+{"t":"state","base":"working","mood":"wounded","vol":0}
 {"t":"do","id":123,"name":"task_complete","args":{}}
 {"clock":1704}
 {"shot":"neutral_finish"}

@@ -58,7 +58,7 @@ media: setup
 	cd $(ENGINE) && CHARACTER=$(ID) internal/tools/.venv/bin/python internal/tools/mediagen/mediagen.py --out ../media boop moods
 
 # The slime's generated files from its design (character/design/slime-blob/):
-# the host graph, the gel's tables, its art and mesh, checked to be fresh.
+# the gel's tables, its art and mesh, checked to be fresh.
 # Drop --check to write them (character/tools/slimegen/README.md).
 slime:
 	node character/tools/slimegen/slimegen.mjs --check

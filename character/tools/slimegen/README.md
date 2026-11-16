@@ -6,7 +6,7 @@ Run `node character/tools/slimegen/slimegen.mjs` at the repo root; `--check`
 checks freshness without writing. No dependencies, device or network.
 
 It reads the slime's design (`character/design/slime-blob/`:
-`emotion-graph.json`, `expressions.json` and `sound/`), checks it
+`expressions.json` and `sound/`) and the pack's `character.json`, checks it
 (`check.mjs`: what fails is in the design's
 [VALIDATION.md](../../design/slime-blob/VALIDATION.md)), and writes the gel
 engine's tables. Its own modules hold what the design
@@ -18,12 +18,15 @@ is as code, the one source of each:
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
 | `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
-| `moods.mjs` | The moods to read | the design's `MOODS.md` |
 
-The mood graph is the pack's own, `character/character.json`
+The faces and the lasting moods are the pack's own,
+`character/character.json`
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §5):
-its lasting moods' meanings and moves, and the lasting mood each face-only
-one settles into. slimegen reads it and never writes it.
+`moods` names the 18 faces, each of which needs an expression of its own
+here, and `lasting` the 7 moods and the faces each rests in. slimegen reads
+it and never writes it. An expression whose id has a colon
+(`calm:asleep`, the board's sleeping face) is an alternate of the face
+before the colon, and no mood.
 
 `slime.h` holds the expression profiles, the bits and which
 expressions play them, the scene recipes with each row's takes and the two
@@ -31,8 +34,8 @@ rows' fourth takes, the gesture state's ten takes, each with a bit of its
 own and the face it borrows, which moods keep their own face through a
 gesture, the notice state's three takes' faces, the
 contact kinds' names (a rig clip's cues name them), the pastimes' takes
-by name, the pack's moves between its lasting moods (the bridges the gel draws)
-with the lasting mood each profile moves as (`kSettles`), and the sound
+by name, the lasting mood each face is of (`kMoodOf`: the body gives its
+beat only when that changes), and the sound
 effects, three takes of each sketch (`sound/sfx.js`) at 11,025 Hz.
 `slime_art.h` gives each art's groups (each eye, the mouth, the tears, the
 cheeks with the strain mark) a shape from their paths' point counts, fill

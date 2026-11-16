@@ -26,14 +26,9 @@
   },
   "families": {
     "settled": {
-      "character": "Soft, airy little gel movements; comfy can have one tiny settling plop; bored is quieter, not a failure cue.",
+      "character": "Soft, airy little gel movements, with one tiny settling plop at most.",
       "pitch": 0.94,
       "gain": 0.12
-    },
-    "energy": {
-      "character": "Slow deflating squish, never a medical/battery alarm; tired/exhausted routines mostly silent.",
-      "pitch": 0.8,
-      "gain": 0.1
     },
     "joy": {
       "character": "Round buoyant plops and quick tiny elastic chirps; excited brighter, not continuously louder.",
@@ -65,25 +60,10 @@
       "pitch": 0.9,
       "gain": 0.1
     },
-    "alarm": {
-      "character": "Short elastic recoil/airy tremble, not a security siren; frightened uses unresolved fictional context only.",
-      "pitch": 1.18,
-      "gain": 0.12
-    },
     "surprise": {
       "character": "One tiny pop then silence; freeze face carries the beat.",
       "pitch": 1.15,
       "gain": 0.13
-    },
-    "recovery": {
-      "character": "Settling gel exhale/plop; hopeful stays light, relieved softens.",
-      "pitch": 0.98,
-      "gain": 0.1
-    },
-    "strain": {
-      "character": "Uneven little strained squish, not harsh distortion; overload is mainly visual.",
-      "pitch": 0.88,
-      "gain": 0.11
     }
   },
   "recipes": [
@@ -177,34 +157,7 @@
       "family": "settled",
       "activation": "low",
       "intensity": "baseline",
-      "character": "Soft, airy little gel movements; comfy can have one tiny settling plop; bored is quieter, not a failure cue.",
-      "pitch": 0.94,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
-    "comfy": {
-      "family": "settled",
-      "activation": "low",
-      "intensity": "low",
-      "character": "Soft, airy little gel movements; comfy can have one tiny settling plop; bored is quieter, not a failure cue.",
-      "pitch": 0.94,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
-    "lazy": {
-      "family": "settled",
-      "activation": "low",
-      "intensity": "low",
-      "character": "Soft, airy little gel movements; comfy can have one tiny settling plop; bored is quieter, not a failure cue.",
-      "pitch": 0.94,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
-    "bored": {
-      "family": "settled",
-      "activation": "low",
-      "intensity": "low",
-      "character": "Soft, airy little gel movements; comfy can have one tiny settling plop; bored is quieter, not a failure cue.",
+      "character": "Soft, airy little gel movements, with one tiny settling plop at most.",
       "pitch": 0.94,
       "gain": 0.12,
       "status": "planned-mood-tuning"
@@ -245,7 +198,7 @@
       "gain": 0.13,
       "status": "planned-mood-tuning"
     },
-    "engaged": {
+    "focused": {
       "family": "cognition",
       "activation": "medium",
       "intensity": "moderate",
@@ -281,37 +234,10 @@
       "gain": 0.15,
       "status": "planned-mood-tuning"
     },
-    "shy": {
-      "family": "social",
-      "activation": "medium",
-      "intensity": "mild",
-      "character": "Soft hesitant squish/peek with long spaces; no guilt-provoking cries.",
-      "pitch": 1.06,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "uncomfortable": {
-      "family": "strain",
-      "activation": "medium",
-      "intensity": "moderate",
-      "character": "Uneven little strained squish, not harsh distortion; overload is mainly visual.",
-      "pitch": 0.88,
-      "gain": 0.11,
-      "status": "planned-mood-tuning"
-    },
     "annoyed": {
       "family": "frustration",
       "activation": "medium",
       "intensity": "mild",
-      "character": "Compact lower squish/firm contact; greater visual force, not a drum soundtrack or abusive noise.",
-      "pitch": 0.86,
-      "gain": 0.18,
-      "status": "planned-mood-tuning"
-    },
-    "irritated": {
-      "family": "frustration",
-      "activation": "high",
-      "intensity": "moderate",
       "character": "Compact lower squish/firm contact; greater visual force, not a drum soundtrack or abusive noise.",
       "pitch": 0.86,
       "gain": 0.18,
@@ -335,36 +261,9 @@
       "gain": 0.18,
       "status": "planned-mood-tuning"
     },
-    "disappointed": {
-      "family": "sadness",
-      "activation": "low",
-      "intensity": "mild",
-      "character": "Low soft squish; occasional tear plip at visible landing, no sob recording or constant water loop.",
-      "pitch": 0.9,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
     "sad": {
       "family": "sadness",
       "activation": "low",
-      "intensity": "moderate",
-      "character": "Low soft squish; occasional tear plip at visible landing, no sob recording or constant water loop.",
-      "pitch": 0.9,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "crying": {
-      "family": "sadness",
-      "activation": "medium",
-      "intensity": "strong",
-      "character": "Low soft squish; occasional tear plip at visible landing, no sob recording or constant water loop.",
-      "pitch": 0.9,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "whiny": {
-      "family": "sadness",
-      "activation": "medium",
       "intensity": "moderate",
       "character": "Low soft squish; occasional tear plip at visible landing, no sob recording or constant water loop.",
       "pitch": 0.9,
@@ -380,55 +279,10 @@
       "gain": 0.1,
       "status": "planned-mood-tuning"
     },
-    "uneasy": {
-      "family": "alarm",
-      "activation": "medium",
-      "intensity": "mild",
-      "character": "Short elastic recoil/airy tremble, not a security siren; frightened uses unresolved fictional context only.",
-      "pitch": 1.18,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
-    "scared": {
-      "family": "alarm",
-      "activation": "high",
-      "intensity": "moderate",
-      "character": "Short elastic recoil/airy tremble, not a security siren; frightened uses unresolved fictional context only.",
-      "pitch": 1.18,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
-    "frightened": {
-      "family": "alarm",
-      "activation": "high",
-      "intensity": "strong",
-      "character": "Short elastic recoil/airy tremble, not a security siren; frightened uses unresolved fictional context only.",
-      "pitch": 1.18,
-      "gain": 0.12,
-      "status": "planned-mood-tuning"
-    },
     "surprised": {
       "family": "surprise",
       "activation": "high",
       "intensity": "mild",
-      "character": "One tiny pop then silence; freeze face carries the beat.",
-      "pitch": 1.15,
-      "gain": 0.13,
-      "status": "planned-mood-tuning"
-    },
-    "stunned": {
-      "family": "surprise",
-      "activation": "high_then_low",
-      "intensity": "strong",
-      "character": "One tiny pop then silence; freeze face carries the beat.",
-      "pitch": 1.15,
-      "gain": 0.13,
-      "status": "planned-mood-tuning"
-    },
-    "speechless": {
-      "family": "surprise",
-      "activation": "low",
-      "intensity": "moderate",
       "character": "One tiny pop then silence; freeze face carries the beat.",
       "pitch": 1.15,
       "gain": 0.13,
@@ -441,60 +295,6 @@
       "character": "Round buoyant plops and quick tiny elastic chirps; excited brighter, not continuously louder.",
       "pitch": 1.12,
       "gain": 0.17,
-      "status": "planned-mood-tuning"
-    },
-    "hopeful": {
-      "family": "recovery",
-      "activation": "medium",
-      "intensity": "mild to moderate",
-      "character": "Settling gel exhale/plop; hopeful stays light, relieved softens.",
-      "pitch": 0.98,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "relieved": {
-      "family": "recovery",
-      "activation": "falling",
-      "intensity": "release, not an intensity rung",
-      "character": "Settling gel exhale/plop; hopeful stays light, relieved softens.",
-      "pitch": 0.98,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "confused": {
-      "family": "cognition",
-      "activation": "medium",
-      "intensity": "mild",
-      "character": "Precise small contacts; one investigative wobble, typing when the desk really moves.",
-      "pitch": 1.01,
-      "gain": 0.13,
-      "status": "planned-mood-tuning"
-    },
-    "baffled": {
-      "family": "cognition",
-      "activation": "medium to high",
-      "intensity": "strong",
-      "character": "Precise small contacts; one investigative wobble, typing when the desk really moves.",
-      "pitch": 1.01,
-      "gain": 0.13,
-      "status": "planned-mood-tuning"
-    },
-    "skeptical": {
-      "family": "cognition",
-      "activation": "medium",
-      "intensity": "mild to moderate",
-      "character": "Precise small contacts; one investigative wobble, typing when the desk really moves.",
-      "pitch": 1.01,
-      "gain": 0.13,
-      "status": "planned-mood-tuning"
-    },
-    "embarrassed": {
-      "family": "social",
-      "activation": "medium",
-      "intensity": "moderate",
-      "character": "Soft hesitant squish/peek with long spaces; no guilt-provoking cries.",
-      "pitch": 1.06,
-      "gain": 0.1,
       "status": "planned-mood-tuning"
     },
     "affectionate": {
@@ -513,42 +313,6 @@
       "character": "Soft hesitant squish/peek with long spaces; no guilt-provoking cries.",
       "pitch": 1.06,
       "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "tired": {
-      "family": "energy",
-      "activation": "low",
-      "intensity": "mild",
-      "character": "Slow deflating squish, never a medical/battery alarm; tired/exhausted routines mostly silent.",
-      "pitch": 0.8,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "exhausted": {
-      "family": "energy",
-      "activation": "very low",
-      "intensity": "strong",
-      "character": "Slow deflating squish, never a medical/battery alarm; tired/exhausted routines mostly silent.",
-      "pitch": 0.8,
-      "gain": 0.1,
-      "status": "planned-mood-tuning"
-    },
-    "overwhelmed": {
-      "family": "strain",
-      "activation": "high",
-      "intensity": "strong strain",
-      "character": "Uneven little strained squish, not harsh distortion; overload is mainly visual.",
-      "pitch": 0.88,
-      "gain": 0.11,
-      "status": "planned-mood-tuning"
-    },
-    "disgusted": {
-      "family": "strain",
-      "activation": "medium",
-      "intensity": "moderate",
-      "character": "Uneven little strained squish, not harsh distortion; overload is mainly visual.",
-      "pitch": 0.88,
-      "gain": 0.11,
       "status": "planned-mood-tuning"
     }
   }

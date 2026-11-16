@@ -69,7 +69,7 @@ void test_a_finish_is_sized_by_its_turn_or_else_its_hold() {
   TEST_ASSERT_TRUE(finishSize(3, kNoTurn, happy) == FinishSize::kBig);
   TEST_ASSERT_TRUE(finishSize(6, kNoTurn, happy) == FinishSize::kBig);
   // A sad success is small, a long turn's or held three times.
-  for (int sad : {slime::kDisappointed, slime::kSad, slime::kCrying, slime::kWhiny, slime::kWounded}) {
+  for (int sad : {slime::kSad, slime::kWounded}) {
     TEST_ASSERT_TRUE(finishSize(3, 3, sad) == FinishSize::kSmall);
     TEST_ASSERT_TRUE(finishSize(2, kNoTurn, sad) == FinishSize::kSmall);
   }

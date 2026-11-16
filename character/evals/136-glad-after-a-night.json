@@ -14,7 +14,7 @@
       "expect": {
         "react": "happy|excited|curious|pleased|affectionate",
         "move": "wake up",
-        "mood": "calm|happy|excited|curious"
+        "mood": "calm|happy|focused"
       }
     }
   ]

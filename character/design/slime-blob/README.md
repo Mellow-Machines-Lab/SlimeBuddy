@@ -63,25 +63,20 @@ in [VALIDATION.md](VALIDATION.md).
 | Faces | V3 candidate faces for every canonical mood, plus two face alternates (slimegen's `painter.mjs`, baked as vector paths) | Owner review of cuteness/readability at target size |
 | Acting | Three authored gesture recipes per expression; idle comedy: a yawn, a doze and a sneeze for every mood, a long yawn for the low moods, zoomies for excited | Owner review of the comedy on the board |
 | Drag | Bounded local surface pull, face follows body, release wobble | Real touchscreen QA |
-| Mood topology | Complete design graph and 295 directed bridges, three variants each | Host eligibility/pacing, Jev choices |
+| Mood changes | The face crosses over, and the body gives one of three small beats at a change of mood | Owner review on the board |
 | Activity/state | All 22 states in nine scene families, persistent desk/helpers/cards, the full mood matrix and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
 | Sounds | Contact-synchronized cues, sparse and voice-first, cut from procedural sketches (a sneeze and a snore's breath among them) | Speaker review and physical audio latency; the snore's level |
 
 **Coverage is earned by execution.** `test_gel` plays every canonical mood
-in every state and each of its takes, every directed edge in each of its
-variants, the interruptions, a finger, and every frame against the bounds
+in every state and each of its takes, a change from every face to every
+other, the interruptions, a finger, and every frame against the bounds
 of what may be drawn ([VALIDATION.md](VALIDATION.md)). The owner approved
 the initial 24-clip representative set before the matrix was filled out.
 
 ### Folder map
 
-- [emotion-graph.json](emotion-graph.json): canonical mood IDs, the design's
-  meanings, families, bodies and evidence. The mood graph itself, the 16
-  lasting moods' meanings and moves, is the pack's `character.json`, from
-  which slimegen writes the bridges' edges.
-- [MOODS.md](MOODS.md): the moods to read (faces, bodies, gestures, comedy,
-  moves), which slimegen writes from the graph, the expressions and
-  `character.json`.
+- [MOODS.md](MOODS.md): how the 7 moods and the 18 faces fit; the table
+  itself is the pack's `character.json`.
 - [expressions.json](expressions.json): V3 art profiles, reference mapping,
   three gesture recipes per expression, the comedy gags idle plays
   (`gags`, an expression's own `gags`), the board's gestures
@@ -91,7 +86,7 @@ the initial 24-clip representative set before the matrix was filled out.
 - [STATES.md](STATES.md): the 22 states in their nine scene families, and
   how the host's events reach them.
 - [CONTINUITY.md](CONTINUITY.md): the persistent actor, layer ownership,
-  the scenes, comedy, gestures, occasions, bridges and the rules of what is
+  the scenes, comedy, gestures, occasions, the mood beat and the rules of what is
   drawn, each with the C++ that keeps it.
 - [VALIDATION.md](VALIDATION.md): what checks each rule.
 - [sound/sound-plan.json](sound/sound-plan.json), [sound/README.md](sound/README.md)
@@ -104,7 +99,7 @@ the initial 24-clip representative set before the matrix was filled out.
 
 ## 1. Mood, state, personality and variation are different things
 
-**Mood** is the persistent emotional graph node. **State** is what the
+**Mood** is the feeling the buddy has settled into. **State** is what the
 host knows is happening. **Personality** governs how this character
 interprets events and performs feelings, not which tool may run.
 **Variation** is a local bounded choice of choreography in the same
@@ -117,91 +112,26 @@ are internal renderer controls, not new LLM-selected emotional axes.
 
 Example: a grumpy slime switches from terminal work to a web search. The
 desk remains, its eyes remain grumpy, velocities continue, and a search
-cue replaces the terminal cue. A separately justified graph decision may
-later soften grumpy → irritated, or branch grumpy → whiny. A tool change
-alone neither resets it to calm nor escalates it.
+cue replaces the terminal cue. Its crossness cools by itself, a level at
+a time. A tool change alone neither resets it to calm nor escalates it.
 
-## 2. The expanded mood system
+## 2. Moods and faces
 
-What shipped (2026-11-01): Boop settles into 16 lasting moods, whose
-moves are the pack's `character.json` (characters/CHARACTER.md §5); the
-other 26 are faces, each settling into one of them. The rest of this
-section is the design as it was drawn, kept for its reasoning: its edges
-are no longer in the design files.
+The pack's [character.json](../../character.json) is the one source: its
+`lasting` table has the 7 moods Boop settles into, each with its fade, and
+its `moods` the 18 faces the board draws. Read it there; nothing here
+restates it. [MOODS.md](MOODS.md) says how the two fit.
 
-The design's target was a graph of
-42 moods, 12 presentation families and 295 directed edges. Ordinary edges
-alone make the graph strongly connected; every node can eventually reach
-every other. There are at most eight outgoing destinations plus staying.
-Those are topology properties, not guarantees that every edge is eligible
-under every context.
+What the design holds for each face is in
+[expressions.json](expressions.json): its art, its three gestures, any
+bit of its own, and its sound profile in `sound/sound-plan.json`. The
+board's own sleeping face is the alternate `calm:asleep`, which is no
+mood.
 
-All 13 shipping IDs are retained: happy, excited, proud, curious,
-determined, grumpy, sad, calm, engaged, annoyed, irritated, whiny, wounded.
-The other 29 are additions; none is deleted. `wounded` displays as Hurt;
-`stunned` maps the reference's Shook; `mischievous` maps Naughty. `idle` is
-a state, not a mood. `comfy:rosy` and `speechless:tearful` are face
-alternates in [expressions.json](expressions.json), not graph nodes.
-
-The node list and exact adjacencies live in [MOODS.md](MOODS.md). The main
-within-family ladders are:
-
-- pleased → happy → excited
-- annoyed → irritated → grumpy → angry
-- disappointed → sad → crying
-- uneasy → scared → frightened
-- surprised → stunned; confused → baffled; tired → exhausted
-
-These are named intensity neighborhoods, not compulsory journeys. Calm,
-comfy, lazy and bored are distinct motivations, not four strengths of
-one feeling. Whiny is an active plea; wounded is hurt/withdrawal. Exhausted
-can be intense but slow. Never compare intensity numerically across
-families or ask Jev for a global affect vector.
-
-Cross-family routes make this a web. Examples actually present in the
-graph: grumpy → whiny (ordinary), grumpy → sad (dramatic), frightened →
-wounded/sad (ordinary), frightened → angry (dramatic), scared → relieved
-(ordinary), wounded → angry (dramatic), proud → embarrassed (dramatic).
-Do not assume the reverse edge exists, or belongs to the same category.
-
-### How Jev learns the next options
-
-The **Boop host**, not generic MellowHarness or the renderer, owns the full
-adjacency data and eligibility guards. For a mood question:
-
-1. Take a decision snapshot: current mood, factual activity, mood age,
-   current attention, personality and sanitized fresh evidence.
-2. Read only that node's outgoing edges. Deduplicate event identity, so a
-   repeated permission notification does not create a second escalation.
-3. Filter ordinary edges by context/pacing. Escalation requires fresh
-   relevant evidence; a frame, timer, animation loop or heartbeat is not
-   evidence that an obstacle got worse. Quiet recovery can offer a
-   justified neighbor without inventing success or clearing attention.
-4. Admit dramatic edges only with strong new evidence for that particular
-   branch. A tool failure is not danger; permission denial is not abuse.
-5. Ask Jev to choose staying or one eligible neighbor with a one-line
-   meaning. The full graph and all moods do not enter every prompt.
-6. Check the answer against the decision ID, current mood, offered set and
-   directed edge. Invalid or stale answers hold. Consume evidence once.
-7. Retarget the same actor; preserve the factual state and unresolved alert.
-
-The graph uses an implicit `hold` choice. The shipping `MoodOutput` uses
-the current mood's own ID for its stay option. Adapt between them in
-Boop's Mood output; do not change MellowHarness's generic multiple-choice
-machinery or mistake `hold` for a mood asset.
-
-The graph's dwell, reversal and brief-reaction values are **provisional
-design values**, and the shipping host doesn't enforce them: its mood
-question offers staying and every move the pack lists from the current
-mood, the dramatic ones marked as jumps, and the steering's prose carries
-the pacing (characters/CHARACTER.md §5). Steps 3 and 4 above are this
-design's proposal, not what ships. A brief surprised/stunned/speechless
-reaction still needs a justified outgoing recovery edge, which its
-steering names as the mood it fades to.
-
-The graph is a character-engineering design, not a validated psychology
-instrument or a detector of the user's emotions. Research provenance is
-retained in its `source` block; no source validates our exact topology.
+There is no mood graph. Jev may move to any mood when what happened gives
+a reason; the app fades a mood by its minutes and counts how cross it is.
+The body gives a small beat when the mood changes
+([CONTINUITY.md](CONTINUITY.md), The mood beat).
 
 ## 3. Use the state system, without multiplying scene designs
 
@@ -221,9 +151,9 @@ resting choreography and suppress dramatic acting/SFX while retaining the
 stored mood. These are deliberate aliases, not angry sleeping faces; asleep
 only snores now and then, a slight swell and a soft breath.
 
-Special cases deserve authored composition: crying+working can slump and
-occasionally drip liquid tears by the keyboard; grumpy+terminal has compact
-firm contacts; frightened+working has hesitant guarded input. Keep them
+Special cases deserve authored composition: sad+working keeps a small
+effort and longer pauses; grumpy+terminal has compact
+firm contacts. Keep them
 the same blob with the same desk. Visual drama need not add dense audio.
 
 `task_complete` has separate success/failure coverage under the same
@@ -250,13 +180,12 @@ boundaries, with bounded timing/pose jitter. No LLM generates intermediate
 frames or decides each tap. Code owns physical continuity and small
 randomness; Jev only chooses a permissible emotional step.
 
-Every graph edge has three **composable bridges** (CONTINUITY.md,
-Directed edge bridges), each played by `test_gel`. Semantic face controls retarget from the current interpolated
-pose; body springs retain their motion through gather/release or recoil beats.
-The 13 edge clips (the Studio's review set) are for the owner's visual spot-check. State
+A change of mood gets one of three small body beats (CONTINUITY.md, The
+mood beat). Semantic face controls retarget from the current interpolated
+pose; body springs keep their motion. State
 transitions use common enter/exit phases while preserving desk props.
 Attention must interrupt decorative actions promptly without destroying
-the body's motion state. Quiet states use minimal bridges.
+the body's motion state. Quiet states play no beat.
 
 ## 5. Basic slime sounds, not speech
 
@@ -281,11 +210,9 @@ but speech selection/recording is outside this package.
 
 This package is **nonshipping design data** under `character/design/`, in Boop's pack.
 CYD ships [boop-sound-bank-v4](https://github.com/Mellow-Machines-Lab/PixelBuddy/blob/main/character/design/boop-sound-bank-v4/README.md); AMOLED ships the generated native gel catalogs.
-The host graph, the one mood graph Boop runs, is the pack's
-`character.json`, which `character/tools/slimegen` reads for the
-board's edges. The design's `fallback`s stay design
-data: the engine has none, and Pixel's art lends its 13 moods to the
-others by a temporary table of its own (`PixelBuddy's character/tools/borrowed.json`).
+The moods and faces Boop runs are the pack's
+`character.json`, which `character/tools/slimegen` reads for the faces'
+names and the mood each is of.
 The gel engine has been checked on the board for performance. Owner
 appearance/listening review remains separate.
 
@@ -319,7 +246,7 @@ copied schema. Coverage of both forms is in [STATES.md](STATES.md).
 
 Gel firmware recognizes every canonical mood; pixel retains its compatibility
 vocabulary. Sending a new
-ID such as `frightened` to old firmware does **not** enable its face;
+ID such as `focused` to old firmware does **not** enable its face;
 unknown moods fall back. The Mac maps outgoing IDs using `hello.face`.
 
 The owner chose one face per board: pixel on the CYD, integer gel on the
@@ -346,10 +273,10 @@ control link or claim ESP32 performance without actual board measurements
 ### Acceptance before production integration
 
 - All canonical moods and reference alternates are cute/readable at the
-  real viewport, including angry/hurt/crying/frightened; owner art review.
+  real viewport, including angry, wounded and the new curious; owner art review.
 - Every mood/state cell plays truthfully (`test_gel`); every completion
   outcome is covered.
-- Every directed mood edge bridges continuously; state changes preserve
+- Every change of face crosses over continuously; state changes preserve
   mood and springs. Ten-minute working runs contain no reset/flash.
 - Interruptions and rapid event bursts cannot hide attention, replay old
   dings, claim false success, produce a stuck grab or approve a tool.

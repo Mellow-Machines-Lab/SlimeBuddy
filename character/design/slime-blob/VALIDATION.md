@@ -19,15 +19,16 @@ None of them contacts Jev, a paid API or a device.
 
 `slimegen.mjs` checks the design before it bakes it (`check.mjs`), and
 `--check` fails unless every generated file is the one checked in:
-`slime.h`, `slime_art.h`, `slime_mesh.h` and [MOODS.md](MOODS.md). It
+`slime.h`, `slime_art.h` and `slime_mesh.h`. It
 fails, naming what's wrong, when:
 
-- in the pack's `character.json`, a move goes to a mood that isn't a
-  lasting one, or to itself, or twice; or the ordinary moves alone don't
-  reach every lasting mood from every other;
-- a canonical mood has no expression of its own or no sound profile, an
-  expression hasn't three gestures, a mood names a bit there isn't, or a
-  notice take borrows an expression there isn't;
+- a face the pack's `character.json` names has no expression of its own
+  or no sound profile, or the first expressions aren't those faces; a
+  lasting mood rests in a face there isn't, or a face is of no lasting
+  mood;
+- an expression hasn't three gestures or is of no face, a face names a
+  bit there isn't, or a gesture or a notice take borrows an expression
+  there isn't;
 - two pastimes' bodies share an id, or one has neither a bit of its own
   nor a recipe;
 - a sound sketch renders differently from one seed, doesn't start from
@@ -60,14 +61,8 @@ ramps and springs can, and no jolt at an event. By file:
   moving smoothly and settling by its end; Gold Rush's flood above the
   lane and Little Win's trophy; only what draws behind the body erasing the
   frame whole first, less the rows the flood covers.
-- `test_bridges.cpp`: every directed edge in each of its three variants
-  (the retarget changing no spring and nothing drawn, its primitive,
-  windows, amplitude and direction, the controls between their ends, every
-  sixteenth of its window passed through, the variants moving differently);
-  each primitive's waveform and spring; a grab deferring then expiring the
-  bridge; a quiet or alerting body holding it; a rapid chain settling on
-  its last; each edge's own bag; the semantic face's spring, windows and
-  saturation.
+- `test_face.cpp`: the semantic face's spring, windows and saturation,
+  and a rapid chain of faces settling on its last.
 - `test_motion.cpp`: the accepted V1 springs, impulses, breath, blink,
   gaze and clock (the motion contract: changing the motion means editing
   this test); a finger's springs, reach and fling; acting's timing and
@@ -251,8 +246,8 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
 ## For the eye
 
 The Character Studio's **Gel on the board** card is the board's firmware:
-its **Tools** record the review sets (24 representative activities, 13
-directed mood bridges, `character/studio/review-sets.json`) from the
+its **Tools** record the review set (24 representative activities,
+`character/studio/review-sets.json`) from the
 board as silent WebM clips, and play the sound sketches each on its own.
 The studio's server saves the clips only with `--capture-dir DIR`, only
 those the pack names, from its own page with its token, at most 8 MiB
@@ -265,7 +260,7 @@ art evidence, not owner approval.
 
 - V3 artwork and the SFX sketches need the owner's art and listening
   review on the board.
-- The owner approved the representative set; the directed bridges' clips
-  are for the owner's spot-check.
+- The owner approved the representative set before the cut to 18 faces;
+  curious's new face needs the owner's look on the board.
 - Real touch hardware and physical audio latency are separate tests, and
   so is the board's frame time (`boopctl ping`'s `draw_us`).

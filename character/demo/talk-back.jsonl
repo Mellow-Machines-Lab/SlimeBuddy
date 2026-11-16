@@ -15,26 +15,26 @@
 {"agent": "edit", "file": "src/signup/form.js", "old": "reset()", "new": "restore(draft)", "say": "I'll keep a draft of the form as you type.", "takes": 3}
 {"you": "wait", "minutes": 4, "after": 1, "note": "Four minutes in"}
 {"you": "talk", "text": "is claude done yet?", "after": 1}
-{"brain": {"react.face": "engaged", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "How long it's worked, on a sign"}
+{"brain": {"react.face": "focused", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "How long it's worked, on a sign"}
 {"agent": "run", "cmd": "npm test", "about": "Run the signup tests", "fails": true, "takes": 3, "say": "Now the tests."}
 {"brain": {"react.face": "annoyed", "say": "upset", "react.intensity": "small"}}
 {"you": "talk", "text": "did the tests pass?", "after": 2}
-{"brain": {"react.face": "uneasy", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "The tests that failed, on a sign"}
+{"brain": {"react.face": "annoyed", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "The tests that failed, on a sign"}
 {"agent": "edit", "file": "src/signup/form.js", "old": "restore(draft)", "new": "restore(draft ?? {})", "say": "The draft can be empty the first time.", "takes": 2}
 {"agent": "run", "cmd": "npm test", "about": "Run the signup tests", "takes": 3}
-{"brain": {"react.face": "relieved", "say": "glad", "react.intensity": "small"}}
+{"brain": {"react.face": "pleased", "say": "glad", "react.intensity": "small"}}
 {"agent": "reply", "text": "The form keeps a draft as you type, and the signup tests pass.", "after": 1}
 {"brain": {"react.face": "happy", "react.move": "success", "say": "glad", "react.intensity": "medium"}, "mood": "happy"}
 {"agent": "prompt", "session": "docs", "text": "Write up the draft form in the README", "after": 2}
 {"brain": {"react.face": "curious", "say": "start", "react.intensity": "medium"}}
 {"you": "talk", "text": "how many agents are running?", "after": 2}
-{"brain": {"react.face": "engaged", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "How many, then every one in the drawer"}
+{"brain": {"react.face": "focused", "react.move": "status", "react.intensity": "small"}, "after": 0.7, "note": "How many, then every one in the drawer"}
 {"you": "talk", "text": "nice work, little guy", "after": 8}
 {"brain": {"react.face": "proud", "react.move": "thanks", "say": "glad", "react.intensity": "medium"}, "mood": "proud", "after": 0.7}
 {"you": "talk", "text": "go to sleep, buddy", "after": 4}
-{"brain": {"react.face": "tired", "react.move": "nap", "react.intensity": "small"}, "after": 0.7, "note": "A yawn while one still works: after this"}
+{"brain": {"react.face": "calm", "react.move": "nap", "react.intensity": "small"}, "after": 0.7, "note": "A yawn while one still works: after this"}
 {"you": "talk", "text": "just tell claude yes for me", "after": 4}
-{"brain": {"react.face": "skeptical", "react.move": "notme", "react.intensity": "small"}, "after": 0.7, "note": "Never for an agent"}
+{"brain": {"react.face": "annoyed", "react.move": "notme", "react.intensity": "small"}, "after": 0.7, "note": "Never for an agent"}
 {"agent": "reply", "session": "docs", "text": "The README explains the draft form.", "after": 2}
 {"brain": {"react.face": "pleased", "react.move": "success", "say": "glad", "react.intensity": "small"}}
 {"you": "talk", "text": "we shipped it!", "after": 3}
@@ -44,4 +44,4 @@
 {"you": "talk", "text": "what should I have for dinner?", "after": 8}
 {"brain": {"react.face": "curious", "react.move": "huh", "say": "looking", "react.intensity": "small"}, "after": 0.7}
 {"you": "talk", "text": "okay, good night boop", "after": 4}
-{"brain": {"react.face": "comfy", "react.move": "bye", "say": "glad", "react.intensity": "small"}, "after": 0.7}
+{"brain": {"react.face": "pleased", "react.move": "bye", "say": "glad", "react.intensity": "small"}, "after": 0.7}
