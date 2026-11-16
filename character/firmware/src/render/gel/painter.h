@@ -106,8 +106,16 @@ int tapLift(const Scenes& scenes, int side);
 // lands.
 constexpr int kTypeMs = 340, kTypeLift = 12, kBriskMs = 300, kBriskLift = 30, kBriskTapMs = 280;
 // `fast`, with you typing fast (the `typingfast` tag): a paw every kFastMs,
-// as high, over kFastTapMs: quicker, not higher.
-constexpr int kFastMs = 210, kFastTapMs = 196;
+// as high, over kFastTapMs: quicker, not higher, the tap the same share of
+// its beat, so the paws keep their place in it as the pace changes.
+constexpr int kFastMs = 210, kFastTapMs = kFastMs * kBriskTapMs / kBriskMs;
+// Typing with you, by where in its two beats it is (`phase`, 0 … 2000, a
+// beat a thousand, which the face moves on by the time over the beat's
+// length, GelFace::pawPhase): how far up the paw on `side` is. A change of
+// pace changes how fast the phase moves, never where it is, so no paw snaps.
+// A tap is kTapBeat of a beat (even, so its top lands on a whole phase).
+constexpr int kBeat = 1000, kTapBeat = (kBriskTapMs * kBeat / kBriskMs + 1) / 2 * 2;
+int briskLift(int phase, int side);
 // Where each activity that isn't typing holds the paws (0 left, 1 right),
 // in the thousandths paintProps draws them in: lifted, and moved right.
 struct PawPose {
@@ -118,7 +126,7 @@ constexpr PawPose kLookingPaws{{-14, -14}, {-96, -40}}, kRunningPaws{{40, 40}, {
 // A change of activity's pose takes this long (the rig's look, and so the
 // body's lean; the paws' spring settles as fast).
 constexpr uint32_t kPoseMs = 400;
-int typeLift(uint32_t ms, int side, bool brisk = false, bool fast = false);
+int typeLift(uint32_t ms, int side, bool brisk = false);
 // The cards paintProps will fill opaque this frame, as boxes of the pixels
 // it covers whole (at most Surface::kMaxKeep), for the clear to leave.
 int opaqueCards(const Surface&, const Engine&, Box* out);

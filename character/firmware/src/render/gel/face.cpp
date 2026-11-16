@@ -26,16 +26,33 @@ int profileFor(Mood mood) {
 
 constexpr int kTakes = int(sizeof(slime::kRecipes[0][0]) / sizeof(slime::kRecipes[0][0][0]));
 
+// A clip of the staged pack's, which it must have: its lookup at start.
+const rig::Clip& clipNamed(const char* name) {
+  const rig::Clip* c = rig::kRig.clip(name);
+  return c ? *c : *rig::kRig.clip("breathe");
+}
+
 // The tags of you at the Mac, as bits, found once at compile time: they're
 // read every tick.
 constexpr uint32_t bitOf(const char* name) { return 1u << tagIndex(name); }
-constexpr uint32_t kCallTag = bitOf("call"), kHoldingTag = bitOf("holding"), kScrollingTag = bitOf("scrolling"),
-                   kMusicTag = bitOf("music"), kWatchingTag = bitOf("watching"), kFastTag = bitOf("typingfast"),
-                   kMacLeftTag = bitOf("macleft"), kMacRightTag = bitOf("macright");
+constexpr uint32_t kCallTag = bitOf("oncall"), kCopiedTag = bitOf("copied"), kScrollingTag = bitOf("scrolling"),
+                   kMusicTag = bitOf("music"), kVideoTag = bitOf("video"), kFastTag = bitOf("typingfast"),
+                   kTypingTag = bitOf("typing"), kReadingTag = bitOf("reading"), kMacLeftTag = bitOf("macleft"),
+                   kMacRightTag = bitOf("macright"), kMacUpTag = bitOf("macup");
 
 }  // namespace
 
 const voice::EffectClips& GelFace::clips() const { return gel::clips(); }
+
+// By WithYou's order: none, music, video, reading, copied, on a call.
+const GelFace::Clips GelFace::clips_ = {
+    {nullptr, &clipNamed("groove"), &clipNamed("video"), &clipNamed("read-along"), &clipNamed("copied"), &clipNamed("on-call")},
+    &clipNamed("read-along-settled"),
+    &clipNamed("type-along"),
+    &clipNamed("type-along-fast"),
+    &clipNamed("stretch"),
+    &clipNamed("release"),
+    &clipNamed("look-around")};
 
 const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome) {
   if (state == SceneState::kTaskComplete && outcome != Outcome::kFailure && isFinishVariant(variant))
@@ -78,7 +95,8 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   tapping_ = typed_ = false, typedAt_ = 0;
   fast_ = typingTag_ = thought_ = false, typingFrom_ = thinkAt_ = 0;
   with_ = wanted_ = WithYou::kNone, withClip_ = nullptr;
-  scrolled_ = music_ = called_ = held_ = settled_ = false, scrolledAt_ = readFrom_ = musicFrom_ = 0;
+  scrolled_ = music_ = called_ = copied_ = settled_ = false, scrolledAt_ = readFrom_ = musicFrom_ = 0;
+  pawPhaseQ_ = 0, fastSeen_ = 0;
   pointer_ = pointerNear_ = false, pointerX_ = pointerY_ = 0;
   for (int i = 0; i < kFollows; ++i) followTo_[i] = followBy_[i] = 0;
   gaze_.reset();
@@ -130,6 +148,7 @@ void GelFace::advanceTo(uint32_t t) {
   showLayers(t);
   answerAct(t);
   showAlong(t);
+  pawPhase(dt);
   showWithYou(t);
   followLean(dt);
   showGaze(t);
@@ -368,35 +387,41 @@ bool GelFace::typingPose() const {
   return !(l && l->acted(engine_->router.facts.look()));
 }
 
-// Typing along with you (face.h): while your hands are busy and it shows
-// its own look, idle or at work in its typing pose, with nothing else
-// having it, its paws type briskly with you. Idle, its keyboard comes out
+// Whether it's free for you at the Mac (typing along, and the poses of
+// showWithYou): it shows its own look, idle or at work in its typing pose
+// with no word forward, and nothing else has it: no finger, no Mac gone, no
+// card in its hands, no transition and no pastime. `look` is the look.
+bool GelFace::freeForYou(uint32_t t, SceneState& look) const {
+  const bool shows = showsLook(source_.anim, look);
+  const bool place = look == SceneState::kIdle ||
+                     (look == SceneState::kWorking && typingPose() && !(stream_ && stream_->call.live));
+  return shows && place && !finger_ && !alone_ && !card_.on && !transition(t) && !playing();
+}
+
+// Typing along with you (face.h): while your hands are busy and it's free
+// for you, its paws type briskly with you. Idle, its keyboard comes out
 // for it, and stays a little longer after you stop, its paws at rest, so a
 // pause in your typing doesn't put the keyboard away and bring it back; at
 // work the desk is out already, and its paws go back to the agents' soft
-// typing. Not while it holds a card: its hands are full.
+// typing. Not while it holds a card: its hands are full. Not on a call.
 void GelFace::showAlong(uint32_t t) {
   const Engine& e = *engine_;
   SceneState look;
-  const bool free = showsLook(source_.anim, look) && !finger_ && !alone_ && !card_.on && !transition(t);
-  const bool idle = free && look == SceneState::kIdle;
-  // At work its desk is out already: there your typing makes its paws
-  // brisk, while its own pose is typing and no word forward has the screen.
-  // Looking, running or waiting, its paws are off the keys, and stay off.
-  const bool working = free && look == SceneState::kWorking && typingPose() && !(stream_ && stream_->call.live);
-  const bool typing = hasTag(e.scenes.when, "typing");
-  // It never cuts a pastime to start: it waits for it to end. On a call it
-  // keeps still.
+  const bool free = freeForYou(t, look);
+  const bool idle = free && look == SceneState::kIdle, working = free && look == SceneState::kWorking;
+  const uint32_t when = e.scenes.when;
+  const bool typing = when & kTypingTag;
   const bool was = tapping_;
-  tapping_ = (idle || working) && typing && !playing() && !(e.scenes.when & kCallTag);
+  tapping_ = (idle || working) && typing && !(when & kCallTag);
   // Its body keeps time with you: a small sway over the keys (the rig's
   // `type-along`); the paws carry the typing.
-  if (tapping_ != was)
-    if (const rig::Clip* clip = rig::kRig.clip("type-along")) tapping_ ? mixer_.play(*clip) : mixer_.stop(*clip);
-  // Fast, its eyes open a little wider, and its paws tap quicker (paintProps).
-  const bool fast = tapping_ && (e.scenes.when & kFastTag);
-  if (fast != fast_)
-    if (const rig::Clip* clip = rig::kRig.clip("type-along-fast")) fast ? mixer_.play(*clip) : mixer_.stop(*clip);
+  if (tapping_ != was) tapping_ ? mixer_.play(*clips_.along) : mixer_.stop(*clips_.along);
+  // Fast, its eyes open wider and it hunches in, and its paws tap quicker
+  // (pawPhase). A flicker off shorter than kFastLingerMs doesn't stop it.
+  const bool fastNow = tapping_ && (when & kFastTag);
+  if (fastNow) fastSeen_ = t;
+  const bool fast = fastNow || (fast_ && tapping_ && within(t, fastSeen_, kFastLingerMs));
+  if (fast != fast_) fast ? mixer_.play(*clips_.fast) : mixer_.stop(*clips_.fast);
   fast_ = fast;
   // A long stretch of typing along that you stop: it looks up at you, as
   // if thinking it over with you (render/gel/gaze.h).
@@ -405,7 +430,7 @@ void GelFace::showAlong(uint32_t t) {
   typingTag_ = typing;
   const bool alone = tapping_ && idle;  // with its keyboard alone
   if (alone) typed_ = true, typedAt_ = t;
-  const bool out = idle && typed_ && (alone || (!playing() && within(t, typedAt_, kAlongLingerMs)));
+  const bool out = idle && typed_ && (alone || within(t, typedAt_, kAlongLingerMs));
   if (!out) typed_ = alone;
   if (along_.target() != (out ? 1000 : 0)) {
     along_.retarget(out ? 1000 : 0, t);
@@ -414,21 +439,23 @@ void GelFace::showAlong(uint32_t t) {
   }
 }
 
+// Where the paws are in their beats, moved on by the time over the beat's
+// length now (painter.h, briskLift): a change of pace changes only how
+// fast it moves, so no paw snaps up as typing fast comes or goes.
+void GelFace::pawPhase(uint32_t dt) {
+  const uint64_t beat = uint64_t(fast_ ? kFastMs : kBriskMs) * 100;
+  pawPhaseQ_ = (pawPhaseQ_ + uint64_t(dt) * uint64_t(pace_) * kBeat * 1000 / beat) % (2 * kBeat * 1000);
+}
+
 // With you at the Mac besides typing along (face.h): the one that fits now,
 // its pose's clip on the mixer, the lean it follows, and a move once as a
-// call, a copy held or the music ends.
+// call, a copy or the music ends.
 void GelFace::showWithYou(uint32_t t) {
   const Engine& e = *engine_;
   const uint32_t when = e.scenes.when;
   SceneState look;
-  const bool shows = showsLook(source_.anim, look);
-  // Idle, or at work in its typing pose with no word forward; nothing else
-  // has the body, and it's not typing along with you.
-  const bool place = look == SceneState::kIdle ||
-                     (look == SceneState::kWorking && typingPose() && !(stream_ && stream_->call.live));
-  const bool free = shows && place && !finger_ && !alone_ && !card_.on && !transition(t) && !playing() && !tapping_ &&
-                    !e.acting.current() && !e.router.listening;
-  const bool call = when & kCallTag, holding = when & kHoldingTag;
+  const bool free = freeForYou(t, look) && !tapping_ && !e.acting.current() && !e.router.listening;
+  const bool call = when & kCallTag, copied = when & kCopiedTag;
   if (when & kScrollingTag) {
     if (!scrolled_ || t - scrolledAt_ >= kReadGapMs) readFrom_ = t;
     scrolled_ = true, scrolledAt_ = t;
@@ -440,26 +467,20 @@ void GelFace::showWithYou(uint32_t t) {
   music_ = music;
   const bool grooving = music && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs;
   wanted_ = call       ? WithYou::kCall
-            : holding  ? WithYou::kHolding
+            : copied   ? WithYou::kCopied
             : reading  ? WithYou::kReading
-            : (when & kWatchingTag) ? WithYou::kWatching
+            : (when & kVideoTag) ? WithYou::kVideo
             : grooving ? WithYou::kMusic
                        : WithYou::kNone;
   const WithYou now = free ? wanted_ : WithYou::kNone;
   // As each ends: a stretch back up after a call, a pah as a copy is let
   // go, a look round as the music stops. Not over anything else.
-  if (called_ && !call) once("stretch", t);
-  else if (held_ && !holding && !call) once("release", t);
-  else if (musicStopped && !call) once("look-around", t);
-  called_ = call, held_ = holding;
+  if (called_ && !call) once(*clips_.stretch, t);
+  else if (copied_ && !copied && !call) once(*clips_.release, t);
+  else if (musicStopped && !call) once(*clips_.lookAround, t);
+  called_ = call, copied_ = copied;
   settled_ = now == WithYou::kReading && t - readFrom_ >= kSettleMs;
-  const char* name = now == WithYou::kCall       ? "on-call"
-                     : now == WithYou::kHolding  ? "holding"
-                     : now == WithYou::kReading  ? (settled_ ? "read-along-settled" : "read-along")
-                     : now == WithYou::kWatching ? "watching"
-                     : now == WithYou::kMusic    ? "groove"
-                                                 : nullptr;
-  const rig::Clip* clip = name ? rig::kRig.clip(name) : nullptr;
+  const rig::Clip* clip = now == WithYou::kReading && settled_ ? clips_.settled : clips_.with[int(now)];
   if (clip != withClip_) {
     if (withClip_) mixer_.stop(*withClip_);
     if (clip) mixer_.play(*clip, kWithFadeMs);
@@ -468,23 +489,27 @@ void GelFace::showWithYou(uint32_t t) {
   // The engine's own idle gestures wait while it's with you.
   if (clip) holdGestures(*clip);
   with_ = now;
-  // Turned to the screen, reading or watching; to the pointer while it
-  // moves, a little, and further at the edge nearest the board, reaching up
-  // toward it. Never on a call.
+  // Turned to the screen, reading or watching: to the Mac's side, or up at
+  // it; to the pointer while it moves, and further at the edge nearest the
+  // board, reaching toward it. Never on a call.
   const int mac = (when & kMacLeftTag) ? -1 : (when & kMacRightTag) ? 1 : 0;
+  const bool up = !mac && (when & kMacUpTag);
   int* to = followTo_;
   for (int i = 0; i < kFollows; ++i) to[i] = 0;
-  if (now == WithYou::kReading || now == WithYou::kWatching)
+  if (now == WithYou::kReading) {
+    to[kFollowLean] = mac * kReadLean, to[kFollowX] = mac * kReadSlide, to[kFollowGazeX] = mac * kScreenGaze;
+    to[kFollowGazeY] = up ? -kScreenGazeUp : kPageGaze;
+    if (up) to[kFollowSquash] = -kUpStretch;
+  } else if (now == WithYou::kVideo) {
     to[kFollowLean] = mac * kLeanReach, to[kFollowX] = mac * kScreenSlide, to[kFollowGazeX] = mac * kScreenGaze;
-  // Reading, its eyes lowered to the page (the line's drift is the gaze's).
-  if (now == WithYou::kReading) to[kFollowGazeY] = kPageGaze;
-  const bool eyesFree = shows && place && !finger_ && !alone_ && !transition(t) && !playing() && !tapping_ &&
-                        !e.acting.current() && !e.router.listening && now != WithYou::kCall;
-  if (eyesFree && pointer_) {
+    if (up) to[kFollowGazeY] = -kScreenGazeUp, to[kFollowSquash] = -kUpStretch;
+  }
+  if (free && now != WithYou::kCall && pointer_) {
     const int side = pointerX_ > 0 ? 1 : pointerX_ < 0 ? -1 : mac;
     if (pointerNear_) {
       to[kFollowLean] = side * kLeanReach, to[kFollowSquash] = -kNearStretch;
       to[kFollowX] = side * Gaze::kPointerReach * kPointerSlide, to[kFollowGazeX] = side * Gaze::kPointerReach * kPointerGaze;
+      if (!side && up) to[kFollowGazeY] = -kScreenGazeUp;
     } else {
       to[kFollowLean] = pointerX_ * kPointerLean, to[kFollowSquash] = pointerY_ < 0 ? pointerY_ * kPointerStretch : 0;
       to[kFollowX] = pointerX_ * kPointerSlide;
@@ -493,19 +518,14 @@ void GelFace::showWithYou(uint32_t t) {
   }
 }
 
-void GelFace::once(const char* name, uint32_t t) {
+void GelFace::once(const rig::Clip& clip, uint32_t t) {
   SceneState look;
   const Engine& e = *engine_;
-  if (!showsLook(source_.anim, look) || finger_ || alone_ || card_.on || transition(t) || playing() || tapping_ ||
-      e.acting.current() || e.router.listening || look == SceneState::kNeedsYou || look == SceneState::kAsleep)
-    return;
-  if (look == SceneState::kWorking && !typingPose()) return;
-  if (const rig::Clip* clip = rig::kRig.clip(name)) {
-    play(*clip);
-    holdGestures(*clip);
-    // No pastime straight after it.
-    if (after(t + clip->ms + kRestMinMs, restUntil_)) restUntil_ = t + clip->ms + kRestMinMs;
-  }
+  if (!freeForYou(t, look) || tapping_ || e.acting.current() || e.router.listening) return;
+  play(clip);
+  holdGestures(clip);
+  // No pastime straight after it.
+  if (after(t + clip.ms + kRestMinMs, restUntil_)) restUntil_ = t + clip.ms + kRestMinMs;
 }
 
 // The lean and the stretch ease to where they're going, over about kLeanMs.
@@ -538,19 +558,23 @@ void GelFace::showGaze(uint32_t t) {
   SceneState look;
   GazeFacts f;
   const bool shows = showsLook(source_.anim, look);
+  const uint32_t when = e.scenes.when;
   f.free = shows && !finger_ && !alone_ && !playing() && !transition(t) && !e.acting.current() && !e.router.listening &&
            !(stream_ && stream_->call.live);
   f.needsYou = look == SceneState::kNeedsYou;
   f.lookMs = e.scenes.lookMs;
-  f.mac = hasTag(e.scenes.when, "macleft") ? -1 : hasTag(e.scenes.when, "macright") ? 1 : 0;
+  f.mac = (when & kMacLeftTag) ? -1 : (when & kMacRightTag) ? 1 : 0;
+  f.up = !f.mac && (when & kMacUpTag);
   f.along = tapping_;
   f.posed = look == SceneState::kWorking && !typingPose();
-  f.watching = look == SceneState::kWorking && hasTag(e.scenes.when, "reading");
+  f.watching = look == SceneState::kWorking && (when & kReadingTag);
   f.thinking = thought_ && within(t, thinkAt_, Gaze::kThinkMs), f.thinkMs = t - thinkAt_;
   if (!f.thinking) thought_ = false;
   f.with = with_;
-  f.scrolling = hasTag(e.scenes.when, "scrolling");
-  f.pointer = pointer_, f.pointerNear = pointerNear_, f.pointerX = pointerX_, f.pointerY = pointerY_;
+  // The pointer only where it's free for you: never asleep or dozing.
+  SceneState place;
+  f.pointer = pointer_ && freeForYou(t, place) && !tapping_;
+  f.pointerNear = pointerNear_, f.pointerX = pointerX_, f.pointerY = pointerY_;
   if (stream_ && stream_->on && look == SceneState::kWorking) {
     const Stream::Word* newest = nullptr;
     for (const Stream::Word& w : stream_->words)
@@ -569,6 +593,7 @@ void GelFace::showGaze(uint32_t t) {
 PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
   s.keys = (along_.value(t) * 255 + 500) / 1000, s.tapping = tapping_, s.fast = fast_;
+  s.pawPhase = int(pawPhaseQ_ / 1000);
   if (pastime_ != Pastime::kNone) {
     s.playing = pastime_;
     s.age = t - pastimeAt_;
@@ -688,10 +713,10 @@ const char* GelFace::passing(uint32_t t) const {
   if (tapping_) return "along";
   if (playing()) return info(pastime_).name;
   switch (with_) {
-    case WithYou::kCall: return "call";
-    case WithYou::kHolding: return "holding";
+    case WithYou::kCall: return "oncall";
+    case WithYou::kCopied: return "copied";
     case WithYou::kReading: return "reading";
-    case WithYou::kWatching: return "watching";
+    case WithYou::kVideo: return "video";
     case WithYou::kMusic: return "music";
     case WithYou::kNone: break;
   }

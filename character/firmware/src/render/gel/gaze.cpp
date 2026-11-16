@@ -4,55 +4,45 @@ namespace render::gel {
 
 GazePoint Gaze::look(const GazeFacts& f, uint32_t t) {
   if (!f.free) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     return {};
   }
   if (f.needsYou) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     if (f.lookMs < kNoticeMs) return {true, kMidX, kYouY};
     if (f.mac) return {true, kMidX + f.mac * kMacReach, kEyesY};
+    if (f.up) return {true, kMidX, kScreenUpY};
     return {};
   }
   if (f.along) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     return {true, kMidX, kKeysY};
   }
   if (f.thinking && f.thinkMs < kThinkMs) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     return {true, kMidX, kYouY};
   }
   if (f.posed || f.with == WithYou::kCall) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     return {};
   }
   if (f.pointer) {
-    glancing_ = reading_ = false;
+    glancing_ = false;
     if (f.pointerNear) {
       // Right at it, to the Mac's side: where the pointer points from.
       const int side = f.pointerX > 0 ? 1 : f.pointerX < 0 ? -1 : f.mac;
       if (side) return {true, kMidX + side * kMacReach, kEyesY};
+      if (f.up) return {true, kMidX, kScreenUpY};
     }
     return {true, kMidX + f.pointerX * kPointerX, kEyesY + f.pointerY * kPointerY};
   }
   if (f.with == WithYou::kReading) {
     glancing_ = false;
-    // Down a line at a time while you scroll; back at the page's top as
-    // you stop, where it reads on.
-    if (f.scrolling && (!reading_ || !wasScrolling_)) reading_ = true, lineFrom_ = t;
-    if (!f.scrolling) reading_ = false;
-    wasScrolling_ = f.scrolling;
-    int down = 0;
-    if (reading_) {
-      const uint32_t age = (t - lineFrom_) % (kLineMs * kLines);
-      // Each line: a slow drift down kLinePx, then held there until the next.
-      down = int(age / kLineMs) * kLinePx + int(age % kLineMs) * kLinePx / int(kLineMs);
-    }
-    return {true, kMidX + f.mac * kPageReach, kPageTopY + down};
+    return {true, kMidX + f.mac * kPageReach, f.up ? kPageUpY : kPageY};
   }
-  reading_ = wasScrolling_ = false;
-  if (f.with == WithYou::kWatching) {
+  if (f.with == WithYou::kVideo) {
     glancing_ = false;
-    return {true, kMidX + f.mac * kPageReach, kEyesY};
+    return {true, kMidX + f.mac * kPageReach, f.up ? kYouY : kEyesY};
   }
   if (glancing_) {
     if (t - glanceAt_ < kGlanceMs)

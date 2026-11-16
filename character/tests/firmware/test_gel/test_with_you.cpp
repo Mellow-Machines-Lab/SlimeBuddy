@@ -70,7 +70,6 @@ const uint32_t kDay = tagBit("day");
 // the work glance; each only while the eyes are free.
 void test_the_eyes_with_you_in_order() {
   static_assert(Gaze::kThinkAfterMs == 8000 && Gaze::kThinkMs == 2000, "thinking with you, as this test pins");
-  static_assert(Gaze::kLineMs == 1400 && Gaze::kLinePx == 30 && Gaze::kLines == 4, "a line's drift, as this test pins");
   Gaze g;
   GazeFacts f;
   f.free = true;
@@ -100,25 +99,29 @@ void test_the_eyes_with_you_in_order() {
   TEST_ASSERT_TRUE(g.look(f, 128).y == Gaze::kKeysY);
   f.needsYou = true, f.lookMs = 0;
   TEST_ASSERT_TRUE(g.look(f, 144).y == Gaze::kYouY);
-  // Below the pointer: reading along, then watching, then the glance.
+  // Below the pointer: reading along, then a video, then the glance.
   Gaze r;
   f = GazeFacts{};
-  f.free = true, f.mac = 1, f.with = WithYou::kReading, f.scrolling = true;
+  f.free = true, f.mac = 1, f.with = WithYou::kReading;
   f.word = true, f.wordBorn = 1000, f.wordX = 84;
   p = r.look(f, 1000);
-  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX + Gaze::kPageReach && p.y == Gaze::kPageTopY);          // the page's top
-  TEST_ASSERT_EQUAL_INT(Gaze::kPageTopY + Gaze::kLinePx / 2, r.look(f, 1000 + Gaze::kLineMs / 2).y);  // down a line
-  TEST_ASSERT_EQUAL_INT(Gaze::kPageTopY + Gaze::kLinePx * 2, r.look(f, 1000 + 2 * Gaze::kLineMs).y);
-  TEST_ASSERT_EQUAL_INT(Gaze::kPageTopY, r.look(f, 1000 + Gaze::kLines * Gaze::kLineMs).y);  // the next page
-  f.scrolling = false;
-  TEST_ASSERT_EQUAL_INT(Gaze::kPageTopY, r.look(f, 7000).y);  // you stop: back up, and it reads on
+  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX + Gaze::kPageReach && p.y == Gaze::kPageY);  // at the page, not the word
   f.pointer = true, f.pointerX = -3;
   TEST_ASSERT_TRUE(r.look(f, 7016).x < Gaze::kMidX);  // the pointer comes first
   f.pointer = false, f.mac = 0;
   TEST_ASSERT_EQUAL_INT(Gaze::kMidX, r.look(f, 7032).x);  // no side told: forward
-  f.with = WithYou::kWatching, f.mac = -1;
+  f.up = true;
+  TEST_ASSERT_EQUAL_INT(Gaze::kPageUpY, r.look(f, 7040).y);  // the screen above: its page up there
+  f.up = false;
+  f.with = WithYou::kVideo, f.mac = -1;
   p = r.look(f, 7048);
   TEST_ASSERT_TRUE(p.x == Gaze::kMidX - Gaze::kPageReach && p.y == Gaze::kEyesY);
+  // The screen above it: needs you looks up at you, then up at the screen.
+  Gaze up;
+  GazeFacts u;
+  u.free = u.needsYou = u.up = true, u.lookMs = Gaze::kNoticeMs;
+  p = up.look(u, 100);
+  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX && p.y == Gaze::kScreenUpY);
   f.free = false;
   TEST_ASSERT_FALSE(r.look(f, 7064).on);  // something else has the eyes
 }
@@ -261,9 +264,9 @@ void test_it_grooves_to_your_music_and_watches_with_you() {
   board.to(board.t + 64);
   TEST_ASSERT_EQUAL_STRING("look-around", board.cueing());  // the music's stopped: a look round
   // Watching: to the screen, on its left, its eyes still.
-  Board video(SceneState::kIdle, kDay | tierBit(1) | left | tagBit("watching"));
+  Board video(SceneState::kIdle, kDay | tierBit(1) | left | tagBit("video"));
   video.to(2000);
-  TEST_ASSERT_EQUAL_INT(int(WithYou::kWatching), int(video.face().withYou()));
+  TEST_ASSERT_EQUAL_INT(int(WithYou::kVideo), int(video.face().withYou()));
   TEST_ASSERT_TRUE(video.face().engine().motion.attendX < F(0) && video.channel(rig::Channel::kLean) < -120);
 }
 
@@ -271,18 +274,18 @@ void test_it_grooves_to_your_music_and_watches_with_you() {
 // typing along, no music, no pastime however long; a stretch as it ends.
 // It comes before a copy held, a read and music.
 void test_a_call_keeps_it_still() {
-  const uint32_t call = tagBit("call"), typing = tagBit("typing"), music = tagBit("music");
+  const uint32_t call = tagBit("oncall"), typing = tagBit("typing"), music = tagBit("music");
   Board board(SceneState::kIdle, kDay | tierBit(3));
   GelFace& face = board.face();
   board.to(1000);
-  board.tags(kDay | tierBit(3) | call | typing | music | tagBit("holding") | tagBit("scrolling"));
+  board.tags(kDay | tierBit(3) | call | typing | music | tagBit("copied") | tagBit("scrolling"));
   bool moved = false;
   board.to(board.t + 300000, [&] {
     moved = moved || face.pastimes(board.t).tapping || face.pastimes(board.t).playing != Pastime::kNone;
   });
   TEST_ASSERT_FALSE(moved);
   TEST_ASSERT_EQUAL_INT(int(WithYou::kCall), int(face.withYou()));
-  TEST_ASSERT_EQUAL_STRING("call", face.passing(board.t));
+  TEST_ASSERT_EQUAL_STRING("oncall", face.passing(board.t));
   TEST_ASSERT_TRUE(board.channel(rig::Channel::kSquash) > 120 && board.channel(rig::Channel::kEyeOpenL) < 650);
   TEST_ASSERT_FALSE(face.engine().motion.attending);  // its eyes still, forward
   board.tags(kDay | tierBit(3));
@@ -290,17 +293,19 @@ void test_a_call_keeps_it_still() {
   TEST_ASSERT_EQUAL_STRING("stretch", board.cueing());
 }
 
-// Pins holding: a copy held puffs its cheeks; let go, a pah, once.
+// Pins a copy: it puffs up round and wide, lifted a little, eyes wide; let
+// go, a pah, its mouth open, once.
 void test_it_holds_a_copy_and_lets_it_go() {
-  const uint32_t holding = tagBit("holding");
+  const uint32_t holding = tagBit("copied");
   Board board(SceneState::kIdle, kDay | tierBit(1));
   GelFace& face = board.face();
   board.to(1000);
   const int rest = board.channel(rig::Channel::kSquash);
   board.tags(kDay | tierBit(1) | holding);
   board.to(board.t + 1000);
-  TEST_ASSERT_EQUAL_INT(int(WithYou::kHolding), int(face.withYou()));
-  TEST_ASSERT_TRUE(board.channel(rig::Channel::kSquash) - rest > 50);  // puffed up
+  TEST_ASSERT_EQUAL_INT(int(WithYou::kCopied), int(face.withYou()));
+  TEST_ASSERT_TRUE(board.channel(rig::Channel::kSquash) - rest > 150);  // puffed up
+  TEST_ASSERT_TRUE(board.channel(rig::Channel::kLift) > 2 && board.channel(rig::Channel::kEyeSize) > 1100);
   board.tags(kDay | tierBit(1));
   board.to(board.t + 64);
   TEST_ASSERT_EQUAL_STRING("release", board.cueing());
@@ -309,22 +314,44 @@ void test_it_holds_a_copy_and_lets_it_go() {
   TEST_ASSERT_TRUE(open >= kRigMouthOpen);  // pah
 }
 
-// Pins typing fast: its paws tap quicker, as high, and its eyes open a little
-// wider than typing along's lowered lids.
+// Pins typing fast: its paws tap quicker, as high, and its eyes open wider
+// and it hunches in, no hop; the paws' place in their beat never jumps as
+// fast comes and goes, and a flicker off doesn't restart its clip.
 void test_typing_fast_is_quicker_not_higher() {
-  static_assert(kFastMs < kBriskMs && kFastTapMs < 2 * kFastMs, "fast is quicker, and its taps don't run together");
-  TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kFastMs - kFastTapMs / 2, -1, true, true));
+  static_assert(kFastMs < kBriskMs && kFastTapMs * kBriskMs == kBriskTapMs * kFastMs,
+                "fast is quicker, the tap the same share of its beat");
+  static_assert(GelFace::kFastLingerMs == 800, "the flicker this test pins");
+  TEST_ASSERT_EQUAL_INT(kBriskLift, briskLift(2 * kBeat - kTapBeat / 2, -1));
   const uint32_t typing = tagBit("typing"), fast = tagBit("typingfast");
   Board board(SceneState::kIdle, kDay | tierBit(1));
   GelFace& face = board.face();
   board.tags(kDay | tierBit(1) | typing);
   board.to(1500);
-  const int lids = board.channel(rig::Channel::kEyeOpenL);
+  const int lids = board.channel(rig::Channel::kEyeOpenL), size = board.channel(rig::Channel::kEyeSize);
   TEST_ASSERT_FALSE(face.pastimes(board.t).fast);
+  // On and off and on: each frame's paw a small step from the last.
+  int jump = 0, lifted = 0, last = briskLift(face.pastimes(board.t).pawPhase, -1);
+  auto watch = [&] {
+    const int now = briskLift(face.pastimes(board.t).pawPhase, -1);
+    jump = std::max(jump, std::abs(now - last)), last = now;
+    lifted = std::max(lifted, board.channel(rig::Channel::kLift));
+  };
   board.tags(kDay | tierBit(1) | typing | fast);
-  board.to(board.t + 800);
+  board.to(board.t + 800, watch);
   TEST_ASSERT_TRUE(face.pastimes(board.t).tapping && face.pastimes(board.t).fast);
-  TEST_ASSERT_TRUE(board.channel(rig::Channel::kEyeOpenL) - lids > 100);
+  TEST_ASSERT_TRUE(board.channel(rig::Channel::kEyeOpenL) - lids > 150 &&
+                   board.channel(rig::Channel::kEyeSize) - size > 80);
+  // A flicker off: still fast.
+  board.tags(kDay | tierBit(1) | typing);
+  board.to(board.t + 300, watch);
+  TEST_ASSERT_TRUE(face.pastimes(board.t).fast);
+  board.tags(kDay | tierBit(1) | typing | fast);
+  board.to(board.t + 300, watch);
+  board.tags(kDay | tierBit(1) | typing);
+  board.to(board.t + 1000, watch);
+  TEST_ASSERT_FALSE(face.pastimes(board.t).fast);
+  TEST_ASSERT_TRUE(jump <= kBriskLift / 2);  // the paw moves, never snaps
+  TEST_ASSERT_EQUAL_INT(0, lifted);          // and no hop
 }
 
 // Nothing with you while the Mac sends none of it; and every one gives way
@@ -336,7 +363,7 @@ void test_nothing_with_you_without_the_facts() {
     TEST_ASSERT_EQUAL_INT(int(WithYou::kNone), int(face.withYou()));
     TEST_ASSERT_EQUAL_INT(face.mixer().channels()[rig::Channel::kLean], board.channel(rig::Channel::kLean));
   });
-  const uint32_t all = tagBit("music") | tagBit("watching") | tagBit("scrolling") | tagBit("holding");
+  const uint32_t all = tagBit("music") | tagBit("video") | tagBit("scrolling") | tagBit("copied");
   for (SceneState look : {SceneState::kAsleep, SceneState::kNeedsYou}) {
     Board other(look == SceneState::kNeedsYou ? SceneState::kWorking : look, kDay | all);
     if (look == SceneState::kNeedsYou) {
@@ -346,4 +373,14 @@ void test_nothing_with_you_without_the_facts() {
     }
     other.to(5000, [&] { TEST_ASSERT_EQUAL_INT(int(WithYou::kNone), int(other.face().withYou())); });
   }
+  // Asleep, the pointer moves no eye.
+  Board asleep(SceneState::kAsleep, kDay);
+  asleep.pointer(true, -9, -3);
+  asleep.to(3000, [&] { TEST_ASSERT_FALSE(asleep.face().engine().motion.attending); });
+  // Holding an agent's card, its hands are full: no pose.
+  Board card(SceneState::kIdle, kDay | tagBit("copied"));
+  CardShow held;
+  held.on = true;
+  card.face().card(held);
+  card.to(3000, [&] { TEST_ASSERT_EQUAL_INT(int(WithYou::kNone), int(card.face().withYou())); });
 }

@@ -281,6 +281,7 @@ void test_it_types_along_with_you() {
                 "typing with you is clearer than the agents', not a bounce");
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(2 * kBriskMs - kBriskTapMs / 2, -1, true));
   TEST_ASSERT_EQUAL_INT(kBriskLift, typeLift(kBriskMs - kBriskTapMs / 2, 1, true));
+  TEST_ASSERT_EQUAL_INT(kBriskLift, briskLift(kBeat - kTapBeat / 2, 1));
   // A pastime playing as you start: it plays out first.
   Board playing(SceneState::kIdle, day | tierBit(2));
   playing.to(1000);
