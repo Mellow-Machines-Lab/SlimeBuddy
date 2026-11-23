@@ -89,33 +89,42 @@ void glyph(Raster& r, const Font& f, int x, int y, int g, uint16_t ink) {
   r.alpha = opacity;
 }
 
-// The work's term, in the strip's place while the agents work and nothing
-// else holds the lane: the newest call's word (a file, a search, a
-// command), or, as a failure or a timeout lands, its word and what
-// happened, in clay or amber.
-LowSign termSign(const Stream& st, uint32_t now) {
+// The work's term: a quiet word after the strip's counts while the agents
+// work, never a card, which is for what's for you. The newest call's word
+// (a file, a search, a command) in the strip's grey; a work act's words
+// while it runs, then its result in sage or clay; and as a failure or a
+// timeout lands, its word and what happened, in clay or amber. paintFrame
+// sets it for the frame it draws, and the strip and its key read it.
+struct Term {
+  const char* text = nullptr;
+  uint16_t ink = 0;
+};
+Term gTerm;
+Term termFor(const Stream& st, uint32_t now) {
   static char text[Stream::kWordBytes + 16];
-  LowSign sign;
-  if (!st.on) return sign;
-  sign.ms = uint32_t(kLowSignRiseMs);
-  sign.oneLine = true;
+  Term term;
+  if (!st.on) return term;
   const Stream::Call& c = st.call;
   if (c.live && callMove(c.style) == CallMove::kHit && c.style != CallStyle::kNo && now - c.at < Stream::kCallMs) {
     const bool timeout = c.style == CallStyle::kTimeout;
     std::snprintf(text, sizeof text, "%s %s", c.text, timeout ? "timed out" : "failed");
-    sign.text = text;
-    sign.mark = LowSign::Mark::kCross;
-    sign.ink = timeout ? rgb565(kAmberRgb) : rgb565(kClayRgb);
-    return sign;
+    return {text, timeout ? rgb565(kAmberRgb) : rgb565(kClayRgb)};
+  }
+  const Stream::ActNow act = st.actNow(now);
+  if (act.shows()) {
+    static const char* const kNames[] = {"", "tests", "push", "build"};
+    const char* name = kNames[int(act.kind)];
+    if (act.result == ActResult::kRunning) return {act.text, rgb565(kNarrationRgb)};
+    const bool pass = act.result == ActResult::kPass;
+    std::snprintf(text, sizeof text, "%s %s", name, pass ? "passed" : "failed");
+    return {text, pass ? rgb565(kSageRgb) : rgb565(kClayRgb)};
   }
   const Stream::Word* newest = nullptr;
   for (const Stream::Word& w : st.words)
     if (w.live && (!newest || int32_t(w.born - newest->born) > 0)) newest = &w;
   const char* word = newest ? newest->text : st.laneCount ? st.lanes[0].word : "";
-  if (!*word) return sign;
-  sign.text = word;
-  sign.ink = rgb565(100, 184, 207);
-  return sign;
+  if (*word) term = {word, rgb565(kNarrationRgb)};
+  return term;
 }
 }  // namespace
 
@@ -499,8 +508,21 @@ void strip(Lane& l, const Strip& s, int spin) {
     marks(&r, s, x + kIcon, cy, spin, shown);
     return;
   }
-  // Nothing named: the counts, in words when they fit.
+  // Nothing named: the counts, in words when they fit, and after them,
+  // while the agents work, the work's term in the smaller font, cut to the
+  // room before the to-do list.
   counts(&r, s, margin, right, cy, spin);
+  if (s.busy > 0 && gTerm.text && *gTerm.text) {
+    const int list = todo(nullptr, s, right, cy) - (s.todoTotal > 0 ? kMarkAfter : 0);
+    for (int helpers : {2, 1, 0}) {
+      const int x = margin + words(nullptr, s, 0, cy, helpers);
+      if (x > list - margin) continue;
+      const int ty2 = cy - kLarge.h / 2 + 2;
+      const int at = text(r, kLarge, x, ty2, " \xC2\xB7 ", grey, list - x);
+      if (list - at >= 3 * kLarge.w) text(r, kLarge, at, ty2, gTerm.text, gTerm.ink, list - at);
+      break;
+    }
+  }
 }
 
 // The strip, drawn at full strength, blended once at its opacity (0–255):
@@ -535,6 +557,7 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
   add(&grabber, sizeof grabber), add(&shows, sizeof shows);
   if (!line && !caption) {
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
+    str(gTerm.text), add(&gTerm.ink, sizeof gTerm.ink);
     const int numbers[] = {s.more,      int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
                            s.todoDone,  s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0,
                            rowAlpha};
@@ -584,8 +607,10 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   const Stream::ActNow act = stream ? stream->actNow(now) : Stream::ActNow{};
   LowSign low = finishSign(done);
   // A finished turn's name outranks a work act's words.
+  // A work act is the work's, not yours: no card, only the monitor and the
+  // strip's term (termFor).
   const bool actsSign = !low.shows();
-  if (actsSign) low = actSign(act);
+  (void)act;
   // An act can run for long: what Boop says takes the lane from it meanwhile.
   if (low.shows() && (actsSign || low.leftMs >= 0) && (line || note)) low = LowSign{};
   // Something it remembers takes the lane from an act, as words do; its own
@@ -599,7 +624,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // takes the lane from all of these, its rim glowing gold.
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
-  if (!low.shows() && !line && !note && !(card && card->on) && stream) low = termSign(*stream, now);
+  gTerm = stream ? termFor(*stream, now) : Term{};
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
   // rising, the strip's row fades as it comes.

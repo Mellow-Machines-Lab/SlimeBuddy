@@ -2898,8 +2898,9 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
   const Strip strip;
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
-  // An act is its sign, and the monitor's flask: above the monitor's top,
-  // the body and the words falling are drawn as with none.
+  // An act is the work's, never a card: the monitor's flask, and in the
+  // strip a term only while agents work (none in this strip). Above the
+  // monitor, and the lane, are drawn as with none.
   {
     Stream plain, acting;
     Stream::Lane lane;
@@ -2917,7 +2918,8 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
     paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &acting, 600);
     const size_t lane0 = size_t(502) * (410 * kLaneTop / kHeight), monitor0 = size_t(502) * (410 * 600 / 1000);
     TEST_ASSERT_EQUAL_MEMORY(bare.data(), px.data(), monitor0 * 2);
-    TEST_ASSERT_TRUE(std::memcmp(bare.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2) != 0);
+    TEST_ASSERT_TRUE(std::memcmp(bare.data() + monitor0, px.data() + monitor0, (lane0 - monitor0) * 2) != 0);
+    TEST_ASSERT_EQUAL_MEMORY(bare.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2);
   }
   // Every beat of every result, off the heap.
   allocCount = 0;
