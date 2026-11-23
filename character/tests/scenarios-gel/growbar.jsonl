@@ -149,7 +149,7 @@
 {"clock":1800}
 {"clock":1900}
 {"clock":2000}
-{"shot":"over-the-nightcap"}
+{"shot":"at-night"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":20,"wish":"pet"}

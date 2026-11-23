@@ -711,8 +711,8 @@ night's lock.
 
 ## Tagged pastimes
 
-A tagged pastime is one that needs a tag (`render/tags.h`: `night`,
-`busy` and `frantic`), or asleep a long wait: a row of the face's one table (Pastimes, below), dealt by its one
+A tagged pastime is one that needs a tag (`render/tags.h`: `night`), or
+asleep a long wait: a row of the face's one table (Pastimes, below), dealt by its one
 dealer like any other. A row that needs a tag needs no tier: it fits
 whenever its tag is on, and while it fits it's the newest, dealt 60% of
 the deals after another (never twice running), about three in eight of
@@ -723,15 +723,14 @@ each and says when it fits:
 
 | Doing | Pastime | Needs | What plays |
 | --- | --- | --- | --- |
-| working, while it types | busy-typing | busy | Two quick three-key bursts, leaning in |
-| working, while it types | frantic-typing | frantic | Six keys in 0.6 s, leaning in harder |
 | asleep | deep-snore | night | Three deeper breaths |
 | asleep | dream | 1,800 s asleep | Two soft breaths and a twitch-and-wriggle bit |
 
 They are takes the scene plays at once as the Doing's next (numbered after the
-row's takes), the same in every mood, and a jittered one takes the desk's
-jitter. A take at work plays only while it types (working, terminal or
-tool use). A gesture or a host's Moment never takes one. A tagged pastime
+row's takes), the same in every mood. Work has none: the tempo at work is
+yours, by typing along (the engine's documentation/design/screen-guide.md,
+"Small details"), so the engine's busy-typing and frantic-typing takes are
+never dealt. A gesture or a host's Moment never takes one. A tagged pastime
 whose tags go off simply isn't dealt again. The engine has no colour
 channel, so no pastime tints the gel. The working looks' quicker pace
 while the agents are busy is the board's (`render::workPace`), not a
@@ -763,9 +762,7 @@ typing, searching as looking, testing and delegating as running).
   the paws' taps play in typing alone (`Scenes::advance`); the rows of
   `slime.h` for the states never shown (planning, tool_use, searching,
   testing, delegating) are still generated and never played.
-- **Pastimes.** Off typing, only the stretch is dealt: the done beat is a
-  paw on Enter, a take is typing, and a melt from a pose to one side
-  would leave the screen.
+- **Pastimes.** At work only the stretch is dealt, in any pose.
 - **The Mac holds them** so the body doesn't rock: running and looking
   show at least 3 s (`Core.poseHoldMs`), typing and waiting 1.5 s.
 - A work act (`wact`) runs under the running pose; its result's hop or
@@ -813,17 +810,13 @@ highest tier, then the longest wait, and a tagged one above any) and an
 older one's the rest, never the same twice running; and holds the
 engine's own idle gestures off while a clip plays. The gel's `looks.json`
 has no `occasions`. The one playing fades out when the look gives way.
-One of work's is a **move**, the whole body melting on the rig's `melt`,
-and none starts within 5 minutes of the last (`kMoveGapMs`), nor in its
-nightcap. While a pastime uses the desk's paws they're where it puts
-them (`pawsFor`): the right one up for Enter, spread out flat in the
-puddle.
+A row may be a **move**, the whole body going somewhere, and none starts
+within 5 minutes of the last (`kMoveGapMs`); no row is one now. A pastime
+that used the desk's paws would say where (`pawsFor`); none does now.
 
 | Look | From | Pastimes |
 | --- | --- | --- |
-| working | tier1 | The done beat: a paw up, Enter, and a sit back, eyes shut, nodding |
 | working | tier2 | The rig's stretch: eyes squeezed, up tall, a lean each way |
-| working | tier3 | **The melt** (a move): eyes shut, it melts down into a puddle, its paws spreading, peeks round, then pulls itself back up tall, overshoots and wobbles into shape |
 | idle | tier1 | Looking round; looking up at you; three hops; a yawn; a sneeze |
 | idle | tier3 | Snoozing, Zs rising beside it |
 | asleep | 1, 4 minutes | Rolling over; a snore bubble |
@@ -887,10 +880,8 @@ even than typing along, and only where it's free for you
 (`GelFace::freeForYou`: idle, or at work in its typing pose with no word
 forward; no finger, card, transition or pastime): on a call (`oncall`) it
 keeps still and a little smaller, its eyes half (`on-call`), with no
-typing along, music or pastime, and stretches up as the call ends; a copy
-(`copied`) puffs it up round, wider and lifted 4 px, its eyes wide
-(`copied`), and it lets go with a pah, its mouth open about 300 ms
-(`release`); while you scroll (`scrolling`) and 6 s after, it reads
+typing along, music or pastime, and stretches up as the call ends; while
+you scroll (`scrolling`) and 6 s after, it reads
 along, leaned 220 and slid 14 px to the Mac's side (or stretched up 150 at
 it, `macup`), lower, its eyes down on the page, travelling down a line in
 1.15 s and snapping back up with a small nod (`read-along`, a 1.4 s loop),
@@ -920,9 +911,9 @@ them 140, and stays through a flicker off of 800 ms (`kFastLingerMs`).
 
 The engine draws no costume, but the board draws layers over the body by
 the same tags, after the face art and before the props
-(`gel/layers.h`): a striped nightcap at night (`nightcapFor`), flopping
-down its left side to a tassel by its cheek, and no pyjamas with it, Zs
-beside it asleep at night, and last the sign a Moment holds up. That's
+(`gel/layers.h`): Zs beside it asleep at night, and last the sign a
+Moment holds up. It wears nothing at night: the night shows on its lids
+(below). That's
 all: the face comes first, and nothing is put on the screen for a season
 or a holiday. It wears no hat or shades for a special day (the Mac's sign
 says the day), nothing hangs in the sky behind it (no sun, moon or
@@ -932,22 +923,16 @@ the very vertices it projects for the body (the rig's `Anchors`, both
 faces' one type: the dome's apex, ring 6's sides and front for a brim,
 ring 15's front for the hands) and the face art's eye centres, so a layer
 leans, squashes, dips under a finger and slides off the screen with the
-body and is cut off there with it. Peekaboo's gesture hides the nightcap. At
-night the lids hang a little lower (`kNightLids`) on the awake face,
+body and is cut off there with it. At night the lids hang a little lower (`kNightLids`) on the awake face,
 easing out as it squashes shut, gone by when it's a line, and back as it
 wakes. Each part comes and goes through the rig's layer stack
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §15, The layer stack), which the
-face keeps: the nightcap
-and what's beside it (the Zs) each fade in and out over 200 ms, each on its own, so falling
-asleep at night brings the Zs while the nightcap stays. The
+face keeps: what's beside it (the Zs) fades in and out over 200 ms. The
 sign fades out over 200 ms once it's down, at the opacity Behaviour
 gives it. It's held at the body's front, but a lean or a finish carrying
 the body sideways carries it only as far as keeps it whole on the
 panel, its hands `SignLayer::kEdge` in from the sides and clear of the
-rounded corners, so the longest sign still reads. The layers read the engine and never change it. The nightcap
-is kept drawn and blended again each frame, moved to the sixteenth of a
-pixel with the anchor it rides (`OutfitLayer::kSlack`), so it glides
-with the body rather than stepping a pixel at a time; the Zs, drawn with
+rounded corners, so the longest sign still reads. The layers read the engine and never change it. The Zs, drawn with
 one rounded pen (`Raster::zee`), grow from 7 to 16 px as they drift, fading
 in over their first 200 ms and out to nothing by their last.
 

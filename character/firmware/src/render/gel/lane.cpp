@@ -642,7 +642,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     // The top band holds one thing at a time: while LISTENING shows there,
     // the bar gives way to it (a heart flying still flies).
     const int listening = (e.scenes.visible(Scenes::kListeningProp, e.timeMs()) * 255).integer();
-    paintGrowthBar(surface, *growth, at, nightcapFor(e.scenes.when), 255 - listening);
+    paintGrowthBar(surface, *growth, at, 255 - listening);
   }
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;

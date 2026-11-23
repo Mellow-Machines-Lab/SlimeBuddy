@@ -1,17 +1,9 @@
 // The gel's pastimes that need a tag (CONTINUITY.md, Occasions), on a
-// frozen clock after a reset and asked for by name: five agents at work
-// type frantically. And 15 minutes into the agents' work (tier3) the desk
+// frozen clock after a reset: 15 minutes into the agents' work (tier3) the desk
 // has nothing on it but the work, and nothing is worn; nor a minute in
 // (tier1) or 5 (tier2), two agents' words falling and a to-do list
 // counted on the strip: Boop, the desk, the words and the strip.
 // A state every 20 s keeps the link alive.
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","base":"working","mood":"happy","busy":5,"vol":0,"when":["day"]}
-{"clock":1000}
-{"t":"dbg.pastime","name":"frantic-typing"}
-{"clock":2504}
-{"shot":"frantic"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0,"when":["day","tier3"]}

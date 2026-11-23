@@ -168,7 +168,7 @@ class GelFace final : public Face {
   static constexpr uint16_t kLeanBreathPitch = 900, kDozeBreathPitch = 800;
   std::unique_ptr<Engine> engine_;
   rig::Mixer mixer_;
-  // Its nightcap and the Zs, as the engine's tags and state call for them
+  // The Zs, as the engine's tags and state call for them
   // (layerContents), each fading in and out.
   rig::Layers layers_;
   // The transition playing (GelFace::showTransition), and until when, and
@@ -240,8 +240,6 @@ class GelFace final : public Face {
   //   closed (`on-call`); no typing along, music or pastime, and its board
   //   silent (the Mac sends no volume). As the call ends, it stretches up
   //   (`stretch`);
-  // - a copy (`copied`): puffed up round, a little lifted, eyes wide
-  //   (`copied`), and a pah as it lets go (`release`);
   // - reading along while you scroll (`scrolling`), and kReadLingerMs after:
   //   turned and slid to the Mac's side (or up at it), lower, its eyes down
   //   on the page, travelling down a line and back up with a small nod
@@ -253,18 +251,18 @@ class GelFace final : public Face {
   //   content face, swaying with a nod at each end (`groove`), then rests;
   //   as the music stops it opens its eyes and looks around (`look-around`).
   //
-  // While a call, a copy held, a read, a video or a groove is on, no pastime
+  // While a call, a read, a video or a groove is on, no pastime
   // is dealt. The pointer (state.ptr) moves the eyes (gaze.h) and leans the
   // body a little its way, more at the edge nearest the board.
   WithYou with_ = WithYou::kNone, wanted_ = WithYou::kNone;
   const rig::Clip* withClip_ = nullptr;
-  bool scrolled_ = false, music_ = false, called_ = false, copied_ = false, settled_ = false;
+  bool scrolled_ = false, music_ = false, called_ = false, settled_ = false;
   // The clips it plays for you, found once (none for a pose: none plays):
   // a pose's by what it is, the long read's, typing along's and its fast
   // one, and the moves once.
   struct Clips {
     const rig::Clip* with[6];
-    const rig::Clip *settled, *along, *fast, *stretch, *release, *lookAround;
+    const rig::Clip *settled, *along, *fast, *stretch, *lookAround;
   };
   static const Clips clips_;
   uint32_t scrolledAt_ = 0, readFrom_ = 0, musicFrom_ = 0;

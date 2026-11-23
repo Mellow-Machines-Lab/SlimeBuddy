@@ -71,7 +71,7 @@ constexpr int kRigGaze = 205, kRigMouthOpen = 300;
 // (paint). At rest, none moves.
 void applyRig(PaintControls& c, const rig::Channels& rig);
 class Engine;
-// The body, the face art, its nightcap and the Zs beside it
+// The body, the face art, the Zs beside it
 // (render/gel/layers.h) as the layer stack shows them at t (whole in the
 // engine's tags and state with none), then the props, their paws where the
 // pastime playing puts them, with the rig's channels on the engine's controls; a lane that

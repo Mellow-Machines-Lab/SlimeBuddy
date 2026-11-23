@@ -18,11 +18,7 @@
 namespace render::gel {
 
 const PastimeInfo kPastimes[kPastimeCount] = {
-    {Pastime::kDone, Body::kClip, "done-beat", SceneState::kWorking, 1, 0},
     {Pastime::kStretch, Body::kClip, "stretch", SceneState::kWorking, 2, 0},
-    {Pastime::kMelt, Body::kClip, "melt", SceneState::kWorking, 3, 0, nullptr, true},
-    {Pastime::kBusyTyping, Body::kTake, "busy-typing", SceneState::kWorking, 0, 0, "busy"},
-    {Pastime::kFranticTyping, Body::kTake, "frantic-typing", SceneState::kWorking, 0, 0, "frantic"},
     {Pastime::kLookAround, Body::kClip, "look-around", SceneState::kIdle, 1, 0},
     {Pastime::kHopeful, Body::kClip, "hopeful", SceneState::kIdle, 1, 0},
     {Pastime::kHop, Body::kClip, "hop", SceneState::kIdle, 1, 0},
@@ -206,21 +202,6 @@ void snore(const Stage& s, const PastimeShow& p, int popAt) {
 Paws pawsFor(const PastimeShow& show) {
   Paws paws;
   paws.keys = show.keys, paws.tapping = show.tapping, paws.phase = show.pawPhase;
-  const int age = int(show.age);
-  switch (show.playing) {
-    case Pastime::kDone:  // the right one up, and down on Enter
-      paws.lift[1] = 60 * (eased(age, 0, 450) - eased(age, 450, 600)) / 1024;
-      break;
-    case Pastime::kMelt: {  // spread out and down with the puddle
-      const int spread = eased(age, 600, 2300) - eased(age, 4200, 4900);
-      paws.dx[0] = -70 * spread / 1024, paws.dx[1] = 70 * spread / 1024;
-      paws.lift[0] = paws.lift[1] = -10 * spread / 1024;
-      break;
-    }
-    default: return paws;
-  }
-  // A pastime stopped early gives them back as it fades.
-  for (int side : {0, 1}) paws.lift[side] = paws.lift[side] * show.fade / 255;
   return paws;
 }
 

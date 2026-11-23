@@ -7,22 +7,22 @@
 // one of the pack's rig clips (rig/clips/: a stretch, a hop, a look
 // around); a bit of the engine's (a yawn, a sneeze: slime::kGags, by
 // name), which its acting plays in place of its next gesture; or a take of
-// the engine's (busier typing, a deeper snore, a dream:
+// the engine's (a deeper snore, a dream:
 // slime::kPastimeTakes, by name), which its scene plays as the look's next
-// take. Each is for one look: working, idle or asleep; at work, only the
-// stretch while it does anything but type (router.h's Activity). A working or idle one needs a tier (render/tags.h:
+// take. Each is for one look: working, idle or asleep; at work there is
+// only the stretch (documentation/design/screen-guide.md in the engine,
+// "Small details"). A working or idle one needs a tier (render/tags.h:
 // `tier1` from a minute, `tier2` from 5, `tier3` from 15: the Mac's clock
 // of the agents' working stretch or of their rest), and one asleep, a
-// wait, the seconds its look has shown; a row that needs a tag (the night,
-// busy) needs no tier: it fits whenever its tag is on. They're dealt one
+// wait, the seconds its look has shown; a row that needs a tag (the night)
+// needs no tier: it fits whenever its tag is on. They're dealt one
 // at a time, a rest of kRestMinMs to kRestMaxMs between them, the newest
 // kNewestPct of the time and an older one's the rest, never the same twice
 // in a row: the newest are those of the highest tier, then the longest
-// wait, and a row that needs a tag is newer than any while it fits. One is
-// a move, the whole body going somewhere (melting), rarer than the rest:
-// never within kMoveGapMs of the last. While a pastime moves the desk's
-// paws (Enter pressed, spread as it melts), they're where it puts them
-// (pawsFor).
+// wait, and a row that needs a tag is newer than any while it fits. A row
+// may be a move, the whole body going somewhere, rarer than the rest:
+// never within kMoveGapMs of the last; none is now. A pastime that moves
+// the desk's paws says where (pawsFor); none does now.
 //
 // THE SCREEN'S RULE, part two (part one is render/gel/layers.h): a pastime
 // is the body's own. It brings nothing, holds nothing and leaves nothing:
@@ -45,12 +45,9 @@ namespace render::gel {
 
 enum class Pastime : uint8_t {
   kNone,
-  // At work.
-  kDone,
+  // At work: only the stretch. The tempo at work is yours (typing along),
+  // so Boop has no busier typing of its own.
   kStretch,
-  kMelt,
-  kBusyTyping,
-  kFranticTyping,
   // Idle.
   kLookAround,
   kHopeful,

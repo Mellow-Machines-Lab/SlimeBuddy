@@ -125,10 +125,9 @@ ramps and springs can, and no jolt at an event. By file:
   newest tier's about 60% of the time, and none with no tier nor tag; the
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
-  bit and work's and asleep's as the scene's take, busier typing only
-  while busy and the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose, and its look up at you as a long stretch stops); with you at the Mac (`test_with_you.cpp`: the eyes' rules in order, from needs you down to the glance, `macup` up at the screen; the pointer's eyes, lean, stretch and slide, eased and at most 20 a frame, none in a work pose of its own, needs you first; reading along with its 6 s linger, two minutes to settle in and no pastime over it; music's 24 s groove (a sway, no hop, lids half) and 3 minutes' rest, and the look round as it stops; a video to the Mac's side; a call that stills it through typing, music and five minutes with no pastime, then a stretch; a copy puffed round and its pah; typing fast's quicker, not higher, taps with no paw snapping as it comes and goes, a flicker that doesn't stop it, and wider eyes; and nothing with none of the facts, asleep (the pointer too), while something needs you or with a card in its hands); none dealt while something
-  needs you; the move, the melt, at least 5 minutes apart at `tier3`, the
-  paws its while it plays; working's base by tier, its lids lower the further in and
+  bit and asleep's as the scene's take, none at work however busy, and
+  the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose, and its look up at you as a long stretch stops); with you at the Mac (`test_with_you.cpp`: the eyes' rules in order, from needs you down to the glance, `macup` up at the screen; the pointer's eyes, lean, stretch and slide, eased and at most 20 a frame, none in a work pose of its own, needs you first; reading along with its 6 s linger, two minutes to settle in and no pastime over it; music's 24 s groove (a sway, no hop, lids half) and 3 minutes' rest, and the look round as it stops; a video to the Mac's side; a call that stills it through typing, music and five minutes with no pastime, then a stretch; typing fast's quicker, not higher, taps with no paw snapping as it comes and goes, a flicker that doesn't stop it, and wider eyes; and nothing with none of the facts, asleep (the pointer too), while something needs you or with a card in its hands); none dealt while something
+  needs you; at work only the stretch; working's base by tier, its lids lower the further in and
   faded out under a Moment or while something needs you; and the paws
   lifting before each key contact and tapping softly between), the rig's
   `x`, `reach` and `melt` on the gel
@@ -188,21 +187,20 @@ ramps and springs can, and no jolt at an event. By file:
   long yawn, the zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT handing you an agent, a stroke, a boop
   on the nose, a shake and peekaboo, each by the board's own input, its
-  variation expected), the tagged pastimes (`occasions.jsonl`: frantic typing, asked for by name, and
+  variation expected), the tagged pastimes (`occasions.jsonl`:
   `tier3`'s bare desk), the pastimes (`pastimes.jsonl`: the bare desk at
-  `tier3`, 20 s in and later, the done beat's paw on Enter and its sitting
-  back, a stretch, a puddle mid-melt, idle with nothing beside it, a look
+  `tier3`, 20 s in and later, a stretch, idle with nothing beside it, a look
   around, a hopeful look, a hop and a snooze's Zs, asleep a snore's bubble
   and a roll over, and needs you with no pastime after two minutes), the
   replies (`replies.jsonl`: each reply's clip partway through under its
   face and sign, the hush reply's squeeze and nod among them, a no over the
   needs-you screen, the slight wave at a lock and the bye at a night's
   lock), the
-  with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; a copy and its pah; and nothing at work in a pose of its own), the
+  with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; and nothing at work in a pose of its own), the
   gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
-  layers (`layers.jsonl`: the nightcap at night and on a party night, Zs
+  layers (`layers.jsonl`: nothing worn at night or on a party night, Zs
   asleep at night, a morning and each special day with nothing worn and
-  nothing behind or round it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
+  nothing behind or round it, a sign at night), a Moment's sign (`sign.jsonl`), a finished
 turn's glow and low sign as a face for it talks, lingers, fades, falls
 and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), the
   four activities (`activities.jsonl`: each pose from plain working at

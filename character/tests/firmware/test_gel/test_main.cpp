@@ -1529,11 +1529,9 @@ void test_the_eyes_follow_your_pointer();
 void test_it_reads_along_while_you_scroll();
 void test_it_grooves_to_your_music_and_watches_with_you();
 void test_a_call_keeps_it_still();
-void test_it_holds_a_copy_and_lets_it_go();
 void test_typing_fast_is_quicker_not_higher();
 void test_nothing_with_you_without_the_facts();
 void test_work_settles_by_tier();
-void test_moves_are_rare();
 void test_the_paws_type_on_the_keys();
 void test_each_activity_is_a_pose();
 // test_hand.cpp
@@ -1678,8 +1676,8 @@ static void test_tracked_clear_matches_full_clear() {
 // line's parsing isn't counted here.)
 // The layers (render/gel/layers.h) sit on the anchors of the pose that drew
 // the body: the crown over the brim's ring over the hands'; they move with
-// the body. It wears its nightcap at night and nothing for any other tag,
-// and a night's lids hang lower but asleep.
+// the body. It wears nothing for any tag, the night's included: a night
+// shows on its lids, which hang lower but asleep.
 static void test_layers_follow_the_bodys_anchors() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -1700,12 +1698,9 @@ static void test_layers_follow_the_bodys_anchors() {
     for (const char* n : names) when |= tagBit(n);
     return when;
   };
-  TEST_ASSERT_TRUE(nightcapFor(tags({"night"})) && nightcapFor(tags({"night", "winter", "party", "halloween"})));
-  for (const char* day : {"morning", "day", "evening"})
-    TEST_ASSERT_FALSE(nightcapFor(tags({day, "friday", "winter", "party", "newyear", "lunar", "programmers", "halloween"})));
   {
-    // Nothing is worn for a special day, a season or a Friday: the hat's
-    // layer is empty by day and the nightcap's at night, whatever else is on.
+    // Nothing is worn for a special day, a season, a Friday or the night:
+    // only the Zs, beside it, and only asleep.
     auto dressed = std::make_unique<Engine>();
     Facts idle;
     idle.base = SceneState::kIdle;
@@ -1713,10 +1708,9 @@ static void test_layers_follow_the_bodys_anchors() {
     for (const char* tag : {"friday", "winter", "party", "newyear", "lunar", "programmers", "halloween", "valentines"}) {
       dressed->setOccasion(tags({"day", tag}), 0);
       dressed->step(500);
-      TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, layerContents(*dressed).hat, tag);
       TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, layerContents(*dressed).beside, tag);
       dressed->setOccasion(tags({"night", tag}), 0);
-      TEST_ASSERT_EQUAL_UINT32_MESSAGE(kNightcap, layerContents(*dressed).hat, tag);
+      TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, layerContents(*dressed).beside, tag);
     }
   }
   // The body's lower rings: the lap's over the hem's, each from the left side to
@@ -1729,12 +1723,7 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL_INT(0, sleepyLids(*e));
   e->setOccasion(tags({"night"}), 0);
   TEST_ASSERT_EQUAL_INT(kNightLids, sleepyLids(*e));
-  // A nightcap covers the dome's top: the pixels just over the crown change.
-  const std::vector<uint16_t> bare(px);
-  paint(s, *e, false, 0, 0, &at);
-  const size_t over = size_t(at.crown.y / 16 - 4) * 502 + size_t(at.crown.x / 16);
-  TEST_ASSERT_NOT_EQUAL(bare[over], px[over]);
-  // Every layer at once, asleep (the nightcap and the Zs), off the heap.
+  // Every layer at once, asleep (the Zs), off the heap.
   e->setOccasion(tags({"night", "winter", "party", "valentines", "friday"}), 0);
   e->scenes.route.state = SceneState::kAsleep;
   allocCount = 0;
@@ -1744,12 +1733,10 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_EQUAL_INT(0, allocCount);
 }
 
-// The nightcap and the Zs come and go through the rig's layer stack (the
-// face's), on the rig's 200 ms fade: a winter evening wears nothing, the
-// nightcap fades in at night, and nothing else is worn with it; falling
-// asleep, the Zs fade in while the nightcap stays whole, each layer its
-// own; a sign fades out at its opacity, as Behaviour gives it. Each is
-// drawn at its layer's opacity.
+// The Zs come and go through the rig's layer stack (the face's), on the
+// rig's 200 ms fade: a winter night awake wears nothing; falling asleep,
+// the Zs fade in, each layer its own; a sign fades out at its opacity, as
+// Behaviour gives it. Each is drawn at its layer's opacity.
 static void test_the_layers_come_and_go_through_the_stack() {
   using rig::Layer;
   static_assert(rig::kFadeMs == 200, "a layer fades over the rig's 200 ms");
@@ -1766,23 +1753,11 @@ static void test_the_layers_come_and_go_through_the_stack() {
     b.onState(m, t);
     b.advance(t, rng);
   };
-  const uint32_t nightcap = kNightcap;
-  state(SceneState::kIdle, {"evening", "winter", "party", "friday"}, 0);
+  state(SceneState::kIdle, {"night", "winter", "party", "friday"}, 0);
   b.advance(1000, rng);
-  TEST_ASSERT_EQUAL_UINT32(0, l.content(Layer::kHat, 1000));
+  TEST_ASSERT_EQUAL_UINT32(0, l.content(Layer::kHat, 1000));  // no nightcap
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, 1000));
-  state(SceneState::kIdle, {"night", "winter"}, 1008);
-  int lastIn = 0;
-  for (uint32_t t = 1008; t <= 1500; t += 16) {
-    b.advance(t, rng);
-    TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, t));  // no pyjamas: one thing worn
-    const int in = l.content(Layer::kHat, t) == nightcap ? l.opacity(Layer::kHat, t) : 0;
-    TEST_ASSERT_TRUE(in >= lastIn);  // fading in, never popping back
-    if (t <= 1008 + 32) TEST_ASSERT_TRUE(in < 500);
-    lastIn = in;
-  }
-  TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, 1500));
-  TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, 1500));
+  TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kBeside, 1000));
   state(SceneState::kAsleep, {"night", "winter"}, 2000);
   TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kBeside, 2000));
   for (uint32_t t = 2016; t <= 2400; t += 16) {
@@ -1790,11 +1765,10 @@ static void test_the_layers_come_and_go_through_the_stack() {
     const int in = ease1000(std::min(int(t - 2000), 200), 200);
     TEST_ASSERT_EQUAL_INT(in, l.opacity(Layer::kBeside, t));  // the Zs
     TEST_ASSERT_EQUAL_INT(0, l.opacity(Layer::kWorn, t));
-    TEST_ASSERT_EQUAL_UINT32(nightcap, l.content(Layer::kHat, t));
-    TEST_ASSERT_EQUAL_INT(1000, l.opacity(Layer::kHat, t));
+    TEST_ASSERT_EQUAL_UINT32(0, l.content(Layer::kHat, t));
   }
   TEST_ASSERT_TRUE(l.content(Layer::kWorn, 2400) == 0 && l.content(Layer::kBeside, 2400) == 1);
-  // Drawn at the opacity: a hat half in is about half as bright as whole.
+  // Drawn at the opacity: the Zs half in are about half as bright as whole.
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -1802,8 +1776,8 @@ static void test_the_layers_come_and_go_through_the_stack() {
   e->setOccasion(tagBit("night"), 0);
   rig::Anchors at;
   paint(s, *e, false, 0, 0, &at);
-  rig::Layers hat;
-  hat.show(Layer::kHat, nightcap, 0);
+  rig::Layers zs;
+  zs.show(Layer::kBeside, kZs, 0);
   auto lit = [&](const rig::Layers& layers, uint32_t t) {
     std::fill(px.begin(), px.end(), 0);
     paintLayers(s, *e, at, &layers, t);
@@ -1811,9 +1785,9 @@ static void test_the_layers_come_and_go_through_the_stack() {
     for (uint16_t p : px) n += (p >> 11) + (p >> 5 & 63) / 2 + (p & 31);
     return n;
   };
-  const long whole = lit(hat, 400), half = lit(hat, 100);
-  TEST_ASSERT_TRUE(whole > 10000);
-  TEST_ASSERT_INT_WITHIN(whole / 10, whole / 2, half);
+  const long whole = lit(zs, 400), half = lit(zs, 100);
+  TEST_ASSERT_TRUE(whole > 300);
+  TEST_ASSERT_INT_WITHIN(whole / 5, whole / 2, half);
   TEST_ASSERT_EQUAL_INT(0, lit(rig::Layers{}, 400));
   // The sign, at its opacity.
   auto sign = [&](int opacity) {
@@ -1977,84 +1951,12 @@ static void test_text_glides_between_pixels() {
   }
 }
 
-// The nightcap is drawn into a recording and blended from it
-// (OutfitLayer): while the body moves, a frame shows it as kept within
-// kSlack (12 sixteenths) of where it is; once it's still (the same time,
-// a frame over kMovingMs (100 ms) after the last, or anchors unmoved for
-// kStillMs (200 ms)), it's drawn where it is, the same as afresh. The
-// nightcap's swing steps every kSwingMs (400 ms).
-static void test_the_outfit_is_kept_while_the_body_moves() {
-  static_assert(OutfitLayer::kSlack == 12 && OutfitLayer::kMovingMs == 100 && OutfitLayer::kStillMs == 200 &&
-                    OutfitLayer::kSwingMs == 400,
-                "the rules this test pins");
-  std::vector<uint16_t> px(502 * 410);
-  Surface s{502, 410, px.data()};
-  auto e = std::make_unique<Engine>();
-  for (int t = 0; t <= 960; t += 16) e->step(t);
-  rig::Anchors home;
-  paint(s, *e, false, 0, 0, &home);
-  uint32_t night = tagBit("night");
-  e->setOccasion(night, 0);
-  // The nightcap alone, whole, at `at`, `ms` into the engine's clock.
-  rig::Layers cap;
-  cap.show(rig::Layer::kHat, kNightcap, 0);
-  auto frame = [&](const rig::Anchors& at, uint32_t ms) {
-    std::fill(px.begin(), px.end(), 0);
-    s.invalidate();
-    e->elapsedMs = ms;
-    paintLayers(s, *e, at, &cap, 1000);
-    return px;
-  };
-  auto raised = [&](int crown) {  // the crown alone moved, the brim's front where it was
-    rig::Anchors at = home;
-    at.crown.y -= crown;
-    return at;
-  };
-  const auto kept = frame(home, 1200);
-  TEST_ASSERT_TRUE(kept == frame(home, 1599));  // the swing's step, by the time alone: the same
-  TEST_ASSERT_TRUE(kept != frame(home, 1600));  // the next
-  frame(home, 1200);
-  TEST_ASSERT_TRUE(kept == frame(raised(12), 1230));  // moving, within kSlack: as kept
-  TEST_ASSERT_TRUE(kept == frame(raised(12), 1330));  // still moving: it moved 100 ms ago
-  const auto still = frame(raised(12), 1430);         // unmoved for kStillMs: drawn where it is
-  TEST_ASSERT_TRUE(kept != still);
-  TEST_ASSERT_TRUE(still == frame(raised(12), 1430));  // and kept so
-  frame(home, 1200);
-  TEST_ASSERT_TRUE(kept != frame(raised(13), 1230));  // past kSlack: drawn again
-  frame(home, 1200);
-  TEST_ASSERT_TRUE(still == frame(raised(12), 1200));  // the same time: as still
-  frame(home, 1200);
-  TEST_ASSERT_TRUE(still == frame(raised(12), 1301));  // a frame over kMovingMs after: the same
-  // A whole number of pixels over, it's the kept one moved that far.
-  frame(home, 1200);
-  rig::Anchors down = home;
-  for (rig::Point* p : {&down.crown, &down.brimL, &down.brimF, &down.brimR}) p->y += 3 * 16;
-  const auto lower = frame(down, 1230);
-  for (int y = 3; y < 410 * 4 / 5; ++y)
-    TEST_ASSERT_EQUAL_MEMORY(kept.data() + (y - 3) * 502, lower.data() + y * 502, 502 * 2);
-  // Moving half a pixel down, it's the kept one half a pixel down (Raster::
-  // replay16): its ink's middle half a pixel lower, not where it was or a
-  // pixel on.
-  auto middle = [](const std::vector<uint16_t>& p) {
-    double mass = 0, moment = 0;
-    for (int y = 0; y < 410 * 4 / 5; ++y)
-      for (int x = 0; x < 502; ++x)
-        if (const int g = p[size_t(y) * 502 + x] >> 5 & 63) mass += g, moment += double(g) * y;
-    return moment / mass;
-  };
-  frame(home, 1200);
-  rig::Anchors half = home;
-  for (rig::Point* p : {&half.crown, &half.brimL, &half.brimF, &half.brimR}) p->y += 8;
-  const double glide = middle(frame(half, 1230)) - middle(kept);
-  TEST_ASSERT_TRUE(glide > 0.4 && glide < 0.6);
-}
-
 // The screen's rule, part one (render/gel/layers.h): nothing hangs behind
 // the body or drifts round it for a time of day, a season or a holiday,
 // and it wears nothing for one. A morning, a winter's day, a party, New
-// Year's, a Friday, Halloween and a Valentine's Day draw nothing at all
-// over the body; a night only its nightcap, nothing out to the sides. The
-// Zs are the one thing beside it, only while it sleeps at night.
+// Year's, a Friday, Halloween, a Valentine's Day and a night awake draw
+// nothing at all over the body. The Zs are the one thing beside it, only
+// while it sleeps at night.
 static void test_nothing_hangs_in_the_sky_or_the_air() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
@@ -2093,8 +1995,8 @@ static void test_nothing_hangs_in_the_sky_or_the_air() {
     }
     for (uint32_t when : {tags({"night"}), tags({"night", "party", "winter", "halloween"})}) {
       const Drawn d = drawn(when, state);
-      TEST_ASSERT_TRUE(d.all > 1000);  // its nightcap
-      if (state != SceneState::kAsleep) TEST_ASSERT_EQUAL_INT(0, d.far);
+      if (state != SceneState::kAsleep) TEST_ASSERT_EQUAL_INT(0, d.all);  // no nightcap
+      else TEST_ASSERT_TRUE(d.all > 0);                                   // the Zs
     }
   }
   auto beside = [&](const char* tag, SceneState state) {
@@ -3153,11 +3055,9 @@ int main() {
   RUN_TEST(test_it_reads_along_while_you_scroll);
   RUN_TEST(test_it_grooves_to_your_music_and_watches_with_you);
   RUN_TEST(test_a_call_keeps_it_still);
-  RUN_TEST(test_it_holds_a_copy_and_lets_it_go);
   RUN_TEST(test_typing_fast_is_quicker_not_higher);
   RUN_TEST(test_nothing_with_you_without_the_facts);
   RUN_TEST(test_work_settles_by_tier);
-  RUN_TEST(test_moves_are_rare);
   RUN_TEST(test_the_paws_type_on_the_keys);
   RUN_TEST(test_each_activity_is_a_pose);
   RUN_TEST(test_the_layers_come_and_go_through_the_stack);
@@ -3193,7 +3093,6 @@ int main() {
   RUN_TEST(test_a_recording_replays_as_drawn);
   RUN_TEST(test_a_recording_replays_between_pixels);
   RUN_TEST(test_text_glides_between_pixels);
-  RUN_TEST(test_the_outfit_is_kept_while_the_body_moves);
   // test_cells.cpp
   RUN_TEST(test_every_cell_plays_truthfully);
   RUN_TEST(test_ten_minutes_of_work);

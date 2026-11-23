@@ -35,7 +35,7 @@ const rig::Clip& clipNamed(const char* name) {
 // The tags of you at the Mac, as bits, found once at compile time: they're
 // read every tick.
 constexpr uint32_t bitOf(const char* name) { return 1u << tagIndex(name); }
-constexpr uint32_t kCallTag = bitOf("oncall"), kCopiedTag = bitOf("copied"), kScrollingTag = bitOf("scrolling"),
+constexpr uint32_t kCallTag = bitOf("oncall"), kScrollingTag = bitOf("scrolling"),
                    kMusicTag = bitOf("music"), kVideoTag = bitOf("video"), kFastTag = bitOf("typingfast"),
                    kTypingTag = bitOf("typing"), kMacLeftTag = bitOf("macleft"),
                    kMacRightTag = bitOf("macright"), kMacUpTag = bitOf("macup");
@@ -44,14 +44,13 @@ constexpr uint32_t kCallTag = bitOf("oncall"), kCopiedTag = bitOf("copied"), kSc
 
 const voice::EffectClips& GelFace::clips() const { return gel::clips(); }
 
-// By WithYou's order: none, music, video, reading, copied, on a call.
+// By WithYou's order: none, music, video, reading, on a call.
 const GelFace::Clips GelFace::clips_ = {
-    {nullptr, &clipNamed("groove"), &clipNamed("video"), &clipNamed("read-along"), &clipNamed("copied"), &clipNamed("on-call")},
+    {nullptr, &clipNamed("groove"), &clipNamed("video"), &clipNamed("read-along"), &clipNamed("on-call")},
     &clipNamed("read-along-settled"),
     &clipNamed("type-along"),
     &clipNamed("type-along-fast"),
     &clipNamed("stretch"),
-    &clipNamed("release"),
     &clipNamed("look-around")};
 
 const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome) {
@@ -95,7 +94,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   tapping_ = typed_ = false, typedAt_ = 0;
   fast_ = typingTag_ = thought_ = false, typingFrom_ = thinkAt_ = 0;
   with_ = wanted_ = WithYou::kNone, withClip_ = nullptr;
-  scrolled_ = music_ = called_ = copied_ = settled_ = false, scrolledAt_ = readFrom_ = musicFrom_ = 0;
+  scrolled_ = music_ = called_ = settled_ = false, scrolledAt_ = readFrom_ = musicFrom_ = 0;
   pawPhaseQ_ = 0, fastSeen_ = 0;
   pointer_ = pointerNear_ = false, pointerX_ = pointerY_ = 0;
   for (int i = 0; i < kFollows; ++i) followTo_[i] = followBy_[i] = 0;
@@ -175,7 +174,6 @@ void GelFace::advanceTo(uint32_t t) {
 
 void GelFace::showLayers(uint32_t t) {
   const Contents now = layerContents(*engine_);
-  layers_.show(rig::Layer::kHat, now.hat, t);
   layers_.show(rig::Layer::kBeside, now.beside, t);
 }
 
@@ -294,8 +292,6 @@ void GelFace::deal(SceneState look, uint32_t t) {
   int n = 0;
   // A move waits its gap.
   const bool moveWaits = moved_ && within(t, movedAt_, kMoveGapMs);
-  // Nor a melt in its nightcap, which has no head to sit on then.
-  const bool hatted = nightcapFor(when);
   // At work, only a stretch but while it types: a take is typing, the done
   // beat is a paw on Enter, and a melt from another pose would leave the
   // screen.
@@ -303,7 +299,7 @@ void GelFace::deal(SceneState look, uint32_t t) {
   const bool types = isDesk(desk) && activityOf(desk) == Activity::kTyping;
   for (const auto& p : kPastimes) {
     if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
-    if ((hatted && p.id == Pastime::kMelt) || (look == SceneState::kWorking && !types && p.id != Pastime::kStretch))
+    if ((look == SceneState::kWorking && !types && p.id != Pastime::kStretch))
       continue;
     // The highest tier, then the longest wait, is the newest; one that
     // needs a tag is newer than any while it fits.
@@ -449,13 +445,13 @@ void GelFace::pawPhase(uint32_t dt) {
 
 // With you at the Mac besides typing along (face.h): the one that fits now,
 // its pose's clip on the mixer, the lean it follows, and a move once as a
-// call, a copy or the music ends.
+// call or the music ends.
 void GelFace::showWithYou(uint32_t t) {
   const Engine& e = *engine_;
   const uint32_t when = e.scenes.when;
   SceneState look;
   const bool free = freeForYou(t, look) && !tapping_ && !e.acting.current() && !e.router.listening;
-  const bool call = when & kCallTag, copied = when & kCopiedTag;
+  const bool call = when & kCallTag;
   if (when & kScrollingTag) {
     if (!scrolled_ || t - scrolledAt_ >= kReadGapMs) readFrom_ = t;
     scrolled_ = true, scrolledAt_ = t;
@@ -467,18 +463,16 @@ void GelFace::showWithYou(uint32_t t) {
   music_ = music;
   const bool grooving = music && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs;
   wanted_ = call       ? WithYou::kCall
-            : copied   ? WithYou::kCopied
             : reading  ? WithYou::kReading
             : (when & kVideoTag) ? WithYou::kVideo
             : grooving ? WithYou::kMusic
                        : WithYou::kNone;
   const WithYou now = free ? wanted_ : WithYou::kNone;
-  // As each ends: a stretch back up after a call, a pah as a copy is let
-  // go, a look round as the music stops. Not over anything else.
+  // As each ends: a stretch back up after a call, a look round as the
+  // music stops. Not over anything else.
   if (called_ && !call) once(*clips_.stretch, t);
-  else if (copied_ && !copied && !call) once(*clips_.release, t);
   else if (musicStopped && !call) once(*clips_.lookAround, t);
-  called_ = call, copied_ = copied;
+  called_ = call;
   settled_ = now == WithYou::kReading && t - readFrom_ >= kSettleMs;
   const rig::Clip* clip = now == WithYou::kReading && settled_ ? clips_.settled : clips_.with[int(now)];
   if (clip != withClip_) {
@@ -704,7 +698,6 @@ const char* GelFace::passing(uint32_t t) const {
   if (playing()) return info(pastime_).name;
   switch (with_) {
     case WithYou::kCall: return "oncall";
-    case WithYou::kCopied: return "copied";
     case WithYou::kReading: return "reading";
     case WithYou::kVideo: return "video";
     case WithYou::kMusic: return "music";

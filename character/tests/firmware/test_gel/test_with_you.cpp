@@ -271,13 +271,13 @@ void test_it_grooves_to_your_music_and_watches_with_you() {
 
 // Pins the call: still and a little smaller, its eyes half closed; no
 // typing along, no music, no pastime however long; a stretch as it ends.
-// It comes before a copy held, a read and music.
+// It comes before a read and music.
 void test_a_call_keeps_it_still() {
   const uint32_t call = tagBit("oncall"), typing = tagBit("typing"), music = tagBit("music");
   Board board(SceneState::kIdle, kDay | tierBit(3));
   GelFace& face = board.face();
   board.to(1000);
-  board.tags(kDay | tierBit(3) | call | typing | music | tagBit("copied") | tagBit("scrolling"));
+  board.tags(kDay | tierBit(3) | call | typing | music | tagBit("scrolling"));
   bool moved = false;
   board.to(board.t + 300000, [&] {
     moved = moved || face.pastimes(board.t).tapping || face.pastimes(board.t).playing != Pastime::kNone;
@@ -290,27 +290,6 @@ void test_a_call_keeps_it_still() {
   board.tags(kDay | tierBit(3));
   board.to(board.t + 64);
   TEST_ASSERT_EQUAL_STRING("stretch", board.cueing());
-}
-
-// Pins a copy: it puffs up round and wide, lifted a little, eyes wide; let
-// go, a pah, its mouth open, once.
-void test_it_holds_a_copy_and_lets_it_go() {
-  const uint32_t holding = tagBit("copied");
-  Board board(SceneState::kIdle, kDay | tierBit(1));
-  GelFace& face = board.face();
-  board.to(1000);
-  const int rest = board.channel(rig::Channel::kSquash);
-  board.tags(kDay | tierBit(1) | holding);
-  board.to(board.t + 1000);
-  TEST_ASSERT_EQUAL_INT(int(WithYou::kCopied), int(face.withYou()));
-  TEST_ASSERT_TRUE(board.channel(rig::Channel::kSquash) - rest > 150);  // puffed up
-  TEST_ASSERT_TRUE(board.channel(rig::Channel::kLift) > 2 && board.channel(rig::Channel::kEyeSize) > 1100);
-  board.tags(kDay | tierBit(1));
-  board.to(board.t + 64);
-  TEST_ASSERT_EQUAL_STRING("release", board.cueing());
-  int open = 0;
-  board.to(board.t + 400, [&] { open = std::max(open, board.channel(rig::Channel::kMouthOpen)); });
-  TEST_ASSERT_TRUE(open >= kRigMouthOpen);  // pah
 }
 
 // Pins typing fast: its paws tap quicker, as high, and its eyes open wider
@@ -362,7 +341,7 @@ void test_nothing_with_you_without_the_facts() {
     TEST_ASSERT_EQUAL_INT(int(WithYou::kNone), int(face.withYou()));
     TEST_ASSERT_EQUAL_INT(face.mixer().channels()[rig::Channel::kLean], board.channel(rig::Channel::kLean));
   });
-  const uint32_t all = tagBit("music") | tagBit("video") | tagBit("scrolling") | tagBit("copied");
+  const uint32_t all = tagBit("music") | tagBit("video") | tagBit("scrolling");
   for (SceneState look : {SceneState::kAsleep, SceneState::kNeedsYou}) {
     Board other(look == SceneState::kNeedsYou ? SceneState::kWorking : look, kDay | all);
     if (look == SceneState::kNeedsYou) {
@@ -377,7 +356,7 @@ void test_nothing_with_you_without_the_facts() {
   asleep.pointer(true, -9, -3);
   asleep.to(3000, [&] { TEST_ASSERT_FALSE(asleep.face().engine().motion.attending); });
   // Holding an agent's card, its hands are full: no pose.
-  Board card(SceneState::kIdle, kDay | tagBit("copied"));
+  Board card(SceneState::kIdle, kDay | tagBit("scrolling"));
   CardShow held;
   held.on = true;
   card.face().card(held);

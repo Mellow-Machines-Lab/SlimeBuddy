@@ -1,7 +1,6 @@
 #include "render/gel/layers.h"
 
 #include <algorithm>
-#include <climits>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -24,10 +23,8 @@ namespace {
 constexpr uint16_t kCardInk = rgb565(27, 55, 78), kCardRim = rgb565(0x78, 0xa4, 0xc8);
 constexpr uint16_t kWords = rgb565(184, 233, 245), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kInk = rgb565(28, 24, 36);
-// The nightcap's flannel, its stripes and the cap's
-// cuff, and the pale gold of a wish's sparks.
-constexpr uint16_t kNightcloth = rgb565(62, 72, 168), kNightstripe = rgb565(176, 190, 238),
-                   kNightcuff = rgb565(112, 124, 210), kMoonlight = rgb565(250, 230, 160);
+// The pale gold of a wish's sparks.
+constexpr uint16_t kMoonlight = rgb565(250, 230, 160);
 
 // The point `i` thirty-seconds of a turn round a circle, as cosine and
 // sine (Q12).
@@ -42,80 +39,11 @@ Point turn(int i) {
   }
 }
 
-// The ring through its left side, its front and its right side, as a
-// curve (sixteenths), its `n` + 1 points from left to right, raised `up`.
-int ring(const rig::Point& l, const rig::Point& f, const rig::Point& r, int up, Point* out, int n = 8) {
-  const int cx = 2 * f.x - (l.x + r.x) / 2, cy = 2 * f.y - (l.y + r.y) / 2;  // through f at the middle
-  for (int i = 0; i <= n; ++i) {
-    const int64_t u = i, v = n - i, d = int64_t(n) * n;
-    out[i] = {int((v * v * l.x + 2 * u * v * cx + u * u * r.x) / d),
-              int((v * v * l.y + 2 * u * v * cy + u * u * r.y) / d) - up};
-  }
-  return n + 1;
-}
-
-// A brim's curve and the head's width across it (sixteenths).
-struct Head {
-  Point band[9];
-  int width, cx, top;
-};
-Head head(const rig::Anchors& at, int up) {
-  Head h;
-  ring(at.brimL, at.brimF, at.brimR, up, h.band);
-  h.width = std::max(16, at.brimR.x - at.brimL.x);
-  h.cx = (at.brimL.x + at.brimR.x) / 2;
-  h.top = at.crown.y;
-  return h;
-}
-
 // A triangle wave, 0 to `amp` and back, once every `period` ms.
 int wave(int ms, int period, int amp) {
   const int p = ms % period;
   return (p < period / 2 ? p : period - p) * 2 * amp / period;
 }
-// The same, in sixteenths of a pixel.
-int wave16(int ms, int period, int amp) { return wave(ms, period, amp * 16); }
-
-// A long sleeping cap in striped flannel: up from a soft cuff, over the
-// crown and flopping down its left side, its tassel hanging by its cheek
-// and swaying out and back every 2 s: `ms` into the sway.
-void nightcap(Raster& r, const Head& h, int ms) {
-  const int w = h.width, sway = wave(ms, 2000, w / 24);
-  // Thousandths of the head's width from the crown, and how far down the
-  // flop each is (it sways more the lower it hangs).
-  auto at = [&](int x, int y, int hang = 0) {
-    return Point{h.cx + w * x / 1000 + sway * hang / 4, h.top + w * y / 1000};
-  };
-  Point v[28];
-  int n = 0;
-  for (const Point& p : h.band) v[n++] = p;
-  v[n++] = at(380, -40);  // up its right side
-  v[n++] = at(230, -210);
-  v[n++] = at(80, -320);
-  v[n++] = at(-120, -370);  // over the top, where it bends
-  v[n++] = at(-330, -350, 1);
-  v[n++] = at(-520, -250, 2);  // and down the flop's outside
-  v[n++] = at(-640, -60, 3);
-  v[n++] = at(-690, 150, 4);
-  v[n++] = at(-700, 330, 5);
-  v[n++] = at(-625, 310, 5);  // back up its inside
-  v[n++] = at(-600, 110, 4);
-  v[n++] = at(-545, -80, 3);
-  v[n++] = at(-450, -190, 2);
-  v[n++] = at(-330, -240, 1);
-  v[n++] = at(-420, -60);  // and down the cap's left side to the cuff
-  r.polygon16(v, n, kNightcloth);
-  for (int i = -2; i < 4; ++i) {  // pale stripes across it, cut to the cap
-    const int y0 = h.top + w * (60 - i * 130) / 1000, y1 = y0 - w * 55 / 1000;
-    const Point stripe[] = {{h.cx - w, y0}, {h.cx + w, y0}, {h.cx + w, y1}, {h.cx - w, y1}};
-    r.polygon16(stripe, 4, kNightstripe, v, n);
-  }
-  r.stroke16(h.band, 9, w / 14, kNightcuff);  // the cuff, rolled
-  const Point cord[] = {at(-662, 320, 5), at(-665, 390, 6)};
-  r.stroke16(cord, 2, w / 60 + 8, kNightstripe);
-  r.disk16(cord[1].x, cord[1].y, w / 22, kNightstripe);  // the tassel
-}
-
 // A heart about (x16, y16), sixteenths of a pixel, `s` whole pixels its
 // half-width.
 void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
@@ -169,109 +97,6 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
   r.alpha = 255;
 }
 
-// How far into its swing the nightcap is, on a step of kSwingMs, by the
-// engine's clock.
-int swingFor(const Engine& e) { return int(e.elapsedMs % 2000 / OutfitLayer::kSwingMs * OutfitLayer::kSwingMs); }
-// Whether it wears its nightcap now: at night, but for peekaboo's gesture,
-// which takes it off.
-bool capFor(const Engine& e) {
-  const bool peekaboo = e.scenes.route.state == SceneState::kGesture && e.scenes.variant == int(Gesture::kPeekaboo);
-  return nightcapFor(e.scenes.when) && !peekaboo;
-}
-
-// The anchors `at` moved `dx`, `dy` sixteenths.
-rig::Anchors moved(rig::Anchors at, int dx, int dy) {
-  for (Point* p : {&at.crown, &at.brimL, &at.brimF, &at.brimR, &at.handF, &at.eyeL, &at.eyeR, &at.mouth}) p->x += dx, p->y += dy;
-  for (int i = 0; i < rig::Anchors::kRingPoints; ++i) {
-    at.lap[i].x += dx, at.lap[i].y += dy;
-    at.hem[i].x += dx, at.hem[i].y += dy;
-  }
-  return at;
-}
-
-// The nightcap as last drawn into a recording (OutfitLayer): what
-// it looked like, the anchors it was drawn at, the one it rides first, and
-// the last frame it was blended into.
-struct Kept {
-  static constexpr int kAnchors = 6;
-  Recording shapes;
-  bool valid = false;
-  uint32_t look = 0;
-  Point at[kAnchors]{};
-  int dx = 0, dy = 0;  // the surface's pixels from the recording's
-  // The last frame's body, time and anchors, and when its anchors last
-  // moved.
-  const Engine* engine = nullptr;
-  uint32_t ms = 0, movedAt = 0;
-  Point last[kAnchors]{};
-};
-// Room for the nightcap's recording: one block made at start, so on the
-// board it's PSRAM's, not its scarce internal memory's.
-struct Rooms {
-  uint8_t hat[OutfitLayer::kHatBytes];
-};
-Rooms& rooms = *new Rooms;
-// The nightcap, on the brim's front.
-Kept keptHat{{rooms.hat, OutfitLayer::kHatBytes}};
-
-int floor16(int v) { return v >= 0 ? v / 16 : -((15 - v) / 16); }
-
-// `draw` at `at`, which looks like `look` and rides the `n` anchors `now`:
-// blended from what `kept` holds while that fits, else drawn into its
-// recording first; drawn straight on the surface when it doesn't fit the
-// recording's frame or its room.
-template <typename Draw>
-void wear(Raster& r, Kept& kept, const Engine& e, const rig::Anchors& at, const Point* now, int n, uint32_t look,
-          Draw draw) {
-  // Moving: a frame of the same body just before, and its anchors moved
-  // within kStillMs.
-  const uint32_t t = e.elapsedMs;
-  for (int i = 0; i < n; ++i)
-    if (now[i].x != kept.last[i].x || now[i].y != kept.last[i].y) kept.movedAt = t;
-  const bool moving = kept.engine == &e && t != kept.ms && t - kept.ms <= OutfitLayer::kMovingMs &&
-                      t - kept.movedAt < OutfitLayer::kStillMs;
-  kept.engine = &e, kept.ms = t;
-  std::copy(now, now + n, kept.last);
-  // How far the body has moved it since it was kept, in sixteenths, by the
-  // anchor it rides, and the most any other is off once it's moved that
-  // far: how far its shape has changed. Still, it's drawn afresh unless it
-  // moved whole pixels and kept its shape.
-  int ox = 0, oy = 0, off = INT_MAX;
-  if (kept.valid && kept.look == look) {
-    ox = now[0].x - kept.at[0].x, oy = now[0].y - kept.at[0].y;
-    off = 0;
-    for (int i = 0; i < n; ++i)
-      off = std::max({off, std::abs(now[i].x - kept.at[i].x - ox), std::abs(now[i].y - kept.at[i].y - oy)});
-  }
-  const bool whole = off == 0 && ox % 16 == 0 && oy % 16 == 0;
-  if (!whole && !(moving && off <= OutfitLayer::kSlack)) {
-    // Kept in a frame as wide as the surface and taller, the anchor it rides
-    // a whole number of pixels from its middle, as far into its pixel as it
-    // is.
-    const int fx = r.s.width / 2 - floor16(now[0].x), fy = OutfitLayer::kFrameY - floor16(now[0].y);
-    Raster record{r.s};
-    record.limit = OutfitLayer::kFrameHeight;
-    record.recording = &kept.shapes;
-    kept.shapes.clear();
-    draw(record, moved(at, fx * 16, fy * 16));
-    const Box& b = kept.shapes.box;
-    kept.valid = !kept.shapes.full && b.x0 > 0 && b.y0 > 0 && b.x1 < r.s.width && b.y1 < OutfitLayer::kFrameHeight;
-    if (!kept.valid) return draw(r, at);  // past the frame's edge, or its room
-    kept.look = look, kept.dx = -fx, kept.dy = -fy, ox = oy = 0;
-    std::copy(now, now + n, kept.at);
-  }
-  r.replay16(kept.shapes, kept.dx * 16 + ox, kept.dy * 16 + oy);
-}
-
-// The nightcap, at its layer's fade, `swing` ms into its sway.
-void outfit(Raster& r, const Engine& e, const rig::Anchors& at, int swing, int fade) {
-  r.fade = fade;
-  const Point now[] = {at.brimF, at.crown, at.brimL, at.brimR};
-  wear(r, keptHat, e, at, now, 4, uint32_t(kNightcap) | uint32_t(swing) << 8,
-       [swing](Raster& r, const rig::Anchors& at) { nightcap(r, head(at, 0), swing); });
-  r.fade = 255;
-}
-
 }  // namespace
 
 int sleepyLids(const Engine& e) {
@@ -284,7 +109,7 @@ int sleepyLids(const Engine& e) {
 
 Contents layerContents(const Engine& e) {
   const bool zs = hasTag(e.scenes.when, "night") && e.scenes.route.state == SceneState::kAsleep;
-  return {capFor(e) ? kNightcap : 0u, zs ? kZs : 0u};
+  return {zs ? kZs : 0u};
 }
 
 void paintLayers(Surface& s, const Engine& e, const rig::Anchors& at, const rig::Layers* layers, uint32_t t) {
@@ -297,7 +122,6 @@ void paintLayers(Surface& s, const Engine& e, const rig::Anchors& at, const rig:
   const Contents now = layerContents(e);
   auto content = [&](Layer l, uint32_t whole) { return layers ? layers->content(l, t) : whole; };
   auto fade = [&](Layer l) { return layers ? (layers->opacity(l, t) * 255 + 500) / 1000 : 255; };
-  if (content(Layer::kHat, now.hat) == kNightcap) outfit(r, e, at, swingFor(e), fade(Layer::kHat));
   r.fade = fade(Layer::kBeside);
   if (content(Layer::kBeside, now.beside) == kZs) zs(r, at, ms);
 }
@@ -348,7 +172,7 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   r.alpha = 255;
 }
 
-void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, bool hat, int yield) {
+void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, int yield) {
   if (!s.pixels || !bar.opacity) return;
   Raster r{s};
   // The bar centred over the body, and how much today straight after it,
@@ -367,9 +191,6 @@ void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, b
   // What else holds the top band (LISTENING) takes it: the bar gives way.
   const int shown = bar.opacity * std::clamp(yield, 0, 255) / 255;
   r.alpha = shown;
-  // A hat reaches the bar's row: it goes behind the bar, with no scrap of its
-  // tip above it. (With the crown under the bar, so never over the body.)
-  if (hat && top > 0 && at.crown.y / 16 > y + kHeight && shown > 2) r.round(s.width / 2 - 110, 0, 220, top, 0, 0);
   r.round(x, top, kWidth, height, height / 2, kTrack);
   if (tip > x + 4) {
     const int w = tip - x - 2;

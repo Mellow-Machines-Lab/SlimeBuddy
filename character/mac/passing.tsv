@@ -1,11 +1,7 @@
 # What the gel does to pass the time and between Doings, by the name the face says (GelFace::passing), for the popover alone.
 # kind	name	words, after "Boop's"
 pastime	along	typing along with you
-pastime	done-beat	having a little think
-pastime	melt	melting a little
 pastime	stretch	stretching
-pastime	busy-typing	typing faster
-pastime	frantic-typing	typing like mad
 pastime	look-around	looking around
 pastime	hopeful	looking hopeful
 pastime	hop	hopping
@@ -23,4 +19,3 @@ doing	reading	reading along with you
 doing	video	watching along with you
 doing	music	grooving to your music
 doing	oncall	keeping still while you're on a call
-doing	copied	holding what you copied

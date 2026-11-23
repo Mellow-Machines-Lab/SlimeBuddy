@@ -1,5 +1,5 @@
 // The body with everything drawn on or beside it: its moods, a sign, asleep,
-// at work, its nightcap, needs you, a pastime, the finishes, a work act's low
+// at work, at night, needs you, a pastime, the finishes, a work act's low
 // sign, a wish and the drawer.
 {"t":"dbg.reset"}
 {"clock":0}
@@ -81,7 +81,7 @@
 {"clock":1000}
 {"clock":1250}
 {"clock":1500}
-{"shot":"nightcap"}
+{"shot":"night"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"working","mood":"happy","busy":2,"attn":{"agent":"claude","project":"buddygotchi","name":"Make the device answer every touch","more":2,"id":7}}
@@ -92,27 +92,6 @@
 {"clock":1250}
 {"clock":1500}
 {"shot":"needs-you"}
-{"t":"dbg.reset"}
-{"clock":0}
-{"t":"state","vol":0,"when":["day","tier3"],"base":"working","mood":"happy"}
-{"clock":250}
-{"clock":500}
-{"clock":750}
-{"clock":1000}
-{"t":"dbg.pastime","name":"melt"}
-{"clock":1250}
-{"clock":1500}
-{"clock":1750}
-{"clock":2000}
-{"clock":2250}
-{"clock":2500}
-{"clock":2750}
-{"clock":3000}
-{"clock":3250}
-{"clock":3500}
-{"clock":3750}
-{"clock":4000}
-{"shot":"melt"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day","tier3"],"base":"idle","mood":"happy"}

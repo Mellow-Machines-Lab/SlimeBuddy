@@ -1,7 +1,6 @@
 // The gel's pastimes (render/gel/pastimes.h), each on a frozen clock after
 // a reset, 15 minutes into the tiers (tier3). At work: the desk and nothing
-// else, 20 s in and 48 s on; then the done beat (a paw on Enter, and it
-// sits back), a stretch, and the one move, a puddle mid-melt, each the
+// else, 20 s in and 48 s on; then a stretch, the only pastime at work, the
 // body's own with nothing beside it; idle: nothing beside it, however
 // long, a look around and a snooze's Zs; asleep, a snore's bubble; while
 // something needs you, no pastime at all. A state every 20 s keeps the
@@ -16,22 +15,10 @@
 {"t":"state","base":"working","mood":"happy","vol":0,"when":["day","tier3"]}
 {"clock":48000}
 {"shot":"work-later"}
-{"clock":50000}
-{"t":"dbg.pastime","name":"done-beat"}
-{"clock":50500}
-{"shot":"work-done-paw"}
-{"clock":51200}
-{"shot":"work-done"}
 {"clock":54000}
 {"t":"dbg.pastime","name":"stretch"}
 {"clock":55200}
 {"shot":"work-stretch"}
-{"clock":60000}
-{"t":"state","base":"working","mood":"happy","vol":0,"when":["day","tier3"]}
-{"clock":70000}
-{"t":"dbg.pastime","name":"melt"}
-{"clock":73000}
-{"shot":"work-melt"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"when":["day","tier3"]}

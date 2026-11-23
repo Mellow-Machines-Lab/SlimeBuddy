@@ -116,13 +116,6 @@
 {"shot": "call-over-stretch"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["day","copied"]}
-{"clock": 1500}
-{"shot": "copied"}
-{"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["day"]}
-{"clock": 1700}
-{"shot": "copied-let-go"}
-{"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"act":"analyzing","busy":1,"calls":[[0,1,"grep"]],"when":["day","scrolling","macright"]}
 {"clock": 2500}

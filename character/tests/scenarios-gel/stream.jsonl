@@ -80,7 +80,7 @@
 {"clock": 84000}
 {"t": "state", "base": "working", "mood": "focused", "busy": 2, "vol": 0, "when": ["day"], "attn": {"agent": "claude", "project": "landing", "more": 0, "id": 7}}
 {"expect": {"calls": 0, "call": null}}
-// One lane at night: its words on the left, clear of the nightcap.
+// One lane at night: its words on the left.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["night"],"calls":[[0, 1, "grep"]]}
