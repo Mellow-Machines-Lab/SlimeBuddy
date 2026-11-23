@@ -99,3 +99,14 @@
 {"t":"do","id":1,"name":"task_complete","args":{"outcome":"success","mood":"sad","loops":3,"turn":3}}
 {"clock":216}
 {"expect":{"moment":{"anim":"task_complete"}}}
+// A chat turn ends (the agent asked or answered): no finish, only a look
+// up at you, and "your turn" held low in the strip's place, with no
+// thread named.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["day"]}
+{"clock":1000}
+{"t":"do","name":"notice","play":"now","args":{"sign":"your turn","low":true,"loops":1}}
+{"clock":2200}
+{"shot":"chat-turn-your-turn"}
+{"t":"dbg.reset"}
