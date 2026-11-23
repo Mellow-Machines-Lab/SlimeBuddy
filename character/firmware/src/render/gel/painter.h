@@ -82,14 +82,16 @@ struct DrawerPose;
 void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t keepLane = 0,
            rig::Anchors* anchors = nullptr, const rig::Channels& rig = rig::kRest, const rig::Layers* layers = nullptr,
            uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
-           int duck = 0);
+           int duck = 0, const Stream* stream = nullptr, uint32_t now = 0);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
 // The most room a cross-fading group of the art has taken (kCrossingBytes).
 extern int crossingPeak;
 // The desk's paws are where a pastime puts them (render/gel/pastimes.h),
 // typing with none.
 struct Paws;
-void paintProps(Surface&, const Engine&, const Paws* paws = nullptr);
+// The monitor shows what the work is (an icon each) and a failure or a
+// timeout as it lands, by the work stream at `now`: none, by the look alone.
+void paintProps(Surface&, const Engine&, const Paws* paws = nullptr, const Stream* stream = nullptr, uint32_t now = 0);
 // A paw types: before each of its key contacts in the recipe playing it
 // lifts and comes back down over kTapMs, kTapLift thousandths of the
 // surface's height at the top, landing on the contact (whose sound and

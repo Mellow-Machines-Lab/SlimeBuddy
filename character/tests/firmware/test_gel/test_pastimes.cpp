@@ -422,7 +422,9 @@ void test_each_activity_is_a_pose() {
   int jump = 0;
   const rig::Channels looking = pose(SceneState::kAnalyzing, &jump), running = pose(SceneState::kTesting, &jump),
                       waiting = pose(SceneState::kWaiting, &jump), typing = pose(SceneState::kToolUse);
-  TEST_ASSERT_TRUE(jump <= 30);  // of 1000, a 16 ms step: no pop
+  // Of 1000, a 16 ms step: no pop. The poses go further than they did
+  // (looking presses up to the monitor), so a step may be a little larger.
+  TEST_ASSERT_LESS_OR_EQUAL_INT(40, jump);
   TEST_ASSERT_TRUE(looking[Channel::kLean] <= -400 && looking[Channel::kX] <= -30 && looking[Channel::kGazeX] < -300);
   TEST_ASSERT_TRUE(running[Channel::kLean] >= 180 && running[Channel::kX] >= 25 && running[Channel::kSquash] <= -180);
   TEST_ASSERT_TRUE(waiting[Channel::kSquash] >= 240 && waiting[Channel::kGazeY] < -300);

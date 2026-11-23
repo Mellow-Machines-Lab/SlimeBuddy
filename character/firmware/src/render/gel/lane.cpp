@@ -89,6 +89,34 @@ void glyph(Raster& r, const Font& f, int x, int y, int g, uint16_t ink) {
   r.alpha = opacity;
 }
 
+// The work's term, in the strip's place while the agents work and nothing
+// else holds the lane: the newest call's word (a file, a search, a
+// command), or, as a failure or a timeout lands, its word and what
+// happened, in clay or amber.
+LowSign termSign(const Stream& st, uint32_t now) {
+  static char text[Stream::kWordBytes + 16];
+  LowSign sign;
+  if (!st.on) return sign;
+  sign.ms = uint32_t(kLowSignRiseMs);
+  sign.oneLine = true;
+  const Stream::Call& c = st.call;
+  if (c.live && callMove(c.style) == CallMove::kHit && c.style != CallStyle::kNo && now - c.at < Stream::kCallMs) {
+    const bool timeout = c.style == CallStyle::kTimeout;
+    std::snprintf(text, sizeof text, "%s %s", c.text, timeout ? "timed out" : "failed");
+    sign.text = text;
+    sign.mark = LowSign::Mark::kCross;
+    sign.ink = timeout ? rgb565(kAmberRgb) : rgb565(kClayRgb);
+    return sign;
+  }
+  const Stream::Word* newest = nullptr;
+  for (const Stream::Word& w : st.words)
+    if (w.live && (!newest || int32_t(w.born - newest->born) > 0)) newest = &w;
+  const char* word = newest ? newest->text : st.laneCount ? st.lanes[0].word : "";
+  if (!*word) return sign;
+  sign.text = word;
+  sign.ink = rgb565(100, 184, 207);
+  return sign;
+}
 }  // namespace
 
 const Font& bubbleFont() { return kFontBubble; }
@@ -571,6 +599,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // takes the lane from all of these, its rim glowing gold.
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
+  if (!low.shows() && !line && !note && !(card && card->on) && stream) low = termSign(*stream, now);
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
   // rising, the strip's row fades as it comes.
@@ -590,7 +619,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   const int hop = held ? cardHop(*card) : signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
-  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck);
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck, stream, now);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at);
