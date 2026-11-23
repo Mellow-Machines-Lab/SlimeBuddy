@@ -99,6 +99,7 @@ class GelFace final : public Face {
   bool draw(Canvas&, Surface*, const SceneShow&, uint32_t, const char*, const char*, const SignShow&, const DoneShow&,
             const Strip&, bool) override;
   void wish(const WishShow& show) override;
+  void color(int index) override;
   void card(const CardShow& show) override { card_ = show; }
   bool cardAt(int x, int y) const override;
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
