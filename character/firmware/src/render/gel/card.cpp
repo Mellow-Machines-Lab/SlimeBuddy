@@ -30,7 +30,16 @@ int pad(const CardShow& c) { return hasBar(c) ? 2 : 6; }
 int dotsRow(const CardShow& c) { return c.count > 1 ? CardLayout::kDotsRow : 0; }
 }  // namespace
 
-int cardHeight(const CardShow& c) { return (hasBar(c) ? kBar : 0) + pad(c) + kMain.h + (hasSmall(c) ? kSmallFont.h : 0) + pad(c); }
+// A picture's window: nearly the panel's width and about half its height,
+// read from a chair (the engine's documentation/design/screen-guide.md,
+// the map's 8).
+constexpr int kPicW = 454, kPicH = 188;
+constexpr uint16_t kGood = rgb565(0x5f, 0xae, 0x5a), kBad = rgb565(0xf0, 0x8a, 0x6c), kTrack = rgb565(42, 49, 56);
+
+int cardHeight(const CardShow& c) {
+  if (c.pic) return kPicH;
+  return (hasBar(c) ? kBar : 0) + pad(c) + kMain.h + (hasSmall(c) ? kSmallFont.h : 0) + pad(c);
+}
 
 int cardHop(const CardShow& c) {
   if (!c.on) return 0;
@@ -43,6 +52,10 @@ int cardHop(const CardShow& c) {
 
 Box cardBox(const Surface& s, const CardShow& c) {
   const int h = cardHeight(c), bottom = s.height * 4 / 5 - CardLayout::kGap - dotsRow(c), y = bottom - h;
+  if (c.pic) {
+    const int w = std::min(kPicW, s.width - 2 * (CardLayout::kEdge + CardLayout::kHand)), x = (s.width - w) / 2;
+    return {x, y, x + w, y + h};
+  }
   const int widest = std::max(stringWidth(kMain, c.text), hasSmall(c) ? stringWidth(kSmallFont, c.small) : 0);
   // (The bar's name is short, `claude` or `codex`: the main line is wider.)
   const int edge = s.inset(y, y + h) + CardLayout::kEdge + CardLayout::kHand;
@@ -50,6 +63,78 @@ Box cardBox(const Surface& s, const CardShow& c) {
   const int x = (s.width - w) / 2;
   return {x, y, x + w, y + h};
 }
+
+namespace {
+// The plan: a block a step, those done filled, the one on outlined; its
+// words for the step; and a ring for its guess of the minutes left.
+void paintPlan(Raster& r, const CardShow& c, int x, int y, int w, uint16_t ink) {
+  const int total = std::clamp(c.b, 1, 12), done = std::clamp(c.a, 0, total);
+  const int ring = c.left != CardShow::kNoLeft ? 104 : 0, room = w - 36 - (ring ? ring + 16 : 0);
+  const int gap = 6, bw = (room - gap * (total - 1)) / total;
+  for (int i = 0; i < total; ++i) {
+    const int bx = x + 18 + i * (bw + gap), by = y + 18;
+    if (i < done)
+      r.round(bx, by, bw, 22, 2, ink);
+    else if (i == done)
+      r.round(bx, by, bw, 22, 2, kTrack), r.ring(bx, by, bw, 22, 2, 3, ink);
+    else
+      r.round(bx, by, bw, 22, 2, kTrack);
+  }
+  char line[40];
+  if (c.step && *c.step)
+    text(r, kMain, x + 18, y + 52, c.step, kWords, room);
+  else
+    std::snprintf(line, sizeof line, "step %d of %d", std::min(done + 1, total), total), text(r, kMain, x + 18, y + 52, line, kWords, room);
+  std::snprintf(line, sizeof line, "%d of %d done", done, total);
+  text(r, kSmallFont, x + 18, y + 52 + kMain.h + 4, line, kSmallWords, room);
+  if (ring) {
+    const int cx = x + w - 18 - ring / 2, cy = y + 18 + ring / 2;
+    r.disk(cx, cy, ring / 2, c.left < 0 ? kBad : ink);
+    r.disk(cx, cy, ring / 2 - 9, kCardInk);
+    std::snprintf(line, sizeof line, "%d", c.left < 0 ? -c.left : c.left);
+    const int lw = stringWidth(kMain, line);
+    text(r, kMain, cx - lw / 2, cy - kMain.h / 2 - 8, line, kWords, ring);
+    const char* unit = c.left < 0 ? "over" : "min";
+    text(r, kSmallFont, cx - stringWidth(kSmallFont, unit) / 2, cy + 10, unit, kSmallWords, ring);
+  }
+}
+
+// The changes: a row a file, its name, a green bar for lines added and a
+// red one for lines removed, to one scale, and the numbers.
+void paintChanges(Raster& r, const CardShow& c, int x, int y, int w) {
+  int most = 1;
+  for (int i = 0; i < c.rows; ++i) most = std::max(most, c.added[i] + c.removed[i]);
+  const int name = 150, nums = 110, barRoom = w - 36 - name - nums;
+  for (int i = 0; i < c.rows; ++i) {
+    const int ry = y + 18 + i * 48, cy = ry + kLarge.h / 2;
+    text(r, kLarge, x + 18, ry, c.file[i], kWords, name - 8);
+    const int add = c.added[i] * barRoom / most, cut = c.removed[i] * barRoom / most;
+    if (add) r.round(x + 18 + name, cy - 11, add, 22, 2, kGood);
+    if (cut) r.round(x + 18 + name + add + (add ? 3 : 0), cy - 11, cut, 22, 2, kBad);
+    char n[24];
+    std::snprintf(n, sizeof n, "+%d -%d", c.added[i], c.removed[i]);
+    text(r, kSmallFont, x + w - 18 - nums + 8, ry, n, kSmallWords, nums - 8);
+  }
+}
+
+// The helpers: a lane each, a bar running while it works, full when done.
+void paintHelpers(Raster& r, const CardShow& c, int x, int y, int w, uint16_t ink, uint32_t ms) {
+  const int n = std::clamp(c.a + c.b, 1, 4);
+  for (int i = 0; i < n; ++i) {
+    const int ry = y + 18 + i * 38, track = w - 36 - 120;
+    const bool done = i >= std::min(c.a, 4);
+    char name[16];
+    std::snprintf(name, sizeof name, "helper %d", i + 1);
+    text(r, kLarge, x + 18, ry, name, kWords, 120);
+    r.round(x + 18 + 120, ry + 4, track, 22, 2, done ? kGood : kTrack);
+    if (!done) {
+      const int run = track / 3, at = int(ms / 4 % uint32_t(track + run)) - run;
+      const int x0 = std::max(0, at), x1 = std::min(track, at + run);
+      if (x1 > x0) r.round(x + 18 + 120 + x0, ry + 4, x1 - x0, 22, 2, ink);
+    }
+  }
+}
+}  // namespace
 
 void paintCard(Surface& s, const CardShow& c) {
   if (!s.pixels || !c.on) return;
@@ -72,10 +157,27 @@ void paintCard(Surface& s, const CardShow& c) {
     for (int i = 0; i < 3; ++i) r.disk(x + w - 16 - i * 11, y + bar / 2, 3, kBarWords);
   }
   r.ring(x, y, w, h, kCorner, 2, rim);
+  if (c.pic) {
+    // The bar says whose and which picture; the picture fills the rest.
+    static const char* const kWhat[] = {"plan", "changes", "helpers"};
+    const char* what = kWhat[c.pic == 'p' ? 0 : c.pic == 'c' ? 1 : 2];
+    char title[32];
+    std::snprintf(title, sizeof title, "%s \xC2\xB7 %s", c.agent && *c.agent ? c.agent : "agent", what);
+    if (!bar) {
+      r.round(x, y, w, kBar + kCorner, kCorner, rim);
+      r.round(x, y + kBar, w, kCorner, 0, kCardInk);
+      for (int i = 0; i < 3; ++i) r.disk(x + w - 16 - i * 11, y + kBar / 2, 3, kBarWords);
+    }
+    r.round(x + 6, y + 2, w - 60, kBar - 4, 0, rim);  // clear the bar's name
+    text(r, kSmallFont, x + 12, y + (kBar - kSmallFont.h) / 2 + 1, title, kBarWords, w - 70);
+    if (c.pic == 'p') paintPlan(r, c, x, y + kBar, w, rim);
+    else if (c.pic == 'c') paintChanges(r, c, x, y + kBar, w);
+    else paintHelpers(r, c, x, y + kBar, w, rim, c.ms);
+  }
   const int room = w - 2 * CardLayout::kPad;
   const int tw = std::min(stringWidth(kMain, c.text), room);
-  text(r, kMain, x + (w - tw) / 2, y + bar + pad(c), c.text, kWords, room);
-  if (hasSmall(c)) {
+  if (!c.pic) text(r, kMain, x + (w - tw) / 2, y + bar + pad(c), c.text, kWords, room);
+  if (hasSmall(c) && !c.pic) {
     const int sw = std::min(stringWidth(kSmallFont, c.small), room);
     text(r, kSmallFont, x + (w - sw) / 2, y + bar + pad(c) + kMain.h - 2, c.small, c.over ? kOver : kSmallWords, room);
   }
