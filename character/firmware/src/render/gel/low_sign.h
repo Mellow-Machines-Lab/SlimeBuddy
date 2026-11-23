@@ -13,7 +13,8 @@
 namespace render::gel {
 
 struct LowSign {
-  enum class Mark : uint8_t { kNone, kTick, kCross, kDots, kStar };
+  // kRing: today's ring, full; kGold to kBronze: a league's medal.
+  enum class Mark : uint8_t { kNone, kTick, kCross, kDots, kStar, kRing, kGold, kSilver, kBronze };
   const char* text = nullptr;  // none: no sign
   Mark mark = Mark::kNone;     // before the words, in `ink`
   uint16_t ink = 0;            // its rim, its mark and its words
@@ -22,6 +23,9 @@ struct LowSign {
   // One line at most, cut: under the rim's glow, a second line would run
   // into it at the panel's foot.
   bool oneLine = false;
+  // The XP its moment earned, a chip at its right end, "+5 XP": filled in
+  // `ink`, the words dark. 0 for none.
+  int xp = 0;
   bool shows() const { return text && *text; }
 };
 
@@ -40,7 +44,11 @@ struct LowSignLayout {
   char line[2][kLineBytes] = {};
   int x = 0, y = 0, w = 0, h = 0;
 };
-LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked, bool oneLine = false);
+// `chip`: the XP chip's width, px, 0 for none (lowSignChipWidth).
+LowSignLayout lowSignLayout(int width, int height, int corner, const char* text, bool marked, bool oneLine = false,
+                            int chip = 0);
+// The chip's words for `xp` ("+5 XP") into `out`, and its width in px; 0 for none.
+int lowSignChip(int xp, char* out, int size);
 
 // How far below its place it is now: 0 at rest.
 int lowSignDrop(const LowSign& sign, int height);

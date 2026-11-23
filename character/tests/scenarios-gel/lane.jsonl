@@ -110,11 +110,11 @@
 // waits.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"xp":40}
+{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0}
 {"clock":500}
-{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0,"xp":60}
+{"t":"state","base":"idle","mood":"calm","idle":1,"vol":0}
 {"clock":700}
-{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"xp":60,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":9,"kind":"approve"}}
+{"t":"state","base":"working","mood":"calm","busy":1,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"fix-nav","id":9,"kind":"approve"}}
 {"clock":1504}
 {"shot":"needs-you-with-ring"}
 // A finish with a bubble and a caption: the bubble has the row while Boop

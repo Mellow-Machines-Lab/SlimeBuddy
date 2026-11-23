@@ -84,11 +84,5 @@ int signHop(const SignShow& sign);
 // a speech dot, a laptop); met, the icon pops into a heart with sparks; left,
 // the bubble fades.
 void paintWish(Surface& surface, const WishShow& wish, const rig::Anchors& at);
-// The growth bar along the top of the screen: today's ring as a bar, with
-// how much today after it; full, it's gold. A met wish's heart flies from
-// its bubble into the bar's tip, and the bar gulps. Its row is clear of the
-// head, under what's worn.
-// `yield` (0–255): how far it has given way to what else holds the top band.
-void paintGrowthBar(Surface& surface, const GrowthShow& bar, const rig::Anchors& at, int yield = 255);
 
 }  // namespace render::gel

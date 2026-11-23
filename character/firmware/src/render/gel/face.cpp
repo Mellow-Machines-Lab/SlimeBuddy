@@ -631,10 +631,6 @@ void GelFace::wish(const WishShow& show) {
   wish_ = show;
 }
 
-void GelFace::growth(const GrowthShow& show) {
-  growth_ = show;
-}
-
 void GelFace::play(const rig::Clip& clip) {
   mixer_.play(clip);
   cueing_ = &clip;
@@ -960,7 +956,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   size_ = {native->width, native->height, native->corner};
   signHop_ = signHop(sign);
   cardDrawn_ = paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, channels(), &layers_,
-             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_, &card_);
+             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &card_);
   return true;
 }
 

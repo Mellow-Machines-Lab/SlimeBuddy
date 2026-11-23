@@ -49,6 +49,7 @@ LowSign finishSign(const DoneShow& d) {
   sign.ms = uint32_t(d.signMs);
   sign.leftMs = d.leftMs;
   sign.oneLine = true;  // under the glow
+  if (d.outcome == Outcome::kSuccess) sign.xp = d.xp;
   return sign;
 }
 
@@ -57,7 +58,11 @@ GoldShow goldShow(const SignShow& s) {
   if (!s.gold || !*s.gold || s.goldMs < uint32_t(kGoldAfterMs)) return g;
   const uint32_t ms = s.goldMs - kGoldAfterMs;
   g.sign.text = s.gold;
-  g.sign.mark = LowSign::Mark::kStar;
+  g.sign.mark = s.goldMark == GoldMark::kRing     ? LowSign::Mark::kRing
+                : s.goldMark == GoldMark::kGold   ? LowSign::Mark::kGold
+                : s.goldMark == GoldMark::kSilver ? LowSign::Mark::kSilver
+                : s.goldMark == GoldMark::kBronze ? LowSign::Mark::kBronze
+                                                  : LowSign::Mark::kStar;
   g.sign.ink = rgb565(kGoldRgb);
   g.sign.ms = ms;
   g.sign.leftMs = s.goldLeftMs;

@@ -101,7 +101,6 @@ class GelFace final : public Face {
   void wish(const WishShow& show) override;
   void card(const CardShow& show) override { card_ = show; }
   bool cardAt(int x, int y) const override;
-  void growth(const GrowthShow& show) override;
   int cues(uint32_t, bool, voice::FxEvent*, bool&) override;
   int profile(char* out, size_t n, uint32_t frames) override;
   const Engine& engine() const { return *engine_; }
@@ -370,8 +369,6 @@ class GelFace final : public Face {
   // last frame drew it.
   CardShow card_;
   bool cardDrawn_ = false;
-  // The growth bar to show, the device's, set before each frame.
-  GrowthShow growth_;
   // A new revision: the sounds already queued belong to what came before.
   void restartCues();
   bool factsChanged(const FaceContext& context) const;

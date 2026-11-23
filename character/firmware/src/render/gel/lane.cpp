@@ -671,7 +671,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
 bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* line, const SignShow& sign,
                 const Strip& s, const DoneShow& done, const rig::Channels& rig, const rig::Layers* layers, uint32_t t,
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
-                const char* note, const WishShow* wish, const GrowthShow* growth, const CardShow* card) {
+                const char* note, const WishShow* wish, const CardShow* card) {
   rig::Anchors at;
   if (drawer && drawer->shows()) {
     // The lane's rows are the sheet's: erased, and drawn again after.
@@ -692,7 +692,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // outranks it.
   if (sign.low && sign.text && !low.shows()) {
     low = LowSign{};
-    low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs;
+    low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs, low.xp = sign.xp;
   }
   // A celebration's gold, a little after the sign it may come with: it
   // takes the lane from all of these, its rim glowing gold.
@@ -731,12 +731,6 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   if (wish) paintWish(surface, *wish, at);
   if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
   if (held) paintCard(surface, *card);
-  if (growth) {
-    // The top band holds one thing at a time: while LISTENING shows there,
-    // the bar gives way to it (a heart flying still flies).
-    const int listening = (e.scenes.visible(Scenes::kListeningProp, e.timeMs()) * 255).integer();
-    paintGrowthBar(surface, *growth, at, 255 - listening);
-  }
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {

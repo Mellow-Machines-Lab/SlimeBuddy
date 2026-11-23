@@ -1,10 +1,11 @@
-// v1: today's ring closing (the bar fills gold and sparkles, Boop happy,
-// holding up "today's done!"), a level-up (proud, "level 12!" held low in
-// gold, the rim glowing gold), both at once as one moment, and a boop from
-// the world (Jev's small face, its sign and the reason).
+// v1: today's ring closing (Boop happy, "100 XP today, day 12" held low in
+// gold behind a full ring, the rim glowing gold; no bar), a level-up (proud,
+// "level 12!" held low in gold), both at once as one moment (the level held
+// up, the ring's words low), and a boop from the world (Jev's small face,
+// its sign and the reason).
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":90}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
 {"clock":100}
 {"clock":200}
 {"clock":300}
@@ -15,8 +16,8 @@
 {"clock":800}
 {"clock":900}
 {"clock":1000}
-{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":100}
-{"t":"do","id":1,"name":"react","args":{"sign":"today's done!","mood":"happy","loops":2}}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
+{"t":"do","id":1,"name":"react","args":{"gold":"100 XP today, day 12","mark":"ring","mood":"happy","loops":2}}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
@@ -42,7 +43,7 @@
 {"clock":3000}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":40}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
 {"clock":100}
 {"clock":200}
 {"clock":300}
@@ -88,7 +89,7 @@
 {"clock":4000}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":90}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
 {"clock":100}
 {"clock":200}
 {"clock":300}
@@ -99,13 +100,13 @@
 {"clock":800}
 {"clock":900}
 {"clock":1000}
-{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1,"xp":100}
-{"t":"do","id":1,"name":"react","args":{"sign":"today's done!","gold":"level 13!","reason":"level 13!","mood":"proud","loops":2}}
+{"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
+{"t":"do","id":1,"name":"react","args":{"sign":"level 13!","gold":"100 XP today, day 12","mark":"ring","reason":"level 13!","mood":"proud","loops":2}}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
 {"shot":"ring-and-level-sign"}
-{"expect":{"sign":"today's done!","gold":"level 13!"}}
+{"expect":{"sign":"level 13!","gold":"100 XP today, day 12"}}
 {"clock":1400}
 {"clock":1500}
 {"clock":1600}
