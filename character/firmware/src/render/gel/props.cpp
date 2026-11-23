@@ -194,9 +194,11 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Strea
   if (s.desk.x > q(.001)) {
     r.alpha = (s.desk.x * 255).integer();
     round(150, 749, 700, 21, 10, rgb565(25, 59, 77));
-    // The frame lights in the agent's colour while Boop holds its card.
-    const bool lit = held && held->slot >= 0 && held->slot < Stream::kLanes;
-    round(100, 600, 184, 116, 12, lit ? kLaneInk[held->slot] : blue);
+    // The frame lights in the agent's colour while Boop holds its card, and
+    // in the watched one's with several agents, so you know whose it is.
+    const int slot = held && held->slot >= 0 ? held->slot : watchedSlot();
+    const bool lit = slot >= 0 && slot < Stream::kLanes;
+    round(100, 600, 184, 116, 12, lit ? kLaneInk[slot] : blue);
     round(104, 604, 176, 108, 10, dark);
     round(114, 611, 156, 89, 8, rgb565(7, 24, 32));
     round(178, 715, 26, 32, 8, dark);

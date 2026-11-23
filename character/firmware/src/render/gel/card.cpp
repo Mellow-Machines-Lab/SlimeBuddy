@@ -1,6 +1,7 @@
 #include "render/gel/card.h"
 
 #include <algorithm>
+#include <cstdlib>
 
 #include "render/font.h"
 #include "render/gel/lane.h"
@@ -136,13 +137,15 @@ void paintHelpers(Raster& r, const CardShow& c, int x, int y, int w, uint16_t in
 }
 }  // namespace
 
-void paintCard(Surface& s, const CardShow& c) {
+void paintCard(Surface& s, const CardShow& c, int dx) {
   if (!s.pixels || !c.on) return;
   Raster r{s};
   const int in = int(std::min<uint32_t>(c.ms, CardLayout::kRiseMs)) * 1000 / int(CardLayout::kRiseMs);
   const int eased = ease1000(in, 1000);
-  r.fade = eased * 255 / 1000;
+  // Sliding in as you switch agents (switchDx): faded by how far off it is.
+  r.fade = eased * 255 / 1000 * (2 * kSwitchPx - std::min(std::abs(dx), kSwitchPx)) / (2 * kSwitchPx);
   Box b = cardBox(s, c);
+  b.x0 += dx, b.x1 += dx;
   const int down = CardLayout::kRisePx * (1000 - eased) / 1000, w = b.x1 - b.x0, h = b.y1 - b.y0;
   const int x = b.x0, y = b.y0 + down;
   const uint16_t rim = c.slot >= 0 && c.slot < Stream::kLanes ? kLaneInk[c.slot] : kCardRim;

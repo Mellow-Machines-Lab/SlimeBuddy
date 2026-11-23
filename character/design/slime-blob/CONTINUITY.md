@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-22. The slime's one engine is the C++ in
+Updated 2026-11-23. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -860,7 +860,12 @@ a beat every 600 ms, never hopping (the rig's looping `type-along` clip);
 its paws swing 30 high, one every 300 ms (`kBriskLift`, `kBriskMs`),
 against the agents' soft 12 every 340. At the Buddy's size, more was a
 bounce. The keys under the
-paws light as they land, which a small screen barely shows. At work that's at its desk, which
+paws light as they land, which a small screen barely shows, so on each
+paw's beat a key's tick bursts just off that side of the body, three short
+strokes rimmed dark, out and up, gone by that paw's next tap, longer typing
+fast (`typingTicks` in `gel/layers.cpp`, read from `Engine::typingAlong`):
+the mark that reads from a chair, as speaking's rings do, in every pose,
+the light size too, and never under a sign held up. At work that's at its desk, which
 is out already, and its eyes drop to the keys; you
 stop, and it's back to the soft typing. Only its typing pose types with
 you: looking, running or waiting, its paws are off the keys, the pose has

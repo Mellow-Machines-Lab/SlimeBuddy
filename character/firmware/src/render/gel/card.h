@@ -42,6 +42,6 @@ int cardHop(const CardShow& card);
 // Where the card is on the surface, as paintCard draws it at rest.
 Box cardBox(const Surface& surface, const CardShow& card);
 // The card, over the body's front and under nothing but the lane.
-void paintCard(Surface& surface, const CardShow& card);
+void paintCard(Surface& surface, const CardShow& card, int dx = 0);
 
 }  // namespace render::gel

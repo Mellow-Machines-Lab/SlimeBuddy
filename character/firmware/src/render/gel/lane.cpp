@@ -16,6 +16,7 @@
 #include "render/gel/profile.h"
 #include "render/gel/raster.h"
 #include "render/gel/stream.h"
+#include "render/maths.h"
 #include "render/palette.h"
 
 namespace render::gel {
@@ -99,6 +100,17 @@ struct Term {
   uint16_t ink = 0;
 };
 Term gTerm;
+// This frame's switch: how far off the strip's row is, and its arrows'
+// strength (noteSwitch); paintFrame sets them, the strip and its key read
+// them.
+int gSwitchDx = 0, gArrows = 0, gWatchSlot = -1;
+// What the last frame showed, and when the watched one and the set of
+// agents last changed.
+struct Switching {
+  int watch = -1, pips = 0, dir = 1;
+  uint32_t slidAt = 0, arrowsAt = 0;
+  bool slid = false, arrowed = false;
+} gSwitch;
 Term termFor(const Stream& st, uint32_t now, int watchSlot) {
   static char text[Stream::kWordBytes + 16];
   Term term;
@@ -568,10 +580,25 @@ void strip(Lane& l, const Strip& s, int spin) {
       text(r, kLarge, x + 18, cy - kLarge.h / 2, s.pill, ink, w - 36);
       return;
     }
-    int chip = right;
+    // Two arrows at the ends, a moment after the set of agents changes:
+    // there are others to swipe to.
+    if (gArrows > 0) {
+      r.alpha = gArrows;
+      for (int side : {-1, 1}) {
+        const int x = side < 0 ? margin - 14 : right + 14;
+        Point v[3] = {{(x - side * 5) * 16, (cy - 8) * 16}, {(x + side * 3) * 16, cy * 16}, {(x - side * 5) * 16, (cy + 8) * 16}};
+        r.stroke16(v, 3, 3 * 16, grey);
+      }
+      r.alpha = 255;
+    }
+    // Sliding in as you switch agents: the row starts gSwitchDx off and
+    // comes to rest, faded by how far it still has to go.
+    const int dx = gSwitchDx, left = margin + dx;
+    r.alpha = 255 - 255 * std::min(std::abs(dx), kSwitchPx) / (2 * kSwitchPx);
+    int chip = right + dx;
     if (s.who && *s.who) {
       const int w = glyphCount(s.who) * kLarge.w + 16, h = kLarge.h;
-      chip = right - w;
+      chip = right + dx - w;
       const uint16_t ink = inkOf(s.watch);
       r.round(chip, cy - h / 2, w, h, 4, ink);
       text(r, kLarge, chip + 8, cy - kLarge.h / 2, s.who, rgb565(0x06, 0x20, 0x1f), w - 16);
@@ -579,9 +606,10 @@ void strip(Lane& l, const Strip& s, int spin) {
     const bool rests = s.watch >= 0 && s.pipKind[s.watch] == 'i';
     char fitted[Stream::kDoingBytes];
     if (!rests && s.busy > 0 && gTerm.text && *gTerm.text)
-      text(r, f, margin, ty, fitTerm(gTerm.text, f, chip - kIcon - margin, fitted), gTerm.ink, chip - kIcon - margin);
+      text(r, f, left, ty, fitTerm(gTerm.text, f, chip - kIcon - left, fitted), gTerm.ink, chip - kIcon - left);
     else if (rests)
-      text(r, f, margin, ty, "resting", grey, chip - kIcon - margin);  // the one followed rests
+      text(r, f, left, ty, "resting", grey, chip - kIcon - left);  // the one followed rests
+    r.alpha = 255;
     return;
   }
   // Nothing named, while the agents work: what they're doing first, in
@@ -635,6 +663,7 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
     add(&s.pipCount, sizeof s.pipCount), add(s.pipKind, sizeof s.pipKind), add(s.pipSlot, sizeof s.pipSlot);
     add(&s.watch, sizeof s.watch), add(&s.pillAt, sizeof s.pillAt), str(s.who), str(s.pill);
+    add(&gSwitchDx, sizeof gSwitchDx), add(&gArrows, sizeof gArrows);
     const int pulse = s.pipCount > 1 ? spin / 2 % 2 : 0;
     add(&pulse, sizeof pulse);
     str(gTerm.text), add(&gTerm.ink, sizeof gTerm.ink);
@@ -699,6 +728,9 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
   gTerm = stream ? termFor(*stream, now, s.watch >= 0 ? s.pipSlot[s.watch] : -1) : Term{};
+  noteSwitch(s, now);
+  gSwitchDx = switchDx(now), gArrows = switchArrows(now);
+  gWatchSlot = s.pipCount > 1 && s.watch >= 0 ? s.pipSlot[s.watch] : -1;
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
   // rising, the strip's row fades as it comes.
@@ -730,7 +762,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   }
   if (wish) paintWish(surface, *wish, at);
   if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
-  if (held) paintCard(surface, *card);
+  if (held) paintCard(surface, *card, s.pipCount > 1 ? gSwitchDx : 0);
   Measure measure(profile.lane);
   const bool lane = surface.laneKey != key;
   if (lane) {
@@ -750,5 +782,39 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintGlow(surface, gold.glow, glowInk, 0, glowTo);
   return held;
 }
+
+void noteSwitch(const Strip& s, uint32_t now) {
+  Switching& w = gSwitch;
+  if (s.pipCount < 2) {
+    w = Switching{};
+    return;
+  }
+  // The first frame with several: no slide, only the arrows.
+  if (w.pips >= 2 && s.watch != w.watch && w.watch >= 0 && s.watch >= 0) {
+    // To the next (rightward in the pips): it comes in from the right.
+    const bool wrapped = std::abs(s.watch - w.watch) > 1 && s.pipCount > 2;
+    w.dir = (s.watch > w.watch) != wrapped ? 1 : -1;
+    w.slidAt = now, w.slid = true;
+  }
+  if (s.pipCount != w.pips) w.arrowsAt = now, w.arrowed = true;
+  w.watch = s.watch, w.pips = s.pipCount;
+}
+
+int switchDx(uint32_t now) {
+  const Switching& w = gSwitch;
+  if (!w.slid || now - w.slidAt >= kSwitchMs) return 0;
+  const int left = 1000 - ease1000(int((now - w.slidAt) * 1000 / kSwitchMs), 1000);
+  return w.dir * kSwitchPx * left / 1000;
+}
+
+int switchArrows(uint32_t now) {
+  const Switching& w = gSwitch;
+  if (!w.arrowed || now - w.arrowsAt >= kArrowsMs) return 0;
+  // In over 200 ms, held, out over the last 600: faint, at most 150.
+  const int age = int(now - w.arrowsAt), peak = 150;
+  return std::min({peak, age * peak / 200, int(kArrowsMs - age) * peak / 600});
+}
+
+int watchedSlot() { return gWatchSlot; }
 
 }  // namespace render::gel

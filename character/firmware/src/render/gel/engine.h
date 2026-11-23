@@ -52,6 +52,12 @@ class Engine {
   // Mac (`speakingSide`, -1 left, 1 right).
   bool speaking = false;
   int speakingSide = 1;
+  // You're typing and it types along (GelFace::showAlong): the layers pop
+  // a key's tick out beside the paw that taps, on its beat, in any pose,
+  // so typing along reads as plainly as speaking does. `typingPhase` is
+  // where the paws are in their beats (briskLift's), `typingFast` quicker.
+  bool typingAlong = false, typingFast = false;
+  int typingPhase = 0;
   void sync();
   void step(uint32_t ms);
   void setMood(int id) {

@@ -9,6 +9,7 @@
 #include "render/font.h"
 #include "render/gel/engine.h"
 #include "render/gel/lane.h"
+#include "render/gel/painter.h"
 #include "render/gel/raster.h"
 #include "render/maths.h"
 #include "render/palette.h"
@@ -126,6 +127,34 @@ void speakingHand(Raster& r, const rig::Anchors& at, int side, int ms) {
   r.alpha = 255;
 }
 
+// Typing along with you: on each of the paws' beats, a key's tick beside
+// the paw that taps, three short strokes bursting out and up from it and
+// fading by its next tap, the left's and the right's in turn; brighter and
+// longer typing fast. `phase` is briskLift's, 0 … 2 kBeat.
+void typingTicks(Raster& r, const rig::Anchors& at, int phase, bool fast) {
+  for (int side = -1; side <= 1; side += 2) {
+    const int p = (phase + (side > 0 ? kBeat : 0)) % (2 * kBeat);  // 0 as this paw comes down
+    const int age = p * 1000 / (2 * kBeat);                      // 0 … 1000 over its two beats
+    if (age > 750) continue;
+    // Just off its side, low, where the paws reach the keys.
+    const Point edge = at.hem[side > 0 ? rig::Anchors::kRingPoints - 1 : 0];
+    const int x = edge.x + side * 40 * 16, y = edge.y - 44 * 16;
+    r.alpha = age < 350 ? 255 : std::max(0, 255 - (age - 350) * 255 / 400);
+    const int reach = (fast ? 34 : 28) * (500 + age / 2) / 1000, from = 6 + reach / 2;  // px
+    // Out to the side, out and up, and up: thirty-seconds of a turn from
+    // the right, clockwise.
+    const int dirs[3] = {side > 0 ? 0 : 16, side > 0 ? 28 : 20, 24};
+    for (int k = 0; k < 3; ++k) {
+      const Point d = turn(dirs[k]);
+      Point line[2] = {{x + from * d.x / 256, y + from * d.y / 256},
+                       {x + (from + reach) * d.x / 256, y + (from + reach) * d.y / 256}};
+      r.stroke16(line, 2, 6 * 16, kCardInk);  // rimmed dark, to read over anything
+      r.stroke16(line, 2, 3 * 16, kShine);
+    }
+  }
+  r.alpha = 255;
+}
+
 }  // namespace
 
 int sleepyLids(const Engine& e) {
@@ -152,6 +181,7 @@ void paintLayers(Surface& s, const Engine& e, const rig::Anchors& at, const rig:
   auto content = [&](Layer l, uint32_t whole) { return layers ? layers->content(l, t) : whole; };
   auto fade = [&](Layer l) { return layers ? (layers->opacity(l, t) * 255 + 500) / 1000 : 255; };
   if (e.speaking) speakingHand(r, at, e.speakingSide, ms);
+  else if (e.typingAlong) typingTicks(r, at, e.typingPhase, e.typingFast);
   r.fade = fade(Layer::kBeside);
   if (content(Layer::kBeside, now.beside) == kZs) zs(r, at, ms);
 }

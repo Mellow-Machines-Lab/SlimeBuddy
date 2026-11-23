@@ -88,4 +88,20 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
 // sign's font (pinned by test_gel).
 int bubbleRoom(const Surface& surface);
 
+// Switching the agent the screen follows (several agents, the screen
+// guide's map): the strip's row and the card slide in from the side you
+// swiped toward over kSwitchMs while Boop stays, and when the set of
+// agents changes two arrows at the strip's ends say there are others to
+// swipe to, for kArrowsMs. noteSwitch reads each frame's strip;
+// switchDx is how far off, in px, the watched agent's things are now,
+// and switchArrows how strong the arrows are (0 … 255).
+constexpr uint32_t kSwitchMs = 320, kArrowsMs = 1800;
+constexpr int kSwitchPx = 90;
+void noteSwitch(const Strip& strip, uint32_t now);
+int switchDx(uint32_t now);
+int switchArrows(uint32_t now);
+// The watched agent's lane slot this frame, with several agents, else -1:
+// the desk's monitor is lit in its colour.
+int watchedSlot();
+
 }  // namespace render::gel

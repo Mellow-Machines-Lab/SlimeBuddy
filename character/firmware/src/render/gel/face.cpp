@@ -151,6 +151,7 @@ void GelFace::advanceTo(uint32_t t) {
   answerAct(t);
   showAlong(t);
   pawPhase(dt);
+  engine_->typingAlong = tapping_, engine_->typingFast = fast_, engine_->typingPhase = int(pawPhaseQ_ / 1000);
   showWithYou(t);
   followLean(dt);
   showGaze(t);
@@ -956,6 +957,8 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   const PastimeShow passing = pastimes(lastTick_);
   size_ = {native->width, native->height, native->corner};
   signHop_ = signHop(sign);
+  // A sign held up fills its hands: no key's ticks under it.
+  if (sign.text && !sign.low) engine_->typingAlong = false;
   cardDrawn_ = paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, channels(), &layers_,
              lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &card_);
   return true;
