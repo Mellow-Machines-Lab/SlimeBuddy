@@ -119,6 +119,7 @@ bool GelFace::nextDue(uint32_t from, uint32_t to, uint32_t& at) {
 
 const void* GelFace::assets(size_t& bytes) const { return materialTexels(bytes); }
 void GelFace::readAssetsFrom(const void* copy) { readMaterialFrom(copy); }
+void GelFace::color(int index) { bodyColor(index); }
 
 void GelFace::restartCues() {
   ++revision_;
@@ -631,10 +632,6 @@ void GelFace::wish(const WishShow& show) {
   wish_ = show;
 }
 
-void GelFace::growth(const GrowthShow& show) {
-  growth_ = show;
-}
-
 void GelFace::play(const rig::Clip& clip) {
   mixer_.play(clip);
   cueing_ = &clip;
@@ -960,7 +957,7 @@ bool GelFace::draw(Canvas&, Surface* native, const SceneShow& show, uint32_t t, 
   size_ = {native->width, native->height, native->corner};
   signHop_ = signHop(sign);
   cardDrawn_ = paintFrame(*native, *engine_, show.mouthOpen, show.dy, bubble, sign, strip, done, channels(), &layers_,
-             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &growth_, &card_);
+             lastTick_, stream_, t, &passing, drawer_, caption, &wish_, &card_);
   return true;
 }
 

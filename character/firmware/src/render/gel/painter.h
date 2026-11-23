@@ -55,6 +55,13 @@ void paintBody(Surface& surface, const PaintControls& controls, rig::Anchors* an
 // AMOLED, PSRAM over flash: GelFace::readAssetsFrom), or none for these.
 const void* materialTexels(size_t& bytes);
 void readMaterialFrom(const void* copy);
+// The body's colour, 0 to kBodyColors - 1, 0 the material as made: each
+// other is the material turned in hue, saturation and brightness, once, into
+// a copy of its own. With no room for the copy it stays as made.
+constexpr int kBodyColors = 8;
+void bodyColor(int index);
+// One texel of the material, as colour `index` turns it. Pure, for tests.
+uint16_t tinted(uint16_t texel, int index);
 // The dome on the canvas: canvas pixels a body unit at its middle.
 constexpr int kPxPerUnit = 85;
 // The rig's gazeX and gazeY at their whole (1000) move the eyes this far,

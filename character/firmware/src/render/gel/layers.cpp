@@ -173,8 +173,8 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   const int age = int(wish.popAge), pop = int(WishShow::kPopMs);
   // A wish goes by shrinking, as a cloud thins: its disks overlap, and fading
   // them would leave a muddy patch where they do. A wish left goes at once; one
-  // met turns white once its heart has popped, or as it flies off.
-  const int goes = wish.pop == WishShow::kGone ? 0 : wish.flies ? int(GrowthShow::kHeartWaitMs) : pop / 2;
+  // met turns white once its heart has popped.
+  const int goes = wish.pop == WishShow::kGone ? 0 : pop / 2;
   const int gone = wish.pop == WishShow::kWaiting || age <= goes ? 0 : ease1000(age - goes, pop - goes);
   const auto size = [gone](int radius) { return radius * (1000 - gone) / 1000; };
   const uint16_t cloud = gone && wish.pop == WishShow::kMet ? rgb565(255, 255, 255) : kCream;
@@ -187,8 +187,7 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   if (wish.pop == WishShow::kMet) {
     // The icon pops into a heart, with sparks flying out from it.
     constexpr uint16_t kHeart = rgb565(226, 78, 104);
-    if (!wish.flies || age < int(GrowthShow::kHeartWaitMs))
-      heart(r, cx * 16, (cy - 10) * 16, size(std::min(18, 4 + age / 20)), kHeart);
+    heart(r, cx * 16, (cy - 10) * 16, size(std::min(18, 4 + age / 20)), kHeart);
     r.alpha = 255 * std::max(0, pop - age) / pop;
     for (int i = 0; i < 6; ++i) {
       const Point out = turn(i * 32 / 6);
@@ -198,80 +197,6 @@ void paintWish(Surface& s, const WishShow& wish, const rig::Anchors& at) {
   } else {
     r.alpha = 255 * (1000 - gone) / 1000;
     wishIcon(r, wish, cx, cy, kInk);
-  }
-  r.alpha = 255;
-}
-
-void paintGrowthBar(Surface& s, const GrowthShow& bar, const rig::Anchors& at, int yield) {
-  if (!s.pixels || !bar.opacity) return;
-  Raster r{s};
-  // The bar centred over the body, and how much today straight after it,
-  // the number alone in the large font: the bar is today.
-  constexpr int kWidth = 200, kHeight = 18, kTop = 18, kSlide = 40, kNumberGap = 10;
-  constexpr uint16_t kTrack = rgb565(22, 34, 46), kRim = rgb565(70, 102, 126), kFill = rgb565(89, 169, 224),
-                     kFillTop = rgb565(170, 222, 245), kFull = rgb565(kGoldRgb), kFullTop = rgb565(255, 234, 160),
-                     kHeart = rgb565(226, 78, 104), kGlow = rgb565(255, 250, 220), kNumber = rgb565(kEyeRgb);
-  const int x = (s.width - kWidth) / 2, y = kTop - kSlide * (255 - bar.opacity) / 255;
-  // Today's ring, full: gold, and nothing more counts today.
-  const bool last = bar.fill >= 1000;
-  // Swells as it lands, and settles.
-  const int swell = bar.gulp ? 4 * (bar.gulp < 300 ? bar.gulp : (1000 - bar.gulp) * 300 / 700) / 300 : 0;
-  const int top = y - swell / 2, height = kHeight + swell, cy = y + kHeight / 2;
-  const int tip = x + 2 + (kWidth - 4) * bar.fill / 1000;
-  // What else holds the top band (LISTENING) takes it: the bar gives way.
-  const int shown = bar.opacity * std::clamp(yield, 0, 255) / 255;
-  r.alpha = shown;
-  r.round(x, top, kWidth, height, height / 2, kTrack);
-  if (tip > x + 4) {
-    const int w = tip - x - 2;
-    r.round(x + 2, top + 2, w, height - 4, (height - 4) / 2, last ? kFull : kFill);
-    if (w > 12) r.round(x + 7, top + 3, w - 10, 2, 1, last ? kFullTop : kFillTop);
-  }
-  r.ring(x, top, kWidth, height, height / 2, 1, kRim);
-  // How much today, counting up as it fills.
-  char today[8];
-  snprintf(today, sizeof today, "%d", (bar.fill + 5) / 10);
-  if (shown > 2) text(r, kLarge, x + kWidth + kNumberGap, cy - kLarge.h / 2, today, kNumber);
-  if (bar.sparkle) {
-    // Full: stars burst off along the bar, and fade, rising no more than
-    // 12 px, so the panel's top edge never cuts them.
-    const int age = bar.sparkle;
-    r.alpha = shown * (1000 - age) / 1000;
-    for (int i = 0; i < 7; ++i) {
-      const int sx = x + 20 + i * (kWidth - 40) / 6, rise = 4 + age * (4 + (i % 3) * 2) / 1000;
-      const int sy = i % 2 ? top - rise : top + height + rise;
-      r.disk(sx, sy, 3 - age * 2 / 1000, i % 3 ? kGlow : kFullTop);
-    }
-  }
-  if (bar.gulp) {
-    // A flash along what's filled, and sparks off the tip.
-    r.alpha = shown * (1000 - bar.gulp) / 1000 / 2;
-    if (tip > x + 4) r.round(x + 2, top + 2, tip - x - 2, height - 4, (height - 4) / 2, kGlow);
-    r.alpha = shown * (1000 - bar.gulp) / 1000;
-    for (int i = 0; i < 6; ++i) {
-      const Point out = turn(i * 32 / 6 + 3);
-      const int d = 8 + bar.gulp * 26 / 1000;
-      r.disk(tip + d * out.x / 4096, cy + d * out.y / 4096, 2, i % 2 ? kGlow : kHeart);
-    }
-  }
-  if (bar.flight >= 0) {
-    // Up and over from the bubble, quicker as the bar draws it in: a curve
-    // that starts out and to the side, and three fading behind it.
-    const Point centre = wishCentre(s, at), from{centre.x, centre.y - 6};  // where its heart sat
-    const auto along = [&](int k, int& px, int& py) {
-      const int e = k * k / 1000, q = 1000 - e;
-      // Over anything under the bar (a LISTENING word), along its row.
-      const int midX = from.x + 60, midY = cy;
-      px = (q * q / 1000 * from.x + 2 * q * e / 1000 * midX + e * e / 1000 * tip) / 1000;
-      py = (q * q / 1000 * from.y + 2 * q * e / 1000 * midY + e * e / 1000 * cy) / 1000;
-    };
-    for (int i = 3; i >= 0; --i) {
-      const int k = std::max(0, bar.flight - i * 45);
-      int px, py;
-      along(k, px, py);
-      r.alpha = i ? 200 - i * 50 : 255;
-      heart(r, px * 16, py * 16, std::max(6, 20 - k * 10 / 1000 - i * 3), kHeart);
-    }
   }
   r.alpha = 255;
 }

@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <array>
 #include <cstring>
+#include <new>
 namespace render::gel {
 namespace {
 using render::helper;
@@ -44,8 +45,12 @@ static_assert((slime::kMaterialWidth - 1) << 10 == 1 << 20 && (slime::kMaterialH
               "UV rounding matches the generated material grids");
 int texelAt(int t, int shift) { return (t + (1 << shift >> 1)) >> shift; }
 // Where the body reads the material: as linked, or a copy the board made
-// somewhere quicker to read (readMaterialFrom).
+// somewhere quicker to read (readMaterialFrom), or a tinted copy of that
+// (bodyColor).
 const uint16_t* material = slime::kMaterial;
+const uint16_t* madeMaterial = slime::kMaterial;
+uint16_t* tintedMaterial = nullptr;
+int bodyColorNow = 0;
 uint16_t texel(int ut, int vt, const Level& l) {
   int tx = std::clamp(texelAt(ut, l.shift), 0, l.width - 1), ty = std::clamp(texelAt(vt, l.shift), 0, l.height - 1);
   return material[l.offset + ty * l.width + tx];
@@ -345,7 +350,100 @@ const void* materialTexels(size_t& bytes) {
   bytes = sizeof slime::kMaterial;
   return slime::kMaterial;
 }
-void readMaterialFrom(const void* copy) { material = copy ? static_cast<const uint16_t*>(copy) : slime::kMaterial; }
+void readMaterialFrom(const void* copy) {
+  madeMaterial = copy ? static_cast<const uint16_t*>(copy) : slime::kMaterial;
+  const int again = bodyColorNow;
+  bodyColorNow = -1;
+  material = madeMaterial;
+  bodyColor(again);
+}
+
+namespace {
+// Each colour: a turn of the hue in degrees, the saturation and the
+// brightness, in 1/256ths. 0 is the gel's own blue. Chosen dark or pale, away
+// from the agents' lane inks (teal, pink, lavender, lime), amber and the
+// outcomes' sage and clay. The Mac's swatches (BuddyColor) match them.
+struct Tint {
+  int degrees, saturation, brightness;
+};
+constexpr Tint kTints[kBodyColors] = {
+    {0, 256, 256},    // blue
+    {25, 256, 218},   // indigo
+    {0, 64, 243},     // slate
+    {0, 38, 346},     // pearl
+    {0, 26, 141},     // graphite
+    {120, 205, 192},  // berry
+    {-90, 205, 154},  // forest
+    {-20, 256, 166},  // ocean
+};
+// The hue turn's matrix (luminance kept), in 1/4096ths, for each colour:
+// worked out once, the first time it's wanted.
+int matrixOf[kBodyColors][9];
+bool matrixMade[kBodyColors] = {};
+// cos and sin of a turn, in 1/4096ths, by a short table and linear steps.
+int cos4096(int degrees) {
+  static constexpr int16_t kCos[10] = {4096, 4034, 3849, 3547, 3138, 2633, 2048, 1401, 711, 0};
+  int d = ((degrees % 360) + 360) % 360, sign = 1;
+  if (d > 180) d = 360 - d;
+  if (d > 90) d = 180 - d, sign = -1;
+  const int i = d / 10, f = d % 10;
+  const int v = i >= 9 ? 0 : kCos[i] + (kCos[i + 1] - kCos[i]) * f / 10;
+  return sign * v;
+}
+int sin4096(int degrees) { return cos4096(degrees - 90); }
+const int* matrix(int index) {
+  if (!matrixMade[index]) {
+    const int c = cos4096(kTints[index].degrees), s = sin4096(kTints[index].degrees);
+    // The standard luminance-keeping hue turn: 0.213, 0.715, 0.072.
+    const int lr = 872, lg = 2929, lb = 295;  // 0.213, 0.715, 0.072 × 4096
+    int* m = matrixOf[index];
+    m[0] = lr + (c * (4096 - lr) - s * lr) / 4096;
+    m[1] = lg + (-c * lg - s * lg) / 4096;
+    m[2] = lb + (-c * lb + s * (4096 - lb)) / 4096;
+    m[3] = lr + (-c * lr + s * 586) / 4096;  // 0.143
+    m[4] = lg + (c * (4096 - lg) + s * 573) / 4096;  // 0.140
+    m[5] = lb + (-c * lb - s * 1159) / 4096;  // 0.283
+    m[6] = lr + (-c * lr - s * (4096 - lr)) / 4096;
+    m[7] = lg + (-c * lg + s * lg) / 4096;
+    m[8] = lb + (c * (4096 - lb) + s * lb) / 4096;
+    matrixMade[index] = true;
+  }
+  return matrixOf[index];
+}
+}  // namespace
+
+uint16_t tinted(uint16_t texel, int index) {
+  if (index <= 0 || index >= kBodyColors) return texel;
+  const int r = ((texel >> 11) & 31) * 255 / 31, g = ((texel >> 5) & 63) * 255 / 63, b = (texel & 31) * 255 / 31;
+  const int* m = matrix(index);
+  int v[3] = {(m[0] * r + m[1] * g + m[2] * b) / 4096, (m[3] * r + m[4] * g + m[5] * b) / 4096,
+              (m[6] * r + m[7] * g + m[8] * b) / 4096};
+  const int y = (54 * v[0] + 183 * v[1] + 19 * v[2]) / 256;
+  const Tint& t = kTints[index];
+  for (int& x : v) {
+    x = y + (x - y) * t.saturation / 256;
+    x = std::clamp(x * t.brightness / 256, 0, 255);
+  }
+  return uint16_t(((v[0] * 31 / 255) << 11) | ((v[1] * 63 / 255) << 5) | (v[2] * 31 / 255));
+}
+
+void bodyColor(int index) {
+  if (index < 0 || index >= kBodyColors) index = 0;
+  if (index == bodyColorNow) return;
+  bodyColorNow = index;
+  if (index == 0) {
+    material = madeMaterial;
+    return;
+  }
+  constexpr size_t kTexels = sizeof slime::kMaterial / sizeof slime::kMaterial[0];
+  if (!tintedMaterial) tintedMaterial = new (std::nothrow) uint16_t[kTexels];
+  if (!tintedMaterial) {
+    material = madeMaterial;  // no room: as made
+    return;
+  }
+  for (size_t i = 0; i < kTexels; ++i) tintedMaterial[i] = tinted(madeMaterial[i], index);
+  material = tintedMaterial;
+}
 namespace {
 // Every vertex, deformed and projected, into px and py.
 // The surface and controls the mesh is projected for (projectRings).
