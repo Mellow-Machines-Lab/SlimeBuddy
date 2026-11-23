@@ -1,0 +1,11 @@
+{
+  "about": "Holding what you copied: puffed up round, wider and a little lifted, cheeks full, its eyes wide, as if holding its breath; a small swell now and then.",
+  "ms": 2400,
+  "loop": true,
+  "tracks": {
+    "squash": [[0, 260], [1200, 290], [2400, 260]],
+    "lift": [[0, 4], [1200, 6], [2400, 4]],
+    "eyeSize": [[0, 180], [2400, 180]],
+    "eyeOpen": [[0, 0], [2400, 0]]
+  }
+}

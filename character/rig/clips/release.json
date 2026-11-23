@@ -1,0 +1,9 @@
+{
+  "about": "Letting go of what it held, once, as you paste or move on: pah, a quick squash up tall, its mouth open about 300 ms, then a settle.",
+  "ms": 700,
+  "tracks": {
+    "squash": [[0, 0], [90, -260, "out"], [300, 60], [480, -20], [700, 0]],
+    "mouthOpen": [[0, 0], [40, 700, "out"], [330, 700], [420, 0], [700, 0]],
+    "eyeOpen": [[0, 0], [80, -400], [320, 0], [700, 0]]
+  }
+}
