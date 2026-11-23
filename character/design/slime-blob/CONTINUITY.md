@@ -881,7 +881,10 @@ even than typing along, and only where it's free for you
 forward; no finger, card, transition or pastime): on a call (`oncall`) it
 keeps still and a little smaller, its eyes half (`on-call`), with no
 typing along, music or pastime, and stretches up as the call ends; while
-you scroll (`scrolling`) and 6 s after, it reads
+you speak (`speaking`, another app recording with no camera) it leans in,
+nods on a slow 1.6 s beat (`speak-along`) and holds a hand cupped at its
+ear on the Mac's side with rings pulsing by it (`gel/layers.cpp`), winning
+over typing along; while you scroll (`scrolling`) and 6 s after, it reads
 along, leaned 220 and slid 14 px to the Mac's side (or stretched up 150 at
 it, `macup`), lower, its eyes down on the page, travelling down a line in
 1.15 s and snapping back up with a small nod (`read-along`, a 1.4 s loop),

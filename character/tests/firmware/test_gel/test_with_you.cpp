@@ -362,3 +362,22 @@ void test_nothing_with_you_without_the_facts() {
   card.face().card(held);
   card.to(3000, [&] { TEST_ASSERT_EQUAL_INT(int(WithYou::kNone), int(card.face().withYou())); });
 }
+
+// Pins speaking along: another app recording with no camera (`speaking`)
+// leans it in and nods on the 1.6 s beat, and wins over typing along, one
+// rhythm at a time; the layers draw its cupped hand while it does.
+void test_speaking_wins_over_typing() {
+  Board board(SceneState::kIdle, kDay | tierBit(1));
+  GelFace& face = board.face();
+  board.to(1000);
+  board.tags(kDay | tierBit(1) | tagBit("typing") | tagBit("speaking"));
+  board.to(board.t + 1000);
+  TEST_ASSERT_EQUAL_INT(int(WithYou::kSpeaking), int(face.withYou()));
+  TEST_ASSERT_EQUAL_STRING("speaking", face.passing(board.t));
+  TEST_ASSERT_FALSE(face.pastimes(board.t).tapping);
+  TEST_ASSERT_TRUE(face.engine().speaking);
+  board.tags(kDay | tierBit(1) | tagBit("typing"));
+  board.to(board.t + 1000);
+  TEST_ASSERT_FALSE(face.engine().speaking);
+  TEST_ASSERT_TRUE(face.pastimes(board.t).tapping);
+}

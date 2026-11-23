@@ -42,7 +42,7 @@ namespace render::gel {
 
 // What it does with you at the Mac besides typing along, the one the face
 // shows (GelFace::showWithYou), lowest first.
-enum class WithYou : uint8_t { kNone, kMusic, kVideo, kReading, kCall };
+enum class WithYou : uint8_t { kNone, kMusic, kVideo, kReading, kSpeaking, kCall };
 
 // What there is to look at now.
 struct GazeFacts {

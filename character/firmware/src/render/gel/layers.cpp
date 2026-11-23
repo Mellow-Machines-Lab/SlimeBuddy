@@ -97,6 +97,35 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
   r.alpha = 255;
 }
 
+// Listening to you speak: a gel hand cupped at its ear on `side` (-1 left,
+// 1 right), and three rings beside it, each swelling out and fading on the
+// 1.6 s beat of its nod, `ms` into it.
+void speakingHand(Raster& r, const rig::Anchors& at, int side, int ms) {
+  const int ear = side > 0 ? at.brimR.x : at.brimL.x, earY = (at.brimF.y + at.eyeL.y) / 2;
+  const int hx = ear / 16 + side * 14, hy = earY / 16;
+  r.alpha = 255;
+  // Rimmed dark, so it reads apart from the body it's held against.
+  r.disk(hx, hy, 18, kCardInk);
+  r.disk(hx + side * 8, hy - 10, 9, kCardInk);
+  r.disk(hx, hy, 15, kGel);
+  r.disk(hx + side * 8, hy - 10, 6, kGel);  // the fingers, curled forward
+  r.disk(hx - 5, hy - 6, 3, kShine);
+  const int beat = ms % 1600;
+  for (int i = 0; i < 3; ++i) {
+    const int age = (beat + 1600 - i * 330) % 1600, radius = 26 + i * 11 + age * 12 / 1600;
+    r.alpha = std::max(0, 255 - age * 255 / 1600);
+    // A third of a turn about the hand, facing out: turn() counts
+    // thirty-seconds clockwise from the right.
+    Point arc[11];
+    for (int k = 0; k < 11; ++k) {
+      const Point p = turn((side > 0 ? 32 : 16) + k - 5);
+      arc[k] = {hx * 16 + radius * p.x / 256, hy * 16 + radius * p.y / 256};
+    }
+    r.stroke16(arc, 11, 3 * 16, kShine);
+  }
+  r.alpha = 255;
+}
+
 }  // namespace
 
 int sleepyLids(const Engine& e) {
@@ -122,6 +151,7 @@ void paintLayers(Surface& s, const Engine& e, const rig::Anchors& at, const rig:
   const Contents now = layerContents(e);
   auto content = [&](Layer l, uint32_t whole) { return layers ? layers->content(l, t) : whole; };
   auto fade = [&](Layer l) { return layers ? (layers->opacity(l, t) * 255 + 500) / 1000 : 255; };
+  if (e.speaking) speakingHand(r, at, e.speakingSide, ms);
   r.fade = fade(Layer::kBeside);
   if (content(Layer::kBeside, now.beside) == kZs) zs(r, at, ms);
 }

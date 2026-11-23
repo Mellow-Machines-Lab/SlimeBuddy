@@ -47,6 +47,11 @@ class Engine {
   // Boop's energy, the Mac's (FaceContext::energy): the painter draws it on
   // the lids (sleepyLids) and the eyes' size.
   render::Energy energy = render::Energy::kNormal;
+  // You're speaking (the face's with-you pose, `speaking`): the layers draw
+  // its hand cupped at its ear and rings pulsing by it, on the side of the
+  // Mac (`speakingSide`, -1 left, 1 right).
+  bool speaking = false;
+  int speakingSide = 1;
   void sync();
   void step(uint32_t ms);
   void setMood(int id) {

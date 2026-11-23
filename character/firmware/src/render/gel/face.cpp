@@ -38,15 +38,17 @@ constexpr uint32_t bitOf(const char* name) { return 1u << tagIndex(name); }
 constexpr uint32_t kCallTag = bitOf("oncall"), kScrollingTag = bitOf("scrolling"),
                    kMusicTag = bitOf("music"), kVideoTag = bitOf("video"), kFastTag = bitOf("typingfast"),
                    kTypingTag = bitOf("typing"), kMacLeftTag = bitOf("macleft"),
-                   kMacRightTag = bitOf("macright"), kMacUpTag = bitOf("macup");
+                   kMacRightTag = bitOf("macright"), kMacUpTag = bitOf("macup"),
+                   kSpeakingTag = bitOf("speaking");
 
 }  // namespace
 
 const voice::EffectClips& GelFace::clips() const { return gel::clips(); }
 
-// By WithYou's order: none, music, video, reading, on a call.
+// By WithYou's order: none, music, video, reading, speaking, on a call.
 const GelFace::Clips GelFace::clips_ = {
-    {nullptr, &clipNamed("groove"), &clipNamed("video"), &clipNamed("read-along"), &clipNamed("on-call")},
+    {nullptr, &clipNamed("groove"), &clipNamed("video"), &clipNamed("read-along"), &clipNamed("speak-along"),
+     &clipNamed("on-call")},
     &clipNamed("read-along-settled"),
     &clipNamed("type-along"),
     &clipNamed("type-along-fast"),
@@ -411,7 +413,8 @@ void GelFace::showAlong(uint32_t t) {
   const uint32_t when = e.scenes.when;
   const bool typing = when & kTypingTag;
   const bool was = tapping_;
-  tapping_ = (idle || working) && typing && !(when & kCallTag);
+  // Speaking wins over typing: one rhythm at a time.
+  tapping_ = (idle || working) && typing && !(when & kCallTag) && !(when & kSpeakingTag);
   // Its body keeps time with you: a small sway over the keys (the rig's
   // `type-along`); the paws carry the typing.
   if (tapping_ != was) tapping_ ? mixer_.play(*clips_.along) : mixer_.stop(*clips_.along);
@@ -466,6 +469,7 @@ void GelFace::showWithYou(uint32_t t) {
   music_ = music;
   const bool grooving = music && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs;
   wanted_ = call       ? WithYou::kCall
+            : (when & kSpeakingTag) ? WithYou::kSpeaking
             : reading  ? WithYou::kReading
             : (when & kVideoTag) ? WithYou::kVideo
             : grooving ? WithYou::kMusic
@@ -486,6 +490,8 @@ void GelFace::showWithYou(uint32_t t) {
   // The engine's own idle gestures wait while it's with you.
   if (clip) holdGestures(*clip);
   with_ = now;
+  engine_->speaking = now == WithYou::kSpeaking;
+  engine_->speakingSide = when & kMacLeftTag ? -1 : 1;
   // Turned to the screen, reading or watching: to the Mac's side, or up at
   // it; to the pointer while it moves, and further at the edge nearest the
   // board, reaching toward it. Never on a call.
@@ -701,6 +707,7 @@ const char* GelFace::passing(uint32_t t) const {
   if (playing()) return info(pastime_).name;
   switch (with_) {
     case WithYou::kCall: return "oncall";
+    case WithYou::kSpeaking: return "speaking";
     case WithYou::kReading: return "reading";
     case WithYou::kVideo: return "video";
     case WithYou::kMusic: return "music";
