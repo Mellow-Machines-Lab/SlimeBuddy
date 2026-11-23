@@ -66,8 +66,8 @@ const uint32_t kDay = tagBit("day");
 }  // namespace
 
 // Pins the rule list's order (gaze.h): needs you, typing along, thinking
-// with you, a pose's clip, a call, the pointer, reading along, watching,
-// the work glance; each only while the eyes are free.
+// with you, a pose's clip, a call, the pointer, reading along, a video;
+// each only while the eyes are free.
 void test_the_eyes_with_you_in_order() {
   static_assert(Gaze::kThinkAfterMs == 8000 && Gaze::kThinkMs == 2000, "thinking with you, as this test pins");
   Gaze g;
@@ -99,13 +99,12 @@ void test_the_eyes_with_you_in_order() {
   TEST_ASSERT_TRUE(g.look(f, 128).y == Gaze::kKeysY);
   f.needsYou = true, f.lookMs = 0;
   TEST_ASSERT_TRUE(g.look(f, 144).y == Gaze::kYouY);
-  // Below the pointer: reading along, then a video, then the glance.
+  // Below the pointer: reading along, then a video.
   Gaze r;
   f = GazeFacts{};
   f.free = true, f.mac = 1, f.with = WithYou::kReading;
-  f.word = true, f.wordBorn = 1000, f.wordX = 84;
   p = r.look(f, 1000);
-  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX + Gaze::kPageReach && p.y == Gaze::kPageY);  // at the page, not the word
+  TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX + Gaze::kPageReach && p.y == Gaze::kPageY);  // at the page
   f.pointer = true, f.pointerX = -3;
   TEST_ASSERT_TRUE(r.look(f, 7016).x < Gaze::kMidX);  // the pointer comes first
   f.pointer = false, f.mac = 0;

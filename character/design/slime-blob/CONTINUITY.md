@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-16. The slime's one engine is the C++ in
+Updated 2026-11-22. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -799,8 +799,8 @@ away (`render/gel/pastimes.h`): the pastimes are one table, a row each.
 Calm comes first: a pastime is the body's own move, and it brings
 nothing, holds nothing and leaves nothing beside the face or on the
 monitor (the screen's rule, in `layers.h` and `pastimes.h`). The working
-screen is Boop, the desk, the falling words, the strip and, while a
-command worth naming runs, one low sign.
+screen is Boop, the desk with its monitor's icon, and the strip with the
+work's term.
 A row's body is a clip of the pack's rig (`rig/clips/`: a stretch, a hop,
 a look round), or a bit or a take of the engine's (the comedy every mood
 shares, and the tagged ones, above). The tiers are the Mac's (`tier1`
@@ -847,20 +847,18 @@ quick as they follow a finger, so a look is a turn and never a dart.
 | Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag), or up at the screen (`macup`); forward with none | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
 | Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
 | A stretch of typing along of 8 s or more stops (thinking with you) | Up at you | 2 s (`kThinkAfterMs`, `kThinkMs`) |
-| At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests, and drops a glance it was in | While the pose lasts |
+| At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests | While the pose lasts |
 | On a call (`oncall`) | Forward, still | While the call lasts |
 | Your pointer moves (`state.ptr`), where it's free for you (never asleep) | Its way, as you see the board: across `ptr`'s x × 42 px and up or down y × 36 (`kPointerX`, `kPointerY`); at the edge of the screen nearest the board, right at it on the Mac's side, or up | Until the Mac stops sending it, 3 s after it stops |
 | Reading along (`scrolling`) | At its page, to the Mac's side (`kPageReach`, `kPageY`) or up at the screen (`kPageUpY`); the line-by-line travel is the `read-along` clip's | While it reads along |
 | A video (`video`) | The Mac's side, at its eyes' height, or up at the screen, still | While it watches |
-| At work, typing, a word starts to fall | At that word, followed down, whatever drops after | 1.6 s (`kGlanceMs`), then forward for at least 7 s (`kRestMs`); 3 s while you watch too (the `reading` tag, `kWatchRestMs`) |
 | Otherwise | Forward, with the engine's own small wander | |
 
 Nothing of it applies while anything else has the eyes: a finger, a
-Moment, a pastime, a transition, a word forward, listening or sleep. A
-minute of the busiest stream has at most seven glances. The rig's gaze
-tracks are added to the engine's own, so a glance over a pose's clip
-would pull its eyes off the page or the monitor: that's why the pose
-comes before the glance in the list.
+Moment, a pastime, a transition, a word forward, listening or sleep. The
+rig's gaze tracks are added to the engine's own, so a look over a pose's
+clip would pull its eyes off the page or the monitor: that's why the pose
+comes before the pointer in the list.
 
 **Typing along** (`GelFace::showAlong`): while your hands are busy at the
 Mac (the `typing` tag), it types with you: its body sways a little over
@@ -870,7 +868,7 @@ its paws swing 30 high, one every 300 ms (`kBriskLift`, `kBriskMs`),
 against the agents' soft 12 every 340. At the Buddy's size, more was a
 bounce. The keys under the
 paws light as they land, which a small screen barely shows. At work that's at its desk, which
-is out already, and its eyes drop to the keys in place of the glances; you
+is out already, and its eyes drop to the keys; you
 stop, and it's back to the soft typing. Only its typing pose types with
 you: looking, running or waiting, its paws are off the keys, the pose has
 the body, and your typing changes nothing until it types again. Idle, its keyboard comes out for
@@ -953,21 +951,30 @@ with the body rather than stepping a pixel at a time; the Zs, drawn with
 one rounded pen (`Raster::zee`), grow from 7 to 16 px as they drift, fading
 in over their first 200 ms and out to nothing by their last.
 
+### The desk's monitor (the board's)
+
+The monitor says what the work is, in one icon that fills it
+(`paintProps`): a pencil writing a line (typing: an edit, any other
+tool, a plan), a magnifying glass drifting (looking), a `>_` prompt with
+its cursor blinking (running), a flask filling (the tests running, on
+`state`'s `wact`), an hourglass with its sand running (waiting). A
+failure landing turns it to a red cross on a dark red screen, a timeout
+to an amber clock, each for the word forward's 2.5 s; a work act's
+result to a tick or a cross for its 2.6 s. As a failure lands the paws
+flail up and down by turns for 1.1 s (`flailLift`).
+
 ### The work acts (the board's)
 
 A command worth naming, the tests, the build or a push, for as long as
-it runs (`gel/act.h`, on `state`'s `wact`). All the gel shows of one is
-the low sign, in the strip's place: what's running, with its dots
-(`running tests`, `building`, `git push`), then how it ended, with a tick
-or a cross (`pass`, `built`, `shipped!`, or `fail`). It shows as running
-for at least 900 ms and its result for 2.6 s (`kActLeadMs`,
-`kActResultMs`). The desk, the falling words and everything else stay as
-they are. As the result shows, the body answers once
-(`GelFace::answerAct`, through `Engine::jolt`): a hop at a pass, a flinch
-with its lids squeezed at a fail; nothing while a finger, a Moment or a
-needs-you has the body. What Boop says takes the lane from the sign while
-it runs, and a needs-you takes the screen from it; after it the sign
-comes back, still running.
+it runs (on `state`'s `wact`). It's the work's, never a card: the
+monitor shows it (a flask for the tests) and the strip's term says it
+(`running tests`, `building`, `git push`), then how it ended, in sage or
+clay (`tests passed`, `build failed`). It shows as running for at least
+900 ms and its result for 2.6 s (`kActLeadMs`, `kActResultMs`). As the
+result shows, the body answers once (`GelFace::answerAct`, through
+`Engine::jolt`): a hop at a pass, a flinch with its lids squeezed at a
+fail; nothing while a finger, a Moment or a needs-you has the body. An
+agent's card stays in its hands meanwhile.
 
 ### Transitions (the board's)
 
@@ -990,38 +997,30 @@ the sign's font and the small line under it in the large one; a guess that
 has run out turns the small line red. With more than one card, dots under
 it say how many and which. Boop stands up on the card (`cardHop`), so its
 face stays clear; no pastime is dealt and it doesn't type along, since
-its hands are full; the desk stays; the work stream's words still fall behind.
-The card rises over 220 ms as it comes. A sign, a low sign, an ask, a work
-act, the needs-you screen and the drawer each take its place, and it comes
+its hands are full; the desk stays, and the strip's term too.
+The card rises over 220 ms as it comes. A sign, a low sign, an ask,
+the needs-you screen and the drawer each take its place, and it comes
 back after.
 
 ### The work stream (the board's)
 
 While the agents work and nothing needs you, the board draws the Mac's
-work stream (`render/stream.h`, `gel/stream.h`).
-Behind the body: each working lane's words falling from the top edge in
-its colour (teal, amber, lilac, lime by slot), with no name: the colours
-tell the agents apart, and the screen has no room to say whose is whose.
-Lanes sit clear of the head and its hat (`render::laneX`: one lane on the
-left, two either side, three or four along both sides). A word falls, in
-the large font at most 43% opaque, for each new call a `state` counts
-(at most two a `state`, eight at once; each a line behind its lane's
-last, `kWordGapPx`, and never faster, so they never overlap, and none
-that would wait over `kMostWaitMs` for that), easing in over 200 ms and out
-over its last 600 ms of 3.2 s, in sixteenths of a pixel, so it glides
-rather than steps (`render::gel::text16`; what moves in front, the word
-forward and the listening ring, does too). They're drawn after the body, onto the
-background's black only, so the body, its props and what it wears cover
-them, and a word hidden behind it costs nothing to draw, clear or push.
-Nothing of the stream is drawn on the desk or its monitor, and nothing
-comes up while no call comes. When the agents stop, the words on
-screen linger 1.5 s (`Stream::kEndMs`), falling where they dropped, and a
-word may still come forward in that time, as a turn's end does to gather
-them; something needing you clears everything at once.
+work stream (`render/stream.h`, `gel/stream.h`). Nothing falls behind the
+body. The newest call's word of any lane (`Stream::newest`) is the
+work's term, after the strip's count in the large font, grey: `1 working
+· maxWordBytes`, cut to the room before the to-do list (`termFor` in
+`gel/lane.cpp`). It changes in place, with no card and no rise: cards
+are for you, the desk and the strip are for the work. A failure or a
+timeout landing turns it to its word and what happened, in clay or
+amber (`swift failed`, `curl timed out`), for the word forward's 2.5 s.
+When the agents stop, a word may still come forward for 1.5 s
+(`Stream::kEndMs`), as a turn's end does; something needing you clears
+everything at once.
 
-Almost every call is only that, its word falling. In front, after the props
-and before the sign, the few a `call` brings forward fly from their lane's
-name and do what their move does (`render::CallMove`),
+Almost every call is only that, its word in the strip. In front, after
+the props and before the sign, the few a `call` brings forward fly from
+the desk's monitor and do what their move does (`render::CallMove`),
+in sixteenths of a pixel so they glide (`render::gel::text16`),
 everything gone by 2.5 s:
 
 | Move | Styles | What plays |
@@ -1030,19 +1029,16 @@ everything gone by 2.5 s:
 | Hit | bonk, bonk2, bonk3, throw, no, timeout | Between the eyes: it sticks, slides off (thrown back on the top rung) under three stars, five up the ladder; dizzy spiral eyes over its own (the body's colour under them), 1 to 1.3 s |
 | Shrug | shrug | Its word beside the head, as the body shrugs |
 | Shatter | shatter | Bursting into its glyphs, swallowed |
-| Gather | gather | A turn done: its lane's words, from where they were, gathered into its mouth, and "mm!" |
-| Drop | drop | Stopped, or failed (`failed`, `context full`, `rate limit`, `overloaded`): the words fall away grey, switched off |
+| Gather | gather | A turn done: its word, from the monitor into its mouth, and "mm!" |
+| Drop | drop | Stopped, or failed (`failed`, `context full`, `rate limit`, `overloaded`): its word drops onto its crown, grey, switched off |
 
 As it lands the body answers through the engine (`Engine::jolt`): a push
 on the finger's pull springs, as a fling let go (knocked back and
 squashed by a hit, squashed by a word sinking in, stretched up by a shrug), your no's flinch with its lids squeezed (0.6 for
 450 ms) and a timeout's nod (0.9 for 700 ms), opening over their last
-300 ms; nothing while a finger holds it. The stream moves on the device's
-clock, not the engine's paced one, so a word falls as fast however busy
-the agents. Measured on the AMOLED board (`amoled206_profile`,
-2026-10-24): 35 fps with the stream off; 31.8 with one busy agent's
-traffic (the stream's drawing 1.5 ms a frame); 28.5 at three lanes'
-worst (3.5 ms).
+300 ms; nothing while a finger holds it. A word forward moves on the
+device's clock, not the engine's paced one, so it flies as fast however
+busy the agents.
 
 ## States share one scene
 

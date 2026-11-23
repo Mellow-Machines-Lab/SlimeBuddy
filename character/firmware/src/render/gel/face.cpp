@@ -37,7 +37,7 @@ const rig::Clip& clipNamed(const char* name) {
 constexpr uint32_t bitOf(const char* name) { return 1u << tagIndex(name); }
 constexpr uint32_t kCallTag = bitOf("oncall"), kCopiedTag = bitOf("copied"), kScrollingTag = bitOf("scrolling"),
                    kMusicTag = bitOf("music"), kVideoTag = bitOf("video"), kFastTag = bitOf("typingfast"),
-                   kTypingTag = bitOf("typing"), kReadingTag = bitOf("reading"), kMacLeftTag = bitOf("macleft"),
+                   kTypingTag = bitOf("typing"), kMacLeftTag = bitOf("macleft"),
                    kMacRightTag = bitOf("macright"), kMacUpTag = bitOf("macup");
 
 }  // namespace
@@ -567,7 +567,6 @@ void GelFace::showGaze(uint32_t t) {
   f.up = !f.mac && (when & kMacUpTag);
   f.along = tapping_;
   f.posed = look == SceneState::kWorking && !typingPose();
-  f.watching = look == SceneState::kWorking && (when & kReadingTag);
   f.thinking = thought_ && within(t, thinkAt_, Gaze::kThinkMs), f.thinkMs = t - thinkAt_;
   if (!f.thinking) thought_ = false;
   f.with = with_;
@@ -575,15 +574,6 @@ void GelFace::showGaze(uint32_t t) {
   SceneState place;
   f.pointer = pointer_ && freeForYou(t, place) && !tapping_;
   f.pointerNear = pointerNear_, f.pointerX = pointerX_, f.pointerY = pointerY_;
-  if (stream_ && stream_->on && look == SceneState::kWorking) {
-    const Stream::Word* newest = nullptr;
-    for (const Stream::Word& w : stream_->words)
-      if (w.live && int32_t(t - w.born) >= 0 && (!newest || int32_t(w.born - newest->born) > 0)) newest = &w;
-    if (newest) {
-      f.word = true, f.wordBorn = newest->born, f.wordX = newest->x;
-      f.wordY = int(int64_t(t - newest->born) * newest->speed / 1000), f.wordSpeed = newest->speed;
-    }
-  }
   const GazePoint p = gaze_.look(f, t);
   if (!p.on) return e.unattend();
   // The point, from the screen's px to the canvas's, as a finger's is.

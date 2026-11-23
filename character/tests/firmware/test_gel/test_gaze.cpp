@@ -57,7 +57,7 @@ struct Board {
 // eyes; needs you is up at you for kNoticeMs, then the Mac's side, and
 // rest with no side told; typing along is down at the keys; at work in an
 // activity's own pose (looking, running, waiting) the pose's clip has the
-// eyes, so no glance starts and one under way is dropped; else rest.
+// eyes; else rest.
 void test_the_eyes_rest_unless_theres_a_reason() {
   static_assert(Gaze::kNoticeMs == 1200, "the look at you this test pins");
   Gaze g;
@@ -87,66 +87,13 @@ void test_the_eyes_rest_unless_theres_a_reason() {
   TEST_ASSERT_TRUE(p.on && p.x == Gaze::kMidX && p.y > Gaze::kEyesY);  // down at the keys
   f.needsYou = true;
   TEST_ASSERT_TRUE(g.look(f, 160).y < 0);  // needs you first
-  // A pose's clip has the eyes: a new word isn't glanced at, and a glance
-  // begun while typing ends as the pose comes.
+  // A pose's clip has the eyes, but needs you comes before it.
   Gaze posed;
   f = GazeFacts{};
   f.free = f.posed = true;
-  f.word = true, f.wordBorn = 1000, f.wordX = 420, f.wordSpeed = 125;
   TEST_ASSERT_FALSE(posed.look(f, 1016).on);
-  f.posed = false, f.wordBorn = 2000;
-  TEST_ASSERT_TRUE(posed.look(f, 2016).on);  // typing again: the next word is
-  f.posed = true;
-  TEST_ASSERT_FALSE(posed.look(f, 2032).on);
-  f.posed = false;
-  TEST_ASSERT_FALSE(posed.look(f, 2048).on);  // and it isn't picked up again
   f.posed = f.needsYou = true, f.mac = 1, f.lookMs = Gaze::kNoticeMs;
   TEST_ASSERT_TRUE(posed.look(f, 2064).x > 502);  // needs you comes before a pose
-}
-
-// Pins kGlanceMs, kRestMs, kWatchRestMs and kCatchMs, the rule against
-// darting: at work a word is glanced at as it starts to fall and followed
-// for kGlanceMs, then the eyes rest forward at least kRestMs, whatever
-// falls meanwhile; kWatchRestMs while you watch too. However busy the
-// stream, a minute has at most 60 s / (glance + rest) + 1 glances.
-void test_a_glance_and_then_a_rest() {
-  static_assert(Gaze::kGlanceMs == 1600 && Gaze::kRestMs == 7000 && Gaze::kWatchRestMs == 3000 && Gaze::kCatchMs == 500,
-                "the times this test pins");
-  Gaze g;
-  GazeFacts f;
-  f.free = true;
-  auto word = [&](uint32_t born, int x, uint32_t t) {
-    f.word = true, f.wordBorn = born, f.wordX = x, f.wordY = int(t - born) / 8, f.wordSpeed = 125;
-    return g.look(f, t);
-  };
-  GazePoint p = word(1000, 420, 1016);
-  TEST_ASSERT_TRUE(p.on && p.x == 420);
-  TEST_ASSERT_TRUE(word(1000, 420, 2000).y > p.y);        // followed down
-  TEST_ASSERT_TRUE(word(2200, 84, 2216).x == 420);        // its own word, whatever drops after
-  TEST_ASSERT_TRUE(word(1000, 420, 1000 + 1599).on);      // for kGlanceMs
-  TEST_ASSERT_FALSE(word(1000, 420, 1016 + 1600).on);     // then forward
-  TEST_ASSERT_FALSE(word(3000, 84, 3016).on);             // a new word in its rest: no glance
-  TEST_ASSERT_FALSE(word(9500, 84, 9516).on);             // 6.9 s into the rest: still none
-  TEST_ASSERT_TRUE(word(9700, 84, 9716).x == 84);         // 7 s on: the next
-  TEST_ASSERT_FALSE(word(9700, 84, 9716 + 1600).on);
-  f.watching = true;                                      // you watch too: sooner
-  TEST_ASSERT_FALSE(word(14000, 420, 14016).on);          // 2.7 s into the rest
-  TEST_ASSERT_TRUE(word(14400, 420, 14416).on);           // 3 s on
-  // A word already falling a while isn't caught: only as it starts.
-  Gaze late;
-  f.watching = false, f.word = true, f.wordBorn = 0, f.wordX = 84;
-  TEST_ASSERT_FALSE(late.look(f, Gaze::kCatchMs).on);
-  // A minute of a word every 300 ms.
-  Gaze busy;
-  int glances = 0;
-  bool on = false;
-  for (uint32_t t = 0; t < 60000; t += 16) {
-    const uint32_t born = t / 300 * 300;
-    f.wordBorn = born, f.wordX = born / 300 % 2 ? 84 : 420;
-    const bool now = busy.look(f, t).on;
-    glances += now && !on, on = now;
-  }
-  TEST_ASSERT_TRUE(glances >= 5 && glances <= 60000 / (1600 + 7000) + 1);
 }
 
 // The eyes turn to what it looks at more slowly than they follow a finger

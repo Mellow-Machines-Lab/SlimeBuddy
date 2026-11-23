@@ -24,10 +24,8 @@ int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, in
 // The same text, its cells' top left at (x16, y16), sixteenths of a pixel,
 // so a word that moves glides rather than steps: on a whole pixel it's
 // text()'s, and between them each pixel takes its four nearest cells'
-// coverage, each by how near it is. `behind`: only onto the background's
-// black, as words behind the body are. It touches only the pixels it
-// draws.
-void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink, bool behind = false);
+// coverage, each by how near it is. It touches only the pixels it draws.
+void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink);
 // The gel's largest font (fonts_gel.h, which only lane.cpp holds): the
 // work stream's word forward.
 const Font& bubbleFont();
@@ -72,11 +70,11 @@ struct PastimeShow;
 // A whole frame, as GelFace::draw draws it: the body, with the rig's
 // channels on it, the face art, what it wears as the layer stack shows it
 // at t, the props, the pastime playing (render/gel/pastimes.h), the work
-// stream at `now`, the device's time (render/gel/stream.h: its words
-// behind the body, and the word forward), the card it holds
+// stream at `now`, the device's time (render/gel/stream.h: the word
+// forward), the card it holds
 // (render/gel/card.h; true when it drew it) or the sign it holds up (render/gel/layers.h), then the lane, unless this surface already shows
-// it, with the low sign (a finished turn's, render/gel/done.h, or a work
-// act's, render/gel/act.h) in the strip's place, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
+// it, with the low sign (a finished turn's, render/gel/done.h) in the
+// strip's place, and the work's term after the strip's counts, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
 // lane's place, the body pressed flat above it, and the pastimes, the
 // stream, the sign and the finished turn wait for it to shut.
 bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,
