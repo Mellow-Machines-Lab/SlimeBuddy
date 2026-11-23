@@ -88,9 +88,9 @@ void glyph(Raster& r, const Font& f, int x, int y, int g, uint16_t ink) {
   r.alpha = opacity;
 }
 
-// The work's term: a quiet word after the strip's counts while the agents
-// work, never a card, which is for what's for you. The newest call's word
-// (a file, a search, a command) in the strip's grey; a work act's words
+// The work's term: what the agents are doing, first in the strip while
+// they work, never a card, which is for what's for you. The newest call's
+// doing ("searching TODO", "editing Core +12") in the strip's grey; a work act's words
 // while it runs, then its result in sage or clay; and as a failure or a
 // timeout lands, its word and what happened, in clay or amber. paintFrame
 // sets it for the frame it draws, and the strip and its key read it.
@@ -496,21 +496,20 @@ void strip(Lane& l, const Strip& s, int spin) {
     marks(&r, s, x + kIcon, cy, spin, shown);
     return;
   }
-  // Nothing named: the counts, in words when they fit, and after them,
-  // while the agents work, the work's term in the smaller font, cut to the
-  // room before the to-do list.
-  counts(&r, s, margin, right, cy, spin);
+  // Nothing named, while the agents work: what they're doing first, in
+  // the strip's font ("searching TODO"), and the counts as marks at the
+  // right end, the to-do list last; the drawer, pulled up, has them in
+  // full. With no term, or no agent working, the counts in words.
   if (s.busy > 0 && gTerm.text && *gTerm.text) {
-    const int list = todo(nullptr, s, right, cy) - (s.todoTotal > 0 ? kMarkAfter : 0);
-    for (int helpers : {2, 1, 0}) {
-      const int x = margin + words(nullptr, s, 0, cy, helpers);
-      if (x > list - margin) continue;
-      const int ty2 = cy - kLarge.h / 2 + 2;
-      const int at = text(r, kLarge, x, ty2, " \xC2\xB7 ", grey, list - x);
-      if (list - at >= 3 * kLarge.w) text(r, kLarge, at, ty2, gTerm.text, gTerm.ink, list - at);
-      break;
+    const int w = marks(nullptr, s, 0, cy, spin, kShowAll) - kMarkAfter;
+    const int at = right - w;
+    if (at - kIcon - margin >= 4 * f.w) {
+      text(r, f, margin, ty, gTerm.text, gTerm.ink, at - kIcon - margin);
+      marks(&r, s, at, cy, spin, kShowAll);
+      return;
     }
   }
+  counts(&r, s, margin, right, cy, spin);
 }
 
 // The strip, drawn at full strength, blended once at its opacity (0–255):

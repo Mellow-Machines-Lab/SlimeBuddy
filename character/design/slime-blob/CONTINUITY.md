@@ -1010,10 +1010,13 @@ back after.
 
 While the agents work and nothing needs you, the board draws the Mac's
 work stream (`render/stream.h`, `gel/stream.h`). Nothing falls behind the
-body. The newest call's word of any lane (`Stream::newest`) is the
-work's term, after the strip's count in the large font, grey: `1 working
-· maxWordBytes`, cut to the room before the to-do list (`termFor` in
-`gel/lane.cpp`). It changes in place, with no card and no rise: cards
+body. The newest call's doing of any lane (`Stream::newest`), what its
+agent is doing in a verb and its object, is the work's term, first in
+the strip in its own font, grey: `searching TODO`, with the counts as
+marks at the right end (a spinner and its number, a sleeper and its,
+the to-do list last), cut to the room they leave (`termFor` in
+`gel/lane.cpp`). The counts in full are the drawer's, pulled up from
+the strip; with no term, the strip says them in words. It changes in place, with no card and no rise: cards
 are for you, the desk and the strip are for the work. A failure or a
 timeout landing turns it to its word and what happened, in clay or
 amber (`swift failed`, `curl timed out`), for the word forward's 2.5 s.

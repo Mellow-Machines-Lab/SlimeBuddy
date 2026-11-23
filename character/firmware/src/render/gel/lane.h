@@ -74,7 +74,7 @@ struct PastimeShow;
 // forward), the card it holds
 // (render/gel/card.h; true when it drew it) or the sign it holds up (render/gel/layers.h), then the lane, unless this surface already shows
 // it, with the low sign (a finished turn's, render/gel/done.h) in the
-// strip's place, and the work's term after the strip's counts, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
+// strip's place, and the work's term first in the strip, the counts as marks after it, and over all of it the finished turn's glow. While the agents' drawer shows (render/gel/drawer.h) it takes the
 // lane's place, the body pressed flat above it, and the pastimes, the
 // stream, the sign and the finished turn wait for it to shut.
 bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const char* bubble, const SignShow& sign,
