@@ -1,7 +1,6 @@
-// The work stream on the gel (render/gel/stream.h): two agents' lanes, each
-// in its colour, each new call's word falling behind the body, and
-// nothing of them on the monitor; then what each word that comes forward
-// does as it lands. One run on a frozen
+// The work stream on the gel (render/gel/stream.h): two agents' lanes, the
+// newest call's word after the strip's count, nothing falling; then what
+// each word that comes forward from the monitor does as it lands. One run on a frozen
 // clock after a reset, the state sent again every 20 s as the Mac does.
 {"t": "dbg.reset"}
 {"clock": 0}

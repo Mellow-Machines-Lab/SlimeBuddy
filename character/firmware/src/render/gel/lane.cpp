@@ -1,5 +1,4 @@
 #include "render/gel/lane.h"
-#include "render/gel/act.h"
 #include "render/gel/card.h"
 #include "render/gel/done.h"
 
@@ -89,6 +88,39 @@ void glyph(Raster& r, const Font& f, int x, int y, int g, uint16_t ink) {
   r.alpha = opacity;
 }
 
+// The work's term: a quiet word after the strip's counts while the agents
+// work, never a card, which is for what's for you. The newest call's word
+// (a file, a search, a command) in the strip's grey; a work act's words
+// while it runs, then its result in sage or clay; and as a failure or a
+// timeout lands, its word and what happened, in clay or amber. paintFrame
+// sets it for the frame it draws, and the strip and its key read it.
+struct Term {
+  const char* text = nullptr;
+  uint16_t ink = 0;
+};
+Term gTerm;
+Term termFor(const Stream& st, uint32_t now) {
+  static char text[Stream::kWordBytes + 16];
+  Term term;
+  if (!st.on) return term;
+  const Stream::Call& c = st.call;
+  if (c.live && callMove(c.style) == CallMove::kHit && c.style != CallStyle::kNo && now - c.at < Stream::kCallMs) {
+    const bool timeout = c.style == CallStyle::kTimeout;
+    std::snprintf(text, sizeof text, "%s %s", c.text, timeout ? "timed out" : "failed");
+    return {text, timeout ? rgb565(kAmberRgb) : rgb565(kClayRgb)};
+  }
+  const Stream::ActNow act = st.actNow(now);
+  if (act.shows()) {
+    static const char* const kNames[] = {"", "tests", "push", "build"};
+    const char* name = kNames[int(act.kind)];
+    if (act.result == ActResult::kRunning) return {act.text, rgb565(kNarrationRgb)};
+    const bool pass = act.result == ActResult::kPass;
+    std::snprintf(text, sizeof text, "%s %s", name, pass ? "passed" : "failed");
+    return {text, pass ? rgb565(kSageRgb) : rgb565(kClayRgb)};
+  }
+  if (st.newest[0]) term = {st.newest, rgb565(kNarrationRgb)};
+  return term;
+}
 }  // namespace
 
 const Font& bubbleFont() { return kFontBubble; }
@@ -103,7 +135,7 @@ int text(Raster& r, const Font& f, int x, int y, const char* s, uint16_t ink, in
   return x;
 }
 
-void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink, bool behind) {
+void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t ink) {
   // On the stack, not the board's scarce internal heap: a word forward, in
   // the widest font (the bubble's, 20 px).
   constexpr int kMostGlyphs = 20, kMostCells = kMostGlyphs * 20 + 1;
@@ -143,10 +175,6 @@ void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t 
   // An opacity from a sample's sum (at most 15 × 256), as Raster::text's
   // and Raster::pixel's: the shape's opacity, then the layer's fade.
   const int opacity = r.fade >= 255 ? r.alpha : r.alpha * r.fade / 255;
-  // Behind, over black: the ink at each sixtieth of the most a sum can be.
-  uint16_t shade[61];
-  if (behind)
-    for (int k = 0; k <= 60; ++k) shade[k] = mix565(0, ink, opacity * k / 60);
   const int wx = 16 - fx, wy = 16 - fy;
   int bx0 = 1 << 30, by0 = 1 << 30, bx1 = -1, by1 = -1;
   for (int v = 0; v < rows; ++v) {
@@ -166,10 +194,7 @@ void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t 
                          : (wy * here[u + 1] + fy * above[u + 1]) * 16;
       if (!sum) continue;
       uint16_t& out = row[u];
-      if (behind) {
-        if (out) continue;
-        out = shade[sum / 64];
-      } else {
+      {
         const int a = opacity * sum / (15 * 256);
         if (a >= 253)
           out = ink;
@@ -471,8 +496,21 @@ void strip(Lane& l, const Strip& s, int spin) {
     marks(&r, s, x + kIcon, cy, spin, shown);
     return;
   }
-  // Nothing named: the counts, in words when they fit.
+  // Nothing named: the counts, in words when they fit, and after them,
+  // while the agents work, the work's term in the smaller font, cut to the
+  // room before the to-do list.
   counts(&r, s, margin, right, cy, spin);
+  if (s.busy > 0 && gTerm.text && *gTerm.text) {
+    const int list = todo(nullptr, s, right, cy) - (s.todoTotal > 0 ? kMarkAfter : 0);
+    for (int helpers : {2, 1, 0}) {
+      const int x = margin + words(nullptr, s, 0, cy, helpers);
+      if (x > list - margin) continue;
+      const int ty2 = cy - kLarge.h / 2 + 2;
+      const int at = text(r, kLarge, x, ty2, " \xC2\xB7 ", grey, list - x);
+      if (list - at >= 3 * kLarge.w) text(r, kLarge, at, ty2, gTerm.text, gTerm.ink, list - at);
+      break;
+    }
+  }
 }
 
 // The strip, drawn at full strength, blended once at its opacity (0–255):
@@ -507,6 +545,7 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
   add(&grabber, sizeof grabber), add(&shows, sizeof shows);
   if (!line && !caption) {
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
+    str(gTerm.text), add(&gTerm.ink, sizeof gTerm.ink);
     const int numbers[] = {s.more,      int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
                            s.todoDone,  s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0,
                            rowAlpha};
@@ -551,19 +590,15 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintDrawer(surface, *drawer, s, at, spinStep(now));
     return false;
   }
-  // The sign takes the lane from the strip and the words; a newer
-  // reaction's words take it back, as they take the sign down.
-  const Stream::ActNow act = stream ? stream->actNow(now) : Stream::ActNow{};
+  // A finished turn's name takes the lane from the strip; a newer
+  // reaction's words take it back, as they take the sign down. A work act
+  // is the work's, never a card: the monitor and the strip's term say it.
   LowSign low = finishSign(done);
-  // A finished turn's name outranks a work act's words.
-  const bool actsSign = !low.shows();
-  if (actsSign) low = actSign(act);
-  // An act can run for long: what Boop says takes the lane from it meanwhile.
-  if (low.shows() && (actsSign || low.leftMs >= 0) && (line || note)) low = LowSign{};
-  // Something it remembers takes the lane from an act, as words do; its own
-  // words have ended by then, their bubble going with them. A finished
-  // turn's name outranks it.
-  if (sign.low && sign.text && (actsSign || !low.shows())) {
+  if (low.shows() && low.leftMs >= 0 && (line || note)) low = LowSign{};
+  // Something it remembers takes the lane, as words do; its own words have
+  // ended by then, their bubble going with them. A finished turn's name
+  // outranks it.
+  if (sign.low && sign.text && !low.shows()) {
     low = LowSign{};
     low.text = sign.text, low.ink = rgb565(kEyeRgb), low.ms = sign.ms, low.leftMs = sign.leftMs;
   }
@@ -571,6 +606,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // takes the lane from all of these, its rim glowing gold.
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
+  gTerm = stream ? termFor(*stream, now) : Term{};
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
   // rising, the strip's row fades as it comes.
@@ -585,19 +621,18 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   if (low.shows()) key = ((key ^ lowSignKey(low)) * 16777619u) | 1;
   if (glow) key = ((key ^ uint32_t(glow << 8 | int(done.outcome) | (doneGlowPeak ? 0 : 0x80))) * 16777619u) | 1;
   // The card is Doing's: it gives way to a sign and to the low sign (a
-  // finished turn's, a work act's, a celebration's gold), and comes back.
+  // finished turn's, a remembered line, a celebration's gold), and comes back.
   const bool held = card && card->on && !sign.text && !low.shows();
   const int hop = held ? cardHop(*card) : signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
-  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck);
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck, stream, now);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at);
   }
   if (stream) {
     Measure measure(profile.stream);
-    paintStreamBehind(surface, *stream, now);
     paintStreamFront(surface, *stream, at, now);
   }
   if (wish) paintWish(surface, *wish, at);

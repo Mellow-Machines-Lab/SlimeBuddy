@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-16. What checks the gel slime, and which rule each check
+Updated 2026-11-22. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -199,7 +199,7 @@ ramps and springs can, and no jolt at an event. By file:
   needs-you screen, the slight wave at a lock and the bye at a night's
   lock), the
   with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; a copy and its pah; and nothing at work in a pose of its own), the
-  gaze (`gaze.jsonl`: at work typing, forward, a glance at a word and down it, forward again and no glance inside its rest; looking, running and waiting with the same word falling and no glance; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
+  gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: the nightcap at night and on a party night, Zs
   asleep at night, a morning and each special day with nothing worn and
   nothing behind or round it, a sign under the nightcap), a Moment's sign (`sign.jsonl`), a finished
@@ -208,11 +208,14 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   four activities (`activities.jsonl`: each pose from plain working at
   0.2, 0.6, 1, 1.6 and 2.4 s, the three typing tiers, and four changes of
   pose a frame every 50 ms), the
-  work acts (`acts.jsonl`: the low sign running with the words still
-  falling, a pass with its hop, a fail with its flinch, a push shipped; a
+  work acts (`acts.jsonl`: the monitor's flask and the strip's term
+  running, a pass with its hop, a fail with its flinch, a push shipped; a
   needs-you and back), the
-  work stream (`stream.jsonl`: two lanes' words falling, nothing of them on
-  the monitor, 20 s quiet with nothing beside it, and every style as it
+  desk's monitor (`monitor.jsonl`: each activity's icon and the strip's
+  term, the tests running and failed, a failure landing and the paws
+  flailing, a timeout, waiting), the
+  work stream (`stream.jsonl`: two lanes, the newest word in the strip,
+  nothing falling, 20 s quiet with nothing beside it, and every style as it
   lands: bonk and its dizzy eyes, bonk3, shrug, shatter, helper and back
   (landing as a word does), an edit, and the whole turn's moments: a drop,
   and a turn's end gathering its words after the stream goes), and
@@ -236,7 +239,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
 - On the AMOLED, `internal/tools/boopctl perf --scenes` with the
   `amoled206_profile` build: each scene's frames a second against its
   budget, and the body's time (`body_us`, the erase included); its
-  `stream` scene keeps two lanes' words falling and a word coming forward
+  `stream` scene keeps two lanes busy and a word coming forward
   every 2 s (`stream_us`).
 - `internal/tools/fluid/measure.py` measures how fluid the everyday
   transitions are on the board (`transitions.jsonl`, `idle-swipes.jsonl`),

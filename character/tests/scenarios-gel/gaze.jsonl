@@ -1,9 +1,7 @@
 // Where the gel looks by itself (render/gel/gaze.h), each on a frozen clock
-// after a reset. At work, typing: forward at rest; a glance at a word as it
-// starts to fall on its right, followed down; forward again within two
-// seconds, and no glance at the next word, which comes inside its rest.
-// Looking, running or waiting, the same word falls and its eyes stay where
-// the pose has them: down the page, on the monitor, out at you. Something
+// after a reset. At work, typing: forward at rest, and still forward as a
+// new call comes. Looking, running or waiting, its eyes stay where the
+// pose has them: down the page, on the monitor, out at you. Something
 // needs you: up at you first, then turned to the Mac on its right and held
 // there; to its left with the Mac there; forward with no side told.
 {"t":"dbg.reset"}
@@ -13,14 +11,7 @@
 {"shot":"work-rest"}
 {"t":"state","base":"working","act":"tool_use","mood":"focused","busy":2,"vol":0,"when":["day"],"calls":[[0,1,"grep"],[1,2,"npm test"]]}
 {"clock":4300}
-{"shot":"work-glance"}
-{"clock":5000}
-{"shot":"work-glance-down"}
-{"clock":6400}
-{"shot":"work-forward-again"}
-{"t":"state","base":"working","act":"tool_use","mood":"focused","busy":2,"vol":0,"when":["day"],"calls":[[0,2,"rg"],[1,2,"npm test"]]}
-{"clock":7000}
-{"shot":"work-no-glance-in-its-rest"}
+{"shot":"work-rest-new-call"}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","act":"analyzing","mood":"focused","busy":2,"vol":0,"when":["day"],"calls":[[0,1,"grep"],[1,1,"sed"]]}

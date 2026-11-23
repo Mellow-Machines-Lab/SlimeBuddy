@@ -29,11 +29,12 @@
 {"t":"dbg.touch","x":160,"y":180,"ms":80}
 {"clock":6600}
 {"expect":{"last_input":{"k":"card"}}}
+// A work act running is the work's, on the monitor and in the strip, no card: the card stays in its hands, and a tap is still the card's.
 {"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day"],"wact":["build","building",1],"card":{"a":0,"k":"s","t":"fixing the overflow","at":[1,1]}}
 {"clock":8000}
 {"t":"dbg.touch","x":160,"y":180,"ms":80}
 {"clock":8300}
-{"expect":{"last_input":{"k":"tap"}}}
+{"expect":{"last_input":{"k":"card"}}}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"idle":1,"when":["day"],"card":{"a":0,"k":"r","t":"nav overflow fixed","d":"said 5 min, took 12","at":[1,1]}}

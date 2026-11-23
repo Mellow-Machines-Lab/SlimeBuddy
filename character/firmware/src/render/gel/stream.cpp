@@ -26,12 +26,11 @@ struct Layout {
   // one's: what moves is placed in them (render/gel/subpixel.h).
   int x16(int p16) const { return w * p16 / 502; }
   int y16(int p16) const { return h * p16 / 410; }
-  // A lane's name's middle, by its place among the lanes showing
-  // (render::laneX): clear of the head and its hat.
-  int column(const Stream& s, uint8_t slot) const { return x(laneX(s.column(slot), s.laneCount)); }
 };
 
-constexpr int kTop = 10;  // where words start falling, from the top edge
+// Where a word forward comes from, px of the 502 × 410 surface: the desk's
+// monitor, whose work it is (paintProps draws the monitor).
+constexpr int kMonitorX = 96, kMonitorY = 262;
 
 // The props' inks, and a few of the stream's own.
 constexpr uint16_t kNavy = 0x10E8, kGrey = 0x8410;
@@ -53,21 +52,13 @@ uint16_t callInk(const Stream::Call& c) {
   }
 }
 
-// Where a falling word is at t, on a 502 × 410 surface's coordinates scaled
-// to `l`'s: its middle, in sixteenths of a pixel.
-Point wordAt(const Layout& l, const Stream::Word& w, uint32_t t) {
-  const int age = std::max(0, int(int32_t(t - w.born)));
-  return {l.x(w.x) * 16, l.y(kTop) * 16 + l.y16(int(int64_t(age) * w.speed * 16 / 1000))};
-}
-
 // Text centred on (cx16, cy16), sixteenths of a pixel, in `f`, at r's
-// alpha (`behind`: only onto the background's black, so a word behind the
-// body costs nothing to draw, clear or push). Its cells' corner is a whole
+// alpha. Its cells' corner is a whole
 // pixel when the middle is, so text at rest is crisp; on a surface of
 // another size, scaled to it.
-void centred16(Raster& r, const Font& f, int cx16, int cy16, const char* s, uint16_t ink, bool behind = false) {
+void centred16(Raster& r, const Font& f, int cx16, int cy16, const char* s, uint16_t ink) {
   const int left16 = cx16 - glyphCount(s) * f.w / 2 * 16, top16 = cy16 - f.h / 2 * 16;
-  if (r.s.width == 502 && r.s.height == 410) return text16(r, f, left16, top16, s, ink, behind);
+  if (r.s.width == 502 && r.s.height == 410) return text16(r, f, left16, top16, s, ink);
   bool ascii = true;
   for (const char* p = s; *p && ascii; ++p) ascii = *p >= 32 && *p <= 126;
   if (ascii)
@@ -134,30 +125,10 @@ void dizzy(Raster& r, Surface& s, const Layout& l, const rig::Anchors& at, int m
 
 }  // namespace
 
-void paintStreamBehind(Surface& surface, const Stream& stream, uint32_t t) {
-  if (!surface.pixels || !stream.drawn(t)) return;
-  const Layout l{surface.width, surface.height};
-  Raster r{surface};  // which stops at the lane's top
-  // The words, dim, easing in as they come from the top and out before the
-  // lane, falling in sixteenths of a pixel. A word the word forward takes
-  // is its to draw.
-  for (const auto& w : stream.words) {
-    if (!w.live || stream.taken(w)) continue;
-    const int age = int(int32_t(t - w.born));
-    if (age < 0 || age >= int(Stream::kFallMs)) continue;
-    const Point at = wordAt(l, w, t);
-    const int in = std::min(255, age * 255 / 200), out = std::min(255, (int(Stream::kFallMs) - age) * 255 / 600);
-    r.alpha = std::min(in, out) * 110 / 255;
-    if (r.alpha < 3) continue;
-    centred16(r, kLarge, at.x, at.y, w.text, laneInk(w.slot), true);
-  }
-}
-
 namespace {
 
-// The whole turn's moments, played over the words falling as the word came:
-// gathered into its mouth at a turn's end, or dropped when it's stopped or
-// has failed.
+// The whole turn's moments: its word gulped down at a turn's end, or
+// dropped when it's stopped or has failed.
 void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors& at, int age, uint16_t ink,
             const char* word) {
   const auto& c = stream.call;
@@ -165,23 +136,14 @@ void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors
   const int eyesX = (at.eyeL.x + at.eyeR.x) / 32, eyesY = (at.eyeL.y + at.eyeR.y) / 32;
   const int crownX = at.crown.x / 16, crownY = at.crown.y / 16;
   const int mouthX = eyesX, mouthY = eyesY + l.y(36);
-  // The words it takes, from where they were as it came, in sixteenths of
-  // a pixel; with none on screen, and `own`, its own word from its lane's
-  // name.
-  int taken = 0;
-  for (const auto& w : stream.words) taken += stream.taken(w);
-  auto each = [&](bool own, auto&& draw) {
-    for (const auto& w : stream.words)
-      if (stream.taken(w)) draw(wordAt(l, w, c.at), w.text, laneInk(w.slot));
-    if (!taken && own) draw(Point{l.column(stream, c.slot) * 16, l.y(kTop) * 16}, word, ink);
-  };
   switch (callMove(c.style)) {
-    case CallMove::kGather: {  // into its mouth, and a happy "mm!"
+    case CallMove::kGather: {  // from the monitor into its mouth, and a happy "mm!"
       const int k = easeIn(std::min(age, flight), flight);
-      each(age < flight, [&](Point p, const char* s, uint16_t in) {
+      if (age < flight) {
         r.alpha = 255 - k * 155 / flight;
-        centred16(r, kLarge, lerp(p.x, mouthX * 16, k, flight), lerp(p.y, mouthY * 16, k, flight), s, in);
-      });
+        centred16(r, kLarge, lerp(l.x(kMonitorX) * 16, mouthX * 16, k, flight),
+                  lerp(l.y(kMonitorY) * 16, mouthY * 16, k, flight), word, ink);
+      }
       if (age >= flight && age < flight + 900) {
         r.alpha = fadeBy(age, flight + 900, 300);
         centred(r, kSign, mouthX + l.x(70), mouthY - l.y(30), "mm!", kStarInk);
@@ -189,12 +151,7 @@ void moment(Raster& r, const Layout& l, const Stream& stream, const rig::Anchors
       }
       break;
     }
-    case CallMove::kDrop: {  // switched off: the words fall away, grey
-      each(false, [&](Point p, const char* s, uint16_t) {
-        r.alpha = std::max(0, 200 - age * 200 / 700);
-        const int y = p.y + l.y16(int(int64_t(age) * age * 900 * 16 / 1000000));
-        if (r.alpha > 2) centred16(r, kLarge, p.x, y, s, kGrey);
-      });
+    case CallMove::kDrop: {  // switched off: its word drops onto its crown
       r.alpha = fadeBy(age, end, 500);
       centred16(r, kSign, crownX * 16, (crownY - l.y(40)) * 16 + l.y16(std::min(age, 400) * 16 / 20), word, ink);
       break;
@@ -221,8 +178,8 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     default: break;
   }
 
-  // From its lane's name to where it lands on the body.
-  const int fromX = l.column(stream, c.slot), fromY = l.y(kTop);
+  // From the monitor to where it lands on the body.
+  const int fromX = l.x(kMonitorX), fromY = l.y(kMonitorY);
   const int eyesX = (at.eyeL.x + at.eyeR.x) / 32, eyesY = (at.eyeL.y + at.eyeR.y) / 32;
   const int crownX = at.crown.x / 16, crownY = at.crown.y / 16;
   const bool right = fromX >= surface.width / 2;
@@ -235,7 +192,7 @@ void paintStreamFront(Surface& surface, const Stream& stream, const rig::Anchors
     default: break;
   }
 
-  // In flight: a c.text from its lane.
+  // In flight: a c.text from the monitor.
   if (after < 0) {
     const int k = easeIn(age, flight);
     // In sixteenths of a pixel.

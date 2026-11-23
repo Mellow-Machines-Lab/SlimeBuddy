@@ -22,7 +22,6 @@
 #include "render/gel/lane.h"
 #include "render/gel/layers.h"
 #include "render/gel/raster.h"
-#include "render/gel/act.h"
 #include "render/gel/stream.h"
 #include "render/tags.h"
 #include "fonts_gel.h"
@@ -1522,7 +1521,6 @@ void test_pastimes_are_dealt_by_tier_after_a_rest();
 void test_transitions_play_between_doings_and_anything_urgent_cuts_through();
 void test_a_tagged_pastime_plays_only_while_its_tag_is_on();
 void test_the_eyes_rest_unless_theres_a_reason();
-void test_a_glance_and_then_a_rest();
 void test_a_look_is_a_turn_not_a_dart();
 void test_it_types_along_with_you();
 // test_with_you.cpp
@@ -1950,8 +1948,8 @@ static void test_a_recording_replays_between_pixels() {
 }
 
 // Text placed in sixteenths (text16) is Raster::text's on a whole pixel,
-// and between pixels glides: a falling word's ink moves down in every
-// frame, however little the frame, rather than a pixel at a time.
+// and between pixels glides: a word forward's ink moves in every frame,
+// however little the frame, rather than a pixel at a time.
 static void test_text_glides_between_pixels() {
   std::vector<uint16_t> a(502 * 410, 0), b(502 * 410, 0);
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
@@ -1959,17 +1957,14 @@ static void test_text_glides_between_pixels() {
   ra.text("grep x", 200, 100, rgb565(140, 223, 203), kLarge);
   text16(rb, kLarge, (200 - 6 * kLarge.w / 2) * 16, (100 - kLarge.h / 2) * 16, "grep x", rgb565(140, 223, 203));
   TEST_ASSERT_EQUAL_MEMORY(a.data(), b.data(), a.size() * 2);
-  // One lane's word, falling at 95 to 145 px a second: its ink's middle,
-  // every 3 ms (under half a pixel), is lower each time.
-  Stream stream;
-  Stream::Lane lane;
-  lane.slot = 0, lane.count = 1, std::strcpy(lane.word, "grep");
-  stream.setLanes(&lane, 1, true, false, 0);
+  // Moved down 7 sixteenths at a time (under half a pixel): its ink's
+  // middle is lower each time.
   double last = -1;
-  for (uint32_t t = 600; t <= 660; t += 3) {
+  for (int k = 0; k < 20; ++k) {
     std::fill(a.begin(), a.end(), 0);
     sa.invalidate();
-    paintStreamBehind(sa, stream, t);
+    Raster rk{sa};
+    text16(rk, kLarge, 180 * 16, 80 * 16 + k * 7, "grep", rgb565(140, 223, 203));
     double mass = 0, moment = 0;
     for (int y = 0; y < 300; ++y)
       for (int x = 0; x < 502; ++x)
@@ -2839,12 +2834,12 @@ static void test_rgb565_opacity_rounds_to_nearest() {
         TEST_ASSERT_EQUAL_HEX16(channel(11, 31) | channel(5, 63) | channel(0, 31), mix565(old, ink, a));
       }
 }
-// A work act (render/gel/act.h) is its low sign: what's running, with dots,
-// then how it ended, a tick or a cross, for kActResultMs. It runs on its
-// state; a result that comes before kActLeadMs waits for it; a needs-you
-// leaves it to come back where it got to; the desk and the work stream stay
-// as they are; and no frame of it takes from the heap.
-static void test_a_work_act_shows_its_sign_by_its_state() {
+// A work act is the work's, never a card: what's running, then how it
+// ended, for kActResultMs, on the monitor (a flask, a tick or a cross) and
+// as the strip's term. It runs on its state; a result that comes before
+// kActLeadMs waits for it; a needs-you leaves it to come back where it got
+// to; and no frame of it takes from the heap.
+static void test_a_work_act_shows_on_the_monitor_and_the_strip() {
   static_assert(kActLeadMs == 900 && kActResultMs == 2600, "the times this test pins, the Mac's too (WorkStream)");
   Stream stream;
   Stream::ActIn in;
@@ -2855,10 +2850,9 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
   TEST_ASSERT_TRUE(now.shows());
   TEST_ASSERT_EQUAL_INT(500, now.ageMs);
   // Running: its words, with dots.
-  TEST_ASSERT_EQUAL_STRING("git push", actSign(now).text);
-  TEST_ASSERT_TRUE(actSign(now).mark == LowSign::Mark::kDots);
-  TEST_ASSERT_EQUAL_INT(-1, actSign(now).leftMs);
-  TEST_ASSERT_FALSE(actSign(Stream::ActNow{}).shows());
+  TEST_ASSERT_EQUAL_STRING("git push", now.text);
+  TEST_ASSERT_TRUE(now.result == ActResult::kRunning);
+  TEST_ASSERT_EQUAL_INT(-1, now.leftMs);
   // Held away, it runs on unseen; back, where it got to.
   Stream::ActIn none;
   stream.setAct(none, true, 1600);
@@ -2874,17 +2868,16 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
   const uint32_t begins = 1000 + kActLeadMs;
   now = stream.actNow(begins);
   TEST_ASSERT_EQUAL_INT(int(ActResult::kPass), int(now.result));
-  TEST_ASSERT_EQUAL_STRING("shipped!", actSign(now).text);
-  TEST_ASSERT_TRUE(actSign(now).mark == LowSign::Mark::kTick);
-  TEST_ASSERT_EQUAL_INT(int(kActResultMs), actSign(now).leftMs);
+  TEST_ASSERT_EQUAL_STRING("shipped!", now.text);
+  TEST_ASSERT_EQUAL_INT(int(kActResultMs), now.leftMs);
   TEST_ASSERT_FALSE(stream.actNow(begins + kActResultMs).shows());
   // A failure's sign has a cross.
   Stream failing;
   in.result = ActResult::kFail;
   std::strcpy(in.text, "fail");
   failing.setAct(in, false, 0);
-  TEST_ASSERT_TRUE(actSign(failing.actNow(kActLeadMs)).mark == LowSign::Mark::kCross);
-  TEST_ASSERT_EQUAL_STRING("fail", actSign(failing.actNow(kActLeadMs)).text);
+  TEST_ASSERT_TRUE(failing.actNow(kActLeadMs).result == ActResult::kFail);
+  TEST_ASSERT_EQUAL_STRING("fail", failing.actNow(kActLeadMs).text);
   // The state gone and nothing else holding the screen: it's over.
   stream.setAct(none, false, begins + 100);
   TEST_ASSERT_FALSE(stream.actNow(begins + 100).shows());
@@ -2898,8 +2891,9 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
   const Strip strip;
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
-  // An act is its sign alone: above the lane, the desk, the body and the
-  // words falling are drawn as with none.
+  // An act is the work's, never a card: the monitor's flask, and with an
+  // agent at work, the strip's term ("running tests" for "make"). Above the
+  // monitor all is drawn as with none.
   {
     Stream plain, acting;
     Stream::Lane lane;
@@ -2915,9 +2909,18 @@ static void test_a_work_act_shows_its_sign_by_its_state() {
     const std::vector<uint16_t> bare(px);
     s.invalidate();
     paintFrame(s, *e, false, 0, nullptr, sign, strip, {}, rig::kRest, nullptr, 0, &acting, 600);
-    const size_t lane0 = size_t(502) * (410 * kLaneTop / kHeight);
-    TEST_ASSERT_EQUAL_MEMORY(bare.data(), px.data(), lane0 * 2);
-    TEST_ASSERT_TRUE(std::memcmp(bare.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2) != 0);
+    const size_t lane0 = size_t(502) * (410 * kLaneTop / kHeight), monitor0 = size_t(502) * (410 * 600 / 1000);
+    TEST_ASSERT_EQUAL_MEMORY(bare.data(), px.data(), monitor0 * 2);
+    TEST_ASSERT_TRUE(std::memcmp(bare.data() + monitor0, px.data() + monitor0, (lane0 - monitor0) * 2) != 0);
+    TEST_ASSERT_EQUAL_MEMORY(bare.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2);
+    Strip busy;
+    busy.busy = 1;
+    s.invalidate();
+    paintFrame(s, *e, false, 0, nullptr, sign, busy, {}, rig::kRest, nullptr, 0, &plain, 600);
+    const std::vector<uint16_t> made(px);
+    s.invalidate();
+    paintFrame(s, *e, false, 0, nullptr, sign, busy, {}, rig::kRest, nullptr, 0, &acting, 600);
+    TEST_ASSERT_TRUE(std::memcmp(made.data() + lane0, px.data() + lane0, (px.size() - lane0) * 2) != 0);
   }
   // Every beat of every result, off the heap.
   allocCount = 0;
@@ -3006,11 +3009,12 @@ static void test_words_take_the_lane_from_a_running_act() {
   TEST_ASSERT_TRUE(px != said);
 }
 
-// The work stream on the gel: a lane's words drawn behind the body show
-// only where it doesn't cover them; a word forward is drawn over it; the
-// body answers a hit as it lands, knocked and its lids shut, opening again
-// after the daze; and drawing it all takes nothing from the heap.
-static void test_the_work_stream_falls_behind_and_hits_in_front() {
+// The work stream on the gel: nothing falls behind the body, its lanes
+// alone draw nothing above the lane; a word forward flies from the monitor
+// and is drawn over the body; the body answers a hit as it lands, knocked
+// and its lids shut, opening again after the daze; and drawing it all
+// takes nothing from the heap.
+static void test_the_work_stream_hits_from_the_monitor() {
   std::vector<uint16_t> px(502 * 410);
   Surface s{502, 410, px.data()};
   auto e = std::make_unique<Engine>();
@@ -3025,16 +3029,17 @@ static void test_the_work_stream_falls_behind_and_hits_in_front() {
   paintFrame(s, *e, false, 0, nullptr, none, strip);
   const std::vector<uint16_t> bare(px);
   paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, 600);
-  // The words fall in their lanes' columns, a quarter and three quarters
-  // across, and the body's middle covers whatever falls behind it.
-  int left = 0, right = 0;
-  for (int y = 30; y < 120; ++y)
-    for (int x = 0; x < 502; ++x)
-      if (px[size_t(y) * 502 + x] != bare[size_t(y) * 502 + x]) (x < 251 ? left : right) += 1;
-  TEST_ASSERT_TRUE(left > 40 && right > 40);
-  TEST_ASSERT_EQUAL_HEX16(bare[size_t(205) * 502 + 251], px[size_t(205) * 502 + 251]);
-  // A failure flies at its face from the second lane, and lands.
+  // No words fall: above the lane, the frame is as with no stream.
+  const size_t lane0 = size_t(502) * (410 * kLaneTop / kHeight);
+  TEST_ASSERT_EQUAL_MEMORY(bare.data(), px.data(), lane0 * 2);
+  // A failure flies at its face from the monitor, and lands; in flight,
+  // it's drawn between the monitor and the face.
   stream.startCall("make", 1, CallStyle::kBonk, 1000);
+  paintFrame(s, *e, false, 0, nullptr, none, strip, {}, rig::kRest, nullptr, 0, &stream, 1100);
+  int changed = 0;
+  for (int y = 180; y < 280; ++y)
+    for (int x = 80; x < 260; ++x) changed += px[size_t(y) * 502 + x] != bare[size_t(y) * 502 + x];
+  TEST_ASSERT_TRUE(changed > 40);
   TEST_ASSERT_EQUAL_UINT32(380, callFlightMs(CallStyle::kBonk));
   TEST_ASSERT_EQUAL_INT(int(CallMove::kHit), int(callMove(CallStyle::kBonk)));
   const F open = e->blink();
@@ -3099,8 +3104,8 @@ int main() {
   UNITY_BEGIN();
   RUN_TEST(test_fixed_math_and_motion);
   RUN_TEST(test_words_take_the_lane_from_a_running_act);
-  RUN_TEST(test_the_work_stream_falls_behind_and_hits_in_front);
-  RUN_TEST(test_a_work_act_shows_its_sign_by_its_state);
+  RUN_TEST(test_the_work_stream_hits_from_the_monitor);
+  RUN_TEST(test_a_work_act_shows_on_the_monitor_and_the_strip);
   RUN_TEST(test_the_body_answers_an_acts_result_once);
   RUN_TEST(test_a_daze_ends_across_the_clock_wrap);
   RUN_TEST(test_it_rises_for_its_sign);
@@ -3141,7 +3146,6 @@ int main() {
   RUN_TEST(test_transitions_play_between_doings_and_anything_urgent_cuts_through);
   RUN_TEST(test_a_tagged_pastime_plays_only_while_its_tag_is_on);
   RUN_TEST(test_the_eyes_rest_unless_theres_a_reason);
-  RUN_TEST(test_a_glance_and_then_a_rest);
   RUN_TEST(test_a_look_is_a_turn_not_a_dart);
   RUN_TEST(test_it_types_along_with_you);
   RUN_TEST(test_the_eyes_with_you_in_order);

@@ -27,10 +27,8 @@
 //    the line-by-line travel down and back is its clip's (`read-along`).
 // 8. A video with you (the `video` tag): to the Mac's side at the eyes'
 //    height, or up at it, and still.
-// 9. At work, typing: a glance at a word as it starts to fall, followed
-//    down for kGlanceMs, then forward again for at least kRestMs before the
-//    next; kWatchRestMs while you're at the Mac with your hands still (the
-//    `reading` tag), when it watches the work with you.
+//
+// At work, typing, with none of these: forward, at rest.
 //
 // The first that applies wins, and none applies while anything else has
 // the eyes: a finger, a Moment, a pastime, a transition, a word forward,
@@ -60,10 +58,6 @@ struct GazeFacts {
   WithYou with = WithYou::kNone;              // what it does with you besides
   bool pointer = false, pointerNear = false;  // the way to your pointer (state.ptr)
   int pointerX = 0, pointerY = 0;
-  bool watching = false;                    // at work, and you're there with your hands still
-  bool word = false;                        // the newest word falling: when it dropped, where
-  uint32_t wordBorn = 0;                    // it is now, px of the 502 by 410 screen, and how
-  int wordX = 0, wordY = 0, wordSpeed = 0;  // fast it falls, px a second
 };
 
 // A point to look at, in the screen's px (it may be off the screen), or
@@ -75,10 +69,7 @@ struct GazePoint {
 
 class Gaze {
  public:
-  static constexpr uint32_t kNoticeMs = 1200, kGlanceMs = 1600, kRestMs = 7000, kWatchRestMs = 3000;
-  // A word is caught only as it starts to fall: one already this old isn't
-  // glanced at.
-  static constexpr uint32_t kCatchMs = 500;
+  static constexpr uint32_t kNoticeMs = 1200;
   // Thinking with you: after typing along this long, it looks up this long.
   static constexpr uint32_t kThinkAfterMs = 8000, kThinkMs = 2000;
   // Where the points are: up at you, off to the Mac's side at the eyes'
@@ -90,12 +81,6 @@ class Gaze {
   static constexpr int kPointerReach = 10, kPointerX = 42, kPointerY = 36;
   GazePoint look(const GazeFacts& f, uint32_t t);
   void reset() { *this = Gaze{}; }
-
- private:
-  // The word it glanced at: it follows that one down, whatever drops after.
-  bool glancing_ = false, rested_ = true;
-  uint32_t glanceAt_ = 0, glanceBorn_ = 0, restFrom_ = 0;
-  int glanceX_ = 0, glanceY_ = 0, glanceSpeed_ = 0;
 };
 
 }  // namespace render::gel

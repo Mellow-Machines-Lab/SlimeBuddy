@@ -4,6 +4,8 @@
 #include "render/gel/raster.h"
 #include "render/gel/subpixel.h"
 #include "render/gel/lane.h"
+#include "render/gel/router.h"
+#include "render/palette.h"
 #include "render/tags.h"
 namespace render::gel {
 namespace {
@@ -61,6 +63,37 @@ int firstDrawnRow(const Surface& surface, const Placed& c) {
 }
 }  // namespace
 
+namespace {
+// What the desk's monitor shows (paintProps).
+enum class MonitorIcon : uint8_t { kPencil, kGlass, kPrompt, kFlask, kHourglass, kCross, kClock, kTick };
+// A word forward that hit: a failure or a timeout, not your no.
+bool fails(const Stream::Call& c) {
+  return c.live && callMove(c.style) == CallMove::kHit && c.style != CallStyle::kNo;
+}
+MonitorIcon monitorIcon(const Stream* stream, uint32_t now, Activity activity) {
+  if (stream && fails(stream->call) && now - stream->call.at < Stream::kCallMs)
+    return stream->call.style == CallStyle::kTimeout ? MonitorIcon::kClock : MonitorIcon::kCross;
+  const Stream::ActNow act = stream ? stream->actNow(now) : Stream::ActNow{};
+  if (act.shows() && act.result != ActResult::kRunning)
+    return act.result == ActResult::kPass ? MonitorIcon::kTick : MonitorIcon::kCross;
+  if (act.shows() && act.kind == ActKind::kTests) return MonitorIcon::kFlask;
+  switch (activity) {
+    case Activity::kLooking: return MonitorIcon::kGlass;
+    case Activity::kRunning: return MonitorIcon::kPrompt;
+    case Activity::kWaiting: return MonitorIcon::kHourglass;
+    default: return MonitorIcon::kPencil;
+  }
+}
+// How far up a paw flails for a failure that landed: for kFlailMs after
+// the knock, the paws by turns every 90 ms.
+constexpr uint32_t kFlailMs = 1100;
+int flailLift(const Stream* stream, uint32_t now, int side) {
+  if (!stream || !fails(stream->call)) return 0;
+  const uint32_t landed = stream->call.at + callFlightMs(stream->call.style);
+  if (int32_t(now - landed) < 0 || now - landed >= kFlailMs) return 0;
+  return ((now - landed) / 90 + (side > 0 ? 1 : 0)) % 2 ? 34 : 4;
+}
+}  // namespace
 int tapLift(const Scenes& s, int side) {
   const int age = F(s.ageMs).integer();
   for (int i = 0; i < s.recipe.count; ++i) {
@@ -105,7 +138,7 @@ int opaqueCards(const Surface& surface, const Engine& e, Box* out) {
   return count;
 }
 
-void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
+void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Stream* stream, uint32_t streamNow) {
   if (!surface.pixels) return;
   Raster r{surface};
   auto& s = e.scenes;
@@ -165,43 +198,90 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
     round(114, 611, 156, 89, 8, rgb565(7, 24, 32));
     round(178, 715, 26, 32, 8, dark);
     round(140, 739, 98, 10, 5, blue);
-    // The monitor says the activity in one shape that fills it: lines of
-    // text growing as it types, a lit line stepping down a page as it
-    // looks, one bar filling as something runs, three dots as it waits.
+    // The monitor says what the work is, in one icon that fills it: a
+    // pencil writing as it types, a magnifying glass drifting as it looks,
+    // a prompt as something runs, a flask filling as the tests run, an
+    // hourglass as it waits. A failure landing turns it to a red cross, a
+    // timeout to an amber clock, and a work act's result to a tick or a
+    // cross, for as long as each shows.
     const auto deskState = isDesk(state) ? state : s.route.baseState;
     const uint32_t ms = uint32_t(F(e.timeMs()).integer());
-    const uint16_t dim = rgb565(38, 84, 104);
-    switch (activityOf(deskState)) {
-      case Activity::kTyping: {
-        // Three lines, each typed out in steps over a second, then cleared.
-        const int at = int(ms % 3800);
-        for (int i = 0; i < 3; ++i) {
-          const int full = 132 - i * 22, typed = std::clamp((at - i * 1000) * 11 / 900, 0, 11) * full / 11;
-          if (typed > 0) round(126, 622 + i * 26, typed, 12, 5, at < (i + 1) * 1000 ? green : blue);
+    const MonitorIcon icon = monitorIcon(stream, streamNow, activityOf(deskState));
+    if (icon == MonitorIcon::kCross || icon == MonitorIcon::kClock)
+      round(114, 611, 156, 89, 8, icon == MonitorIcon::kCross ? rgb565(70, 18, 20) : rgb565(62, 42, 6));
+    else if (icon == MonitorIcon::kTick)
+      round(114, 611, 156, 89, 8, rgb565(16, 52, 28));
+    const int cx = x(192), cy = y(656);
+    const uint16_t clay = rgb565(kClayRgb), sage = rgb565(kSageRgb), amber = rgb565(kAmberRgb);
+    auto seg = [&](int ax, int ay, int bx, int by, int width, uint16_t ink) {
+      r.line({cx + ax, cy + ay}, {cx + bx, cy + by}, width, ink);
+    };
+    // A row of px, `from` across `n`.
+    auto row = [&](int yy, int from, int n, uint16_t ink) { r.round(cx + from, cy + yy, n, 1, 0, ink); };
+    // A triangle wave over `period` ms, 0 … `span` and back.
+    auto swing = [&](int period, int span) {
+      const int at = int(ms % uint32_t(period)), half = period / 2;
+      return (at < half ? at : period - at) * span / half;
+    };
+    switch (icon) {
+      case MonitorIcon::kPencil: {
+        // It writes a line left to right, then lifts and starts again.
+        const int go = std::min(int(ms % 2400), 2000) * 40 / 2000, px = -20 + go;
+        if (go > 1) seg(-22, 13, -22 + go, 13, 2, green);
+        seg(px, 9, px + 18, -9, 6, light);
+        seg(px - 3, 12, px, 9, 3, green);
+        break;
+      }
+      case MonitorIcon::kGlass: {
+        const int dx = swing(2800, 18) - 9, dy = swing(1900, 6) - 3;
+        r.ring(cx + dx - 16, cy + dy - 14, 20, 20, 10, 3, light);
+        seg(dx + 1, dy + 3, dx + 11, dy + 13, 4, light);
+        break;
+      }
+      case MonitorIcon::kPrompt:
+        seg(-24, -9, -14, 0, 3, green);
+        seg(-14, 0, -24, 9, 3, green);
+        if (ms % 1000 < 600) r.round(cx - 8, cy + 5, 16, 5, 2, green);
+        break;
+      case MonitorIcon::kFlask: {
+        // The liquid rises over 2.4 s, and again.
+        const int level = 13 - std::min(int(ms % 3000), 2400) * 11 / 2400;
+        for (int yy = level; yy <= 13; ++yy) {
+          const int half = 4 + (yy + 5) * 10 / 19;
+          if (yy >= -5) row(yy, -half + 2, 2 * half - 4, green);
         }
+        seg(-4, -15, -4, -5, 2, light);
+        seg(4, -15, 4, -5, 2, light);
+        seg(-7, -15, 7, -15, 2, light);
+        seg(-4, -5, -14, 14, 2, light);
+        seg(4, -5, 14, 14, 2, light);
+        seg(-14, 14, 14, 14, 2, light);
         break;
       }
-      case Activity::kLooking: {
-        // A page of four lines, the one being read lit.
-        const int lit = int(ms / 700 % 4);
-        for (int i = 0; i < 4; ++i)
-          round(126, 619 + i * 20, i == lit ? 132 : 132 - (i * 37 % 50), i == lit ? 12 : 9, 4, i == lit ? light : dim);
+      case MonitorIcon::kHourglass: {
+        // The sand runs down over 4 s, and again.
+        const int run = int(ms % 4000) * 11 / 4000;
+        for (int yy = -11 + run; yy < 0; ++yy) row(yy, yy * 9 / 12, -yy * 9 / 6, blue);
+        for (int yy = 12 - run; yy <= 12; ++yy) row(yy, -yy * 9 / 12, yy * 9 / 6, blue);
+        seg(-11, -14, 11, -14, 3, light);
+        seg(-11, 14, 11, 14, 3, light);
+        seg(-9, -12, 9, 12, 2, light);
+        seg(9, -12, -9, 12, 2, light);
         break;
       }
-      case Activity::kRunning: {
-        // One bar, filling over 2.4 s, full for a beat, and again.
-        const int filled = std::min(int(ms % 3000), 2400) * 124 / 2400;
-        round(122, 634, 140, 44, 10, dim);
-        round(126, 640, 132, 32, 7, rgb565(7, 24, 32));
-        if (filled > 8) round(130, 646, filled, 20, 4, green);
+      case MonitorIcon::kCross:
+        seg(-11, -11, 11, 11, 5, clay);
+        seg(11, -11, -11, 11, 5, clay);
         break;
-      }
-      case Activity::kWaiting: {
-        // Three dots, each brighter in its turn, slowly.
-        const int turn = int(ms / 600 % 4);
-        for (int i = 0; i < 3; ++i) r.disk(x(152 + i * 40), y(655), 5, i == turn ? light : blue);
+      case MonitorIcon::kClock:
+        r.ring(cx - 14, cy - 14, 28, 28, 14, 3, amber);
+        seg(0, 0, 0, -9, 3, amber);
+        seg(0, 0, 7, 3, 3, amber);
         break;
-      }
+      case MonitorIcon::kTick:
+        seg(-12, 0, -3, 9, 5, sage);
+        seg(-3, 9, 13, -9, 5, sage);
+        break;
     }
   }
   // The keyboard and the paws: out with the desk, or alone while it types
@@ -240,8 +320,11 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws) {
       const int dx =
           (paws ? paws->dx[i] : 0) +
           (looking * kLookingPaws.dx[i] + running * kRunningPaws.dx[i] + waiting * kWaitingPaws.dx[i]).integer();
-      int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift;
-      round(500 + side * 78 - 30 + dx, yy - 12, 60, 25, 13, rgb565(93, 166, 219));
+      // A failure landing: the paws flail up and down, by turns, a beat
+      // after the knock.
+      const int flail = flailLift(stream, streamNow, side);
+      int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift - flail;
+      round(500 + side * (78 + flail / 3) - 30 + dx, yy - 12, 60, 25, 13, rgb565(93, 166, 219));
     }
   }
   // Each prop's alpha is its ramped visibility; one fading out still draws
