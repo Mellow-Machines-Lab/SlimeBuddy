@@ -389,14 +389,23 @@ bool GelFace::typingPose() const {
 }
 
 // Whether it's free for you at the Mac (typing along, and the poses of
-// showWithYou): it shows its own look, idle or at work in its typing pose
-// with no word forward, and nothing else has it: no finger, no Mac gone, no
-// card in its hands, no transition and no pastime. `look` is the look.
+// showWithYou): it shows its own look, idle or at work in any pose, a card
+// in its hands or not (going with you is a layer over the pose, the
+// engine's documentation/design/theory.md, "One body, three channels"),
+// and nothing else has it: no finger, no Mac gone, no transition and no
+// pastime. `look` is the look.
 bool GelFace::freeForYou(uint32_t t, SceneState& look) const {
   const bool shows = showsLook(source_.anim, look);
-  const bool place = look == SceneState::kIdle ||
-                     (look == SceneState::kWorking && typingPose() && !(stream_ && stream_->call.live));
-  return shows && place && !finger_ && !alone_ && !card_.on && !transition(t) && !playing();
+  const bool place = look == SceneState::kIdle || look == SceneState::kWorking;
+  return shows && place && !finger_ && !alone_ && !transition(t) && !playing();
+}
+
+// Whether going with you is at its light size: at work, or holding a card.
+// The pose is the work's then, so only the rhythm and the gaze ride on it:
+// the paws stay where the pose puts them, and the poses that move the whole
+// body (reading, a video, music) give way to the eyes alone.
+bool GelFace::light(SceneState look) const {
+  return card_.on || (look == SceneState::kWorking && !typingPose());
 }
 
 // Typing along with you (face.h): while your hands are busy and it's free
@@ -462,16 +471,16 @@ void GelFace::showWithYou(uint32_t t) {
     if (!scrolled_ || t - scrolledAt_ >= kReadGapMs) readFrom_ = t;
     scrolled_ = true, scrolledAt_ = t;
   }
-  const bool reading = scrolled_ && within(t, scrolledAt_, kReadLingerMs);
+  const bool reading = scrolled_ && within(t, scrolledAt_, kReadLingerMs) && !light(look);
   const bool music = when & kMusicTag;
   if (music && !music_) musicFrom_ = t;
   const bool musicStopped = music_ && !music;
   music_ = music;
-  const bool grooving = music && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs;
+  const bool grooving = music && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs && !light(look);
   wanted_ = call       ? WithYou::kCall
             : (when & kSpeakingTag) ? WithYou::kSpeaking
             : reading  ? WithYou::kReading
-            : (when & kVideoTag) ? WithYou::kVideo
+            : (when & kVideoTag) && !light(look) ? WithYou::kVideo
             : grooving ? WithYou::kMusic
                        : WithYou::kNone;
   const WithYou now = free ? wanted_ : WithYou::kNone;
@@ -568,7 +577,7 @@ void GelFace::showGaze(uint32_t t) {
   f.lookMs = e.scenes.lookMs;
   f.mac = (when & kMacLeftTag) ? -1 : (when & kMacRightTag) ? 1 : 0;
   f.up = !f.mac && (when & kMacUpTag);
-  f.along = tapping_;
+  f.along = tapping_ && !light(look);
   f.posed = look == SceneState::kWorking && !typingPose();
   f.thinking = thought_ && within(t, thinkAt_, Gaze::kThinkMs), f.thinkMs = t - thinkAt_;
   if (!f.thinking) thought_ = false;
@@ -585,7 +594,11 @@ void GelFace::showGaze(uint32_t t) {
 
 PastimeShow GelFace::pastimes(uint32_t t) const {
   PastimeShow s;
-  s.keys = (along_.value(t) * 255 + 500) / 1000, s.tapping = tapping_, s.fast = fast_;
+  // Light (a work pose of its own, a card held), its paws stay the pose's:
+  // the body sways with you, the paws don't tap.
+  SceneState look;
+  const bool lit = showsLook(source_.anim, look) && light(look);
+  s.keys = (along_.value(t) * 255 + 500) / 1000, s.tapping = tapping_ && !lit, s.fast = fast_ && !lit;
   s.pawPhase = int(pawPhaseQ_ / 1000);
   if (pastime_ != Pastime::kNone) {
     s.playing = pastime_;

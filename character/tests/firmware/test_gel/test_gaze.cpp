@@ -203,15 +203,17 @@ void test_it_types_along_with_you() {
   board.tags(day);
   board.to(board.t + 64);
   TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
-  // In another activity's pose it doesn't type with you, and the gaze
-  // leaves the eyes to the pose's clip; back at typing, it does again.
+  // In another activity's pose it goes with you at the light size: the
+  // pose sways at your speed (`type-along` on the mixer), but its paws stay
+  // the pose's and the gaze leaves the eyes to the pose's clip; back at
+  // typing, its paws type again.
   for (SceneState act : {SceneState::kAnalyzing, SceneState::kTerminal, SceneState::kWaiting}) {
     board.m.act = act;
     board.tags(day | typing);
     board.to(board.t + 2000, [&] {
       TEST_ASSERT_TRUE(!face.pastimes(board.t).tapping && !face.engine().motion.attending);
     });
-    TEST_ASSERT_NULL(face.passing(board.t));
+    TEST_ASSERT_EQUAL_STRING("along", face.passing(board.t));
   }
   board.m.act = SceneState::kToolUse;
   board.state();

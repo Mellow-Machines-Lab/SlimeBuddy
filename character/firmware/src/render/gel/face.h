@@ -219,6 +219,7 @@ class GelFace final : public Face {
   bool typed_ = false;
   void showAlong(uint32_t t);
   bool typingPose() const;
+  bool light(SceneState look) const;
   // Free for you at the Mac: typing along and the poses of showWithYou.
   bool freeForYou(uint32_t t, SceneState& look) const;
   // Where its paws are in their beats (painter.h, briskLift), in
@@ -236,8 +237,10 @@ class GelFace final : public Face {
   // each is the body, the eyes and the paws alone, nothing held up or
   // floating. Lowest of all, below typing along: it waits for a pastime or a
   // transition, gives way at once to a finger, a Moment, a word forward,
-  // needs you or sleep, and at work comes only in the typing pose. The one
-  // shown, first that fits:
+  // needs you or sleep. At work in a pose of its own, or with a card held,
+  // it's light (GelFace::light): a call and speaking show, and the poses that
+  // move the whole body (reading, a video, music) give way to the eyes. The
+  // one shown, first that fits:
   //
   // - on a call (`oncall`): still and a little smaller, its eyes half
   //   closed (`on-call`); no typing along, music or pastime, and its board
