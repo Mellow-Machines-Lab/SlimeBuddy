@@ -99,7 +99,7 @@ struct Term {
   uint16_t ink = 0;
 };
 Term gTerm;
-Term termFor(const Stream& st, uint32_t now) {
+Term termFor(const Stream& st, uint32_t now, int watchSlot) {
   static char text[Stream::kWordBytes + 16];
   Term term;
   if (!st.on) return term;
@@ -118,6 +118,10 @@ Term termFor(const Stream& st, uint32_t now) {
     std::snprintf(text, sizeof text, "%s %s", name, pass ? "passed" : "failed");
     return {text, pass ? rgb565(kSageRgb) : rgb565(kClayRgb)};
   }
+  // Several agents: the one the screen follows (Strip::watch), else the
+  // newest word of any.
+  for (int i = 0; i < st.laneCount && watchSlot >= 0; ++i)
+    if (st.lanes[i].slot == watchSlot && st.lanes[i].word[0]) return {st.lanes[i].word, rgb565(kNarrationRgb)};
   if (st.newest[0]) term = {st.newest, rgb565(kNarrationRgb)};
   return term;
 }
@@ -379,6 +383,43 @@ void paintStatusMark(Raster& r, StatusMark mark, int x, int cy, int spin) {
   }
 }
 
+// Several agents: the rule with a pip for each in its middle, in place of
+// the drawer's grabber (a pull up still opens it). The one the screen
+// follows is long; one working or holding a card a dot in its lane's
+// colour; an idle one hollow; one that wants you (waiting on you, or news
+// you haven't seen) pulsing. The engine's documentation/design/
+// screen-guide.md, the map's 5.
+void paintPips(Raster& r, const Strip& s, int x0, int x1, int y, int spin) {
+  constexpr int kDot = 5, kLong = 26, kGap = 8;
+  const uint16_t rule = rgb565(kRuleRgb), grey = rgb565(kNarrationRgb);
+  int width = 0;
+  for (int i = 0; i < s.pipCount; ++i) width += (i == s.watch ? kLong : 2 * kDot) + (i ? kGap : 0);
+  const int cx = (x0 + x1) / 2, left = cx - width / 2, gap = width / 2 + 12;
+  r.round(x0, y, cx - gap - x0, 2, 1, rule);
+  r.round(cx + gap, y, x1 - cx - gap, 2, 1, rule);
+  const int cy = y + 1;
+  for (int i = 0, x = left; i < s.pipCount; ++i) {
+    const int slot = s.pipSlot[i];
+    const uint16_t ink = slot >= 0 && slot < Stream::kLanes ? kLaneInk[slot] : grey;
+    if (i == s.watch) {
+      r.round(x, cy - kDot, kLong, 2 * kDot, kDot, ink);
+      x += kLong + kGap;
+      continue;
+    }
+    switch (s.pipKind[i]) {
+      case 'i': r.ring(x, cy - kDot, 2 * kDot, 2 * kDot, kDot, 2, ink); break;
+      case 'a': {
+        const int swell = spin / 2 % 2 ? 3 : 1;  // pulsing with the spinner's steps
+        r.disk(x + kDot, cy, kDot + swell, rgb565(kAmberRgb));
+        r.disk(x + kDot, cy, kDot - 1, ink);
+        break;
+      }
+      default: r.disk(x + kDot, cy, kDot, ink); break;
+    }
+    x += 2 * kDot + kGap;
+  }
+}
+
 void paintRule(Raster& r, int x0, int x1, int y, bool grabber) {
   const uint16_t rule = rgb565(kRuleRgb);
   if (!grabber) {
@@ -401,9 +442,24 @@ int stripMargin(const Surface& panel, int cy) {
 
 // The rule along the lane's top, the drawer's grabber in its middle while
 // the drawer has rows to show: there whatever the lane's row holds.
-void rule(Lane& l, const Strip& s) {
+void rule(Lane& l, const Strip& s, int spin) {
   const int y = ruleRow(l.h), margin = std::max(kMargin, l.r.s.inset(y, y + 2) + kCornerGap);
+  if (s.pipCount > 1) return paintPips(l.r, s, margin, l.w - margin, y, spin);
   paintRule(l.r, margin, l.w - margin, y, s.agent || s.busy > 0 || s.idle > 0);
+}
+
+// The work's term, fitted to `room` px: too long, a file's name loses its
+// extension first ("editing Core +12"), and only then is the phrase cut.
+// `fitted` holds it when it changed.
+const char* fitTerm(const char* term, const Font& f, int room, char (&fitted)[Stream::kDoingBytes]) {
+  if (glyphCount(term) * f.w <= room) return term;
+  std::snprintf(fitted, sizeof fitted, "%s", term);
+  char* dot = std::strchr(fitted, '.');
+  if (!dot || dot == fitted || dot[-1] == ' ') return term;
+  char* end = dot;
+  while (*end && *end != ' ') ++end;
+  std::memmove(dot, end, std::strlen(end) + 1);
+  return fitted;
 }
 
 // The status strip's row: who needs you, or whose turn the finish was,
@@ -496,6 +552,38 @@ void strip(Lane& l, const Strip& s, int spin) {
     marks(&r, s, x + kIcon, cy, spin, shown);
     return;
   }
+  // Several agents (the pips on the rule say how many): news from another
+  // as a pill in its lane's colour, for a few seconds; else what the one the
+  // screen follows is doing, and its name on a chip at the right, in its
+  // lane's colour, where the counts were.
+  if (s.pipCount > 1) {
+    const auto inkOf = [&](int pip) {
+      const int slot = pip >= 0 ? s.pipSlot[pip] : -1;
+      return slot >= 0 && slot < Stream::kLanes ? kLaneInk[slot] : grey;
+    };
+    if (s.pillAt >= 0 && s.pill && *s.pill) {
+      const uint16_t ink = inkOf(s.pillAt);
+      const int w = std::min(right - margin, glyphCount(s.pill) * kLarge.w + 36), x = (l.w - w) / 2, h = kLarge.h + 6;
+      r.ring(x, cy - h / 2, w, h, h / 2, 2, ink);
+      text(r, kLarge, x + 18, cy - kLarge.h / 2, s.pill, ink, w - 36);
+      return;
+    }
+    int chip = right;
+    if (s.who && *s.who) {
+      const int w = glyphCount(s.who) * kLarge.w + 16, h = kLarge.h;
+      chip = right - w;
+      const uint16_t ink = inkOf(s.watch);
+      r.round(chip, cy - h / 2, w, h, 4, ink);
+      text(r, kLarge, chip + 8, cy - kLarge.h / 2, s.who, rgb565(0x06, 0x20, 0x1f), w - 16);
+    }
+    const bool rests = s.watch >= 0 && s.pipKind[s.watch] == 'i';
+    char fitted[Stream::kDoingBytes];
+    if (!rests && s.busy > 0 && gTerm.text && *gTerm.text)
+      text(r, f, margin, ty, fitTerm(gTerm.text, f, chip - kIcon - margin, fitted), gTerm.ink, chip - kIcon - margin);
+    else if (rests)
+      text(r, f, margin, ty, "resting", grey, chip - kIcon - margin);  // the one followed rests
+    return;
+  }
   // Nothing named, while the agents work: what they're doing first, in
   // the strip's font ("searching TODO"), and the counts as marks at the
   // right end, the to-do list last; the drawer, pulled up, has them in
@@ -504,20 +592,8 @@ void strip(Lane& l, const Strip& s, int spin) {
     const int w = marks(nullptr, s, 0, cy, spin, kShowAll) - kMarkAfter;
     const int at = right - w;
     if (at - kIcon - margin >= 4 * f.w) {
-      // Too long for the room: a file's name loses its extension first
-      // ("editing Core +12"), and only then is the phrase cut.
       char fitted[Stream::kDoingBytes];
-      const char* term = gTerm.text;
-      if (glyphCount(term) * f.w > at - kIcon - margin) {
-        std::snprintf(fitted, sizeof fitted, "%s", term);
-        if (char* dot = std::strchr(fitted, '.'); dot && dot != fitted && dot[-1] != ' ') {
-          char* end = dot;
-          while (*end && *end != ' ') ++end;
-          std::memmove(dot, end, std::strlen(end) + 1);
-          term = fitted;
-        }
-      }
-      text(r, f, margin, ty, term, gTerm.ink, at - kIcon - margin);
+      text(r, f, margin, ty, fitTerm(gTerm.text, f, at - kIcon - margin, fitted), gTerm.ink, at - kIcon - margin);
       marks(&r, s, at, cy, spin, kShowAll);
       return;
     }
@@ -557,6 +633,10 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
   add(&grabber, sizeof grabber), add(&shows, sizeof shows);
   if (!line && !caption) {
     str(s.agent), str(s.project), str(s.name), str(s.doneAgent), str(s.doneThread);
+    add(&s.pipCount, sizeof s.pipCount), add(s.pipKind, sizeof s.pipKind), add(s.pipSlot, sizeof s.pipSlot);
+    add(&s.watch, sizeof s.watch), add(&s.pillAt, sizeof s.pillAt), str(s.who), str(s.pill);
+    const int pulse = s.pipCount > 1 ? spin / 2 % 2 : 0;
+    add(&pulse, sizeof pulse);
     str(gTerm.text), add(&gTerm.ink, sizeof gTerm.ink);
     const int numbers[] = {s.more,      int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
                            s.todoDone,  s.todoTotal,        s.noApp, s.opacity, s.busy > 0 ? spin : 0,
@@ -574,7 +654,7 @@ void paintLane(Surface& surface, const char* line, const Strip& s, int spin, con
   l.r.limit = surface.height;
   // One row under the rule: the bubble while Boop speaks, else the
   // caption, else the strip, which a low sign rising fades (rowAlpha).
-  if (line || note || s.shows()) rule(l, s);
+  if (line || note || s.shows()) rule(l, s, spin);
   if (line) {
     bubble(l, line);
   } else if (note) {
@@ -618,7 +698,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // takes the lane from all of these, its rim glowing gold.
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
-  gTerm = stream ? termFor(*stream, now) : Term{};
+  gTerm = stream ? termFor(*stream, now, s.watch >= 0 ? s.pipSlot[s.watch] : -1) : Term{};
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
   // rising, the strip's row fades as it comes.
