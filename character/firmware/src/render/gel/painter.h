@@ -4,6 +4,9 @@
 #include "render/rig/rig.h"
 #include "render/stream.h"
 #include "render/surface.h"
+namespace render {
+struct CardShow;  // render/face.h
+}
 namespace render::gel {
 // Q12 raster controls, fed by the deterministic engine.
 struct PaintControls {
@@ -82,7 +85,7 @@ struct DrawerPose;
 void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t keepLane = 0,
            rig::Anchors* anchors = nullptr, const rig::Channels& rig = rig::kRest, const rig::Layers* layers = nullptr,
            uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
-           int duck = 0, const Stream* stream = nullptr, uint32_t now = 0);
+           int duck = 0, const Stream* stream = nullptr, uint32_t now = 0, const CardShow* held = nullptr);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
 // The most room a cross-fading group of the art has taken (kCrossingBytes).
 extern int crossingPeak;
@@ -91,7 +94,10 @@ extern int crossingPeak;
 struct Paws;
 // The monitor shows what the work is (an icon each) and a failure or a
 // timeout as it lands, by the work stream at `now`: none, by the look alone.
-void paintProps(Surface&, const Engine&, const Paws* paws = nullptr, const Stream* stream = nullptr, uint32_t now = 0);
+// While Boop holds an agent's card (`held`), the monitor's frame lights in
+// that agent's lane colour: the card is the work's.
+void paintProps(Surface&, const Engine&, const Paws* paws = nullptr, const Stream* stream = nullptr, uint32_t now = 0,
+                const CardShow* held = nullptr);
 // A paw types: before each of its key contacts in the recipe playing it
 // lifts and comes back down over kTapMs, kTapLift thousandths of the
 // surface's height at the top, landing on the contact (whose sound and

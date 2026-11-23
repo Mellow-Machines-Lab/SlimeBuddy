@@ -991,8 +991,12 @@ more stretch than mouth.
 ### An agent's card (the board's)
 
 While an agent has handed Boop a card and nothing above Doing has the
-screen, Boop holds it (`gel/card.h`): a dark card across its front, rimmed
-in its agent's lane colour, a gel hand at either side. The main thing is in
+screen, Boop holds it (`gel/card.h`): the agent's window across its front,
+a gel hand at either side. A title bar in the agent's lane colour names
+the agent (`claude`, `codex`, the state's `card.g`) with three window
+dots, over a flat dark panel with square-ish corners, rimmed in the same
+colour; the desk's monitor frame lights in it too (`paintProps`). It
+reads as the agent's, never as one of Boop's own round, glowing signs. The main thing is in
 the sign's font and the small line under it in the large one; a guess that
 has run out turns the small line red. With more than one card, dots under
 it say how many and which. Boop stands up on the card (`cardHop`), so its

@@ -588,7 +588,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
-           const DrawerPose* squeeze, int duck, const Stream* stream, uint32_t now) {
+           const DrawerPose* squeeze, int duck, const Stream* stream, uint32_t now, const CardShow* held) {
   auto pose = e.pose();
   auto life = e.life();
   PaintControls c;
@@ -672,7 +672,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     Measure measure(profile.props);
     Paws paws = pastimes ? pawsFor(*pastimes) : Paws{};
     paws.melted = c.melt;
-    paintProps(surface, e, &paws, stream, now);
+    paintProps(surface, e, &paws, stream, now, held);
   }
 }
 }  // namespace render::gel

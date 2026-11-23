@@ -138,7 +138,8 @@ int opaqueCards(const Surface& surface, const Engine& e, Box* out) {
   return count;
 }
 
-void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Stream* stream, uint32_t streamNow) {
+void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Stream* stream, uint32_t streamNow,
+                const CardShow* held) {
   if (!surface.pixels) return;
   Raster r{surface};
   auto& s = e.scenes;
@@ -193,7 +194,9 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Strea
   if (s.desk.x > q(.001)) {
     r.alpha = (s.desk.x * 255).integer();
     round(150, 749, 700, 21, 10, rgb565(25, 59, 77));
-    round(100, 600, 184, 116, 12, blue);
+    // The frame lights in the agent's colour while Boop holds its card.
+    const bool lit = held && held->slot >= 0 && held->slot < Stream::kLanes;
+    round(100, 600, 184, 116, 12, lit ? kLaneInk[held->slot] : blue);
     round(104, 604, 176, 108, 10, dark);
     round(114, 611, 156, 89, 8, rgb565(7, 24, 32));
     round(178, 715, 26, 32, 8, dark);

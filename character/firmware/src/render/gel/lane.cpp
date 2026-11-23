@@ -626,7 +626,8 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   const int hop = held ? cardHop(*card) : signHop(sign);
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
-  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck, stream, now);
+  paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck, stream, now,
+        held ? card : nullptr);
   if (pastimes) {
     Measure measure(profile.props);
     paintPastimes(surface, *pastimes, at);

@@ -8,7 +8,7 @@
     {"event": "said", "at": "10s", "words": "shh, be quiet for a bit", "expect": {"move": "hush", "mood": "cross"}},
     {"event": "poke", "at": "5m", "expect": {"said": "none"}},
     {"event": "turn started", "at": "10m"},
-    {"event": "turn finished", "at": "14m", "expect": {"move": "success|reply", "said": "none"}},
+    {"event": "turn finished", "at": "14m", "expect": {"move": "success|none", "said": "none"}},
     {"event": "poke", "at": "35m", "expect": {"say": "tickled|upset|glad|hello|quiet|shaken"}},
     {"event": "hush", "at": "40m"},
     {"event": "poke", "at": "41m", "expect": {"said": "none"}},
