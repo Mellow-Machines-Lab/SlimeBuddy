@@ -178,6 +178,9 @@ class GelFace final : public Face {
   uint32_t transitionEnds_ = 0;
   SceneState lastBase_ = SceneState::kNone;
   bool alone_ = false;
+  // Boop's energy as last synced: from normal to bright (the day's first
+  // hello), it stretches once.
+  Energy energy_ = Energy::kNormal;
   void showTransition(uint32_t t);
   // The work act whose result the body last answered (answerAct), by when
   // it began, and the result it had then.

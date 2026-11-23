@@ -607,6 +607,8 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   c.grabY = scalar(e.pull[1].x);
   c.dy = dy;
   c.blink = std::max(c.blink, sleepyLids(e));
+  // Bright: its eyes a little wider (the Mac's energy).
+  if (e.energy == Energy::kBright) c.eyeSize = c.eyeSize * kBrightEyes / 4096;
   applyRig(c, rig);
   if (squeeze) {
     c.squeezeTop = squeeze->top, c.squeezeBottom = squeeze->bottom, c.widen = squeeze->widen;

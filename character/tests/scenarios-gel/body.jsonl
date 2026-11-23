@@ -74,7 +74,7 @@
 {"shot":"work-desk"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1}
+{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1,"energy":"tired"}
 {"clock":250}
 {"clock":500}
 {"clock":750}

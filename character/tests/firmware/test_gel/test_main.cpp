@@ -828,13 +828,16 @@ static void test_a_power_on_seeds_the_engine_and_a_reset_restores_53() {
   f.reset(0, rng);
   TEST_ASSERT_EQUAL_UINT32(fresh.random.state, f.engine().random.state);
 }
-// At night the lids hang lower, and they go with the face falling asleep:
+// Tired (the Mac's energy: at night, or after a long stretch of work) the
+// lids hang lower, and they go with the face falling asleep:
 // as it squashes shut they ease out, gone by when it's a line (1 s), a
 // sixteenth of their hang in a 16 ms frame at the most, where they went in
 // one; and waking, they come back on the face's quick spring.
 static void test_the_night_lids_ease_out_as_it_falls_asleep() {
   auto e = std::make_unique<Engine>();
   e->setOccasion(tagBit("night"), 0);
+  TEST_ASSERT_EQUAL_INT(0, sleepyLids(*e));  // the night alone isn't energy: the Mac's rule says
+  e->energy = Energy::kTired;
   Facts f;
   f.base = SceneState::kIdle;
   e->setFacts(f);
@@ -1722,7 +1725,9 @@ static void test_layers_follow_the_bodys_anchors() {
   TEST_ASSERT_TRUE(at.lap[8].y < at.handF.y && at.handF.y < at.hem[8].y);
   TEST_ASSERT_EQUAL_INT(0, sleepyLids(*e));
   e->setOccasion(tags({"night"}), 0);
+  e->energy = Energy::kTired;
   TEST_ASSERT_EQUAL_INT(kNightLids, sleepyLids(*e));
+  e->energy = Energy::kNormal;
   // Every layer at once, asleep (the Zs), off the heap.
   e->setOccasion(tags({"night", "winter", "party", "valentines", "friday"}), 0);
   e->scenes.route.state = SceneState::kAsleep;

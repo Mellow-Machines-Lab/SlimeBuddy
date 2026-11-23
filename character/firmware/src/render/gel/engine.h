@@ -1,6 +1,7 @@
 // The gel slime's engine: deterministic and integer, the same on the board,
 // the simulator and the Mac's mirror of the board.
 #pragma once
+#include "render/face.h"
 #include "render/gel/history.h"
 #include "render/gel/scenes.h"
 namespace render::gel {
@@ -43,6 +44,9 @@ class Engine {
   Spring postureWeights[slime::kProfiles];
   std::vector<SoundCue> cues;
   uint32_t elapsedMs = 0;
+  // Boop's energy, the Mac's (FaceContext::energy): the painter draws it on
+  // the lids (sleepyLids) and the eyes' size.
+  render::Energy energy = render::Energy::kNormal;
   void sync();
   void step(uint32_t ms);
   void setMood(int id) {

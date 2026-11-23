@@ -5,7 +5,7 @@
 // nothing in the sky.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}
+{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"],"energy":"tired"}
 {"clock":1200}
 {"shot":"night"}
 // Asleep at night: Zs rising; and the same on a winter's night.
@@ -61,13 +61,13 @@
 // A party night wears nothing, as any night.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"happy","vol":0,"when":["night","party"]}
+{"t":"state","base":"idle","mood":"happy","vol":0,"when":["night","party"],"energy":"tired"}
 {"clock":1200}
 {"shot":"party-night"}
 // A sign at night: held at its front.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}
+{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"],"energy":"tired"}
 {"clock":1000}
 {"t":"do","name":"react","play":"now","args":{"sign":"still broken","mood":"sad"}}
 {"clock":1600}

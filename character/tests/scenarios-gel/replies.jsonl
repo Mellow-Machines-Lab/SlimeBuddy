@@ -82,7 +82,7 @@
 // Doing goes to asleep at once, then simply asleep.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"]}
+{"t":"state","base":"idle","mood":"calm","vol":0,"when":["night"],"energy":"tired"}
 {"clock":1000}
 {"t":"do","name":"react","play":"now","args":{"sign":"nite nite","reason":"you locked the Mac","reply":"bye","say":{},"mood":"calm","loops":2}}
 {"t":"state","base":"asleep","mood":"calm","vol":0,"when":["night"]}

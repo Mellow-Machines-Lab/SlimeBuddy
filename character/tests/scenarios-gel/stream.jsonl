@@ -83,8 +83,8 @@
 // One lane at night: its words on the left.
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["night"],"calls":[[0, 1, "grep"]]}
+{"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["night"],"calls":[[0, 1, "grep"]],"energy":"tired"}
 {"clock":500}
-{"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["night"],"calls":[[0, 3, "git log"]]}
+{"t":"state","base":"working","mood":"focused","busy":1,"vol":0,"when":["night"],"calls":[[0, 3, "git log"]],"energy":"tired"}
 {"clock":1400}
 {"shot":"one-lane-night"}

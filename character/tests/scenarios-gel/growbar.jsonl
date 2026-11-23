@@ -127,7 +127,7 @@
 {"shot":"full"}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1,"xp":90}
+{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1,"xp":90,"energy":"tired"}
 {"clock":100}
 {"clock":200}
 {"clock":300}
@@ -138,7 +138,7 @@
 {"clock":800}
 {"clock":900}
 {"clock":1000}
-{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1,"xp":100}
+{"t":"state","vol":0,"when":["night"],"base":"idle","mood":"calm","idle":1,"xp":100,"energy":"tired"}
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}

@@ -48,10 +48,13 @@ struct SignLayer {
   static constexpr int kHopPx = 14;
 };
 
-// How far its lids hang at night (Q12, as PaintControls::blink): 0 by day,
-// and on the sleeping face, whose eyes are shut anyway: easing out as the
-// awake face squashes shut, and back as it wakes.
+// How far its lids hang while it's tired (Engine::energy, the Mac's: at
+// night or after a long stretch of work) (Q12, as PaintControls::blink): 0
+// otherwise, and on the sleeping face, whose eyes are shut anyway: easing
+// out as the awake face squashes shut, and back as it wakes.
 constexpr int kNightLids = 1100;
+// How much bigger its eyes are while it's bright (Q12).
+constexpr int kBrightEyes = 4420;
 class Engine;
 int sleepyLids(const Engine& e);
 

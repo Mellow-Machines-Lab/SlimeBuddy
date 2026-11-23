@@ -88,7 +88,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   pastimeLook_ = dealtLook_ = SceneState::kNone;
   stopped_ = false;
   dice_ = kSeed;
-  transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, alone_ = false;
+  transition_ = nullptr, transitionEnds_ = 0, lastBase_ = SceneState::kNone, alone_ = false, energy_ = Energy::kNormal;
   actAt_ = 0, actResult_ = ActResult::kRunning;
   along_ = rig::Ramp{};
   tapping_ = typed_ = false, typedAt_ = 0;
@@ -297,13 +297,16 @@ void GelFace::deal(SceneState look, uint32_t t) {
   // screen.
   const SceneState desk = e.scenes.route.state;
   const bool types = isDesk(desk) && activityOf(desk) == Activity::kTyping;
+  // Tired, idle: a yawn now and then, whatever the tier, and the newest.
+  const bool tired = e.energy == Energy::kTired && look == SceneState::kIdle;
   for (const auto& p : kPastimes) {
-    if (p.look != look || !fits(p, when, lookMs) || (p.move && moveWaits) || !hasBody(p)) continue;
+    const bool yawn = tired && p.id == Pastime::kYawn;
+    if (p.look != look || !(fits(p, when, lookMs) || yawn) || (p.move && moveWaits) || !hasBody(p)) continue;
     if ((look == SceneState::kWorking && !types && p.id != Pastime::kStretch))
       continue;
     // The highest tier, then the longest wait, is the newest; one that
     // needs a tag is newer than any while it fits.
-    options[n++] = {&p, (p.tag ? 1000000 : p.tier * 100000) + p.afterS};
+    options[n++] = {&p, yawn ? 2000000 : (p.tag ? 1000000 : p.tier * 100000) + p.afterS};
   }
   // Never the one dealt last, while there's another.
   if (n > 1)
@@ -791,6 +794,10 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   advanceTo(t);
   pace_ = context.pace;
   alone_ = context.alone;
+  // Bright as you first show up today: a stretch, up tall, as it wakes.
+  if (context.energy == Energy::kBright && energy_ == Energy::kNormal && !context.attention) once(*clips_.stretch, t);
+  energy_ = context.energy;
+  engine_->energy = context.energy;
   pointer_ = context.pointer, pointerNear_ = context.pointerNear, pointerX_ = context.pointerX, pointerY_ = context.pointerY;
   Measure measure(gel::profile.sync);
   auto& e = *engine_;

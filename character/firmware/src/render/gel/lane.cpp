@@ -504,7 +504,20 @@ void strip(Lane& l, const Strip& s, int spin) {
     const int w = marks(nullptr, s, 0, cy, spin, kShowAll) - kMarkAfter;
     const int at = right - w;
     if (at - kIcon - margin >= 4 * f.w) {
-      text(r, f, margin, ty, gTerm.text, gTerm.ink, at - kIcon - margin);
+      // Too long for the room: a file's name loses its extension first
+      // ("editing Core +12"), and only then is the phrase cut.
+      char fitted[Stream::kDoingBytes];
+      const char* term = gTerm.text;
+      if (glyphCount(term) * f.w > at - kIcon - margin) {
+        std::snprintf(fitted, sizeof fitted, "%s", term);
+        if (char* dot = std::strchr(fitted, '.'); dot && dot != fitted && dot[-1] != ' ') {
+          char* end = dot;
+          while (*end && *end != ' ') ++end;
+          std::memmove(dot, end, std::strlen(end) + 1);
+          term = fitted;
+        }
+      }
+      text(r, f, margin, ty, term, gTerm.ink, at - kIcon - margin);
       marks(&r, s, at, cy, spin, kShowAll);
       return;
     }

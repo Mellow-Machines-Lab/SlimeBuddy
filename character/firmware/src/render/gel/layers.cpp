@@ -100,7 +100,7 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
 }  // namespace
 
 int sleepyLids(const Engine& e) {
-  if (!hasTag(e.scenes.when, "night")) return 0;
+  if (e.energy != Energy::kTired) return 0;
   // They go as the face squashes shut, gone by when it's a line, and come
   // back as it wakes.
   const F open = max(0, 1 - e.face.shut.x / SemanticFace::kShutLine);
