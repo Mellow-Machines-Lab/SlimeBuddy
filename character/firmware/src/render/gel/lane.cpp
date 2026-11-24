@@ -462,15 +462,32 @@ void rule(Lane& l, const Strip& s, int spin) {
 
 // The work's term, fitted to `room` px: too long, a file's name loses its
 // extension first ("editing Core +12"), and only then is the phrase cut.
-// `fitted` holds it when it changed.
+// A cut at a word that would leave the verb alone ("reading…") keeps the
+// start of what it's done to instead ("reading CHANGEL…"). `fitted` holds
+// it when it changed.
 const char* fitTerm(const char* term, const Font& f, int room, char (&fitted)[Stream::kDoingBytes]) {
   if (glyphCount(term) * f.w <= room) return term;
   std::snprintf(fitted, sizeof fitted, "%s", term);
   char* dot = std::strchr(fitted, '.');
-  if (!dot || dot == fitted || dot[-1] == ' ') return term;
-  char* end = dot;
-  while (*end && *end != ' ') ++end;
-  std::memmove(dot, end, std::strlen(end) + 1);
+  if (dot && dot != fitted && dot[-1] != ' ') {
+    char* end = dot;
+    while (*end && *end != ' ') ++end;
+    std::memmove(dot, end, std::strlen(end) + 1);
+  }
+  const int cells = room / f.w;
+  const char* space = std::strchr(fitted, ' ');
+  if (glyphCount(fitted) <= cells || !space || cells < 4) return std::strcmp(fitted, term) ? fitted : term;
+  const char* p = fitted;
+  int verb = 0;
+  while (p < space && nextGlyph(p) >= 0) ++verb;
+  if (cutAt(fitted, cells - 1) > verb) return fitted;
+  // The first cells - 1 glyphs, then "…", which the font draws in one cell.
+  p = fitted;
+  for (int i = 0; i < cells - 1 && *p; ++i) nextGlyph(p);
+  size_t keep = size_t(p - fitted);
+  while (keep && fitted[keep - 1] == ' ') --keep;
+  if (keep + 4 > sizeof fitted) return fitted;
+  std::memcpy(fitted + keep, "\xE2\x80\xA6", 4);
   return fitted;
 }
 
