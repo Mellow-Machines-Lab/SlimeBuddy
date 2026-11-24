@@ -81,13 +81,13 @@ void paintPlan(Raster& r, const CardShow& c, int x, int y, int w, uint16_t ink) 
     else
       r.round(bx, by, bw, 22, 2, kTrack);
   }
+  // The step's words over where it is ("step 2 of 4"); with no words,
+  // where it is alone, as the blocks already show what's done.
   char line[40];
-  if (c.step && *c.step)
-    text(r, kMain, x + 18, y + 52, c.step, kWords, room);
-  else
-    std::snprintf(line, sizeof line, "step %d of %d", std::min(done + 1, total), total), text(r, kMain, x + 18, y + 52, line, kWords, room);
-  std::snprintf(line, sizeof line, "%d of %d done", done, total);
-  text(r, kSmallFont, x + 18, y + 52 + kMain.h + 4, line, kSmallWords, room);
+  std::snprintf(line, sizeof line, "step %d of %d", std::min(done + 1, total), total);
+  const bool named = c.step && *c.step;
+  text(r, kMain, x + 18, y + 52, named ? c.step : line, kWords, room);
+  if (named) text(r, kSmallFont, x + 18, y + 52 + kMain.h + 4, line, kSmallWords, room);
   if (ring) {
     const int cx = x + w - 18 - ring / 2, cy = y + 18 + ring / 2;
     r.disk(cx, cy, ring / 2, c.left < 0 ? kBad : ink);
