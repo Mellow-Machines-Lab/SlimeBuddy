@@ -31,7 +31,7 @@ constexpr int kFadeRows = DrawerLayout::kFadeRows;
 uint16_t barInk(const Drawer::Row& row) {
   switch (row.status) {
     case Drawer::Status::kNeedsYou: return rgb565(kAmberRgb);
-    case Drawer::Status::kWorking: return row.slot >= 0 && row.slot < Stream::kLanes ? kLaneInk[row.slot] : kWorkingBar;
+    case Drawer::Status::kWorking: return laneInkOr(row.slot, kWorkingBar);
     default: return kIdleBar;
   }
 }

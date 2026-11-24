@@ -148,16 +148,20 @@ void paintCard(Surface& s, const CardShow& c, int dx) {
   b.x0 += dx, b.x1 += dx;
   const int down = CardLayout::kRisePx * (1000 - eased) / 1000, w = b.x1 - b.x0, h = b.y1 - b.y0;
   const int x = b.x0, y = b.y0 + down;
-  const uint16_t rim = c.slot >= 0 && c.slot < Stream::kLanes ? kLaneInk[c.slot] : kCardRim;
+  const uint16_t rim = laneInkOr(c.slot, kCardRim);
   // A window's corners, square-ish, against the round signs Boop holds up.
   r.round(x, y, w, h, kCorner, kCardInk);
   const int bar = hasBar(c) ? kBar : 0;
+  // The window's title bar in the agent's colour, and its three dots.
+  const auto paintBar = [&] {
+    r.round(x, y, w, kBar + kCorner, kCorner, rim);
+    r.round(x, y + kBar, w, kCorner, 0, kCardInk);
+    for (int i = 0; i < 3; ++i) r.disk(x + w - 16 - i * 11, y + kBar / 2, 3, kBarWords);
+  };
   if (bar) {
-    r.round(x, y, w, bar + kCorner, kCorner, rim);
-    r.round(x, y + bar, w, kCorner, 0, kCardInk);
+    paintBar();
     const int room = w - 2 * CardLayout::kPad - 40;
     text(r, kSmallFont, x + 12, y + (bar - kSmallFont.h) / 2 + 1, c.agent, kBarWords, room);
-    for (int i = 0; i < 3; ++i) r.disk(x + w - 16 - i * 11, y + bar / 2, 3, kBarWords);
   }
   r.ring(x, y, w, h, kCorner, 2, rim);
   if (c.pic) {
@@ -165,12 +169,8 @@ void paintCard(Surface& s, const CardShow& c, int dx) {
     static const char* const kWhat[] = {"plan", "changes", "helpers"};
     const char* what = kWhat[c.pic == 'p' ? 0 : c.pic == 'c' ? 1 : 2];
     char title[32];
-    std::snprintf(title, sizeof title, "%s \xC2\xB7 %s", c.agent && *c.agent ? c.agent : "agent", what);
-    if (!bar) {
-      r.round(x, y, w, kBar + kCorner, kCorner, rim);
-      r.round(x, y + kBar, w, kCorner, 0, kCardInk);
-      for (int i = 0; i < 3; ++i) r.disk(x + w - 16 - i * 11, y + kBar / 2, 3, kBarWords);
-    }
+    std::snprintf(title, sizeof title, "%s \xC2\xB7 %s", bar ? c.agent : "agent", what);
+    if (!bar) paintBar();
     r.round(x + 6, y + 2, w - 60, kBar - 4, 0, rim);  // clear the bar's name
     text(r, kSmallFont, x + 12, y + (kBar - kSmallFont.h) / 2 + 1, title, kBarWords, w - 70);
     if (c.pic == 'p') paintPlan(r, c, x, y + kBar, w, rim);

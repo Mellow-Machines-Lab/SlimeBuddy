@@ -210,15 +210,13 @@ void text16(Raster& r, const Font& f, int x16, int y16, const char* s, uint16_t 
                          : (wy * here[u + 1] + fy * above[u + 1]) * 16;
       if (!sum) continue;
       uint16_t& out = row[u];
-      {
-        const int a = opacity * sum / (15 * 256);
-        if (a >= 253)
-          out = ink;
-        else if (a > 2)
-          out = mix565(out, ink, a);
-        else
-          continue;
-      }
+      const int a = opacity * sum / (15 * 256);
+      if (a >= 253)
+        out = ink;
+      else if (a > 2)
+        out = mix565(out, ink, a);
+      else
+        continue;
       lo = std::min(lo, u), hi = u;
     }
     if (hi < 0) continue;
@@ -395,6 +393,14 @@ void paintStatusMark(Raster& r, StatusMark mark, int x, int cy, int spin) {
   }
 }
 
+// The strip's rule from x0 to x1, with a gap of `gap` px each side of its
+// middle for what sits there: the drawer's grabber, or the pips.
+static void splitRule(Raster& r, int x0, int x1, int y, int gap, uint16_t rule) {
+  const int cx = (x0 + x1) / 2;
+  r.round(x0, y, cx - gap - x0, 2, 1, rule);
+  r.round(cx + gap, y, x1 - cx - gap, 2, 1, rule);
+}
+
 // Several agents: the rule with a pip for each in its middle, in place of
 // the drawer's grabber (a pull up still opens it). The one the screen
 // follows is long; one working or holding a card a dot in its lane's
@@ -406,13 +412,12 @@ void paintPips(Raster& r, const Strip& s, int x0, int x1, int y, int spin) {
   const uint16_t rule = rgb565(kRuleRgb), grey = rgb565(kNarrationRgb);
   int width = 0;
   for (int i = 0; i < s.pipCount; ++i) width += (i == s.watch ? kLong : 2 * kDot) + (i ? kGap : 0);
-  const int cx = (x0 + x1) / 2, left = cx - width / 2, gap = width / 2 + 12;
-  r.round(x0, y, cx - gap - x0, 2, 1, rule);
-  r.round(cx + gap, y, x1 - cx - gap, 2, 1, rule);
+  const int cx = (x0 + x1) / 2, left = cx - width / 2;
+  splitRule(r, x0, x1, y, width / 2 + 12, rule);
   const int cy = y + 1;
   for (int i = 0, x = left; i < s.pipCount; ++i) {
     const int slot = s.pipSlot[i];
-    const uint16_t ink = slot >= 0 && slot < Stream::kLanes ? kLaneInk[slot] : grey;
+    const uint16_t ink = laneInkOr(slot, grey);
     if (i == s.watch) {
       r.round(x, cy - kDot, kLong, 2 * kDot, kDot, ink);
       x += kLong + kGap;
@@ -438,9 +443,8 @@ void paintRule(Raster& r, int x0, int x1, int y, bool grabber) {
     r.round(x0, y, x1 - x0, 2, 1, rule);
     return;
   }
-  const int cx = (x0 + x1) / 2, gap = kGrabberW / 2 + kGrabberGap;
-  r.round(x0, y, cx - gap - x0, 2, 1, rule);
-  r.round(cx + gap, y, x1 - cx - gap, 2, 1, rule);
+  const int cx = (x0 + x1) / 2;
+  splitRule(r, x0, x1, y, kGrabberW / 2 + kGrabberGap, rule);
   r.round(cx - kGrabberW / 2, y + 1 - kGrabberH / 2, kGrabberW, kGrabberH, kGrabberH / 2, rgb565(kGrabberRgb));
 }
 
@@ -588,7 +592,7 @@ void strip(Lane& l, const Strip& s, int spin) {
   if (s.pipCount > 1) {
     const auto inkOf = [&](int pip) {
       const int slot = pip >= 0 ? s.pipSlot[pip] : -1;
-      return slot >= 0 && slot < Stream::kLanes ? kLaneInk[slot] : grey;
+      return laneInkOr(slot, grey);
     };
     if (s.pillAt >= 0 && s.pill && *s.pill) {
       const uint16_t ink = inkOf(s.pillAt);
@@ -681,7 +685,10 @@ uint32_t laneKey(const char* line, const Strip& s, int spin, const char* caption
     add(&s.pipCount, sizeof s.pipCount), add(s.pipKind, sizeof s.pipKind), add(s.pipSlot, sizeof s.pipSlot);
     add(&s.watch, sizeof s.watch), add(&s.pillAt, sizeof s.pillAt), str(s.who), str(s.pill);
     add(&gSwitchDx, sizeof gSwitchDx), add(&gArrows, sizeof gArrows);
-    const int pulse = s.pipCount > 1 ? spin / 2 % 2 : 0;
+    // The spinner's step only while a pip pulses: one that wants you, not watched.
+    bool pulses = false;
+    for (int i = 0; i < s.pipCount; ++i) pulses |= i != s.watch && s.pipKind[i] == 'a';
+    const int pulse = pulses ? spin / 2 % 2 : 0;
     add(&pulse, sizeof pulse);
     str(gTerm.text), add(&gTerm.ink, sizeof gTerm.ink);
     const int numbers[] = {s.more,      int(s.doneOutcome), s.busy,  s.idle,    s.helpers,
