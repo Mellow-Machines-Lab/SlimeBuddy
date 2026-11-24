@@ -8,6 +8,7 @@
 #include "render/gel/raster.h"
 #include "render/maths.h"
 #include "render/palette.h"
+#include "render/show.h"
 #include "render/stream.h"
 
 namespace render::gel {
@@ -37,7 +38,12 @@ int dotsRow(const CardShow& c) { return c.count > 1 ? CardLayout::kDotsRow : 0; 
 constexpr int kPicW = 454, kPicH = 188;
 constexpr uint16_t kGood = rgb565(0x5f, 0xae, 0x5a), kBad = rgb565(0xf0, 0x8a, 0x6c), kTrack = rgb565(42, 49, 56);
 
+// A show's window: its headline's row, then the agent's picture at the
+// board's own pixels, a margin round it.
+constexpr int kShowMargin = 8, kHeadRow = 34;
+
 int cardHeight(const CardShow& c) {
+  if (c.pic == 's') return kBar + kHeadRow + CardShow::kShowH + kShowMargin;
   if (c.pic) return kPicH;
   return (hasBar(c) ? kBar : 0) + pad(c) + kMain.h + (hasSmall(c) ? kSmallFont.h : 0) + pad(c);
 }
@@ -54,7 +60,8 @@ int cardHop(const CardShow& c) {
 Box cardBox(const Surface& s, const CardShow& c) {
   const int h = cardHeight(c), bottom = s.height * 4 / 5 - CardLayout::kGap - dotsRow(c), y = bottom - h;
   if (c.pic) {
-    const int w = std::min(kPicW, s.width - 2 * (CardLayout::kEdge + CardLayout::kHand)), x = (s.width - w) / 2;
+    const int wide = c.pic == 's' ? CardShow::kShowW + 2 * kShowMargin : kPicW;
+    const int w = std::min(wide, s.width - 2 * (CardLayout::kEdge + CardLayout::kHand)), x = (s.width - w) / 2;
     return {x, y, x + w, y + h};
   }
   const int widest = std::max(stringWidth(kMain, c.text), hasSmall(c) ? stringWidth(kSmallFont, c.small) : 0);
@@ -98,6 +105,22 @@ void paintPlan(Raster& r, const CardShow& c, int x, int y, int w, uint16_t ink) 
     const char* unit = c.left < 0 ? "over" : "min";
     text(r, kSmallFont, cx - stringWidth(kSmallFont, unit) / 2, cy + 10, unit, kSmallWords, ring);
   }
+}
+
+// A show: the agent's headline in the sign's font, then its picture, each
+// run of a colour a row's span of pixels, the lane's colour its own; the
+// headline alone until the picture has come.
+void paintShow(Raster& r, const CardShow& c, int x, int y, int w, uint16_t lane) {
+  const int room = w - 2 * 12;
+  const int hw = std::min(stringWidth(kMain, c.headline), room);
+  text(r, kMain, x + (w - hw) / 2, y + (kHeadRow - kMain.h) / 2 + 1, c.headline, kWords, room);
+  if (!c.picture || !c.pictureBytes) return;
+  const int px = x + (w - CardShow::kShowW) / 2, py = y + kHeadRow;
+  forEachShowRun(c.picture, c.pictureBytes, CardShow::kShowW, CardShow::kShowH, [&](int rx, int ry, int n, int colour) {
+    const uint16_t ink = colour == kShowLane ? lane : kShowInk[colour];
+    for (int i = 0; i < n; ++i) r.pixel(px + rx + i, py + ry, ink);
+  });
+  r.touch(px, py, px + CardShow::kShowW, py + CardShow::kShowH);
 }
 
 // The changes: a row a file, its name, a green bar for lines added and a
@@ -166,14 +189,15 @@ void paintCard(Surface& s, const CardShow& c, int dx) {
   r.ring(x, y, w, h, kCorner, 2, rim);
   if (c.pic) {
     // The bar says whose and which picture; the picture fills the rest.
-    static const char* const kWhat[] = {"plan", "changes", "helpers"};
-    const char* what = kWhat[c.pic == 'p' ? 0 : c.pic == 'c' ? 1 : 2];
+    static const char* const kWhat[] = {"plan", "changes", "helpers", "show"};
+    const char* what = kWhat[c.pic == 'p' ? 0 : c.pic == 'c' ? 1 : c.pic == 's' ? 3 : 2];
     char title[32];
     std::snprintf(title, sizeof title, "%s \xC2\xB7 %s", bar ? c.agent : "agent", what);
     if (!bar) paintBar();
     r.round(x + 6, y + 2, w - 60, kBar - 4, 0, rim);  // clear the bar's name
     text(r, kSmallFont, x + 12, y + (kBar - kSmallFont.h) / 2 + 1, title, kBarWords, w - 70);
-    if (c.pic == 'p') paintPlan(r, c, x, y + kBar, w, rim);
+    if (c.pic == 's') paintShow(r, c, x, y + kBar, w, rim);
+    else if (c.pic == 'p') paintPlan(r, c, x, y + kBar, w, rim);
     else if (c.pic == 'c') paintChanges(r, c, x, y + kBar, w);
     else paintHelpers(r, c, x, y + kBar, w, rim, c.ms);
   }
