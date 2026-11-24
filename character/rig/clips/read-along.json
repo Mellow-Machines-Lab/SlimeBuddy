@@ -1,5 +1,5 @@
 {
-  "about": "Reading along with you while you scroll (GelFace::showWithYou), looped a line at a time: sitting lower and turned to the screen (the face leans and slides it toward the Mac's side and lowers its eyes to the page), its eyes travel down a line, then snap back up for the next with a small nod. Nothing held, nothing beside it.",
+  "about": "Reading along with you while you scroll (GelFace::showWithYou), looped a line at a time: sitting lower and turned to the screen (the face leans and slides it toward the Mac's side and lowers its eyes to the page), its eyes travel down a line, then snap back up for the next with a small nod. The page beside it, its lines scrolling as you scroll, is drawn by the layers.",
   "ms": 1400,
   "loop": true,
   "tracks": {

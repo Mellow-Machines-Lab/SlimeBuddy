@@ -1,12 +1,14 @@
 // With you at the Mac (render/gel/face.h, showWithYou; render/gel/gaze.h), each on a frozen clock after a
 // reset. Nothing told: it rests. Your pointer, while it moves: its eyes follow it and it leans and slides
 // its way (to your left, your right, up), and at the screen's edge nearest it, it looks right at it and
-// leans in. Scrolling: it reads along, turned and slid to the Mac, lower, its eyes down on the page,
-// travelling down a line and snapping back up with a nod; two minutes on, settled in, lids half down;
-// with the screen above it, up at it. Typing fast: hunched in, eyes wide, paws quicker; a long stretch of
-// typing stopped, a look up at you. Music: half-closed eyes and a sway, then a rest, then a look round
-// as it stops. A video: turned to the screen, taller, eyes wide, and a small start now and then. A call:
-// still, smaller, eyes half; a stretch as it ends. A copy: puffed up round; let go, a pah.
+// leans in. Scrolling: it reads along, a page beside it on the Mac's side, its lines scrolling up,
+// turned and slid that way, lower, its eyes down on the page, travelling down a line and snapping back
+// up with a nod; two minutes on, settled in, lids half down; with the screen above it, up at it. Typing
+// fast: hunched in, eyes wide, paws quicker; a long stretch of typing stopped, a look up at you. Music:
+// headphones on, half-closed eyes, a sway and notes rising, then a rest with the headphones still on,
+// then a look round as it stops. A video: a small screen beside it, its light on the body, turned to it,
+// taller, eyes wide, and a small start now and then. A call: still, smaller, eyes half, a muted mic by
+// its ear; a stretch as it ends.
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["day"]}
@@ -119,7 +121,29 @@
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"act":"analyzing","busy":1,"calls":[[0,1,"grep"]],"when":["day","scrolling","macright"]}
 {"clock": 2500}
-{"shot": "at-work-posed-nothing"}
+{"shot": "reading-at-work"}
+// At work, at the light size (a pose of its own, here looking): music,
+// a video, and a call at its desk; and music while you type, idle.
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","vol":0,"act":"analyzing","busy":1,"calls":[[0,1,"grep"]],"when":["day","music","macright"]}
+{"clock": 2500}
+{"shot": "music-at-work"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","vol":0,"act":"analyzing","busy":1,"calls":[[0,1,"grep"]],"when":["day","video","macright"]}
+{"clock": 2500}
+{"shot": "video-at-work"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"working","mood":"calm","vol":0,"busy":1,"calls":[[0,2,"editing Core.swift +12"]],"when":["day","oncall","macright"]}
+{"clock": 2500}
+{"shot": "call-at-work"}
+{"t":"dbg.reset"}
+{"clock":0}
+{"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["day","music","typing"]}
+{"clock": 2500}
+{"shot": "music-typing"}
 // You speak (another app records, no camera): it leans in and nods on a
 // slow beat, its hand cupped at its ear on the Mac's side and rings
 // pulsing by it; speaking wins over typing. Idle, then at work.

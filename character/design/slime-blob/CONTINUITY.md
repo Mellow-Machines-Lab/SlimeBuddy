@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-23. The slime's one engine is the C++ in
+Updated 2026-11-24. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -880,8 +880,8 @@ keyboard alone; at work they're dealt as ever. The Mac says only that your
 hands are busy, never what they type.
 
 **With you** (`GelFace::showWithYou`): what else the Mac says of you at
-it, each body, eyes and paws alone, nothing held up or floating, lower
-even than typing along, and only where it's free for you
+it, each the body, eyes and paws and one mark on or beside it that reads
+from a chair (below), lower even than typing along, and only where it's free for you
 (`GelFace::freeForYou`: idle, or at work in its typing pose with no word
 forward; no finger, card, transition or pastime): on a call (`oncall`) it
 keeps still and a little smaller, its eyes half (`on-call`), with no
@@ -909,6 +909,23 @@ slide and gaze follow over about 350 ms (`kLeanMs`), so a pointer that
 jumps is followed, never jumped to. While any of them is on, no pastime is
 dealt. The Mac never says what you scroll, hear, watch, say or copy.
 
+A pose alone is too small to tell apart from across a desk, so each has a
+mark drawn at the body's anchors, rimmed dark to read over anything
+(`Engine::With`, drawn by `paintWith` in `gel/layers.cpp`), each fading in
+and out over the rig's fade, in any pose and at the light size too, so at
+work it still shows what you're doing while the pose has the body:
+
+| You | The mark |
+| --- | --- |
+| Music | Headphones: a pale band over its head from ear to ear and a cup on each ear, on for as long as the music plays, through the groove's rest, its pastimes and typing along; in the groove, a note (now and then a beamed pair) rising from each cup in turn every 1.5 s, drifting out and fading over 2.4 s |
+| Reading along | A page beside it on the Mac's side (the right with none told), clear of its widest, a little below its eyes, where they look: lines of words scrolling up 14 px a second while you scroll (`kPageScroll`), still while it reads on after, and a scroll bar's thumb going down with them |
+| A video | A small screen beside it on the Mac's side at its eyes' height, a play mark on it, lit in the scene's colour, a new one every 2.6 s crossing over 0.5 s (warm, violet, green, pale); that light added to the body, by how bright each pixel is, so the eyes and mouth stay dark, strongest on the screen's side |
+| On a call | A muted mic, a dark disc with a mic and a slash, held still by its ear on the Mac's side, and nothing else: no headphones, page or screen |
+
+The page and the screen stand beside it, so neither shows while its paws
+type along or a card is held; speaking's hand is at its ear, so no
+headphones while you speak.
+
 Typing fast (`typingfast`) moves the paws' phase on quicker, a beat every
 210 ms in place of 300 (`kFastMs`), the tap the same share of its beat, so
 no paw snaps as it comes or goes (`GelFace::pawPhase`, `briskLift`); its
@@ -919,7 +936,9 @@ them 140, and stays through a flicker off of 800 ms (`kFastLingerMs`).
 
 The engine draws no costume, but the board draws layers over the body by
 the same tags, after the face art and before the props
-(`gel/layers.h`): Zs beside it asleep at night, and last the sign a
+(`gel/layers.h`): Zs beside it asleep at night, the marks of what you do
+at the Mac (with you, above: the headphones are the one thing it ever
+wears, and only while music plays), and last the sign a
 Moment holds up. It wears nothing at night: the night shows on its lids
 (below). That's
 all: the face comes first, and nothing is put on the screen for a season

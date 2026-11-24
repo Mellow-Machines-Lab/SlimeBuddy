@@ -140,6 +140,8 @@ class GelFace final : public Face {
   // kScreenGazeUp up, and stretched up kUpStretch.
   static constexpr int kScreenSlide = 10, kScreenGaze = 450, kPageGaze = 350, kReadLean = 220, kReadSlide = 14;
   static constexpr int kScreenGazeUp = 600, kUpStretch = 150;
+  // The page beside it scrolls this many px a second while you scroll.
+  static constexpr int kPageScroll = 14;
   // Typing fast stays fast through a flicker off this long (showAlong).
   static constexpr uint32_t kFastLingerMs = 800;
   // What it does with you now besides typing along, and the rig's channels
@@ -233,29 +235,36 @@ class GelFace final : public Face {
   // (render/gel/gaze.h, thinking with you).
   bool fast_ = false, typingTag_ = false, thought_ = false;
   uint32_t typingFrom_ = 0, thinkAt_ = 0;
-  // With you at the Mac besides typing along: THE SCREEN'S RULE holds, so
-  // each is the body, the eyes and the paws alone, nothing held up or
-  // floating. Lowest of all, below typing along: it waits for a pastime or a
-  // transition, gives way at once to a finger, a Moment, a word forward,
-  // needs you or sleep. At work in a pose of its own, or with a card held,
-  // it's light (GelFace::light): a call and speaking show, and the poses that
-  // move the whole body (reading, a video, music) give way to the eyes. The
-  // one shown, first that fits:
+  // With you at the Mac besides typing along: each is the body, the eyes and
+  // the paws, and one mark on or beside it that reads at arm's length, as
+  // typing along's ticks and speaking's rings do (Engine::With, drawn in
+  // render/gel/layers.cpp). Lowest of all, below typing along: it waits for
+  // a pastime or a transition, gives way at once to a finger, a Moment, a
+  // word forward, needs you or sleep. At work in a pose of its own, or with
+  // a card held, it's light (GelFace::light): a call and speaking show, and
+  // the poses that move the whole body (reading, a video, music) give way to
+  // the eyes, the marks staying. The one shown, first that fits:
   //
   // - on a call (`oncall`): still and a little smaller, its eyes half
-  //   closed (`on-call`); no typing along, music or pastime, and its board
-  //   silent (the Mac sends no volume). As the call ends, it stretches up
-  //   (`stretch`);
+  //   closed (`on-call`), a muted mic held still by its ear on the Mac's
+  //   side and nothing else; no typing along, music or pastime, and its
+  //   board silent (the Mac sends no volume). As the call ends, it stretches
+  //   up (`stretch`);
   // - reading along while you scroll (`scrolling`), and kReadLingerMs after:
-  //   turned and slid to the Mac's side (or up at it), lower, its eyes down
+  //   a page beside it on the Mac's side, its lines scrolling up while you
+  //   scroll; turned and slid that way (or up at it), lower, its eyes down
   //   on the page, travelling down a line and back up with a small nod
   //   (`read-along`); after kSettleMs, settled in lower, its lids half down
   //   (`read-along-settled`);
-  // - a video (`video`): turned to the screen, taller and still, eyes wide,
-  //   a slow blink, and now and then a small start (`video`);
-  // - music (`music`): it gets into it kGrooveMs, eyes half closed, a
-  //   content face, swaying with a nod at each end (`groove`), then rests;
-  //   as the music stops it opens its eyes and looks around (`look-around`).
+  // - a video (`video`): a small screen beside it on the Mac's side, a play
+  //   mark on it, its light on the body, a new colour every few seconds;
+  //   turned to it, taller and still, eyes wide, a slow blink, and now and
+  //   then a small start (`video`);
+  // - music (`music`): headphones on for as long as it plays, typing along
+  //   too; it gets into it kGrooveMs, eyes half closed, a content face,
+  //   swaying with a nod at each end (`groove`), notes rising from the
+  //   headphones, then rests; as the music stops it opens its eyes and
+  //   looks around (`look-around`).
   //
   // While a call, a read, a video or a groove is on, no pastime
   // is dealt. The pointer (state.ptr) moves the eyes (gaze.h) and leans the
@@ -272,6 +281,13 @@ class GelFace final : public Face {
   };
   static const Clips clips_;
   uint32_t scrolledAt_ = 0, readFrom_ = 0, musicFrom_ = 0;
+  // What it has on or beside it (Engine::With), each fading in and out over
+  // the rig's fade: headphones, the page, the screen, the muted mic. The
+  // page's lines scroll kPageScroll px a second while you scroll, from
+  // where they were (scrolledMs_ of scrolling, to withAt_), kPageScroll.
+  enum Mark { kHeadphones, kPage, kScreen, kMuted, kMarks };
+  rig::Ramp marks_[kMarks];
+  uint32_t scrolledMs_ = 0, withAt_ = 0;
   bool pointer_ = false, pointerNear_ = false;
   int pointerX_ = 0, pointerY_ = 0;
   // What it follows on the rig's channels, over the mixer's: the lean, the

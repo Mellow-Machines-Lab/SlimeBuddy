@@ -97,6 +97,8 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   fast_ = typingTag_ = thought_ = false, typingFrom_ = thinkAt_ = 0;
   with_ = wanted_ = WithYou::kNone, withClip_ = nullptr;
   scrolled_ = music_ = called_ = settled_ = false, scrolledAt_ = readFrom_ = musicFrom_ = 0;
+  for (auto& m : marks_) m = rig::Ramp{};
+  scrolledMs_ = 0, withAt_ = t;
   pawPhaseQ_ = 0, fastSeen_ = 0;
   pointer_ = pointerNear_ = false, pointerX_ = pointerY_ = 0;
   for (int i = 0; i < kFollows; ++i) followTo_[i] = followBy_[i] = 0;
@@ -503,10 +505,41 @@ void GelFace::showWithYou(uint32_t t) {
   with_ = now;
   engine_->speaking = now == WithYou::kSpeaking;
   engine_->speakingSide = when & kMacLeftTag ? -1 : 1;
+  const int mac = (when & kMacLeftTag) ? -1 : (when & kMacRightTag) ? 1 : 0;
+  // What it has on or beside it (Engine::With), so each reads at a glance
+  // where a pose alone is too small to see: at the light size too, and
+  // the headphones while it types along. Not over a Moment, a finger or
+  // listening, nor a pastime but the headphones; a call has only its muted
+  // mic, and speaking's hand is at its ear, so no headphones then. The page
+  // and the screen stand beside it, so neither while its paws are busy or a
+  // card is held.
+  {
+    SceneState place;
+    const bool open = freeForYou(t, place) && !e.acting.current() && !e.router.listening;
+    const bool speaks = when & kSpeakingTag, read = scrolled_ && within(t, scrolledAt_, kReadLingerMs);
+    const bool beside = open && !call && !speaks && !tapping_ && !card_.on;
+    const bool page = beside && read, screen = beside && !read && (when & kVideoTag);
+    // Headphones stay on through a pastime (a bit or a take of the engine's
+    // too) or a transition, so they don't come and go between grooves.
+    SceneState shown;
+    const bool worn = showsLook(source_.anim, shown) && (shown == SceneState::kIdle || shown == SceneState::kWorking) &&
+                      !finger_ && !alone_ && !e.router.listening;
+    const bool phones = worn && music && !call && !speaks;
+    const bool on[kMarks] = {phones, page, screen, open && call};
+    for (int i = 0; i < kMarks; ++i) marks_[i].retarget(on[i] ? 1000 : 0, t);
+    if (page && (when & kScrollingTag)) scrolledMs_ += std::min<uint32_t>(t - withAt_, 100);
+    withAt_ = t;
+    Engine::With& w = engine_->with;
+    auto opacity = [&](Mark m) { return (marks_[m].value(t) * 255 + 500) / 1000; };
+    w.headphones = opacity(kHeadphones), w.page = opacity(kPage), w.screen = opacity(kScreen), w.muted = opacity(kMuted);
+    w.side = mac ? mac : 1;
+    w.scroll = int(scrolledMs_ * kPageScroll / 1000);
+    w.notes = phones && !page && !screen && !tapping_ && (t - musicFrom_) % (kGrooveMs + kGrooveRestMs) < kGrooveMs;
+    w.notesMs = t - musicFrom_;
+  }
   // Turned to the screen, reading or watching: to the Mac's side, or up at
   // it; to the pointer while it moves, and further at the edge nearest the
   // board, reaching toward it. Never on a call.
-  const int mac = (when & kMacLeftTag) ? -1 : (when & kMacRightTag) ? 1 : 0;
   const bool up = !mac && (when & kMacUpTag);
   int* to = followTo_;
   for (int i = 0; i < kFollows; ++i) to[i] = 0;

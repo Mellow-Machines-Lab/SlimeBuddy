@@ -381,3 +381,67 @@ void test_speaking_wins_over_typing() {
   TEST_ASSERT_FALSE(face.engine().speaking);
   TEST_ASSERT_TRUE(face.pastimes(board.t).tapping);
 }
+
+// Pins what it has on or beside it (Engine::With), so each reads at a
+// glance: headphones while music plays, the groove's notes only in the
+// groove, kept through its rest, while it types along and at work in a pose
+// of its own; a page beside it while it reads along, on the Mac's side,
+// whose lines scroll kPageScroll px a second only while you scroll; a
+// screen while it watches; a muted mic on a call and nothing else then;
+// and none of them asleep or with a card held but the headphones.
+void test_what_it_wears_and_has_beside_it() {
+  static_assert(GelFace::kPageScroll == 14, "the page's scroll this test pins");
+  const uint32_t music = tagBit("music"), scrolling = tagBit("scrolling"), left = tagBit("macleft");
+  Board board(SceneState::kIdle, kDay | tierBit(1));
+  const Engine::With& w = board.face().engine().with;
+  board.to(1000);
+  TEST_ASSERT_TRUE(!w.headphones && !w.page && !w.screen && !w.muted && !w.notes);
+  board.tags(kDay | tierBit(1) | music);
+  const uint32_t from = board.t;
+  board.to(from + 2000);
+  TEST_ASSERT_TRUE(w.headphones == 255 && w.notes);
+  board.tags(kDay | tierBit(1) | music | tagBit("typing"));
+  board.to(board.t + 1000);
+  TEST_ASSERT_TRUE(board.face().pastimes(board.t).tapping && w.headphones == 255 && !w.notes);
+  board.tags(kDay | tierBit(1) | music);
+  // Resting from the groove, through its pastimes: still on, no notes.
+  board.to(from + GelFace::kGrooveMs + 1000);
+  board.to(from + GelFace::kGrooveMs + 60000, [&] { TEST_ASSERT_TRUE(w.headphones == 255 && !w.notes); });
+  // Reading along: the page on the Mac's side, scrolling while you do.
+  board.tags(kDay | tierBit(1) | left | scrolling);
+  board.to(board.t + 1000);
+  const int scrolled = w.scroll;
+  TEST_ASSERT_TRUE(w.page == 255 && w.side == -1 && !w.headphones && !w.screen);
+  board.to(board.t + 1000);
+  TEST_ASSERT_INT_WITHIN(1, GelFace::kPageScroll, w.scroll - scrolled);
+  board.tags(kDay | tierBit(1) | left);
+  const int stopped = w.scroll;
+  board.to(board.t + 2000);
+  TEST_ASSERT_TRUE(w.page == 255 && w.scroll == stopped);  // you stopped: it reads on, the page still
+  // A video: the screen, not the page.
+  board.to(board.t + GelFace::kReadLingerMs);
+  board.tags(kDay | tierBit(1) | left | tagBit("video"));
+  board.to(board.t + 1000);
+  TEST_ASSERT_TRUE(w.screen == 255 && !w.page);
+  // A call: the muted mic, and nothing else.
+  board.tags(kDay | tierBit(1) | left | tagBit("video") | music | tagBit("oncall"));
+  board.to(board.t + 1000);
+  TEST_ASSERT_TRUE(w.muted == 255 && !w.screen && !w.headphones && !w.page);
+  // At work in a pose of its own: the light size has them too.
+  Board work(SceneState::kWorking, kDay | music);
+  work.m.act = SceneState::kAnalyzing;
+  work.state();
+  work.to(2000);
+  TEST_ASSERT_EQUAL_INT(255, work.face().engine().with.headphones);
+  work.tags(kDay | scrolling);
+  work.to(4000);
+  TEST_ASSERT_EQUAL_INT(255, work.face().engine().with.page);
+  // Asleep, nothing; a card held, its hands are full: nothing beside it.
+  Board asleep(SceneState::kAsleep, kDay | music | scrolling);
+  asleep.to(3000, [&] { TEST_ASSERT_TRUE(!asleep.face().engine().with.headphones && !asleep.face().engine().with.page); });
+  Board card(SceneState::kIdle, kDay | scrolling);
+  CardShow held;
+  held.on = true;
+  card.face().card(held);
+  card.to(3000, [&] { TEST_ASSERT_EQUAL_INT(0, card.face().engine().with.page); });
+}
