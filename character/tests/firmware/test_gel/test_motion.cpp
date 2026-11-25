@@ -606,7 +606,8 @@ namespace {
 // where the scene is: its recipe's lean, eased in over its first 240 ms and
 // out over its last 480 (and, waiting or listening, waving between 0.3 and
 // 1 of itself, focus times a recipe); the last contact's kick, a cos² over
-// 120 ms (a key's, a knock's or the body's: leaning 0.024 its way, squashing
+// 120 ms (a key's or the body's, not a knock's, which is a hand's on the
+// glass: leaning 0.024 its way, squashing
 // 0.052 and pushing forward 0.045; a success's card lifting 0.036 and
 // forward 0.025, a failure's sagging 0.048 and back 0.035; a start's, a
 // helper's, a reply's or a stop's 0.018 up and forward, an error's 0.018 up
@@ -624,7 +625,7 @@ std::array<double, 3> aim(const Engine& e) {
     const double since = now - num(s.last.timeMs);
     return since >= 0 && since < 120 ? std::pow(std::cos(since / 120 * M_PI / 2), 2) : 0.0;
   };
-  const double contact = active ? std::max({kick(kKey), kick(kKnock), kick(kBody)}) * strength : 0;
+  const double contact = active ? std::max(kick(kKey), kick(kBody)) * strength : 0;
   const double reveal = active ? std::max(kick(kSuccess), kick(kFailure)) * strength : 0;
   double present = 0;
   if (active)

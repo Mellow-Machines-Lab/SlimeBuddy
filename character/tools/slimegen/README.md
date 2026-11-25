@@ -14,7 +14,7 @@ is as code, the one source of each:
 
 | Module | What it is | What it writes |
 | --- | --- | --- |
-| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, and leans), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), and each expression's traits | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
+| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, and leans), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
 | `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
@@ -44,9 +44,15 @@ point by point, and others cross-fade. `slime_mesh.h` samples the dome's
 geometry and analytic studio lighting. None of these are animation frames:
 the board deforms and projects geometry on every draw.
 
-An invite's poses and payoffs (the gel's `render/gel/invite.h`) are code,
-as a finish is, and take nothing from here; nor do the keys' contacts
-sound, though the keyboard sketch is still baked into the bank.
+Needs you's recipe is one knock for every mood and take, timed by the
+pack's rig clip for it (`rig/clips/knock.json`), and lasts until the
+climbing knock (`knock-climb.json`) is over; `scenes.mjs`'s `knock` says
+whether the climb follows the knock at once (`'replaces'`) or after
+`followsMs` with nobody come (`'follows'`, 20 s), baked into `slime.h` as
+`kKnockClimbAtMs`. An invite's palm and lean are the pack's rig clips and
+its back is code (the gel's `render/gel/invite.h`), and take nothing from
+here; nor do the keys' contacts sound, though the keyboard sketch is still
+baked into the bank.
 
 The Mac's popover and onboarding show the board's own firmware: the pack's
 `mac/mirror/` is the firmware built to WebAssembly

@@ -271,24 +271,21 @@ uses the contact envelope and strength for side lean 0.024, squash −0.052
 and forward 0.045. A successful reveal targets squash/forward 0.036/0.025;
 a failed reveal −0.048/−0.035, before the activity bounds.
 
-Alert entry has one, two or three knocks at [420], [420, 740] or
-[420, 690, 960] ms. Result reveal is at [680, 960, 1240] ms. The alert and
-result recipes shape those times and forces by the mood:
-
-| Mood | Delay (ms) | Knock spacing multiplier | Strength | Lean |
-| --- | ---: | ---: | ---: | ---: |
-| Happy | 0 | 1 | 1.05 | 0.014 |
-| Grumpy | −40 | 0.86 | 1.12 | 0.024 |
-| Sad | 160 | 1.18 | 0.62 | −0.016 |
-| Frightened | 240 | 1.28 | 0.68 | −0.018 |
-| Other canonical moods | Derived from authored expression recipes below | Derived | Derived | Derived |
-
-The first knock receives the delay, subsequent spacing is multiplied, and
-the alert reveal follows the last knock by 240 ms. Its card ramps in from
-the request's arrival, with no opacity floor, and ramps out when attention
-clears. Its reveal strength is invariant at 1. A result receives the mood's
-delay and strength while its success or failure remains factual. Contacts carry unique request, generation, iteration and index
-identity; the sound cues take each once (sound/README.md).
+Needs you knocks the same way in every mood and take: its recipe is the
+pack's rig clip `knock` (slimegen's `scenes.mjs`, `alertRecipe`), a fist
+knocking twice on the glass, the clip's cues (900 and 1,200 ms) its
+knocks and the ding 240 ms after the last. The knock's contact sounds and
+rings the card's mark; it no longer dips the body (`Scenes::advance`):
+the hand knocks. If nobody comes, the knock climbs (`knock-climb`) from
+`slime::kKnockClimbAtMs`, which `scenes.mjs`'s `knock` sets: `climb:
+'follows'` (the default) after `followsMs`, 20 s, with nobody come, or
+`'replaces'` straight after the knock, so the climb is the whole knock.
+The recipe lasts until the climb is over, so a needs-you interrupted after
+its ding comes back to its silent hold and never climbs twice. A result
+receives its mood's delay and strength (`profileTraits`) while its success
+or failure remains factual. Contacts carry unique request, generation,
+iteration and index identity; the sound cues take each once
+(sound/README.md).
 
 Suggested composition order: base shape → mood posture → activity pose →
 gesture impulses → local grab → final bounds. There must be one owner of
@@ -633,7 +630,7 @@ rest rows mapped onto those left above the edge, spread a little wider
 its pose and springs carrying on inside them. Past six tenths flat it
 squeezes its eyes shut: the art, layers and props wait and the drawer
 draws its own face (`> <`, pink cheeks, a wobbly mouth), and once it has
-sprung open a paw drops over the sheet's edge. Shut again, it stands
+sprung open one of its hands drops over the sheet's edge. Shut again, it stands
 back up as it was. `tests/scenarios-gel/drawer.jsonl` pulls it.
 
 ## A finger at rest
@@ -713,10 +710,12 @@ night's lock.
 
 After a skit the Mac may ask for one touch (the `do`'s `invite`, the
 engine's firmware/README.md, The invite): the engine times it and the face
-draws it from `FaceContext::invite` (`gel/invite.h`), all in code, as a
-finish is, with no clip of the rig's. Once the skit's face, words and
-sign are over, Boop comes up to the glass over 450 ms, bigger about where
-it stands (`kInviteScale`), and holds its pose; the place to touch glows
+draws it from `FaceContext::invite` (`gel/invite.h`). The palm and the
+lean, their payoffs, misses and late returns are the pack's rig clips
+(Hands and the glass, below); the back, which the turn will take over, is
+in code. Once the skit's face, words and sign are over, Boop comes up to
+the glass, 1.15 its size (the back's a little less, `kBackGlass`), and
+holds its pose; the place to touch glows
 (light means "this is for you"), a warm gold light that breathes, a ripple
 going out from it every 1.6 s, so it reads as "touch here" with no word,
 and the Mac's `label` ("tap", "pet") stands by it in the sign's font,
@@ -724,13 +723,16 @@ rimmed dark, its letters rippling one after another.
 
 | Pose | What it does | Glows | Touch | Payoff |
 | --- | --- | --- | --- | --- |
-| palm | Faces you, happy, eyes wide, leaning a little to its right; one gel palm flat on the glass beside its right eye, its heel pressed paler, the word under it | the palm, a ring round it | tap | high five: the palm claps in with a flash ring and sparks, it squashes, hops and wobbles round, excited |
-| lean | Its head leaned and tilted on the glass, bigger still, eyes wide and up at you | its forehead, the word beside it | stroke | purr: eyes shut, a slow wiggle, breathing, three hearts rising |
+| palm | A hop, then faces you, happy, eyes wide, leaning a little to its right; its right hand, an open palm, flat on the glass beside its right eye (`invite-palm`, then `invite-palm-wait`), about 85 px across, its patch pale, the word under it | the palm, a ring round it | tap | high five (`invite-highfive`): the palm claps, a ring and a shake, sparks; it squashes, hops and wobbles, excited, the palm sinking back into its side |
+| lean | It perks up, comes up to the glass and rests its cheek on it, leaning, the patch pale where it touches, eyes up at you (`invite-lean`, `invite-lean-wait`) | its cheek, the word beside it, away from the face | stroke | purr (`invite-purr`): eyes shut, a fast small wiggle against the glass, three hearts rising |
 | back | Its back turned, slumped, its face (its mood's own) squeezed to its right rim, looking over its shoulder | its back, the word under it | stroke | sigh: a breath in, its shoulders drop as it turns round, pleased, a puff of breath |
 
-Missed, it shrugs (up and down, a glance aside under heavy lids) as the
-glow goes and it settles back to where it stood, its face coming round. A
-late touch turns it round with a hop and a pop of sparks by its head, then
+Missed, the palm's looks at its palm, lowers it and shrugs with both
+hands (`invite-palm-miss`); the lean's eases off the glass and shrugs
+(`invite-lean-miss`); the back's shrugs as it turns round; each under
+heavy lids, as the glow goes and it settles back to where it stood. A late
+touch brings the palm or the cheek back to the glass (`invite-<pose>-late`),
+or turns the back round with a hop and a pop of sparks by its head, then
 the payoff. A payoff that earns says so low, "high five", "purr" or
 "better now" with the XP's chip, as a finish's does. While an invite shows
 no pastime, base pose, typing along, look of its own or idle gesture
@@ -739,6 +741,54 @@ as it would. A mood that keeps its face through a touch keeps it here too.
 Each payoff has one sound from the bank (`inviteSound`): the cheer for a
 high five, the snore's breath, low, for a purr and a sigh (the bank has no
 purr).
+
+## Hands and the glass
+
+Two hands, one pair, part of the body (`gel/hands.h`): gel stubs that bud
+out of its sides when they act and sink back in, hidden at rest. One
+function draws a hand, `paintHand`: a gel disk shaded as the dome is, its
+light up and to its left, a pale rim as the dome's, a soft shadow down and
+to its right, in the buddy's colour; a flat pad when it rests on
+something; an open palm has three small fingertips over its top, a fist is
+a little tighter; on the glass it's 2.5 times its size (`kHandGlassGrow`),
+paler and flat, with a pale patch where it presses; fading, it's one flat
+shape so it fades evenly. It never grows fingers.
+
+The same two hands are every hand Boop has. Each frame `paintFrame` says
+who holds each (`HandsPlan`), and only that part draws it, in its place:
+a move's (the rig's hand channels: the palm, the knock, the flop); else a
+sign's or a card's, gripping its sides (`gripping`); the low sign's, by
+its top corners (`holdingUp`); speaking's, cupped at its ear (`cupped`);
+the desk's, a pad flat on the keys, typing (`onKeys`); and under the
+drawer, one hung over its edge (`hung`). A move with one hand out leaves
+the other where it was: the knock's first fist knocks while the other
+hand stays on the keys.
+
+The glass is the screen. The rig's `glass` brings the whole body up to it,
+bigger about where it stands, 1.15 at most (`applyGlass`, the one way
+anything comes to the glass: a move's, the back's), over a finish's own
+scale; the patch where it touches is `patch`, `patchX` and `patchY`, drawn
+on the body under its face (`paintPatch`). A move's cue is a hit on the
+glass: the hand on it most rings there for 340 ms and the body shakes
+3 px side to side, dying away over 260 ms (`gel/moves.h`).
+
+A move is a rig clip the face plays as a pure function of what shows and
+how long (`currentMove`): the invite's by its phase and time, the knock's
+by the needs-you scene's own age, which an interrupted needs-you keeps.
+The face sounds the climb's cues as it crosses them; the knock's are its
+scene's contacts, and an invite's payoff has its own sound. The flop
+(`flop`), for a check passing after failing, plays by `dbg.clip`: the
+Mac's Moment for it names no move yet.
+
+**Its cost.** A hand is a few disks or bars, each a convex fill: about ten
+for a palm, a few hundred pixels for one on the keys and a few thousand
+for a palm on the glass, against the body's tens of thousands. The
+simulator draws every frame and checks each picture, so it says what is
+drawn, not how fast. The body at 1.15 covers 1.15², about a third more
+pixels, and the body's fill is most of a frame's cost (Finishes, Its
+cost: the look alone draws 40 frames a second). Only the board's profiling
+build (`gel_parts`' `body_us`) can say what that costs, and the frame rate
+of a palm, the knock and the flop on the AMOLED: not measured yet.
 
 ## Tagged pastimes
 
@@ -1037,7 +1087,7 @@ more stretch than mouth.
 
 While an agent has handed Boop a card and nothing above Doing has the
 screen, Boop holds it (`gel/card.h`): the agent's window across its front,
-a gel hand at either side. A title bar in the agent's lane colour names
+one of its two hands at either side. A title bar in the agent's lane colour names
 the agent (`claude`, `codex`, the state's `card.g`) with three window
 dots, over a flat dark panel with square-ish corners, rimmed in the same
 colour; the desk's monitor frame lights in it too (`paintProps`). It

@@ -33,7 +33,22 @@ struct PaintControls {
   // `faceW` (Q12) and moved `faceX` face units (Q12) across the dome, so it
   // looks over its shoulder from near its rim.
   int faceX = 0, faceW = 4096;
+  // Up at the glass (the rig's glass, Q12): the whole body bigger about
+  // where it stands (applyGlass), and where it touches the glass a pale
+  // patch, `patch` its size (Q12 of kPatchPx), at patchX across its front
+  // (Q12, -4096 its left rim) and patchY up it (Q12, 0 its foot).
+  int glass = 0, patch = 0, patchX = 0, patchY = 0;
 };
+// The body at the glass whole is this much bigger (Q12): 1.15 at most, the
+// one way anything comes up to the glass (a move's glass, an invite's turn
+// away). A patch whole is kPatchPx across its middle, at the body's size.
+constexpr int kGlassScale = 614, kPatchPx = 96;
+// The glass's scale onto the controls, over a finish's, about where it
+// stands.
+void applyGlass(PaintControls& c, const Surface& s);
+// The patch where the body touches the glass, over the body and under its
+// face, by its anchors; its middle into `at`'s patch.
+void paintPatch(Surface& s, const PaintControls& c, rig::Anchors& at);
 // The canvas row the body stands on (restBodyBottom), and how far above it
 // its eyes are.
 constexpr int kDeskRow = 188, kEyesOverDesk = 50;
@@ -64,6 +79,9 @@ void readMaterialFrom(const void* copy);
 // a copy of its own. With no room for the copy it stays as made.
 constexpr int kBodyColors = 8;
 void bodyColor(int index);
+// The colour it's in now, as bodyColor last turned it: what else is the
+// body's (its hands) takes it too.
+int bodyColorIndex();
 // One texel of the material, as colour `index` turns it. Pure, for tests.
 uint16_t tinted(uint16_t texel, int index);
 // The dome on the canvas: canvas pixels a body unit at its middle.
@@ -78,8 +96,8 @@ constexpr int kRigGaze = 205, kRigMouthOpen = 300;
 // body unit, never into the floor: the whole dome rises), x (canvas px,
 // the whole dome sideways, off the screen if far enough), reach and melt,
 // the lids, shut as far as the more shut eye, and the eyes' size and
-// where they look. The gel draws no other channel yet but the mouth
-// (paint). At rest, none moves.
+// where they look; and the glass and its patch. The mouth is paint's, the
+// hands render/gel/hands.h's. At rest, none moves.
 void applyRig(PaintControls& c, const rig::Channels& rig);
 class Engine;
 // The body, the face art, the Zs beside it

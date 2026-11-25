@@ -1,6 +1,6 @@
 // Bakes the authored scene recipes (scenes.mjs) into slime.h's tables; the
 // board still owns the seeded variations and jitter.
-import {states,recipe,takesOf,gestureRecipe,pastimeTakes,snore} from './scenes.mjs';
+import {states,recipe,takesOf,gestureRecipe,pastimeTakes,snore,knockClimbAtMs} from './scenes.mjs';
 export {states};
 // The contact kinds, as the port's ContactKind numbers them: the scenes',
 // then comedy's (a gag's sneeze and zoomies, a snore's breath).
@@ -40,5 +40,7 @@ export function recipes(profiles,q,t,{design,gagIds}){
   pastimes.map(o=>'{'+[JSON.stringify(o.id),write(o.recipe,o.recipe.jitter)].join(',')+'}').join(',\n')+'\n};\n';
  out+='constexpr int kPastimeTakeCount=sizeof(kPastimeTakes)/sizeof(kPastimeTakes[0]);\n';
  // A snore's breath swells the sleeping body: sin² over its window, times its strength.
+ // Where needs you's knock climbs, if nobody comes (scenes.mjs `knock`).
+ out+='constexpr uint32_t kKnockClimbAtMs='+knockClimbAtMs(design.knockClip)+';\n';
  return out+'constexpr int kSnoreSwellMs='+snore.swellMs+';\nconstexpr F kSnoreSwell='+q(snore.swell)+';\n';
 }

@@ -65,13 +65,22 @@ function deskRecipe(state,variant,profile) {
   return {duration:cycleMs[variant],contacts,intent,lean,focusCycles:[1,2,3][variant]};
 }
 
-// Needs you: its knocks, then the alert, once.
-function alertRecipe(variant,profile) {
-  const source=[[420],[420,740],[420,690,960]][variant],traits=profileTraits(profile);
-  const times=source.map(at=>source[0]+traits.delayMs+(at-source[0])*traits.spacing);
-  return {duration:cycleMs[variant],intent:'signal once, then hold silently',lean:traits.lean,
-    contacts:[...times.map((at,index)=>({at,kind:'screen_knock',side:index%2?-1:1,strength:traits.gain})),
-      {at:times[times.length-1]+240,kind:'alert_reveal',side:0,strength:1}]};
+// Needs you: one move for every mood and take, the pack's rig clip `knock`
+// (rig/clips/knock.json), which the face plays by this scene's time: a fist
+// knocks on the glass, the clip's cues, which sound here, then the alert's
+// ding, once. If nobody comes, the knock climbs (`knock-climb.json`, the
+// face's to play and sound, from kKnockClimbAtMs): `climb` says whether it
+// follows the knock at once ('replaces': the climb is the whole knock, a
+// step after the first) or after `followsMs` with nobody come ('follows').
+// The scene lasts until the climb is over, so a needs-you interrupted
+// after its ding comes back to its silent hold, never to a second climb.
+export const knock=Object.freeze({climb:'follows',followsMs:20000});
+export const knockClimbAtMs=knockClip=>knock.climb==='replaces'?knockClip.ms:knock.followsMs;
+function alertRecipe(design) {
+  const hits=design.knockClip.cues.filter(([,name])=>name==='screen_knock').map(([at])=>at);
+  return {duration:knockClimbAtMs(design.knockClip)+design.climbClip.ms,intent:'knock on the glass, then hold silently',lean:0,
+    contacts:[...hits.map((at,index)=>({at,kind:'screen_knock',side:index%2?-1:1,strength:1})),
+      {at:hits[hits.length-1]+240,kind:'alert_reveal',side:0,strength:1}]};
 }
 
 // A successful finish's fourth take: the card as the first take shows it,
@@ -204,7 +213,7 @@ export function recipe(p,{state,outcome},v,design){
  if(state==='gesture')r=gestureRecipe(design.gestures,v);
  else if(state==='notice')r=noticeRecipe(design.noticeClip);
  else if(['working','planning','terminal','tool_use','searching','analyzing','testing','waiting'].includes(state)){r=deskRecipe(state,v,p);jitter=true;}
- else if(state==='needs_you')r=alertRecipe(v,p);
+ else if(state==='needs_you')r=alertRecipe(design);
  else if(state==='task_complete')r=resultRecipe(outcome||null,v,p);
  else if(state==='reply_ready')r=statusResultRecipe(state,v,p);
  else if(state==='starting')r=startRecipe(v,p);

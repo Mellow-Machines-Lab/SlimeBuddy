@@ -1,4 +1,5 @@
 #include "render/gel/card.h"
+#include "render/gel/hands.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -15,8 +16,7 @@ namespace render::gel {
 
 namespace {
 constexpr uint16_t kCardInk = rgb565(16, 20, 24), kBarWords = rgb565(10, 30, 34), kCardRim = rgb565(0x78, 0xa4, 0xc8), kWords = rgb565(232, 242, 250),
-                   kSmallWords = rgb565(143, 166, 184), kOver = rgb565(255, 122, 122), kGel = rgb565(89, 169, 224),
-                   kShine = rgb565(184, 233, 245), kDotOff = rgb565(58, 74, 90);
+                   kSmallWords = rgb565(143, 166, 184), kOver = rgb565(255, 122, 122), kDotOff = rgb565(58, 74, 90);
 const Font& kMain = kSign;
 const Font& kSmallFont = kLarge;
 
@@ -208,14 +208,10 @@ void paintCard(Surface& s, const CardShow& c, int dx) {
     const int sw = std::min(stringWidth(kSmallFont, c.small), room);
     text(r, kSmallFont, x + (w - sw) / 2, y + bar + pad(c) + kMain.h - 2, c.small, c.over ? kOver : kSmallWords, room);
   }
-  // A little gel hand at either side, gripping it.
-  for (int side : {-1, 1}) {
-    const int hx = side < 0 ? x : x + w, hy = y + bar + (h - bar) / 2;
-    r.disk(hx, hy, CardLayout::kHand, kGel);
-    r.alpha = 160;
-    r.disk(hx - 4, hy - 5, 3, kShine);
-    r.alpha = 255;
-  }
+  // A hand at either side, gripping it.
+  for (int side : {-1, 1})
+    if (handsPlan().has(side, HandsAt::kCard))
+      paintHand(r, gripping(side < 0 ? x : x + w, y + bar + (h - bar) / 2, side, CardLayout::kHand));
   // The dots: one for each card there is, this one lit in its colour.
   if (c.count > 1) {
     const int gap = 14, x0 = s.width / 2 - (c.count - 1) * gap / 2, dy = b.y1 + down + CardLayout::kDotsRow / 2;

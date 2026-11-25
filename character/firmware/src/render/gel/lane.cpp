@@ -1,4 +1,6 @@
 #include "render/gel/lane.h"
+#include "render/gel/moves.h"
+#include "render/gel/hands.h"
 #include "render/gel/card.h"
 #include "render/gel/done.h"
 
@@ -727,8 +729,19 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
                 const Stream* stream, uint32_t now, const PastimeShow* pastimes, const Drawer* drawer,
                 const char* note, const WishShow* wish, const CardShow* card) {
   rig::Anchors at;
+  // One pair of hands (render/gel/hands.h): a move's that it has out, else
+  // a sign's or a card held up, the low sign's, speaking's at its ear, else
+  // the desk's.
+  HandsPlan& hands = handsPlan();
+  hands = HandsPlan{};
+  // Drawn, each part draws its own again, as it would alone.
+  struct Ends {
+    ~Ends() { handsPlan().at[0] = handsPlan().at[1] = HandsAt::kAny; }
+  } ends;
   if (drawer && drawer->shows()) {
-    // The lane's rows are the sheet's: erased, and drawn again after.
+    // The lane's rows are the sheet's: erased, and drawn again after. A paw
+    // over its edge once it's open; under the sheet, the desk's.
+    hands.at[0] = HandsAt::kDesk, hands.at[1] = drawer->paw > 0 ? HandsAt::kDrawer : HandsAt::kDesk;
     const DrawerPose pose = drawerPose(surface, *drawer);
     paint(surface, e, mouthOpen, dy, 0, &at, rig, layers, t, nullptr, &pose);
     if (pose.squint) paintSquint(surface, at, pose, DrawerLayout(surface.width, surface.height, surface.corner).top(drawer->open));
@@ -776,6 +789,18 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // finished turn's, a remembered line, a celebration's gold), and comes back.
   const bool held = card && card->on && !sign.text && !low.shows();
   const int hop = held ? cardHop(*card) : signHop(sign);
+  for (int side = 0; side < 2; ++side) {
+    HandsAt& who = hands.at[side];
+    if (rig[rig::hand(side, rig::HandPart::kSize)] > 0) who = HandsAt::kMove;
+    else if (sign.text && !sign.low) who = HandsAt::kSign;
+    else if (held) who = HandsAt::kCard;
+    else if (low.shows()) who = HandsAt::kLowSign;
+    else if (e.speaking && (e.speakingSide > 0) == (side > 0)) who = HandsAt::kEar;
+    else who = HandsAt::kDesk;
+  }
+  // The low sign drawn without a hand its move has: its lane is drawn again.
+  if (low.shows() && (hands.at[0] != HandsAt::kLowSign || hands.at[1] != HandsAt::kLowSign))
+    key = ((key ^ uint32_t(int(hands.at[0]) << 4 | int(hands.at[1]))) * 16777619u) | 1;
   // The needs-you card stands in the top band: the body ducks under it.
   const int duck = (e.scenes.visible(Scenes::kAlertProp, e.timeMs()) * kAlertDuckPx).integer();
   paint(surface, e, mouthOpen, dy - hop, key, &at, rig, layers, t, pastimes, nullptr, duck, stream, now,
@@ -789,7 +814,18 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintStreamFront(surface, *stream, at, now);
   }
   if (wish) paintWish(surface, *wish, at);
-  paintInvite(surface, e.invite, at);
+  // An invite's glow, behind the palm; a move's hands and a hit's ring;
+  // then the invite's word and its payoff over them.
+  int glowRadius = 0;
+  const Point spot = inviteSpot(e.invite, at, hands.moved, glowRadius);
+  paintInviteGlow(surface, e.invite, spot, glowRadius);
+  {
+    Raster r{surface};
+    for (int side = 0; side < 2; ++side)
+      if (hands.at[side] == HandsAt::kMove) paintHand(r, hands.moved[side]);
+  }
+  paintHits(surface, currentMove(e), hands.moved);
+  paintInvite(surface, e.invite, at, spot, glowRadius);
   if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
   if (held) paintCard(surface, *card, s.pipCount > 1 ? gSwitchDx : 0);
   Measure measure(profile.lane);

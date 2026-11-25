@@ -1,5 +1,6 @@
 #include "render/gel/painter.h"
 #include "render/gel/engine.h"
+#include "render/gel/hands.h"
 #include "render/gel/pastimes.h"
 #include "render/gel/raster.h"
 #include "render/gel/subpixel.h"
@@ -64,6 +65,8 @@ int firstDrawnRow(const Surface& surface, const Placed& c) {
 }  // namespace
 
 namespace {
+// A hand's radius on the keys, px: a pad about as wide as two keys.
+constexpr int kDeskHandPx = 13;
 // What the desk's monitor shows (paintProps).
 enum class MonitorIcon : uint8_t { kPencil, kGlass, kPrompt, kFlask, kHourglass, kCross, kClock, kTick };
 // A word forward that hit: a failure or a timeout, not your no.
@@ -329,7 +332,9 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Strea
       // after the knock.
       const int flail = flailLift(stream, streamNow, side);
       int yy = 711 + (s.hasLast && s.last.side == side ? (contact * 9).integer() : 0) - lift - flail;
-      round(500 + side * (78 + flail / 3) - 30 + dx, yy - 12, 60, 25, 13, rgb565(93, 166, 219));
+      // Its hand, a pad flat on the keys, unless the hand's elsewhere.
+      if (handsPlan().has(side, HandsAt::kDesk))
+        paintHand(r, onKeys(x(500 + side * (78 + flail / 3) + dx), y(yy), kDeskHandPx));
     }
   }
   // Each prop's alpha is its ramped visibility; one fading out still draws

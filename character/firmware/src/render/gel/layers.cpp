@@ -8,6 +8,7 @@
 
 #include "render/font.h"
 #include "render/gel/engine.h"
+#include "render/gel/hands.h"
 #include "render/gel/lane.h"
 #include "render/gel/painter.h"
 #include "render/gel/raster.h"
@@ -102,15 +103,10 @@ void zs(Raster& r, const rig::Anchors& at, int ms) {
 // 1 right), and three rings beside it, each swelling out and fading on the
 // 1.6 s beat of its nod, `ms` into it.
 void speakingHand(Raster& r, const rig::Anchors& at, int side, int ms) {
-  const int ear = side > 0 ? at.brimR.x : at.brimL.x, earY = (at.brimF.y + at.eyeL.y) / 2;
-  const int hx = ear / 16 + side * 14, hy = earY / 16;
+  const Hand hand = cupped(at, side);
+  const int hx = hand.x16 / 16, hy = hand.y16 / 16;
   r.alpha = 255;
-  // Rimmed dark, so it reads apart from the body it's held against.
-  r.disk(hx, hy, 18, kCardInk);
-  r.disk(hx + side * 8, hy - 10, 9, kCardInk);
-  r.disk(hx, hy, 15, kGel);
-  r.disk(hx + side * 8, hy - 10, 6, kGel);  // the fingers, curled forward
-  r.disk(hx - 5, hy - 6, 3, kShine);
+  if (handsPlan().has(side, HandsAt::kEar)) paintHand(r, hand);
   const int beat = ms % 1600;
   for (int i = 0; i < 3; ++i) {
     const int age = (beat + 1600 - i * 330) % 1600, radius = 26 + i * 11 + age * 12 / 1600;
@@ -469,14 +465,9 @@ void paintSign(Surface& s, const SignShow& sign, const rig::Anchors& at, int hop
   r.round(x, y, w, h, 12, kCardInk);
   r.ring(x, y, w, h, 12, 2, kCardRim);
   text(r, f, x + (w - tw) / 2, y + 5, sign.text, kWords);
-  // A little gel hand at either side, gripping it.
-  for (int side : {-1, 1}) {
-    const int hx = side < 0 ? x : x + w, hy = y + h / 2;
-    r.disk(hx, hy, SignLayer::kHand, kGel);
-    r.alpha = 160;
-    r.disk(hx - 4, hy - 5, 3, kShine);
-    r.alpha = 255;
-  }
+  // A hand at either side, gripping it.
+  for (int side : {-1, 1})
+    if (handsPlan().has(side, HandsAt::kSign)) paintHand(r, gripping(side < 0 ? x : x + w, y + h / 2, side, SignLayer::kHand));
 }
 
 }  // namespace render::gel
