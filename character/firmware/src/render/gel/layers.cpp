@@ -41,11 +41,6 @@ Point turn(int i) {
   }
 }
 
-// A triangle wave, 0 to `amp` and back, once every `period` ms.
-int wave(int ms, int period, int amp) {
-  const int p = ms % period;
-  return (p < period / 2 ? p : period - p) * 2 * amp / period;
-}
 // A heart about (x16, y16), sixteenths of a pixel, `s` whole pixels its
 // half-width.
 void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
@@ -56,29 +51,20 @@ void heart(Raster& r, int x16, int y16, int s, uint16_t ink) {
   r.polygon16(v, 3, ink);
 }
 
-// The wish's icons in its thought bubble, about (cx, cy), whole pixels. Showing
-// how, they move, saying what to do: the hand slides across, as a stroke does;
-// the speech dots pulse, one after another; the laptop's screen blinks.
+// The wish's icons in its thought bubble, about (cx, cy), whole pixels.
 void wishIcon(Raster& r, const WishShow& wish, int cx, int cy, uint16_t ink) {
-  constexpr int kPeriodMs = 1400;
-  const int phase = int(wish.ms % kPeriodMs);
   switch (wish.kind) {
     case WishShow::kPet: {  // an open hand: a palm and four fingers
-      if (wish.how) cx += 8 - wave(phase, kPeriodMs, 16);
       r.round(cx - 9, cy - 1, 18, 13, 5, ink);
       for (int i = 0; i < 4; ++i) r.line({cx - 7 + i * 5, cy + 1}, {cx - 7 + i * 5, cy - 11 + (i == 0 || i == 3 ? 3 : 0)}, 4, ink);
       break;
     }
     case WishShow::kChat:  // a speech dot: three in a row
-      for (int i = -1; i <= 1; ++i) {
-        const bool lit = wish.how && phase * 3 / kPeriodMs == i + 1;
-        r.disk(cx + i * 10, cy, lit ? 6 : 4, ink);
-      }
+      for (int i = -1; i <= 1; ++i) r.disk(cx + i * 10, cy, 4, ink);
       break;
     case WishShow::kWork:  // a little laptop: its screen and its base
       r.ring(cx - 11, cy - 10, 22, 15, 3, 3, ink);
       r.round(cx - 15, cy + 7, 30, 4, 2, ink);
-      if (wish.how && phase < kPeriodMs / 2) r.round(cx - 6, cy - 5, 12, 5, 2, ink);
       break;
     case WishShow::kNone:
       break;

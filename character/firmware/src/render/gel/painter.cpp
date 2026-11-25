@@ -34,15 +34,17 @@ int edge(const Vertex& a, const Vertex& b, int x, int y) { return (b.x - a.x) * 
 int floor16(int v) { return v >= 0 ? v / 16 : -((15 - v) / 16); }
 // The material at its two sizes (slime_mesh.h), one after the other: each
 // a grid of texels from `offset`, a texel every 2^shift of the UVs, which
-// span [0, 2^20] × [0, 2^19]. A triangle whose texels crowd under its
-// pixels reads the smaller.
+// span [0, 2^20] × [0, 2^19] over the sphere, its rows down to ring
+// kMaterialRings, the lowest the camera ever sees. A triangle whose texels
+// crowd under its pixels reads the smaller.
 struct Level {
   int offset, width, height, shift;
 };
 constexpr Level kLevels[2] = {{0, slime::kMaterialWidth, slime::kMaterialHeight, 10},
                               {slime::kMaterialHalf, slime::kMaterialHalfWidth, slime::kMaterialHalfHeight, 11}};
-static_assert((slime::kMaterialWidth - 1) << 10 == 1 << 20 && (slime::kMaterialHeight - 1) << 10 == 1 << 19 &&
-                  (slime::kMaterialHalfWidth - 1) << 11 == 1 << 20 && (slime::kMaterialHalfHeight - 1) << 11 == 1 << 19,
+constexpr int kSeenV = (1 << 19) * slime::kMaterialRings / slime::kMeshRings;
+static_assert((slime::kMaterialWidth - 1) << 10 == 1 << 20 && (slime::kMaterialHeight - 1) << 10 == kSeenV &&
+                  (slime::kMaterialHalfWidth - 1) << 11 == 1 << 20 && (slime::kMaterialHalfHeight - 1) << 11 == kSeenV,
               "UV rounding matches the generated material grids");
 int texelAt(int t, int shift) { return (t + (1 << shift >> 1)) >> shift; }
 // Where the body reads the material: as linked, or a copy the board made
@@ -346,7 +348,6 @@ void paint(Surface& s, const PaintControls& c, const Box* keep, int keepCount, u
   }
   drawBody(s, c, anchors, &erasing);
 }
-void paintBody(Surface& s, const PaintControls& c, rig::Anchors* anchors) { drawBody(s, c, anchors, nullptr); }
 const void* materialTexels(size_t& bytes) {
   bytes = sizeof slime::kMaterial;
   return slime::kMaterial;

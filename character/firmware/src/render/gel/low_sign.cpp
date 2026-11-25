@@ -144,9 +144,9 @@ int lowSignDrop(const LowSign& sign, int height) {
   return drop;
 }
 
-int lowSignRisen(const LowSign& sign, int height) {
+int lowSignStripAlpha(const LowSign& sign, int height) {
   const int most = height - topOf(height);
-  return most > 0 ? 255 * (most - lowSignDrop(sign, height)) / most : 255;
+  return most > 0 ? std::max(0, 255 - 2 * 255 * (most - lowSignDrop(sign, height)) / most) : 0;
 }
 
 uint32_t lowSignKey(const LowSign& sign) {

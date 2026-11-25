@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {faceTarget} from './face.mjs';
-import {profileTraits,sceneMoodTraits,gestureGagName,gestureGag,gestureNames,noticeNames,pastimeGags} from './scenes.mjs';
+import {profileTraits,gestureGagName,gestureGag,gestureNames,noticeNames,pastimeGags} from './scenes.mjs';
 import {recipes,kinds} from './recipes.mjs';
 const require=createRequire(import.meta.url);
 // The acting springs a cue or a gag's key names: the six gestures', then a
@@ -43,7 +43,7 @@ export function firmwareCatalog(pack,character){
  out+='struct GagKey {T at;uint8_t channel;F value;};\nstruct GagContact {T at;uint8_t kind;F strength;};\n';
  out+='struct Gag {Performance gesture;uint8_t keyCount;GagKey keys[24];uint8_t contactCount;GagContact contacts[4];};\n';
  out+='constexpr int kOwnGags='+ownGags+';\n';
- out+='struct Profile {const char* id;uint8_t canonical;const char* eyes;const char* mouth;const char* cheeks;const char* tears;F face[8];F traits[4];bool representative;F pitch,gain;uint8_t gagCount;uint8_t gags[kOwnGags];};\n';
+ out+='struct Profile {const char* id;uint8_t canonical;F face[8];F traits[4];F pitch,gain;uint8_t gagCount;uint8_t gags[kOwnGags];};\n';
  out+='constexpr Gag kGags[]={\n';
  for(const [id,gag] of allGags){
   out+='{'+[performance({...gag,type:id}),gag.keys.length,'{'+gag.keys.map(onChannel).join(',')+'}',
@@ -66,7 +66,7 @@ export function firmwareCatalog(pack,character){
  out+='constexpr Profile kProfile[kProfiles]={\n';
  for(const [id,p] of Object.entries(profiles)){
   const f=faceTarget(p),traits=profileTraits(p),sp=sound.moodProfiles[p.mood],own=p.gags||[];
-  out+='{'+[s(id),index(p.mood),s(p.art.eyes),s(p.art.mouth),s(p.art.cheeks),s(p.tears),'{'+controls.map(k=>q(f[k])).join(',')+'}','{'+['delayMs','spacing','gain','lean'].map(k=>q(traits[k])).join(',')+'}',Boolean(sceneMoodTraits[p.mood]),q(sp.pitch),q(sp.gain),
+  out+='{'+[s(id),index(p.mood),'{'+controls.map(k=>q(f[k])).join(',')+'}','{'+['delayMs','spacing','gain','lean'].map(k=>q(traits[k])).join(',')+'}',q(sp.pitch),q(sp.gain),
    own.length,'{'+own.map(gag=>gagIds.indexOf(gag)).join(',')+'}'].join(',')+'},\n';
  }
  // The lasting mood each face is of, as the pack's `lasting` numbers them:
@@ -86,7 +86,12 @@ export function firmwareCatalog(pack,character){
  out+='constexpr F kPitchLo='+q(sound.seededVariation.pitch[0])+', kPitchHi='+q(sound.seededVariation.pitch[1])+', kGainLo='+q(sound.seededVariation.gain[0])+', kGainHi='+q(sound.seededVariation.gain[1])+';\n';
  out+=recipes(q,t,{design,gagIds});
  const sfx=require(path.join(base,'sound/sfx.js')),samples=[],clips=[];
- for(const name of Object.keys(sfx.recipes))for(let variant=0;variant<3;variant++){
+ // Only the sketches the board names are baked, three takes each: the
+ // contacts' and a finish's (gel engine.cpp's `recipes`), and the invite's
+ // payoffs' (invite.cpp's inviteSound). The rest stay design material.
+ const named=['squish','bounce','knock','ding','complete','cheer','failed','sneeze','breath'];
+ for(const name of named)if(!sfx.recipes[name])throw Error('no sound sketch '+name);
+ for(const name of Object.keys(sfx.recipes).filter(n=>named.includes(n)))for(let variant=0;variant<3;variant++){
   const clip=sfx.render(name,{sampleRate:11025,seed:53,variant,pitch:1,gain:.8});
   clips.push({name:name+'-'+variant,at:samples.length,len:clip.data.length});
   for(const value of clip.data)samples.push(Math.max(0,Math.min(255,Math.round(128+127*value/.8))));

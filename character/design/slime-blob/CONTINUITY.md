@@ -316,18 +316,16 @@ there is with no chips; the helpers and the to-do list wait until
 nothing needs you. A finished turn with no thread names its agent
 alone, with no dot after it.
 
-Every other prop (the alert's card, the listening cue,
+Every other prop (the alert's card, and the listening cue,
 a mic in a breathing ring with LISTENING beside it in the large font
-to read at arm's length, in a row over the head,
-and the touch marks) has a **200 ms visibility ramp** for
+to read at arm's length, in a row over the head) has a **200 ms visibility ramp** for
 entry and exit (`gel/scenes.h` `Ramp`): a cubic Hermite from its current
 value and slope to the target, so from rest it is a smoothstep and a
 reversal keeps its velocity; it ends exactly. Held within zero and one,
 it's flat where it's held, so a retarget never brings back what it held at
 zero. Each prop's visibility is its drawn opacity. When its route ends, a prop fades out still carrying the
 content it last showed (the alert's request, agent, project, name and
-count; the listening pulse; the touch
-kind). New content (another request) waits until nothing of the old is
+count; the listening pulse). New content (another request) waits until nothing of the old is
 drawn, then fades in from zero; the alert's content follows the
 current request at once. Contact envelopes (the knock, the key and touch
 pulses) stay deliberate impacts.
@@ -639,7 +637,7 @@ in the touch family. Its takes are the board's touches, in its order
 (`render::Gesture`, slimegen's `scenes.mjs` `gestureNames`): the board
 names one (its variant, 0 to 9), no bag deals them, and a gesture asked
 for without one plays the first. Each is the same in every mood: a scene
-recipe whose body contacts dent the dome, pulse the touch mark and sound a
+recipe whose body contacts dent the dome and sound a
 squish on its first loop, and a bit of its own (`expressions.json`
 `gestures`, keyed as Comedy's are) that acting plays with it. The board
 borrows a face for each while it plays, as a react's expression is
@@ -831,8 +829,9 @@ hands (`invite-palm-miss`); the lean's eases off the glass and shrugs
 on round the way it turned (`invite-back-miss`); each under heavy lids, as
 the glow goes and it settles back to where it stood. A late touch brings
 the palm or the cheek back to the glass (`invite-<pose>-late`), with a pop
-of sparks by its head; a late stroke turns its back to you once more with
-a hop (`invite-back-late`), for the sigh to bring it round. Then the
+of sparks by its head; a late stroke makes it look away over its shoulder
+with a hop, one eye at the rim (`invite-back-late`), and the sigh brings it
+round from the start, so its face is gone only a moment. Then the
 payoff. A payoff that earns says so low, "high five", "purr" or
 "better now" with the XP's chip, as a finish's does. While an invite shows
 no pastime, base pose, typing along, look of its own or idle gesture

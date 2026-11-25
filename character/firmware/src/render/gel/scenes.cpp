@@ -61,10 +61,8 @@ bool Scenes::wants(Prop prop) const {
   switch (prop) {
     case kAlertProp:
       return route.state == SceneState::kNeedsYou;
-    case kListeningProp:
-      return route.state == SceneState::kListening;
     default:
-      return route.group == Family::kTouch;
+      return route.state == SceneState::kListening;
   }
 }
 void Scenes::refresh(Prop prop) {
@@ -82,11 +80,8 @@ void Scenes::refresh(Prop prop) {
       alertProp.known = true;
       break;
     }
-    case kListeningProp:
-      listeningPulse = focus();
-      break;
     default:
-      touchKind = route.state;
+      listeningPulse = focus();
   }
 }
 // A prop whose route ends fades out with its last content, so it never

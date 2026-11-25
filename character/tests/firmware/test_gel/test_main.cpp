@@ -18,6 +18,7 @@
 #include "render/gel/moves.h"
 #include "app/behaviour.h"
 #include "render/gel/sounds.h"
+#include "slime_mesh.h"
 #include "app/device.h"
 #include "linkkit/kit.h"
 #include <new>
@@ -123,13 +124,15 @@ static void test_a_helper_draws_the_same_body() {
 }
 // The AMOLED reads the body's material from a copy in PSRAM
 // (GelFace::readAssetsFrom): the same texels, the same frame. The material
-// is 1025 × 513 texels, under a pixel each across the dome's middle, then
-// half that for where they crowd under a pixel.
+// is 1025 × 513 texels over the sphere, under a pixel each across the
+// dome's middle, then half that for where they crowd under a pixel; each
+// kept down to ring 18 of 24, the lowest the camera sees: 385 and 193 rows.
 static void test_the_materials_copy_draws_the_same_body() {
+  static_assert(slime::kMaterialRings == 18 && slime::kMeshRings == 24, "the rings this test pins");
   size_t bytes = 0;
   GelFace face;
   const void* texels = face.assets(bytes);
-  TEST_ASSERT_EQUAL_UINT32((1025u * 513u + 513u * 257u) * 2u, bytes);
+  TEST_ASSERT_EQUAL_UINT32((1025u * 385u + 513u * 193u) * 2u, bytes);
   std::vector<uint16_t> copy(bytes / 2), a(502 * 410), b(a.size());
   std::memcpy(copy.data(), texels, bytes);
   Surface sa{502, 410, a.data()}, sb{502, 410, b.data()};
@@ -743,14 +746,15 @@ static void test_the_lane_fades_whatever_the_draw_cadence() {
 static void test_gel_clips_use_the_shared_mixer() {
   GelFace face;
   const voice::EffectClips& clips = face.clips();
-  // Fourteen sketches, three takes each: comedy's sneeze and snore breath
-  // too, and a big finish's cheer.
-  TEST_ASSERT_EQUAL_INT(42, clips.count());
+  // The nine sketches the board names, three takes each: the contacts',
+  // comedy's sneeze and snore breath, and a big finish's cheer; the rest of
+  // the design's sketches aren't baked.
+  TEST_ASSERT_EQUAL_INT(27, clips.count());
   TEST_ASSERT_EQUAL_STRING("gel-sketch-v1", clips.version());
   TEST_ASSERT_EQUAL_INT(clips.index("knock-2"), clipFor("knock", 2));
   TEST_ASSERT_EQUAL_INT(-1, clipFor("knock", 3));
   TEST_ASSERT_EQUAL_INT(-1, clipFor("knoc", 0));
-  for (const char* recipe : {"sneeze", "breath", "bounce", "cheer"})
+  for (const char* recipe : {"knock", "squish", "ding", "complete", "failed", "sneeze", "breath", "bounce", "cheer"})
     for (int take = 0; take < 3; ++take) TEST_ASSERT_TRUE(clipFor(recipe, take) >= 0);
   for (int i = 0; i < clips.count(); ++i) {
     const voice::EffectClip clip = clips.at(i);
@@ -1940,7 +1944,6 @@ void test_a_needs_you_under_a_lean_ends_it();
 void test_a_finish_keeps_its_touches();
 void test_listening_takes_the_face_from_a_lean();
 void test_a_hold_on_the_strip_is_the_drawers();
-void test_a_lean_answers_an_ask_that_takes_a_touch();
 void test_an_asks_lane_keeps_its_held_tap();
 void test_a_moment_cuts_a_lean();
 void test_a_drag_starts_where_the_finger_is_on_the_dome();
@@ -2422,12 +2425,10 @@ static void test_steady_frames_allocate_nothing() {
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
       "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
   };
-  setenv("BOOP_SIM_FACE", "gel", 1);
   Hal hal;
   std::vector<uint8_t> px(size_t(kWidth) * kHeight);
   app::Device dev(hal, px.data());
   linkkit::Kit kit(hal, dev, true);
-  unsetenv("BOOP_SIM_FACE");
   auto line = [&](const char* text) {
     kit.handleLine(text, std::strlen(text), linkkit::Link::kUsb);
     kit.tick();
@@ -2667,6 +2668,16 @@ static void test_the_low_sign_stays_in_the_lane_and_holds_a_long_name() {
   sign.ms = 100;
   TEST_ASSERT_TRUE(lowSignDrop(sign, kH) > 0);
   TEST_ASSERT_TRUE(lowSignKey(sign) != rest);
+  // The strip under it is gone by the time it's half way up, so its words
+  // never show through the rising sign.
+  const int most = lowSignDrop(LowSign{"x", LowSign::Mark::kNone, 0, 0}, kH);
+  for (uint32_t ms = 0; ms <= uint32_t(kLowSignRiseMs); ms += 4) {
+    sign.ms = ms;
+    const int drop = lowSignDrop(sign, kH), strip = lowSignStripAlpha(sign, kH);
+    if (ms == 0) TEST_ASSERT_EQUAL_INT(255, strip);
+    if (drop * 2 <= most) TEST_ASSERT_EQUAL_INT(0, strip);
+  }
+  sign.ms = 100;
   sign.ms = 0;
   TEST_ASSERT_EQUAL_INT(0, draw());
   sign.ms = 1000, sign.leftMs = 5;
@@ -3546,7 +3557,6 @@ int main() {
   RUN_TEST(test_a_finish_keeps_its_touches);
   RUN_TEST(test_listening_takes_the_face_from_a_lean);
   RUN_TEST(test_a_hold_on_the_strip_is_the_drawers);
-  RUN_TEST(test_a_lean_answers_an_ask_that_takes_a_touch);
   RUN_TEST(test_an_asks_lane_keeps_its_held_tap);
   RUN_TEST(test_a_moment_cuts_a_lean);
   RUN_TEST(test_a_drag_starts_where_the_finger_is_on_the_dome);

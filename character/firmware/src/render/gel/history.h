@@ -6,13 +6,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
-#include <string>
 namespace render::gel {
-// The key of `s`, continuing from `h` (so a key of a + b is identityKey(b, identityKey(a))).
-inline uint64_t identityKey(const std::string& s, uint64_t h = 1469598103934665603ull) {
-  for (unsigned char c : s) h = (h ^ c) * 1099511628211ull;
-  return h;
-}
 template <class T, int N>
 class History {
  public:

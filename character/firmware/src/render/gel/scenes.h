@@ -129,7 +129,7 @@ struct Scenes {
   };
   Saved alert, held;
   // Each prop keeps the content it last showed while its ramp fades it out.
-  enum Prop { kAlertProp, kListeningProp, kTouchProp, kProps };
+  enum Prop { kAlertProp, kListeningProp, kProps };
   struct Slot {
     bool on = false;
     uint64_t key = 0;
@@ -141,7 +141,6 @@ struct Scenes {
     bool known = false;
   } alertProp;
   F listeningPulse = q(.5);
-  SceneState touchKind = SceneState::kIdle;
   // The tags on and how long the look has shown (Engine::setOccasion).
   uint32_t when = 0, lookMs = 0;
   // The bit the recipe playing carries for acting (a gesture's, a

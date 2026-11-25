@@ -20,9 +20,6 @@ inline int ease(int t, int a, int b) {
   return int(p * p * (3 * 4096 - 2 * p) / (4096 * 4096));
 }
 inline int lerp(int a, int b, int e12) { return a + int(int64_t(b - a) * e12 / 4096); }
-// Quick at first, as a thing let go settles: 1 - (1 - p)².
-inline int easeOut12(int p) { return 4096 - int(int64_t(4096 - p) * (4096 - p) / 4096); }
-inline int easeIn12(int p) { return int(int64_t(p) * p / 4096); }
 // The row the body stands on.
 inline int floorY(const Surface& s) { return s.height * 783 / 1000; }
 
@@ -35,11 +32,5 @@ struct Frame {
     return {x16 + int(rx * scale * 16 / (int64_t(4096) * 4096)), y16 + int(ry * scale * 16 / (int64_t(4096) * 4096))};
   }
   int size16(int u) const { return std::max(8, u * scale * 16 / 4096); }
-  // The same, turned `turn` 4096ths of a turn.
-  Frame turnedBy(int turn) const {
-    Frame f = *this;
-    f.c12 = sinTurn(turn + 1024), f.s12 = sinTurn(turn);
-    return f;
-  }
 };
 }  // namespace render::gel

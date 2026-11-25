@@ -52,9 +52,10 @@ int lowSignChip(int xp, char* out, int size);
 
 // How far below its place it is now: 0 at rest.
 int lowSignDrop(const LowSign& sign, int height);
-// How far up it has come, 0 (none of it) to 255 (at rest): the strip
-// under it fades by as much.
-int lowSignRisen(const LowSign& sign, int height);
+// How much of the strip under it still shows, 255 (none of the sign up)
+// to 0: gone by the time it's half way up, before its rim reaches the
+// strip's words.
+int lowSignStripAlpha(const LowSign& sign, int height);
 // What it shows, as a key that's the same exactly when its pixels are, never 0.
 uint32_t lowSignKey(const LowSign& sign);
 // The sign, over whatever the lane drew.

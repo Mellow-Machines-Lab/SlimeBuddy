@@ -53,17 +53,48 @@ void circle(Raster& r, int cx, int cy, int radius, int width16, uint16_t ink) {
 }
 
 // The glow: soft light breathing about the spot, brightest at its middle,
-// and now and then a ripple going out from it.
+// and now and then a ripple going out from it. The light is ten faint warm
+// gold disks laid over each other, so it falls off smoothly, and a white
+// middle: drawn as one pass out from the middle, each pixel blended once by
+// how far it is from it, each disk's edge a pixel soft, rather than disk by
+// disk. A pixel's distance, in quarters of a pixel, steps out along its row,
+// so a row needs one root.
 void glow(Raster& r, Point at, int radius, int shown, int ms) {
   const int breath = 2900 + of(1196, (sinTurn(ms * 4096 / kGlowBreathMs) + 4096) / 2);
   const int a = of(shown, breath);
-  // Many faint disks, so the light falls off smoothly, warm gold.
-  for (int i = 9; i >= 0; --i) {
-    r.alpha = of(26 - i * 2, a);
-    r.disk(at.x, at.y, radius * (12 + i * 2) / 16, kGlow);
+  constexpr int kDisks = 10, kReach = 255;  // px from the middle, at most
+  const int outer = std::max(1, radius * (12 + (kDisks - 1) * 2) / 16);
+  const int quarters = std::min(outer + 2, kReach) * 4;
+  // Each quarter pixel out: how much gold, and then white, it takes.
+  uint8_t gold[kReach * 4], white[kReach * 4];
+  const int middle16 = std::max(1, radius * 9 / 16) * 16 + 8, middle = of(90, a);
+  for (int q = 0; q < quarters; ++q) {
+    const int d16 = q * 4 + 2;
+    auto covered = [d16](int edge16) { return std::clamp(edge16 - d16 + 8, 0, 16); };
+    int keep = 1 << 16;  // the share of what's under it left, in 65536ths
+    for (int i = 0; i < kDisks; ++i) {
+      const int edge16 = std::max(1, radius * (12 + i * 2) / 16) * 16 + 8;
+      keep -= keep * (of(26 - i * 2, a) * covered(edge16) / 16) / 255;
+    }
+    gold[q] = uint8_t(255 - ((keep * 255 + (1 << 15)) >> 16));
+    white[q] = uint8_t(middle * covered(middle16) / 16);
   }
-  r.alpha = of(90, a);
-  r.disk(at.x, at.y, radius * 9 / 16, kWhite);
+  const int y0 = std::max(0, at.y - quarters / 4), y1 = std::min(r.s.height, at.y + quarters / 4 + 1);
+  r.touch(at.x - quarters / 4, y0, at.x + quarters / 4 + 1, y1);
+  auto light = [&](int x, int y, int q) {
+    if (gold[q]) r.alpha = gold[q], r.pixel(x, y, kGlow);
+    if (white[q]) r.alpha = white[q], r.pixel(x, y, kWhite);
+  };
+  for (int y = y0; y < y1; ++y) {
+    const int dy = y - at.y;
+    for (int dx = 0, q = root(uint32_t(16 * dy * dy));; ++dx) {
+      const int v = 16 * (dx * dx + dy * dy);
+      while ((q + 1) * (q + 1) <= v) ++q;
+      if (q >= quarters) break;
+      light(at.x + dx, y, q);
+      if (dx) light(at.x - dx, y, q);
+    }
+  }
   const int age = ms % kRippleMs;
   if (age < 1000) {
     r.alpha = of(of(220, 4096 - age * 4096 / 1000), shown);
@@ -86,9 +117,9 @@ void label(Raster& r, const char* word, int x, int y, int shown, int ms) {
     std::memcpy(one, p, size_t(std::min(n, 7)));
     p += n;
     const int gx = x + i * f.w, gy = y + 3 * sinTurn(ms * 4096 / 900 - i * 700) / 4096;
-    for (int dy = -2; dy <= 2; dy += 2)
-      for (int dx = -2; dx <= 2; dx += 2)
-        if (dx || dy) text(r, f, gx + dx, gy + dy, one, kRim);
+    // Its rim: the glyph 2 px to each side, under it.
+    for (const Point d : {Point{-2, 0}, Point{2, 0}, Point{0, -2}, Point{0, 2}})
+      text(r, f, gx + d.x, gy + d.y, one, kRim);
     text(r, f, gx, gy, one, kCream);
   }
   r.alpha = 255;

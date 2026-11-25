@@ -52,10 +52,8 @@ struct Board {
   std::unique_ptr<linkkit::Kit> kit;
   uint32_t t = 0;
   explicit Board(const char* state = "{\"t\":\"state\",\"base\":\"idle\",\"idle\":1,\"vol\":0}") {
-    setenv("BOOP_SIM_FACE", "gel", 1);
     dev = std::make_unique<app::Device>(hal, px.data());
     kit = std::make_unique<linkkit::Kit>(hal, *dev, true);
-    unsetenv("BOOP_SIM_FACE");
     kit->setOut(linkkit::Link::kUsb, &usb);
     line("{\"t\":\"dbg.clock\",\"freeze\":0}");
     line(state);
@@ -382,19 +380,6 @@ void test_a_hold_on_the_strip_is_the_drawers() {
   TEST_ASSERT_EQUAL_INT(0, b.lean());
   b.run(800);
   TEST_ASSERT_EQUAL_INT(0, b.count(kLean));
-}
-
-// An ask that a touch answers: a lean is care, so it does.
-void test_a_lean_answers_an_ask_that_takes_a_touch() {
-  Board b;
-  b.line("{\"t\":\"do\",\"id\":7,\"name\":\"react\",\"play\":\"now\",\"args\":{\"sign\":\"pet me?\","
-         "\"ask\":{\"q\":\"pet\",\"a\":\"ok\",\"b\":\"later\",\"touch\":true}}}");
-  b.run(200);
-  b.usb.text.clear();
-  b.touch(100, 90, 1400);
-  b.run(1600);
-  TEST_ASSERT_EQUAL_INT(1, b.count(kLean));
-  TEST_ASSERT_EQUAL_INT(1, b.count("\"kind\":\"ask\",\"did\":\"touch\""));
 }
 
 // A held tap in an ask's lane is its answer, not a lean.

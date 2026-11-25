@@ -77,9 +77,6 @@ Contents layerContents(const Engine& e);
 // the engine's tags and state call for.
 void paintLayers(Surface& surface, const Engine& e, const rig::Anchors& at, const rig::Layers* layers = nullptr,
                  uint32_t t = 0);
-// How far the card sits below its place `ms` after it went up: sliding up,
-// then bobbing.
-int signOffset(uint32_t ms);
 // The sign, at the body's front (its hands' ring), over everything but
 // the lane.
 void paintSign(Surface& surface, const SignShow& sign, const rig::Anchors& at, int hop = 0);

@@ -1,8 +1,7 @@
 // The host's lane under the gel: the status strip, or the
 // bubble while a line plays, drawn at the panel's own size into the
 // surface's bottom fifth, by coverage like the rest of the gel. The same
-// content and rules as the canvas's lane (render/screens.h), which the
-// pixel face keeps.
+// content and rules as the canvas's lane (render/screens.h).
 #pragma once
 #include "render/face.h"
 #include "render/drawer.h"

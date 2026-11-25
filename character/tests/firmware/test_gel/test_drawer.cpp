@@ -42,10 +42,8 @@ struct Board {
   std::unique_ptr<linkkit::Kit> kit;
   uint32_t t = 0;
   Board() {
-    setenv("BOOP_SIM_FACE", "gel", 1);
     dev = std::make_unique<app::Device>(hal, px.data());
     kit = std::make_unique<linkkit::Kit>(hal, *dev, true);
-    unsetenv("BOOP_SIM_FACE");
     kit->setOut(linkkit::Link::kUsb, &usb);
     line("{\"t\":\"dbg.clock\",\"freeze\":0}");
     line(kState);

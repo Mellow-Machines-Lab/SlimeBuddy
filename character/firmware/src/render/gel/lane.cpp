@@ -774,9 +774,9 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   gWatchSlot = s.pipCount > 1 && s.watch >= 0 ? s.pipSlot[s.watch] : -1;
   if (low.shows()) line = note = nullptr;
   // At rest it covers what's under it, so the strip's changes change nothing;
-  // rising, the strip's row fades as it comes.
+  // rising, the strip's row fades out as it comes.
   const bool laneAtRest = low.shows() && lowSignDrop(low, surface.height) == 0;
-  const int rowAlpha = low.shows() ? 255 - lowSignRisen(low, surface.height) : 255;
+  const int rowAlpha = low.shows() ? lowSignStripAlpha(low, surface.height) : 255;
   // A lane that shows what this surface's already shows is kept, not
   // erased and drawn again (Surface::clear): the glow over it too.
   const int doneGlowPeak = doneGlow(done), glow = doneGlowPeak ? doneGlowPeak : gold.glow;

@@ -216,7 +216,7 @@ struct Raster {
   // edge alone (the gel's lane).
   void ring(int x, int y, int w, int h, int radius, int line, uint16_t ink);
 
-  void text(const char* value, int cx, int cy, uint16_t ink, const Font& font = kSmall) {
+  void text(const char* value, int cx, int cy, uint16_t ink, const Font& font) {
     const int w = std::max(1, int(font.w) * s.width / 502), h = std::max(1, int(font.h) * s.height / 410);
     const int len = int(std::strlen(value)), rowBytes = (font.w + 1) / 2, old = alpha;
     int x = cx - len * w / 2, y = cy - h / 2;

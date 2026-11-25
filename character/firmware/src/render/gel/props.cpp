@@ -188,7 +188,7 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Strea
     within({c.x, from, c.x + c.w, c.y + c.h});
     r.bounds = Raster::kEverywhere;
   };
-  auto text = [&](const char* label, int a, int b, uint16_t ink, const Font& font = kSmall) {
+  auto text = [&](const char* label, int a, int b, uint16_t ink, const Font& font) {
     r.text(label, x(a), y(b), ink, font);
   };
   const uint16_t dark = rgb565(20, 55, 72), green = rgb565(140, 223, 203), light = rgb565(184, 233, 245),
@@ -352,12 +352,6 @@ void paintProps(Surface& surface, const Engine& e, const Paws* paws, const Strea
     round(kMic - 8, 119, 16, 31, 8, light);
     r.line({x(kMic), y(153)}, {x(kMic), y(164)}, 2, blue);
     text("LISTENING", kLabel, 144, light, kLarge);
-  }
-  if (F touch = s.visible(Scenes::kTouchProp, now); touch > F(0)) {
-    F pulse = s.envelope(now, kBody);
-    r.alpha = (touch * pulse * 255).integer();
-    for (int i = 0; i < (s.touchKind == SceneState::kTapSpam ? 3 : 1); ++i)
-      r.line({x(798 + i * 16), y(462)}, {x(820 + i * 16), y(480)}, 2, light);
   }
   r.alpha = 255;
   if (F alert = s.visible(Scenes::kAlertProp, now); alert > F(0)) {

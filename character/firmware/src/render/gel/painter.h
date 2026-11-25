@@ -72,8 +72,6 @@ struct PastimeShow;
 // (Surface::clear). Its anchors into `anchors`, when given.
 void paint(Surface& surface, const PaintControls& controls, const Box* keep = nullptr, int keepCount = 0,
            uint32_t keepLane = 0, rig::Anchors* anchors = nullptr);
-// The body alone, over what the surface holds.
-void paintBody(Surface& surface, const PaintControls& controls, rig::Anchors* anchors = nullptr);
 // The body's material, the texels it's drawn from, as linked: and a copy
 // of them to read instead, made where they're quicker to read (on the
 // AMOLED, PSRAM over flash: GelFace::readAssetsFrom), or none for these.

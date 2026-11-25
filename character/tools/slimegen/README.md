@@ -17,7 +17,7 @@ is as code, the one source of each:
 | `scenes.mjs` | Every state's scene recipes, one set of takes for each state (their contacts, timed in ms, and leans; which are `moody`, which the board times by the mood's traits as it deals them; and `standsIn`, the activities the desk shows as another's, which have no row of their own), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits (the reviewed moods' table, else its own `traits` in `expressions.json`) | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
-| `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
+| `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels over the sphere, kept down to the lowest ring the camera sees, ring 18 (385 rows; under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
 
 The faces and the lasting moods are the pack's own,
 `character/character.json`
@@ -58,20 +58,15 @@ whether the climb follows the knock at once (`'replaces'`) or after
 `followsMs` with nobody come (`'follows'`, 20 s), baked into `slime.h` as
 `kKnockClimbAtMs`. An invite's poses and payoffs are the pack's rig clips,
 the back's and the spin's on the rig's `turn`, and take nothing from
-here; nor do the keys' contacts sound, though the keyboard sketch is still
-baked into the bank.
+here; nor do the keys' contacts sound. Only the sketches the board names
+are baked into the bank, three takes each (`catalog.mjs`); the others stay
+design material.
 
 The Mac's popover and onboarding show the board's own firmware: the pack's
 `mac/mirror/` is the firmware built to WebAssembly
 (`firmware/tools/mirror.sh`, [CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §9), so
 a change here that changes what the board draws builds it again, in the
 same commit.
-
-`check-headless.py --output FILE` exercises the real scripted app against
-an isolated synthetic gel USB peer. Add `--native` to connect it to the
-real gel firmware simulator and check hello, mood/attention updates and
-device completion events. Both modes use temporary HOME/state directories.
-See [verification](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/internal/VERIFICATION.md).
 
 After `firmware/tools/pio.sh run -e native`, `internal/tools/boopctl sim
 --face gel` checks native RGB565 screenshots against the gel goldens (one

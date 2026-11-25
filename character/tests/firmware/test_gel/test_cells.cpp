@@ -106,12 +106,11 @@ struct Run {
 };
 
 // The prop each state must show, peaking above half: the alert,
-// listening's, a touch's; the desk for desk states, whole. A result shows
+// listening's; the desk for desk states, whole. A result shows
 // no card: a success its trophy, the rest their body alone.
 void showsItsProp(const Run& r, SceneState state, Outcome outcome = Outcome::kNone) {
   if (state == SceneState::kNeedsYou) TEST_ASSERT_TRUE(r.props[Scenes::kAlertProp] > q(.5));
   if (state == SceneState::kListening) TEST_ASSERT_TRUE(r.props[Scenes::kListeningProp] > q(.5));
-  if (family(state) == Family::kTouch) TEST_ASSERT_TRUE(r.props[Scenes::kTouchProp] > q(.5));
   if (isDesk(state)) TEST_ASSERT_TRUE(r.desk > q(.9));
 }
 
