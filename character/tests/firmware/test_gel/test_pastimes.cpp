@@ -415,7 +415,7 @@ void test_each_activity_is_a_pose() {
     return last;
   };
   int jump = 0;
-  const rig::Channels looking = pose(SceneState::kAnalyzing, &jump), running = pose(SceneState::kTesting, &jump),
+  const rig::Channels looking = pose(SceneState::kAnalyzing, &jump), running = pose(SceneState::kTerminal, &jump),
                       waiting = pose(SceneState::kWaiting, &jump), typing = pose(SceneState::kToolUse);
   // Of 1000, a 16 ms step: no pop. The poses go further than they did
   // (looking presses up to the monitor), so a step may be a little larger.

@@ -1756,16 +1756,13 @@ static void test_a_notice_plays_its_rig_clip() {
 }
 // A clip authored once in the pack's rig/clips/ plays on the gel: work's
 // stretch from tier2, a row of its pastimes (kStretch), through its mixer,
-// laid over the engine's pose (applyRig). The rig's working look has no
-// occasions of its own: the gel's pastimes are one table. Without the tier
-// it doesn't play; the mixer stays at rest, so nothing it draws changes;
+// laid over the engine's pose (applyRig). Without the tier it doesn't play; the mixer stays at rest, so nothing it draws changes;
 // and a reaction fades it out.
 static void test_a_rig_clip_plays_on_the_gel() {
   const rig::Clip* stretch = rig::kRig.clip("stretch");
   TEST_ASSERT_NOT_NULL(stretch);
   TEST_ASSERT_EQUAL_PTR(stretch, clipOf(info(Pastime::kStretch)));
   TEST_ASSERT_EQUAL_INT(2, info(Pastime::kStretch).tier);
-  TEST_ASSERT_EQUAL_INT(0, rig::kRig.look(SceneState::kWorking)->fitting(tagBit("tier2"), 0));
   // The tallest squash and the most shut eyes the gel's mixer reaches at
   // work, over five minutes while the stretch plays, and when it first
   // left rest. The Mac's state comes every 10 s, as it does, so the link
@@ -1903,6 +1900,7 @@ void test_hands_follow_and_change_owner_without_a_jump();
 void test_the_seven_idle_moves();
 void test_a_spin_never_unwinds();
 void test_half_a_turn_off_still_turns();
+void test_the_turn_comes_round_within_its_limits();
 void test_the_finger_numbers();
 void test_acting_timing_and_springs();
 void test_setters_keep_springs_and_replay();
@@ -2418,7 +2416,7 @@ static void test_steady_frames_allocate_nothing() {
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"busy\":1,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"vol\":0,\"attn\":{\"agent\":\"claude\",\"project\":"
       "\"boop\",\"name\":\"Fix a very long test name\",\"id\":7}}",
-      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"testing\",\"mood\":\"wounded\",\"busy\":2,\"vol\":0}",
+      "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"wounded\",\"busy\":2,\"vol\":0}",
       "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"vol\":0}",
       // The pastimes and their kit.
       "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"happy\",\"vol\":0,\"when\":[\"tier3\"]}",
@@ -3524,6 +3522,7 @@ int main() {
   RUN_TEST(test_the_seven_idle_moves);
   RUN_TEST(test_a_spin_never_unwinds);
   RUN_TEST(test_half_a_turn_off_still_turns);
+  RUN_TEST(test_the_turn_comes_round_within_its_limits);
   RUN_TEST(test_the_finger_numbers);
   RUN_TEST(test_acting_timing_and_springs);
   RUN_TEST(test_setters_keep_springs_and_replay);

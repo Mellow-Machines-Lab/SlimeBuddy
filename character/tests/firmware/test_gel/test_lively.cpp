@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 #include "render/gel/face.h"
 #include "render/gel/lively.h"
@@ -285,6 +286,22 @@ void test_half_a_turn_off_still_turns() {
   target[Channel::kTurn] = Lively::kWholeTurn / 2;
   for (int ms = 16; ms <= 3000; ms += 16) l.advance(16, target, 0, 0, false);
   TEST_ASSERT_EQUAL_INT(Lively::kWholeTurn / 2, l.apply(target)[Channel::kTurn]);
+}
+// Come round the short way past the turn's limits (+1950 to -1900 is -2050,
+// two turns and a little round), the spring starts from the limit, which is
+// what draws, and never sits past it; it comes to rest at its target.
+void test_the_turn_comes_round_within_its_limits() {
+  Lively l;
+  rig::Channels target = rig::kRest;
+  target[Channel::kTurn] = 1950;
+  l.advance(16, target, 0, 0, false);
+  target[Channel::kTurn] = -1900;
+  for (int ms = 16; ms <= 3000; ms += 16) {
+    l.advance(16, target, 0, 0, false);
+    const F x = l.settled[Lively::kSettledCount - 1].x;
+    TEST_ASSERT_TRUE_MESSAGE(x >= F(-2000) && x <= F(2000), std::to_string(ms).c_str());
+  }
+  TEST_ASSERT_EQUAL_INT(-1900, l.apply(target)[Channel::kTurn]);
 }
 void test_the_seven_idle_moves() {
   const char* moods[] = {"calm", "happy", "focused", "proud", "cross", "sad", "lonely"};

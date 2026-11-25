@@ -22,18 +22,18 @@
   "acts": {
     "build": {
       "start": "{name} is watching the build run.",
-      "pass": "{name} hops: its sign says built.",
-      "fail": "{name} flinches: its sign says fail."
+      "pass": "{name} hops: the strip says build passed.",
+      "fail": "{name} flinches: the strip says build failed."
     },
     "tests": {
       "start": "{name} is watching the tests run.",
-      "pass": "{name} hops: its sign says pass.",
-      "fail": "{name} flinches: its sign says fail."
+      "pass": "{name} hops: the strip says tests passed.",
+      "fail": "{name} flinches: the strip says tests failed."
     },
     "push": {
       "start": "{name} is watching the push go.",
-      "pass": "{name} hops: its sign says shipped.",
-      "fail": "{name} flinches: its sign says fail."
+      "pass": "{name} hops: the strip says push passed.",
+      "fail": "{name} flinches: the strip says push failed."
     }
   },
   "lasting": [

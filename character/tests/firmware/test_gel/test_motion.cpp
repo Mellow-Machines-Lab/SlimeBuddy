@@ -546,7 +546,7 @@ void test_setters_keep_springs_and_replay() {
       case kGrumpy: e.setMood(slime::kGrumpy); break;
       case kSad: e.setMood(slime::kSad); break;
       case kWorking: e.setFacts(facts(SceneState::kWorking)); break;
-      case kTesting: e.setFacts(facts(SceneState::kWorking, SceneState::kTesting)); break;
+      case kTesting: e.setFacts(facts(SceneState::kWorking, SceneState::kTerminal)); break;
       case kWaiting: e.setFacts(facts(SceneState::kWorking, SceneState::kWaiting)); break;
       case kNeedsYou: e.setFacts(facts(SceneState::kWorking, SceneState::kWorking, "9")); break;
       case kIdle: e.setFacts(facts(SceneState::kIdle)); break;
@@ -592,7 +592,7 @@ void test_setters_keep_springs_and_replay() {
     // Another engine, fed otherwise, meanwhile.
     if (t % 2400 == 0) c->setMood((t / 2400) % slime::kProfiles);
     if (t % 3100 == 0) c->play(request(SceneState::kPoked));
-    if (t == 9000) c->setFacts(facts(SceneState::kWorking, SceneState::kSearching));
+    if (t == 9000) c->setFacts(facts(SceneState::kWorking, SceneState::kAnalyzing));
     for (Engine* e : {a.get(), c.get(), b.get(), d.get()}) e->step(t);
     frames::check(*a, &before);
     before = frames::capture(*a);
@@ -692,7 +692,7 @@ void test_the_scenes_formulas() {
       {slime::kHappy, facts(SceneState::kWorking), SceneState::kReplyReady, Outcome::kNone, 6000},
       {slime::kHappy, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kSuccess, 6000},
       {slime::kCalm, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kFailure, 6000},
-      {slime::kCalm, facts(SceneState::kWorking, SceneState::kDelegating), SceneState::kNone, Outcome::kNone, 20000},
+      {slime::kCalm, facts(SceneState::kWorking, SceneState::kTerminal), SceneState::kNone, Outcome::kNone, 20000},
       {slime::kCalm, facts(SceneState::kWorking), SceneState::kStarting, Outcome::kNone, 6000},
       {slime::kCalm, facts(SceneState::kAsleep), SceneState::kNone, Outcome::kNone, 90000},
   };

@@ -160,8 +160,8 @@ ramps and springs can, and no jolt at an event. By file:
   every reply has one, 1 to 1.8 s, its name fits the board's buffer, a
   shake of the head leans the body, once for each reply, nothing for a
   reply with no clip, from a `ReactionIn` too), the
-  rig's stretch on both faces (a row of the gel's pastimes, over its
-  pose, and on Pixel's rig face, faded out by a Moment), the
+  rig's stretch (a row of the gel's pastimes, over its pose, faded out
+  by a Moment), the
   pastimes (`test_pastimes.cpp`: each row's body in the pack and its
   turn, each with a clip drawing above the lane and over at its clip's
   end, 45 minutes at `tier2` dealing only working ones of `tier1` and
@@ -170,9 +170,9 @@ ramps and springs can, and no jolt at an event. By file:
   tagged pastimes, `test_a_tagged_pastime_plays_only_while_its_tag_is_on`: each
   only while its tag is on, about three deals in eight, idle's as acting's
   bit and asleep's as the scene's take, none at work however busy, and
-  the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose, and its look up at you as a long stretch stops); with you at the Mac (`test_with_you.cpp`: the eyes' rules in order, from needs you down to the glance, `macup` up at the screen; the pointer's eyes, lean, stretch and slide, eased and at most 20 a frame, none in a work pose of its own, needs you first; reading along with its 6 s linger, two minutes to settle in and no pastime over it; music's 24 s groove (a sway, no hop, lids half) and 3 minutes' rest, and the look round as it stops; a video to the Mac's side; a call that stills it through typing, music and five minutes with no pastime, then a stretch; typing fast's quicker, not higher, taps with no paw snapping as it comes and goes, a flicker that doesn't stop it, and wider eyes; and nothing with none of the facts, asleep (the pointer too), while something needs you or with a card in its hands; and what it wears and has beside it: headphones through the groove, its rest and its pastimes and typing along, notes only in the groove, the page on the Mac's side scrolling 14 px a second only while you scroll, the screen for a video, the muted mic alone on a call, at the light size too, and none asleep or the page with a card held); none dealt while something
+  the dream after half an hour; where it looks and typing along (`test_gaze.cpp`: the rules' order, needs you before a pose and a pose's clip keeping the eyes from a glance, a glance's 1.6 s and its 7 s rest with at most seven glances in the busiest minute, a look slower than a finger's follow, and the keys' 4 s linger, no pastime over them, gone for needs you, work and sleep, never cutting a pastime, and at work only in its typing pose, and its look up at you as a long stretch stops); with you at the Mac (`test_with_you.cpp`: the eyes' rules in order, from needs you down to the glance, `macup` up at the screen; the pointer's eyes, lean, stretch and slide, eased and at most 20 a frame, none in a work pose of its own, needs you first; reading along with its 6 s linger, two minutes to settle in and no pastime over it; music's 24 s groove (a sway, no hop, lids half) and 3 minutes' rest, and the look round as it stops; a video to the Mac's side; a call that stills it through typing, music and five minutes with no pastime, then a stretch; typing fast's quicker, not higher, taps with no hand snapping as it comes and goes, a flicker that doesn't stop it, and wider eyes; and nothing with none of the facts, asleep (the pointer too), while something needs you or with a card in its hands; and what it wears and has beside it: headphones through the groove, its rest and its pastimes and typing along, notes only in the groove, the page on the Mac's side scrolling 14 px a second only while you scroll, the screen for a video, the muted mic alone on a call, at the light size too, and none asleep or the page with a card held); none dealt while something
   needs you; at work only the stretch; working's base by tier, its lids lower the further in and
-  faded out under a Moment or while something needs you; and the paws
+  faded out under a Moment or while something needs you; and the hands
   lifting before each key contact and tapping softly between), the rig's
   `x`, `reach` and `melt` on the gel
   (`test_the_rig_carries_reaches_and_melts_the_gel`: x off the screen, the
@@ -195,17 +195,13 @@ ramps and springs can, and no jolt at an event. By file:
   `test_text_glides_between_pixels`, the outfit half a pixel down while
   the body moves), tracked
   clearing and kept cards and lanes matching a fresh frame, a finished
-  turn's low sign and glow coming and going over them, a word falling over
-  a kept card not staying in it
-  (`test_what_falls_over_a_kept_card_doesnt_stay_in_it`), steady frames
+  turn's low sign and glow coming and going over them, steady frames
   allocating nothing, and the work stream
-  (`test_the_work_stream_falls_behind_and_hits_in_front`: words in their
-  lanes' columns behind the body, a hit's knock and daze and its lids
-  opening after, every style drawn off the heap), a hit's daze ending and
-  forgotten across the engine clock's wrap
-  (`test_a_daze_ends_across_the_clock_wrap`), the desk's turn clock in
-  hours and minutes from the hour, never wrapping
-  (`test_the_desk_clock_shows_hours_from_the_hour`), and the agents' drawer
+  (`test_the_work_stream_hits_from_the_monitor`: nothing falling behind the
+  body, a word forward flying from the monitor and drawn over the body, a
+  hit's knock and its lids shut, opening after the daze, nothing taken from
+  the heap), a hit's daze ending and forgotten across the engine clock's
+  wrap (`test_a_daze_ends_across_the_clock_wrap`), and the agents' drawer
   (`test_drawer.cpp`: a pull up the strip opening it and what the Mac
   hears, a swipe up the face staying the face's, a short pull springing
   back, a tap on a row picking it, shutting itself after 15 s and saying
@@ -269,8 +265,8 @@ ramps and springs can, and no jolt at an event. By file:
   round, its back, coming round), the meme faces (`meme-deadpan-side-eye`,
   `meme-squint-smug`, `meme-scream-faint`: each at rest, in its move by
   `dbg.clip`, and after), the
-  with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
-  gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
+  with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other hand, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
+  gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each hand tapping, paused, put away, gone under a Moment, at work each brisk hand with its eyes down and back to soft when you stop, its hands off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: nothing worn at night or on a party night, Zs
   asleep at night, a morning and each special day with nothing worn and
   nothing behind or round it, a sign at night), a Moment's sign (`sign.jsonl`), a finished
@@ -283,7 +279,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   running, a pass with its hop, a fail with its flinch, a push shipped; a
   needs-you and back), the
   desk's monitor (`monitor.jsonl`: each activity's icon and the strip's
-  term, the tests running and failed, a failure landing and the paws
+  term, the tests running and failed, a failure landing and the hands
   flailing, a timeout, waiting), the
   work stream (`stream.jsonl`: two lanes, the newest word in the strip,
   nothing falling, 20 s quiet with nothing beside it, and every style as it
@@ -292,7 +288,7 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   and a turn's end gathering its words after the stream goes), and
   a finger in idle (`swipes.jsonl`), and the agents' drawer
   (`drawer.jsonl`: shut with the strip's grabber, pulled part way, open
-  with the body squeezed flat and its paw over the edge, a row picked,
+  with the body squeezed flat and its hand over the edge, a row picked,
   handed over, and a long list scrolled, a row still coming as it
   scrolls), and an agent's card (`cards.jsonl`: a status coming and held,
   its guess run out, one with no small line, one of three with its dots, a
@@ -313,8 +309,6 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   budget, and the body's time (`body_us`, the erase included); its
   `stream` scene keeps two lanes busy and a word coming forward
   every 2 s (`stream_us`).
-- `internal/tools/fluid/measure.py` measures how fluid the everyday
-  transitions are on the board (`transitions.jsonl`, `idle-swipes.jsonl`).
 
 ## For the eye
 

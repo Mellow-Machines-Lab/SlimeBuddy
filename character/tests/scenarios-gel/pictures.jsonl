@@ -12,7 +12,7 @@
 {"t":"state","base":"working","act":"tool_use","mood":"calm","vol":0,"busy":1,"when":["day"],"calls":[[0,6,"editing nav.test.ts +35"]],"pic":["c",0,"claude","nav.test.ts",35,0,"Nav.css",48,15,"Nav.tsx",22,4]}
 {"clock":3000}
 {"shot":"changes"}
-{"t":"state","base":"working","act":"delegating","mood":"calm","vol":0,"busy":1,"helpers":2,"when":["day"],"calls":[[1,2,"sending a helper"]],"pic":["h",1,"codex",2,1]}
+{"t":"state","base":"working","act":"terminal","mood":"calm","vol":0,"busy":1,"helpers":2,"when":["day"],"calls":[[1,2,"sending a helper"]],"pic":["h",1,"codex",2,1]}
 {"clock":4500}
 {"shot":"helpers"}
 {"t":"dbg.reset"}

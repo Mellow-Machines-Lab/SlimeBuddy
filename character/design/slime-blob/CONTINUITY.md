@@ -148,7 +148,7 @@ spring softens a knock.
 | Overshoot and settle (`settle`) | Each body channel (squash, lean, lift, x, reach, melt, the glass, `turn`) a loose spring toward what the clips ask: a stop goes past and wobbles back. The lift stops at the floor; `turn` goes round the short way, so a spin that ends a whole turn round never unwinds | Frequency and damping: squash 44, 31; lean 30, 21; lift 40, 36; x 34, 31; reach and melt 30, 30; the glass 36, 36; `turn` 26, 24 |
 | The crown drags (`drag`) | The crown behind the base: the lean opposite the body's speed across, so a slide and its stop bend the dome | 2.5 thousandths per px/s, at most 320, on a spring of 19, 11 |
 | The face lags (`face`) | The eyes and the mouth trail the body by a few px and catch up: the one rule that moves the face on the body by itself | Two springs (across, up) of 22, 22; drawn all the way behind, at most 8 canvas px |
-| Hands follow (`hands`) | Each hand's place and size follow its clip, arriving and leaving late; a hand off the desk's keys starts there at the paw's size, and one going back goes there before the desk has it again, so no hand jumps between owners | Place 24, 24; size 34, 38; the desk's paw at ±12 px, 4 up, size 765, home within 3 |
+| Hands follow (`hands`) | Each hand's place and size follow its clip, arriving and leaving late; a hand off the desk's keys starts there at the hand's size, and one going back goes there before the desk has it again, so no hand jumps between owners | Place 24, 24; size 34, 38; the desk's hand at ±12 px, 4 up, size 765, home within 3 |
 
 The body's place, for stretch, drag and the face, is the rig's lift and x
 and the engine's own lift and slide (a bit's), in canvas px. At rest every
@@ -170,8 +170,8 @@ to key every wobble. In V2 the drawn channels trail the keys by tens of ms
 and pass a stop a little before settling; a fast authored shake on a body
 channel (faster than about 5 a second) is softened, so a hit's shake is
 the glass's, laid on after the layer. The face moving on the body by
-itself is new, on purpose. The 60 pinned gel goldens were accepted again
-once with it.
+itself is new, on purpose. The 60 gel goldens pinned then were accepted
+again once with it.
 
 **Prepare is the author's.** Every big move starts with a small opposite
 one: a crouch before a hop, a lean back before a lean in, a dip before the
@@ -623,8 +623,7 @@ for as long as the Moment plays and 3 s after (`Behaviour::done`,
   a name that fits in the sign's font, else in the bubble's, on one line or
   two, up to 50 characters. It rises from the panel's foot over 0.28 s,
   stays through the Moment and 5 s after, and falls away over the last
-  0.4 s. A failure's or a reply's card stays out while it does
-  (`Scenes::cardless`); the trophy stays. Under it, the lane's words give
+  0.4 s. Under it, the lane's words give
   way: past the 3 s, the bubble doesn't show, though the voice goes on; a
   newer Moment's words take the lane back as the sign falls.
 
@@ -695,8 +694,7 @@ second on average, from going down to its last reading, it's a swipe, the
 face's alone, with no poke or other touch and nothing to the Mac; slower, a
 stroke (upward, a ruffle), and the gesture above plays as it lets go. The
 finger's velocity as it lets go is over its last 80 ms. The board's
-`tests/scenarios-gel/swipes.jsonl` and
-`internal/tools/fluid/idle-swipes.jsonl` swipe on the board itself.
+`tests/scenarios-gel/swipes.jsonl` swipes on the board itself.
 
 A finger that starts on the strip is no finger on the body: going up, it
 pulls out the agents' drawer (`render/gel/drawer.h`), and the body is
@@ -985,7 +983,7 @@ change of activity changes the silhouette. The Mac sends four
 shows each as one of the four (`activityOf`: planning and tool_use as
 typing, searching as looking, testing and delegating as running).
 
-| Activity | Body (the rig's clip, `looks.json`'s `acts`) | Eyes | Paws (`paintProps`) | Monitor |
+| Activity | Body (the rig's clip, `looks.json`'s `acts`) | Eyes | Hands (`paintProps`) | Monitor |
 | --- | --- | --- | --- | --- |
 | typing | Upright over the keys, the tier's base (below), a small dip at each key | On the keys | Typing | Three lines of text typed out, then cleared |
 | looking | `work-looking`: leant well in to the monitor at its left (lean −430 to −470, x −34 px, lift 8) and up tall (squash −120 to −145) | Scanning a line left to right, stepping down, four lines in 2.8 s; lids a little lower | Off the keys, still on the desk, to the monitor's side (`kLookingPaws`) | A page of four lines, the one being read lit, stepping down |
@@ -995,12 +993,12 @@ typing, searching as looking, testing and delegating as running).
 - **Activity beats tier.** The tiers vary only the typing pose; pace
   (`busy`, `frantic`) only speeds things up.
 - **A change is a move, not a jump.** The look's clip changes over
-  `kPoseMs` (400 ms, the mixer's `setLook`), the paws ease on a spring as
+  `kPoseMs` (400 ms, the mixer's `setLook`), the hands ease on a spring as
   quick (`Scenes::pose`), and typing's taps go with typing's share. The
   monitor cuts.
-- **Keys only while it types.** A recipe's key contacts and the paws'
+- **Keys only while it types.** A recipe's key contacts and the hands'
   taps play in typing alone, and the keys make no sound: a click at every
-  word was too much, and the paws show the typing (`gel/engine.cpp`'s
+  word was too much, and the hands show the typing (`gel/engine.cpp`'s
   recipes, `key_contact` none) (`Scenes::advance`). The states never
   shown (planning, tool_use, searching, testing, delegating) have no
   recipe row of their own: each plays its activity's.
@@ -1025,10 +1023,10 @@ the zone, low calm lids, a slow wide sway and a deep breath
 (`work-zone`). These are the typing pose's; another activity loops its
 own (above). Under a
 Moment, or while something needs you, the base fades out over the
-mixer's 150 ms, and back after. While it types, the desk's paws type: before each key
-contact of the recipe (silent: the keys make no sound) a paw lifts and lands on it
+mixer's 150 ms, and back after. While it types, the desk's hands type: before each key
+contact of the recipe (silent: the keys make no sound) a hand lifts and lands on it
 (`kTapMs`, `kTapLift`), and between them they tap softly by turns,
-lower and without a sound (`kTypeMs`, `kTypeLift`), so the paws work
+lower and without a sound (`kTypeMs`, `kTypeLift`), so the hands work
 even between the recipe's bursts. A pastime may take them (below).
 
 ### Pastimes (the board's)
@@ -1054,7 +1052,7 @@ engine's own idle takes off while a clip plays. The gel's `looks.json`
 has no `occasions`. The one playing fades out when the look gives way.
 A row may be a **move**, the whole body going somewhere, and none starts
 within 5 minutes of the last (`kMoveGapMs`); no row is one now. A pastime
-that used the desk's paws would say where (`pawsFor`); none does now.
+that used the desk's hands would say where (`pawsFor`); none does now.
 
 | Look | From | Pastimes |
 | --- | --- | --- |
@@ -1080,7 +1078,7 @@ quick as they follow a finger, so a look is a turn and never a dart.
 | When | It looks | For how long |
 | --- | --- | --- |
 | Something needs you | Up at you, then to the Mac's side (the `macleft` or `macright` tag), or up at the screen (`macup`); forward with none | 1.2 s at you (`kNoticeMs`), then turned for as long as it waits |
-| Typing along, idle or at work, its paws tapping | Down at its keys | While they tap |
+| Typing along, idle or at work, its hands tapping | Down at its keys | While they tap |
 | A stretch of typing along of 8 s or more stops (thinking with you) | Up at you | 2 s (`kThinkAfterMs`, `kThinkMs`) |
 | At work in a pose of its own: looking, running, waiting | Where the pose's clip has its eyes (down a page, on the monitor, out at you: the rig's `gazeX` and `gazeY`); the rule itself rests | While the pose lasts |
 | On a call (`oncall`) | Forward, still | While the call lasts |
@@ -1099,20 +1097,20 @@ comes before the pointer in the list.
 Mac (the `typing` tag), it types with you: its body sways a little over
 the keys, to one side and then the other, dipping slightly onto each beat,
 a beat every 600 ms, never hopping (the rig's looping `type-along` clip);
-its paws swing 30 high, one every 300 ms (`kBriskLift`, `kBriskMs`),
+its hands swing 30 high, one every 300 ms (`kBriskLift`, `kBriskMs`),
 against the agents' soft 12 every 340. At the Buddy's size, more was a
 bounce. The keys under the
-paws light as they land, which a small screen barely shows, so on each
-paw's beat a key's tick bursts just off that side of the body, three short
-strokes rimmed dark, out and up, gone by that paw's next tap, longer typing
+hands light as they land, which a small screen barely shows, so on each
+hand's beat a key's tick bursts just off that side of the body, three short
+strokes rimmed dark, out and up, gone by that hand's next tap, longer typing
 fast (`typingTicks` in `gel/layers.cpp`, read from `Engine::typingAlong`):
 the mark that reads from a chair, as speaking's rings do, in every pose,
 the light size too, and never under a sign held up. At work that's at its desk, which
 is out already, and its eyes drop to the keys; you
 stop, and it's back to the soft typing. Only its typing pose types with
-you: looking, running or waiting, its paws are off the keys, the pose has
+you: looking, running or waiting, its hands are off the keys, the pose has
 the body, and your typing changes nothing until it types again. Idle, its keyboard comes out for
-it over the rig's fade; you stop, and its paws rest; the keyboard stays
+it over the rig's fade; you stop, and its hands rest; the keyboard stays
 `kAlongLingerMs` (4 s) more, so a pause doesn't put it away and bring it
 back, and then goes, with a pastime's rest before the next pastime. It is
 the lowest thing there is: it waits for a pastime or a transition to end
@@ -1122,7 +1120,7 @@ keyboard alone; at work they're dealt as ever. The Mac says only that your
 hands are busy, never what they type.
 
 **With you** (`GelFace::showWithYou`): what else the Mac says of you at
-it, each the body, eyes and paws and one mark on or beside it that reads
+it, each the body, eyes and hands and one mark on or beside it that reads
 from a chair (below), lower even than typing along, and only where it's free for you
 (`GelFace::freeForYou`: idle, or at work in its typing pose with no word
 forward; no finger, card, transition or pastime): on a call (`oncall`) it
@@ -1164,13 +1162,13 @@ work it still shows what you're doing while the pose has the body:
 | A video | A small screen beside it on the Mac's side at its eyes' height, a play mark on it, lit in the scene's colour, a new one every 2.6 s crossing over 0.5 s (warm, violet, green, pale); that light added to the body, by how bright each pixel is, so the eyes and mouth stay dark, strongest on the screen's side |
 | On a call | A muted mic, a dark disc with a mic and a slash, held still by its ear on the Mac's side, and nothing else: no headphones, page or screen |
 
-The page and the screen stand beside it, so neither shows while its paws
+The page and the screen stand beside it, so neither shows while its hands
 type along or a card is held; speaking's hand is at its ear, so no
 headphones while you speak.
 
-Typing fast (`typingfast`) moves the paws' phase on quicker, a beat every
+Typing fast (`typingfast`) moves the hands' phase on quicker, a beat every
 210 ms in place of 300 (`kFastMs`), the tap the same share of its beat, so
-no paw snaps as it comes or goes (`GelFace::pawPhase`, `briskLift`); its
+no hand snaps as it comes or goes (`GelFace::pawPhase`, `briskLift`); its
 clip (`type-along-fast`) hunches it in 50, opens its eyes 260 and widens
 them 140, and stays through a flicker off of 800 ms (`kFastLingerMs`).
 
@@ -1214,7 +1212,7 @@ its cursor blinking (running), a flask filling (the tests running, on
 `state`'s `wact`), an hourglass with its sand running (waiting). A
 failure landing turns it to a red cross on a dark red screen, a timeout
 to an amber clock, each for the word forward's 2.5 s; a work act's
-result to a tick or a cross for its 2.6 s. As a failure lands the paws
+result to a tick or a cross for its 2.6 s. As a failure lands the hands
 flail up and down by turns for 1.1 s (`flailLift`).
 
 ### The work acts (the board's)
@@ -1306,7 +1304,7 @@ busy the agents.
 Build a persistent desk and computer once. Typing, looking, running and
 waiting (The four activities, above) are activity submodes,
 not swaps to unrelated sets. Keep desk positions and parent transforms
-stable, change the body's pose, the paws and the monitor's one shape. Every state ([STATES.md](STATES.md)) still has its own
+stable, change the body's pose, the hands and the monitor's one shape. Every state ([STATES.md](STATES.md)) still has its own
 meaning, variations and audio policy.
 
 An action recipe has phases `enter → act → recover → sustain`. Start
@@ -1523,9 +1521,8 @@ poke keeps the mood.
 
 ## One face per board
 
-The owner selected one face per board at build time: the CYD keeps its
-pixel bank; the AMOLED uses the integer gel renderer behind the common
-face interface. There is no runtime character switcher and no frame
+The owner selected one face per board at build time: the AMOLED uses the
+integer gel renderer behind the common face interface. There is no runtime character switcher and no frame
 streaming over the link. The Mac's popover and onboarding show the
 board's own firmware built to WebAssembly (characters/CHARACTER.md §9),
 which `boopctl mirror` checks draws every gel scenario as the native
