@@ -1,4 +1,5 @@
 // What the design's data must be before slimegen bakes it: a bad edit fails
+import {sceneMoodTraits} from './scenes.mjs';
 // here, naming what's wrong, rather than baking a slime that can't move or
 // sound as it should. The board's behaviour is pinned by its own tests
 // (test_gel); these are the inputs' own rules.
@@ -7,8 +8,8 @@ const fail=(what)=>{throw Error('slimegen: '+what);};
 
 // The expressions: one for each face the pack names (character.json's
 // `moods`), of that face, before any alternate; each
-// with its three gestures, its sound's pitch and gain, and only gags that
-// exist. Every lasting mood rests in faces that exist; and the gestures' and
+// with its sound's pitch and gain, its scenes' traits unless it's a
+// reviewed mood's (scenes.mjs sceneMoodTraits), and only gags that exist. Every lasting mood rests in faces that exist; and the gestures' and
 // the notice takes' faces are each an expression.
 function expressionRules(character,design,sound) {
   const ids=character.moods.map(m=>m.id);
@@ -20,7 +21,7 @@ function expressionRules(character,design,sound) {
   for(const m of character.lasting)for(const face of m.levels||[m.id])if(!ids.includes(face))fail(`${m.id} rests in no face ${face}`);
   for(const [id,e] of Object.entries(design.expressions)){
     if(!ids.includes(e.mood))fail(`${id} is of no face ${e.mood}`);
-    if(e.performances.length!==3)fail(`${id} has ${e.performances.length} gestures, not three`);
+    if(!sceneMoodTraits[e.mood]&&!['delayMs','spacing','gain','lean'].every(k=>typeof e.traits?.[k]==='number'))fail(`${id} has no traits`);
     for(const gag of e.gags||[])if(!design.gags[gag])fail(`${id} names no gag ${gag}`);
   }
   for(const n of [...design.notices,...design.gestures])if(!design.expressions[n.face])fail(`${n.id} borrows no expression ${n.face}`);

@@ -333,9 +333,10 @@ void test_acting_timing_and_springs() {
       const double start = num(e->acting.start);
       if (!count) TEST_ASSERT_TRUE(start >= 1 && start < 1.016 + 1e-6);
       const double gap = num(e->acting.nextPerformance) - start -
-                         num(Acting::gesture(e->acting.emotion, e->acting.performance).duration);
+                         num(Acting::duration(e->acting.emotion, e->acting.performance));
       TEST_ASSERT_TRUE(gap >= 7 - 1e-5 && gap < 15 + 1e-5);
-      TEST_ASSERT_TRUE(e->acting.performance != last);
+      // Calm's one take, its move, each time.
+      TEST_ASSERT_TRUE(e->acting.performance == 0 && (last < 0 || last == 0));
       last = e->acting.performance;
       ++count;
     }
@@ -370,8 +371,9 @@ void test_acting_timing_and_springs() {
   {
     Acting a;
     Random random(53);
-    TEST_ASSERT_TRUE(a.perform(T(), random, 0));
-    const auto& p = slime::kProfile[slime::kCalm].performances[0];
+    a.emotion = slime::kExcited;  // its own bit, the zoomies: its cues are impulses
+    TEST_ASSERT_TRUE(a.perform(T(), random, 1));
+    const auto& p = Acting::gag(slime::kExcited, 1)->gesture;
     TEST_ASSERT_TRUE(p.count > 0);
     for (int k = 0; k < p.count;) {
       const T at = p.cues[k].at;
@@ -611,10 +613,8 @@ namespace {
 // 0.052 and pushing forward 0.045; a success's card lifting 0.036 and
 // forward 0.025, a failure's sagging 0.048 and back 0.035; a start's, a
 // helper's, a reply's or a stop's 0.018 up and forward, an error's 0.018 up
-// and 0.025 back), at its strength; a mood's own gesture echoing as it
-// recovers (lean 0.025, squash 0.018, forward 0.015 a unit of velocity,
-// each cue a sin² over 0.48 s of the gesture played over the recovery); and
-// asleep, a snore's breath swelling it.
+// and 0.025 back), at its strength; and asleep, a snore's breath swelling
+// it.
 std::array<double, 3> aim(const Engine& e) {
   const Scenes& s = e.scenes;
   const double now = num(e.timeMs()), age = num(s.ageMs), duration = num(s.recipe.duration);
@@ -642,21 +642,6 @@ std::array<double, 3> aim(const Engine& e) {
   const double entry = smoothstep(age / 240), recovery = recovering ? smoothstep((duration - age) / 480)
                                                          : !std::strcmp(s.phase, "sustain") ? 0
                                                                                             : 1;
-  double echo[3] = {};
-  const auto& profile = slime::kProfile[s.profileExpression];
-  if (active && recovering && !profile.representative && s.variant < kGestures && s.recipe.gag < 0) {
-    const auto& p = profile.performances[s.variant];
-    const double at = (1 - (duration - age) / 480) * num(p.duration);
-    const int onto[] = {0, 1, 2, 1, 0, 2};  // lean, squash, ripple, lift, roll, forward:
-                                            // onto lean, squash, forward
-    const double gain[] = {.025, .018, .015};
-    for (int i = 0; i < p.count; ++i) {
-      const double since = at - num(p.cues[i].at);
-      if (p.cues[i].channel > 5 || since < 0 || since > .48) continue;
-      const int to = onto[p.cues[i].channel];
-      echo[to] += num(p.cues[i].velocity) * gain[to] * std::pow(std::sin(M_PI * since / .48), 2);
-    }
-  }
   const bool waves = s.route.state == SceneState::kListening;  // waiting's sway is its rig clip's
   const double wave = waves ? .65 + .35 * std::sin(age / duration * M_PI * 2 * s.recipe.focus) : 1;
   if (!active) {
@@ -667,19 +652,19 @@ std::array<double, 3> aim(const Engine& e) {
     return {0, swell, 0};
   }
   const double side = s.hasLast ? s.last.side : 0;
-  return {num(s.recipe.lean) * entry * recovery * wave + side * contact * .024 + echo[0],
+  return {num(s.recipe.lean) * entry * recovery * wave + side * contact * .024,
           -contact * .052 +
               (success   ? .036
                : failure ? -.048
                          : 0) *
                   reveal +
-              present * .018 + echo[1],
+              present * .018,
           contact * .045 +
               (success   ? .025
                : failure ? -.035
                          : 0) *
                   reveal +
-              present * .018 + echo[2]};
+              present * .018};
 }
 
 }  // namespace

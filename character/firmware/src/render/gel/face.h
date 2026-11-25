@@ -15,6 +15,7 @@
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
 #include "render/gel/lane.h"
+#include "render/gel/lively.h"
 #include "render/gel/gaze.h"
 #include "render/gel/painter.h"
 #include "render/gel/pastimes.h"
@@ -121,6 +122,10 @@ class GelFace final : public Face {
   // A rig clip of the pack's, by its id, over what's there now: for
   // scenarios and the Studio (the flop, which no Moment names yet).
   bool playClip(const char* name, uint32_t t) override;
+  // A rule of the motion layer (render/gel/lively.h) on or off by name, or
+  // "all": dbg.motion's. A reset puts every one back as kRules has it.
+  bool motionRule(const char* rule, bool on) override { return lively_.set(rule, on); }
+  const Lively& lively() const { return lively_; }
   // What it shows of the pastimes at t: the one playing.
   PastimeShow pastimes(uint32_t t) const;
   // How long its keyboard stays out after you stop typing (showAlong).
@@ -152,9 +157,11 @@ class GelFace final : public Face {
   // Typing fast stays fast through a flicker off this long (showAlong).
   static constexpr uint32_t kFastLingerMs = 800;
   // What it does with you now besides typing along, and the rig's channels
-  // as it paints them: the mixer's, with the lean it follows.
+  // as it paints them: the mixer's, with the lean it follows and the move
+  // playing (clipChannels), under the motion layer, and a hit's shake.
   WithYou withYou() const { return with_; }
   rig::Channels channels() const;
+  rig::Channels clipChannels() const;
 
  private:
   bool bodyFree() const;
@@ -177,6 +184,9 @@ class GelFace final : public Face {
   static constexpr uint16_t kLeanBreathPitch = 900, kDozeBreathPitch = 800;
   std::unique_ptr<Engine> engine_;
   rig::Mixer mixer_;
+  // The motion layer over the clips' channels, stepped with the engine.
+  Lively lively_;
+  void showLively(uint32_t dt, uint32_t t);
   // The Zs, as the engine's tags and state call for them
   // (layerContents), each fading in and out.
   rig::Layers layers_;
@@ -215,6 +225,9 @@ class GelFace final : public Face {
   bool stopped_ = false;
   // The base clip on the mixer (showBase).
   const rig::Clip* base_ = nullptr;
+  // The mood's idle move playing (Acting's move), and until when.
+  const rig::Clip* idleMove_ = nullptr;
+  uint32_t idleMoveEnds_ = 0;
   // Typing along with you (showAlong): while your hands are busy at the Mac
   // (the `typing` tag) it types as you do: its paws swing higher than the
   // agents' soft typing, and its body sways a little over the keys, keeping

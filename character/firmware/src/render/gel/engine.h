@@ -74,6 +74,10 @@ class Engine {
   // The invite showing (render/gel/invite.h), its time the board's as of the
   // last step: the face's to set, the painter's to draw.
   InviteShow invite;
+  // How far the face trails the body (render/gel/lively.h's face rule), in
+  // sixteenths of a canvas px, x right and y up: the face's to set, the
+  // painter's to draw.
+  int faceLagX16 = 0, faceLagY16 = 0;
   void sync();
   void step(uint32_t ms);
   void setMood(int id) {

@@ -1,4 +1,6 @@
 #include "render/gel/acting.h"
+
+#include "rig_tables.h"  // the staged pack's (characters/charactergen.py)
 namespace render::gel {
 namespace {
 // The channels a cue or a key names (slimegen's): the six gestures', then a
@@ -17,6 +19,11 @@ F keyed(const slime::Gag& gag, int channel, T age) {
   }
   return value;
 }
+T Acting::duration(int profile, int take) {
+  if (const slime::Gag* g = gag(profile, take)) return g->gesture.duration;
+  const rig::Clip* clip = rig::kRig.clip(slime::kIdleMoves[profile]);
+  return clip ? T::ratio(clip->ms, 1000) : T(0);
+}
 bool Acting::perform(T time, Random& random, int index) {
   if (suppressed) return false;
   const int n = takes(emotion);
@@ -31,7 +38,8 @@ bool Acting::perform(T time, Random& random, int index) {
   start = time;
   cursor = contactCursor = 0;
   ++count;
-  nextPerformance = time + gesture(emotion, selected).duration + 7 + random.unit() * 8;
+  move = gag(emotion, selected) ? nullptr : slime::kIdleMoves[emotion];
+  nextPerformance = time + duration(emotion, selected) + 7 + random.unit() * 8;
   return true;
 }
 void Acting::hold(int g, int generation, int iteration, T time) {
@@ -65,14 +73,15 @@ void Acting::advance(T dt, T time, bool grab, Random& random) {
   if (!suppressed && !grab && !holding && time >= nextPerformance) perform(time, random);
   F target[kChannels]{};
   if (!suppressed && (performance >= 0 || playing >= 0) && expression == emotion) {
+    // A bit plays here; the mood's move is the face's clip.
     const auto* g = current();
-    const auto& p = g ? g->gesture : slime::kProfile[emotion].performances[performance];
     T age = time - start;
-    while (cursor < p.count && age >= p.cues[cursor].at) {
-      const auto& cue = p.cues[cursor++];
-      (cue.channel == kSlide ? slide : channels[cue.channel]).v += cue.velocity;
-    }
     if (g) {
+      const auto& p = g->gesture;
+      while (cursor < p.count && age >= p.cues[cursor].at) {
+        const auto& cue = p.cues[cursor++];
+        (cue.channel == kSlide ? slide : channels[cue.channel]).v += cue.velocity;
+      }
       // A bit's keys set its channels' targets.
       for (int c = 0; c < kChannels; ++c) target[c] = keyed(*g, c, age);
       // Its contacts are its sounds; they move nothing themselves.

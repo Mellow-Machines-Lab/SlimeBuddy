@@ -1,6 +1,6 @@
 {"about": "Needs you, and nobody comes: the knock climbs. 2: louder, closer, a bigger fist, three knocks. 3: both fists, by turns, wide eyed and shaking. 4: it gives up, its forehead on the glass, palms sliding down, eyes shut; then it peels off.", "ms": 8000, "tracks": {
-    "glass": [[0, 0], [400, 450, "out"], [2200, 450], [2500, 650, "out"], [4800, 650], [5400, 1000, "out"], [7200, 1000], [8000, 0, "inout"]],
-    "lean": [[0, 0], [400, 200, "out"], [2200, 200], [2500, 0], [8000, 0]],
+    "glass": [[0, 0], [120, 0], [400, 450, "out"], [2200, 450], [2500, 650, "out"], [4800, 650], [5400, 1000, "out"], [7200, 1000], [8000, 0, "inout"]],
+    "lean": [[0, 0], [120, -50], [400, 200, "out"], [2200, 200], [2500, 0], [8000, 0]],
     "eyeOpen": [[0, 0], [300, -220], [2200, -220], [2400, 0], [4800, 0], [5200, -1000], [7500, -1000], [8000, 0]],
     "eyeSize": [[0, 0], [2200, 0], [2400, 300, "out"], [4800, 300], [5100, 0]],
     "mouthOpen": [[0, 0], [2300, 0], [2500, 850, "out"], [4700, 850], [4900, 0]],

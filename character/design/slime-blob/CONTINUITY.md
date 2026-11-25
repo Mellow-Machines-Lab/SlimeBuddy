@@ -1,6 +1,6 @@
 # Continuous actor and animation authoring
 
-Updated 2026-11-24. The slime's one engine is the C++ in
+Updated 2026-11-25. The slime's one engine is the C++ in
 `character/firmware/src/render/gel/` (below, `gel/`): the board runs
 it, and so do the simulator and the Mac's mirror of the board, the
 firmware built to WebAssembly (characters/CHARACTER.md §9). Every activity
@@ -36,13 +36,15 @@ core in the same order, so the frame is pixel for pixel one core's
 (test_gel's `test_a_helper_draws_the_same_body`). `gel/art.cpp` draws the face's art (slimegen's
 `painter.mjs`, baked as vector paths into `slime_art.h`) on the body, moved
 and sized by the face's controls. There is no inner jellyfish cap or model
-asset. The face rides the body: it never slides on its own during a grab
-or a deformation.
+asset. The face rides the body during a grab or a deformation; since
+motion V2 it trails the body a few px as it moves (The motion layer,
+below), and catches up.
 
 | Area | What it does | How to extend |
 | --- | --- | --- |
 | `expressions.json`, slimegen's `painter.mjs`, `face.mjs` | Face designs and the controls they're drawn at | Edit the catalogue and a matching painter primitive; run slimegen |
-| `gel/motion.cpp` `Motion` | The accepted V1 springs, blink, breath and gaze | A change is a named motion revision: edit `test_the_motion_v1_numbers` with it |
+| `gel/motion.cpp` `Motion` | The accepted V1 springs, blink, breath and gaze | A change is a named motion revision, with its own pinned numbers |
+| `gel/lively.cpp` `Lively` | Motion V2's layer: the five rules under every clip | A change is a named motion revision: a new test like `test_the_motion_v2_numbers` |
 | `gel/acting.cpp`, `gel/engine.cpp` `pose`, `posture` | Additive authored emotion acting, the mood posture | Add bounded layers without replacing the base pose |
 | `gel/painter.cpp`, `slime_mesh.h` | The persistent body and gel appearance | Keep silhouette and material identity; never change them per mood |
 | `gel/engine.h` `dragStart`, `dragMove`, `dragEnd` | Local pull and rebound | Keep the bounded spring state |
@@ -97,7 +99,7 @@ sin(1.65 t) to the squash; a blink is sin² over 0.24 s, the first at 2.8 s,
 then every 3 to 7 s; the gaze looks within ±0.014, every 3.2 to 7.2 s,
 easing at rate 3.
 
-The additive gesture springs (`gel/acting.cpp`) are frequency 11 (lift),
+The additive acting springs (`gel/acting.cpp`), which a bit plays on, are frequency 11 (lift),
 10 (roll) and 9 (the other channels), damping 6.4, in the same substeps,
 within 0.24 for lift, 0.12 for roll, 0.18 for forward and 0.42 otherwise,
 velocity 5. The grab spring is stiffness 256 and damping 20 while held (100
@@ -127,6 +129,78 @@ by one critically damped spring per expression, ω = 10, whose target is one
 for the current expression and zero for the others. The weights sum to one,
 so the posture eases between moods with no step in velocity, and it reads
 after the quiet blend.
+
+## The motion layer (motion V2)
+
+Motion V2, Lively, is V1's springs as they were (above: the body's four
+modes, blink, breath and gaze, still pinned by `test_the_motion_v1_numbers`)
+and over them five rules that run under every rig clip, so a clip's author
+writes only the main pose and the gel adds the rest (`gel/lively.h`
+`Lively`, stepped by the face with the engine, in the same 1/240 s
+substeps; `test_the_motion_v2_numbers` pins its numbers). The face lays
+it on the rig's channels after its mixer, its follows and its moves
+(`GelFace::clipChannels`), and a hit's shake on the glass after it, so no
+spring softens a knock.
+
+| Rule (its switch) | What it does | Its numbers |
+| --- | --- | --- |
+| Stretch with speed (`stretch`) | Taller while the body moves up or down fast, flat as it lands, then a wobble; the volume kept, as for every squash | 0.7 thousandths taller per px/s, at most 220; a landing kicks a `flat` spring (frequency 38, damping 23) 30 per px/s, within 300 |
+| Overshoot and settle (`settle`) | Each body channel (squash, lean, lift, x, reach, melt, the glass) a loose spring toward what the clips ask: a stop goes past and wobbles back. The lift stops at the floor | Frequency and damping: squash 44, 31; lean 30, 21; lift 40, 36; x 34, 31; reach and melt 30, 30; the glass 36, 36 |
+| The crown drags (`drag`) | The crown behind the base: the lean opposite the body's speed across, so a slide and its stop bend the dome | 2.5 thousandths per px/s, at most 320, on a spring of 19, 11 |
+| The face lags (`face`) | The eyes and the mouth trail the body by a few px and catch up: the one rule that moves the face on the body by itself | Two springs (across, up) of 22, 22; drawn all the way behind, at most 8 canvas px |
+| Hands follow (`hands`) | Each hand's place and size follow its clip, arriving and leaving late; a hand off the desk's keys starts there at the paw's size, and one going back goes there before the desk has it again, so no hand jumps between owners | Place 24, 24; size 34, 38; the desk's paw at ±12 px, 4 up, size 765, home within 3 |
+
+The body's place, for stretch, drag and the face, is the rig's lift and x
+and the engine's own lift and slide (a bit's), in canvas px. At rest every
+spring rests exactly on its target, so a still pose draws as it did in V1;
+a step of 1 s or more sets each where it's going, as the mixer's springs do.
+
+**Each rule has a switch**, all on: `Lively::kRules`, the one place, which
+`dbg.motion` sets by name (`{"t":"dbg.motion","rule":"face","on":false}`,
+or `"rule":"all"`) for a scenario or the Studio, until the next reset. Off,
+a rule gives back V1's motion for its part exactly
+(`test_each_motion_rule_off_gives_back_the_motion_before`), and every
+spring comes to rest after a clip (`test_the_motion_layer_comes_to_rest`).
+The face lag is the owner's open question, alive or loose: judge it on the
+board with `face` off and on.
+
+**What changed from V1, and why.** V1 drew each clip exactly as keyed and
+the face fixed on the body, so a clip's stop was a stop and its author had
+to key every wobble. In V2 the drawn channels trail the keys by tens of ms
+and pass a stop a little before settling; a fast authored shake on a body
+channel (faster than about 5 a second) is softened, so a hit's shake is
+the glass's, laid on after the layer. The face moving on the body by
+itself is new, on purpose. The 60 pinned gel goldens were accepted again
+once with it.
+
+**Prepare is the author's.** Every big move starts with a small opposite
+one: a crouch before a hop, a lean back before a lean in, a dip before the
+glass. The engine adds none, so each clip keys its own (as `idle-happy`,
+`invite-palm`, `knock` and `knock-climb` do).
+
+**Its cost.** Seventeen springs more each 16 ms step (seven settled
+channels, flat, the crown, two for the face, three for each hand), integer
+and on the face's clock; nothing more is drawn: the face's lag is an
+offset of where its art already goes.
+
+## Idle moves
+
+Each lasting mood has one idle move, a rig clip `idle-<mood>` that ends
+where it starts, which idle plays as its acting deals it (the mood's move
+and the expression's own bits, `Acting::takes`): the face plays the clip
+(`GelFace::advanceTo`), and every face plays its lasting mood's
+(slimegen's `kIdleMoves`). They replace the 19 faces' three mood gestures
+each, the spring kicks motion V2 gives every pose by itself.
+
+| Mood | Its move | Why it reads so |
+| --- | --- | --- |
+| calm | `idle-calm`: a slow look aside, held, and back, a glance the other way | Nothing to do and all is well: unhurried, it just looks |
+| happy | `idle-happy`: a crouch, one buoyant hop beaming, eyes squeezed, landing round | Joy is a hop for nothing at all |
+| focused | `idle-focused`: a lean back, then in to inspect something, eyes narrowed | Attention: it goes closer to look |
+| proud | `idle-proud`: a dip, then chin up, tall, eyes up and half shut | Pride stands tall and looks down its nose |
+| cross | `idle-cross`: two stomps, flat at each, then a huff to one side | Temper comes out as a stamp |
+| sad | `idle-sad`: a slow sag, flatter, eyes down, and gathering itself again | Sadness weighs it down |
+| lonely | `idle-lonely`: it looks around for someone, one way and the other, finds nobody, sinks | Looking for you, and you're not there |
 
 ## Representative activity scenes
 
@@ -186,8 +260,8 @@ mood/state/factual outcome or context differ in rhythm, with no adjacent
 repeats; asleep and a successful finish have a fourth (Comedy, below).
 Routine work changes variation after recovery; alert/result requests choose
 once at entry. Mood retargeting does not restart an existing recipe or
-alert. The expression's gesture recipes play only in idle without a grab;
-the activity scene owns the choreography elsewhere. A state change cancels
+alert. The mood's idle move (Idle moves, below) plays only in idle without a
+grab; the activity scene owns the choreography elsewhere. A state change cancels
 future recipe contacts but keeps every spring's position and velocity,
 including the composed body pose.
 
@@ -304,8 +378,8 @@ The engine implements all 22 factual states in the nine scene families of
 [STATES.md](STATES.md): 18 faces × 22 states, 396 cells,
 including 36 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
 all its takes: three, a successful finish's four, a gesture's ten (each
-asked for, as the board does), and idle's (an expression's three gestures
-and its comedy, six or seven); quiet aliases keep the mood and use the
+asked for, as the board does), and idle's (its mood's move, and excited's
+zoomies); quiet aliases keep the mood and use the
 shared sleeping face without acting, and without contacts but a snore's
 breaths. The two face alternates are outside this canonical matrix.
 
@@ -313,18 +387,20 @@ The scene selects a shuffle bag keyed by mood, state and factual
 outcome/context. Desk modes, delegating and listening select again only
 after recovery. A Moment selects once per request and keeps that recipe
 across explicit loops; an attention entry selects once and then holds.
-Idle uses its expression's three gesture recipes, then its comedy, with a
-separate automatic shuffle bag per expression and the quiet interval
+Idle plays its lasting mood's one move, and an expression's own bit, with
+a separate automatic shuffle bag per expression and the quiet interval
 above. A bag's first round deals its first three entries; every later round
 deals all of them (Comedy, below). Each round is exhausted before the next
 and no entry repeats across a refill. Changing targets never replaces the
 body or its springs.
 
-For the other canonical moods, slimegen's `scenes.mjs` derives bounded
-traits from the expression's authored performances. Let `D` be their mean
-duration in seconds, `E` the mean absolute cue velocity, and `L` the sum
-of signed lean/forward cue velocities divided by the total cue count.
-Empty cue lists use a denominator of one. The traits are:
+For the other canonical moods, the traits are the expression's own
+`traits` in `expressions.json`, numbers once derived from the three mood
+gestures each had before motion V2, and kept as they were when those were
+folded into the idle moves. They were derived so: let `D` be the
+gestures' mean duration in seconds, `E` the mean absolute cue velocity,
+and `L` the sum of signed lean/forward cue velocities divided by the total
+cue count (a denominator of one for none):
 
 | Trait | Formula and bound |
 | --- | --- |
@@ -341,15 +417,9 @@ target. Crying+working has an authored exception: contact times [760,
 1780], [640, 2120] or [1020, 2300] ms, strength 0.55 and lean −0.024. All
 keyboard contacts then receive the bounded jitter.
 
-Outside the four reviewed moods, the selected expression performance also
-contributes a bounded recovery gesture (`gel/scenes.cpp`). Recovery
-progress maps the entire authored performance duration into the scene's
-recovery window. Each cue contributes `velocity × gain × sin²(π × cueAge /
-0.48)` only while its authored age is between zero and 0.48 seconds. Roll
-maps to lean, lift to squash, and ripple to forward; the corresponding
-gains are 0.025, 0.018 and 0.015. Lean, squash and forward cues keep their
-channel. The result passes through the activity spring and final bounds
-above. A grab or quiet state suppresses these contributions.
+Until motion V2 a mood's gesture also echoed as a small recovery pose at
+the desk; it went with the gestures, and the desk's recovery is now the
+scene's lean easing back alone.
 
 The additional desk rhythms before mood shaping and jitter are:
 
@@ -415,17 +485,17 @@ a stretch, a tilt, a slide or a rebound.
 | Hiccups: Little Win's hop and trophy, then three small hiccups | A small successful finish | Its fourth take | The fanfare, then three squishes |
 | A gift: a small bug beside the trophy | Proud's small successful finish | Its second take, lifted | As that take |
 
-**Idle's comedy is bits, beside the gestures.** Idle's variations are an
-expression's performances, so its comedy is more of them: acting's bag
-(`gel/acting.cpp`) deals an expression's three gestures and its own
-`gags` (expressions.json); the comedy every expression shares, the yawn
-and the sneeze, is the face's to deal, rows of its pastimes (Pastimes,
-below), which acting plays in place of its next gesture. A bit is in
+**Idle's comedy is bits, beside the mood's move.** Acting's bag
+(`gel/acting.cpp`) deals its lasting mood's move (Idle moves, below) and
+the expression's own `gags` (expressions.json); the comedy every
+expression shares, the yawn and the sneeze, is the face's to deal, rows of
+its pastimes (Pastimes, below), which acting plays in place of its next
+take. A bit is in
 `gags` once, shared. It is a performance (its `cues`, impulses on the gesture
 springs) with `keys`, which set a channel's target (from (0, 0) at its
 start, a smoothstep to each of the channel's keys in turn, then its last
 value), and `contacts`, which sound and move nothing. Every channel's keys
-lie inside its bound and come back to rest. The six gesture springs follow
+lie inside its bound and come back to rest. The six acting springs follow
 their keys under-damped, as gel does; a bit has two springs of its own,
 its `slide` (frequency 10, damping 9, at most 0.7) and its `lids`
 (critically damped, frequency 24). The lids close the eyes as a blink
@@ -440,8 +510,7 @@ many each row has. Widening every row to four would have carried 296 KB of
 empty recipes on the AMOLED; the fourths are about 20 KB. A host may ask
 for a take from 0 to 3; one its state hasn't is dealt from the bag. A
 finish timed without its outcome finds a success's fourth (`GelFace::recipe`).
-A fourth take has no gesture of its own, so no recovery gesture. A
-successful finish's row goes on past its fourth with the finishes a size
+A finish's row goes on past its fourth with the finishes a size
 above small (Finishes), which no bag deals.
 
 **Comedy joins a bag's second round.** One rule for every bag, acting's
@@ -449,10 +518,9 @@ and the scenes': its first round deals the first three takes, the ones every
 state has always had; every later round deals all of them, never opening on
 the take just dealt. A fresh mood, a reset and every first round play as
 they always did, and the joke comes once the straight takes have been seen.
-Acting's bags hold at most four (`kMaxGestures`: three gestures and an
-own bit), the scenes' four (`kMaxTakes`). In idle, with a gesture every 10
-to 20 seconds, a mood's own bit plays after about 40 seconds, then about
-once a round.
+Acting's bags deal at most two (`kIdleTakes`: the mood's move and an own
+bit), the scenes' four (`kMaxTakes`). In idle, with a take every 8 to 19
+seconds, excited's zoomies come every other take or so.
 
 **Asleep picks again after each take**, as routine work does. Its first
 rest is always the still one, drawn from no bag, so sleep starts still for at
@@ -592,10 +660,9 @@ mood too.
 A scene lasts its bit and 200 ms more. **A recipe may carry a bit.**
 The scene names it (`gag`), and acting plays it once for each pass of the
 recipe (its generation and iteration), in any state, then waits: its own
-next gesture comes three seconds after the bit ends, and none is dealt
+next take comes three seconds after the bit ends, and none is dealt
 while one is held. Acting is suppressed outside idle only while the
-recipe has no bit. A recipe with a bit recovers with the bit, not with the
-expression's recovery gesture.
+recipe has no bit.
 
 ## A finger on the body
 
@@ -813,8 +880,7 @@ each and says when it fits:
 They are takes the scene plays at once as the Doing's next (numbered after the
 row's takes), the same in every mood. Work has none: the tempo at work is
 yours, by typing along (the engine's documentation/design/screen-guide.md,
-"Small details"), so the engine's busy-typing and frantic-typing takes are
-never dealt. A gesture or a host's Moment never takes one. A tagged pastime
+"Small details"), so it has no busier typing of its own. A gesture or a host's Moment never takes one. A tagged pastime
 whose tags go off simply isn't dealt again. The engine has no colour
 channel, so no pastime tints the gel. The working looks' quicker pace
 while the agents are busy is the board's (`render::workPace`), not a
@@ -894,7 +960,7 @@ time, while the engine shows the look itself and nothing holds the body
 45 s (`kRestMinMs`, `kRestMaxMs`), the newest 60% of the time (the
 highest tier, then the longest wait, and a tagged one above any) and an
 older one's the rest, never the same twice running; and holds the
-engine's own idle gestures off while a clip plays. The gel's `looks.json`
+engine's own idle takes off while a clip plays. The gel's `looks.json`
 has no `occasions`. The one playing fades out when the look gives way.
 A row may be a **move**, the whole body going somewhere, and none starts
 within 5 minutes of the last (`kMoveGapMs`); no row is one now. A pastime

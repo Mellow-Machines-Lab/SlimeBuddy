@@ -296,39 +296,23 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
   present *= strength;
   bool success = route.state == SceneState::kTaskComplete && route.outcome == Outcome::kSuccess,
        failure = route.state == SceneState::kTaskComplete && route.outcome == Outcome::kFailure;
-  F recoveryPose[3]{};
-  const auto& profile = slime::kProfile[profileExpression];
-  // A fourth take (the hiccups) has no gesture of its own to recover with,
-  // and a recipe with a bit of its own recovers with that.
-  if (active && !std::strcmp(phase, "recover") && !profile.representative && variant < kGestures && recipe.gag < 0) {
-    const auto& perf = profile.performances[variant];
-    T pt = F(1 - (recipe.duration - ageMs) / 480) * F(perf.duration);
-    for (int i = 0; i < perf.count; ++i) {
-      const auto& c = perf.cues[i];
-      int channel = c.channel == 4 ? 0 : c.channel == 3 ? 1 : c.channel == 2 ? 2 : c.channel == 5 ? 2 : c.channel;
-      T age = pt - c.at;
-      if (channel > 2 || age < 0 || age > q(.48)) continue;
-      const F gain[] = {q(.025), q(.018), q(.015)};
-      recoveryPose[channel] += c.velocity * gain[channel] * square(sin(pi * age / q(.48)));
-    }
-  }
   F wave = route.state == SceneState::kListening
                ? q(.65) + q(.35) * sin(ageMs / recipe.duration * pi * 2 * recipe.focus)
                : F(1);
   F target[] = {
-      recipe.lean * entry() * recovery() * wave + (hasLast ? last.side : 0) * contact * q(.024) + recoveryPose[0],
+      recipe.lean * entry() * recovery() * wave + (hasLast ? last.side : 0) * contact * q(.024),
       -contact * q(.052) +
           (success   ? q(.036)
            : failure ? q(-.048)
                      : F(0)) *
               reveal +
-          present * q(.018) + recoveryPose[1],
+          present * q(.018),
       contact * q(.045) +
           (success   ? q(.025)
            : failure ? q(-.035)
                      : F(0)) *
               reveal +
-          present * q(.018) + recoveryPose[2]};
+          present * q(.018)};
   // A snore's breath swells the sleeping body a little, rising and falling.
   F swell = 0;
   if (route.quiet && hasLast && last.kind == kBreath && time - last.timeMs < T(slime::kSnoreSwellMs))

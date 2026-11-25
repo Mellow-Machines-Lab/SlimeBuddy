@@ -1206,24 +1206,24 @@ static void test_timing_comes_from_the_recipe_table() {
   // A finish's result reaches the strip (screens.cpp's tick or cross).
   TEST_ASSERT_TRUE(f.outcome(Mood::kSad, SceneState::kTaskComplete, 1, Outcome::kFailure) == Outcome::kFailure);
 }
-// Idle's takes are an expression's three gestures and its own bits, and
-// its bag deals the bits from its second round; the comedy every mood
-// shares, the yawn and the sneeze, is the face's to deal, as pastimes. A
-// yawn stretches up with its eyes squeezed; the zoomies slide it edge to
-// edge and back; a sneeze is a contact a second in that may sound,
-// lurching it forward, all off the heap. Asleep snores only after a round of still
-// rests, and a lost link never.
+// Idle's takes are its mood's one move (a rig clip, idle-<mood>) and the
+// expression's own bits, and its bag deals the bits from its second round;
+// the comedy every mood shares, the yawn and the sneeze, is the face's to
+// deal, as pastimes. A yawn stretches up with its eyes squeezed; the
+// zoomies slide it edge to edge and back; a sneeze is a contact a second in
+// that may sound, lurching it forward, all off the heap. Asleep snores only
+// after a round of still rests, and a lost link never.
 static void test_comedy_plays_in_idle_and_asleep() {
-  TEST_ASSERT_EQUAL_INT(4, slime::kMaxGestures);
-  TEST_ASSERT_EQUAL_INT(3, Acting::takes(slime::kCalm));
-  TEST_ASSERT_EQUAL_INT(4, Acting::takes(slime::kExcited));
-  TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 2));
+  TEST_ASSERT_EQUAL_INT(2, slime::kIdleTakes);
+  TEST_ASSERT_EQUAL_INT(1, Acting::takes(slime::kCalm));
+  TEST_ASSERT_EQUAL_INT(2, Acting::takes(slime::kExcited));
+  TEST_ASSERT_NULL(Acting::gag(slime::kCalm, 0));
   const int yawning = bitOf(info(Pastime::kYawn)), sneezing = bitOf(info(Pastime::kSneeze));
   TEST_ASSERT_EQUAL_STRING("yawn-and-settle", slime::kGags[yawning].gesture.type);
   TEST_ASSERT_EQUAL_STRING("sneeze-and-shake", slime::kGags[sneezing].gesture.type);
-  TEST_ASSERT_EQUAL_STRING("zoomies", Acting::gesture(slime::kExcited, 3).type);
-  // The bag: its first round the three gestures, then every take, never the last again.
-  Bag<slime::kMaxGestures> bag;
+  TEST_ASSERT_EQUAL_STRING("zoomies", Acting::gag(slime::kExcited, 1)->gesture.type);
+  // A bag: its first round its first three, then every take, never the last again.
+  Bag<4> bag;
   Random random(53);
   int dealt[11], seen[2][4]{};
   for (int& d : dealt) d = bag.next(random, 4);
@@ -1458,7 +1458,8 @@ static void test_a_reply_plays_its_clip_once() {
   face.reset(0, rng);
   FaceSource s;
   FaceContext c;
-  c.mood = s.mood = Mood::kCalm;
+  // Happy: its idle move (idle-happy, a hop) leans nothing.
+  c.mood = s.mood = Mood::kHappy;
   face.sync(s, c, 0);
   // The most the body leans while `ms` go by from `from`.
   auto lean = [&](uint32_t from, uint32_t ms) {
@@ -1720,6 +1721,11 @@ void test_a_rapid_chain_settles_on_the_last();
 void test_the_semantic_face_numbers();
 // test_motion.cpp
 void test_the_motion_v1_numbers();
+void test_the_motion_v2_numbers();
+void test_each_motion_rule_off_gives_back_the_motion_before();
+void test_the_motion_layer_comes_to_rest();
+void test_hands_follow_and_change_owner_without_a_jump();
+void test_the_seven_idle_moves();
 void test_the_finger_numbers();
 void test_acting_timing_and_springs();
 void test_setters_keep_springs_and_replay();
@@ -3331,6 +3337,11 @@ int main() {
   RUN_TEST(test_the_semantic_face_numbers);
   // test_motion.cpp
   RUN_TEST(test_the_motion_v1_numbers);
+  RUN_TEST(test_the_motion_v2_numbers);
+  RUN_TEST(test_each_motion_rule_off_gives_back_the_motion_before);
+  RUN_TEST(test_the_motion_layer_comes_to_rest);
+  RUN_TEST(test_hands_follow_and_change_owner_without_a_jump);
+  RUN_TEST(test_the_seven_idle_moves);
   RUN_TEST(test_the_finger_numbers);
   RUN_TEST(test_acting_timing_and_springs);
   RUN_TEST(test_setters_keep_springs_and_replay);

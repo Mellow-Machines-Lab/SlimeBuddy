@@ -57,7 +57,9 @@ struct Board {
   void to(uint32_t until) {
     to(until, [] {});
   }
-  int channel(rig::Channel c) { return face().channels()[c]; }
+  // What the clips and the follows ask, under the motion layer
+  // (render/gel/lively.h, which test_motion pins).
+  int channel(rig::Channel c) { return face().clipChannels()[c]; }
   const char* cueing() { return face().cueing() ? face().cueing()->id : ""; }
 };
 

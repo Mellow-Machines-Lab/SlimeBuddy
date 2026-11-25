@@ -753,6 +753,8 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
   // Bright: its eyes a little wider (the Mac's energy).
   if (e.energy == Energy::kBright) c.eyeSize = c.eyeSize * kBrightEyes / 4096;
   applyRig(c, rig);
+  // Canvas px to the panel's, as the rig's lift and x are drawn; y down.
+  c.faceDx16 = e.faceLagX16 * 128 / kPxPerUnit, c.faceDy16 = -e.faceLagY16 * 128 / kPxPerUnit;
   if (squeeze) {
     c.squeezeTop = squeeze->top, c.squeezeBottom = squeeze->bottom, c.widen = squeeze->widen;
   } else if (duck > 0) {

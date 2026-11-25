@@ -1,6 +1,6 @@
 # Slime asset generator
 
-Updated 2026-11-24.
+Updated 2026-11-25.
 
 Run `node character/tools/slimegen/slimegen.mjs` at the repo root; `--check`
 checks freshness without writing. No dependencies, device or network.
@@ -14,7 +14,7 @@ is as code, the one source of each:
 
 | Module | What it is | What it writes |
 | --- | --- | --- |
-| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, and leans), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
+| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, and leans), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits (the reviewed moods' table, else its own `traits` in `expressions.json`) | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
 | `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
@@ -35,7 +35,9 @@ own and the face it borrows, which moods keep their own face through a
 gesture, the notice state's three takes' faces, the
 contact kinds' names (a rig clip's cues name them), the pastimes' takes
 by name, the lasting mood each face is of (`kMoodOf`: the body gives its
-beat only when that changes), and the sound
+beat only when that changes), each face's idle move (`kIdleMoves`: its
+lasting mood's rig clip, `rig/clips/idle-<mood>.json`, which must exist),
+and the sound
 effects, three takes of each sketch (`sound/sfx.js`) at 11,025 Hz.
 `slime_art.h` gives each art's groups (each eye, the mouth, the tears, the
 cheeks with the strain mark) a shape from their paths' point counts, fill

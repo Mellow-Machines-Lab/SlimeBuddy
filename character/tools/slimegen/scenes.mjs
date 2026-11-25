@@ -13,21 +13,12 @@ export const sceneMoodTraits=Object.freeze({
   grumpy:Object.freeze({delayMs:-40,spacing:.86,gain:1.12,lean:.024}),
   sad:Object.freeze({delayMs:160,spacing:1.18,gain:.62,lean:-.016})
 });
-const clamp=(value,lo,hi)=>Math.min(hi,Math.max(lo,value));
-const limits=Object.freeze({delayMs:160,spacingMin:.88,spacingMax:1.18,gainMin:.68,gainMax:1.12,lean:.022});
-// An expression's intent, from its authored motion rather than an arbitrary
-// mood index, so quiet and energetic ones keep their timing and amplitudes:
-// how late, how spread, how strong and which way its scenes' contacts lean.
+// An expression's intent: how late, how spread, how strong and which way
+// its scenes' contacts lean. The reviewed moods' are the table above; every
+// other expression's are its own `traits` (expressions.json), numbers once
+// derived from the mood gestures it had before the motion layer.
 export function profileTraits(profile) {
-  if(sceneMoodTraits[profile.mood])return sceneMoodTraits[profile.mood];
-  const performances=profile.performances,cues=performances.flatMap(recipe=>recipe.cues);
-  const duration=performances.reduce((sum,recipe)=>sum+recipe.duration,0)/performances.length;
-  const energy=cues.reduce((sum,cue)=>sum+Math.abs(cue[2]),0)/Math.max(1,cues.length);
-  const lean=cues.filter(cue=>cue[1]==='lean'||cue[1]==='forward').reduce((sum,cue)=>sum+cue[2],0)/Math.max(1,cues.length);
-  return {delayMs:clamp((duration-3)*120,-limits.delayMs,limits.delayMs),
-    spacing:clamp(duration/3.2,limits.spacingMin,limits.spacingMax),
-    gain:clamp(.6+energy*.32,limits.gainMin,limits.gainMax),
-    lean:clamp(lean*.045,-limits.lean,limits.lean)};
+  return sceneMoodTraits[profile.mood]||profile.traits;
 }
 
 // The desk: rhythm, rather than tint, distinguishes each take.
@@ -55,7 +46,7 @@ function deskRecipe(state,variant,profile) {
     const traits=profileTraits(profile),first=times[0]||0;
     times=times.map(at=>first+traits.delayMs+(at-first)*traits.spacing);
     gain=traits.gain;lean+=traits.lean;
-    intent=profile.performances[variant].type+' layered over '+state;
+    intent='its own timing over '+state;
   }
   if(state==='waiting'){
     times=[];lean=[.006,.014,-.010][variant];

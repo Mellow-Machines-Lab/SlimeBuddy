@@ -2,7 +2,7 @@
   "version": "slime-kawaii-faces-v3",
   "status": "review-candidate",
   "material": "Accepted simple blue translucent glowing gel; unchanged",
-  "baseMotion": "The accepted V1 springs, in the gel engine's render/gel/motion.cpp",
+  "baseMotion": "Motion V2: the accepted V1 springs (the gel engine's render/gel/motion.cpp) and the motion layer over every clip (render/gel/lively.cpp)",
   "boundaries": [
     "The 18 faces of character.json, each a mood ID on the wire; calm:asleep is the board's own sleeping face, not a mood.",
     "Emotion acting and surface drag are additive review candidates outside locked V1 source blocks.",
@@ -58,69 +58,6 @@
       "blush": 0,
       "family": "settled",
       "tears": "none",
-      "performances": [
-        {
-          "type": "slow-look",
-          "label": "Look aside and return",
-          "duration": 3.6,
-          "cues": [
-            [
-              0.15,
-              "lean",
-              -0.8
-            ],
-            [
-              1.8,
-              "lean",
-              0.8
-            ],
-            [
-              2.8,
-              "lean",
-              -0.3
-            ]
-          ]
-        },
-        {
-          "type": "soft-nod",
-          "label": "Small settling nod",
-          "duration": 2.4,
-          "cues": [
-            [
-              0.15,
-              "squash",
-              -0.7
-            ],
-            [
-              0.8,
-              "forward",
-              0.35
-            ],
-            [
-              1.5,
-              "squash",
-              0.4
-            ]
-          ]
-        },
-        {
-          "type": "settle",
-          "label": "Round and settle",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.15,
-              "squash",
-              -0.8
-            ],
-            [
-              1.2,
-              "squash",
-              0.5
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "soft-dot",
         "mouth": "tiny-ring",
@@ -129,6 +66,12 @@
         "mouthY": -0.095,
         "cheeks": "none",
         "note": "Quiet green neutral reference: two tiny egg-shaped eyes and one delicate o; no human eyebrows."
+      },
+      "traits": {
+        "delayMs": 7.999999999999972,
+        "spacing": 0.9583333333333333,
+        "gain": 0.786,
+        "lean": 0.0002812499999999999
       }
     },
     "pleased": {
@@ -140,89 +83,6 @@
       "blush": 0.23,
       "family": "joy",
       "tears": "none",
-      "performances": [
-        {
-          "type": "bounce",
-          "label": "Single buoyant hop",
-          "duration": 2.4,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.4
-            ],
-            [
-              0.22,
-              "lift",
-              2.3
-            ],
-            [
-              0.3,
-              "ripple",
-              1
-            ],
-            [
-              0.7,
-              "squash",
-              -0.8
-            ]
-          ]
-        },
-        {
-          "type": "sway",
-          "label": "Contented side sway",
-          "duration": 3,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.3
-            ],
-            [
-              0.8,
-              "lean",
-              -1.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2.3,
-              "lean",
-              -0.5
-            ]
-          ]
-        },
-        {
-          "type": "snuggle",
-          "label": "Soft inward snuggle",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1
-            ],
-            [
-              0.45,
-              "forward",
-              0.6
-            ],
-            [
-              1.3,
-              "lean",
-              0.6
-            ],
-            [
-              2,
-              "lean",
-              -0.6
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "pleased-bean",
         "mouth": "baby-w",
@@ -231,6 +91,12 @@
         "mouthY": -0.081,
         "cheeks": "freckles",
         "note": "Blue pleased reference: substantial inward smiling bean eyes, round w smile and tiny cheek freckles."
+      },
+      "traits": {
+        "delayMs": -15.999999999999943,
+        "spacing": 0.8958333333333335,
+        "gain": 0.9466666666666665,
+        "lean": 0.004125
       }
     },
     "happy": {
@@ -242,94 +108,6 @@
       "blush": 0.16,
       "family": "joy",
       "tears": "none",
-      "performances": [
-        {
-          "type": "bounce",
-          "label": "Single buoyant hop",
-          "duration": 2.4,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.4
-            ],
-            [
-              0.22,
-              "lift",
-              2.3
-            ],
-            [
-              0.3,
-              "ripple",
-              1
-            ],
-            [
-              0.7,
-              "squash",
-              -0.8
-            ]
-          ]
-        },
-        {
-          "type": "double-bounce",
-          "label": "Two eager hops",
-          "duration": 3,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.6
-            ],
-            [
-              0.18,
-              "lift",
-              2.5
-            ],
-            [
-              0.7,
-              "squash",
-              -1.5
-            ],
-            [
-              0.85,
-              "lift",
-              2
-            ],
-            [
-              1.05,
-              "ripple",
-              1.5
-            ]
-          ]
-        },
-        {
-          "type": "nod",
-          "label": "Purposeful bob",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              0.65
-            ],
-            [
-              0.3,
-              "squash",
-              -0.85
-            ],
-            [
-              0.8,
-              "forward",
-              -0.35
-            ],
-            [
-              1.3,
-              "squash",
-              0.5
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "happy-dot",
         "mouth": "happy-u",
@@ -349,114 +127,6 @@
       "blush": 0.35,
       "family": "joy",
       "tears": "none",
-      "performances": [
-        {
-          "type": "double-bounce",
-          "label": "Two eager hops",
-          "duration": 3,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.6
-            ],
-            [
-              0.18,
-              "lift",
-              2.5
-            ],
-            [
-              0.7,
-              "squash",
-              -1.5
-            ],
-            [
-              0.85,
-              "lift",
-              2
-            ],
-            [
-              1.05,
-              "ripple",
-              1.5
-            ]
-          ]
-        },
-        {
-          "type": "laugh",
-          "label": "Laughing belly jiggle",
-          "duration": 3.6,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.5
-            ],
-            [
-              0.4,
-              "lift",
-              1.8
-            ],
-            [
-              0.7,
-              "squash",
-              -1.4
-            ],
-            [
-              1,
-              "lift",
-              1.4
-            ],
-            [
-              1.4,
-              "lean",
-              1.3
-            ],
-            [
-              1.8,
-              "lean",
-              -1.3
-            ],
-            [
-              2,
-              "ripple",
-              1.4
-            ]
-          ]
-        },
-        {
-          "type": "wiggle",
-          "label": "Happy side-to-side wiggle",
-          "duration": 2.6,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              2
-            ],
-            [
-              0.45,
-              "lean",
-              -2.7
-            ],
-            [
-              0.8,
-              "lean",
-              2.7
-            ],
-            [
-              1.15,
-              "lean",
-              -2.2
-            ],
-            [
-              1.5,
-              "lean",
-              1.2
-            ]
-          ]
-        }
-      ],
       "gags": [
         "zoomies"
       ],
@@ -468,6 +138,12 @@
         "mouthY": -0.092,
         "cheeks": "hatch",
         "note": "Teal excited reference plus original Rimuru smiling eye arcs: long, soft upward closed eyes and a wide bean laugh."
+      },
+      "traits": {
+        "delayMs": 7.999999999999972,
+        "spacing": 0.9583333333333333,
+        "gain": 1.12,
+        "lean": 0.002647058823529411
       }
     },
     "amused": {
@@ -479,84 +155,6 @@
       "blush": 0.2,
       "family": "joy",
       "tears": "none",
-      "performances": [
-        {
-          "type": "chuckle",
-          "label": "One-sided chuckle",
-          "duration": 2.8,
-          "cues": [
-            [
-              0.1,
-              "roll",
-              0.45
-            ],
-            [
-              0.3,
-              "squash",
-              -1
-            ],
-            [
-              0.65,
-              "squash",
-              -1
-            ],
-            [
-              1,
-              "lift",
-              0.9
-            ]
-          ]
-        },
-        {
-          "type": "wink",
-          "label": "Wink and tilt",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "roll",
-              0.55
-            ],
-            [
-              0.55,
-              "forward",
-              0.5
-            ],
-            [
-              1.4,
-              "roll",
-              -0.25
-            ]
-          ]
-        },
-        {
-          "type": "sway",
-          "label": "Contented side sway",
-          "duration": 3,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.3
-            ],
-            [
-              0.8,
-              "lean",
-              -1.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2.3,
-              "lean",
-              -0.5
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "amused-wink",
         "mouth": "crooked-grin",
@@ -565,6 +163,12 @@
         "mouthY": -0.072,
         "cheeks": "soft",
         "note": "One relaxed smiling eyelid, one cheeky little egg eye, and an off-centre bean grin."
+      },
+      "traits": {
+        "delayMs": -27.999999999999954,
+        "spacing": 0.88,
+        "gain": 0.872,
+        "lean": 0.004090909090909091
       }
     },
     "curious": {
@@ -576,89 +180,6 @@
       "blush": 0,
       "family": "cognition",
       "tears": "none",
-      "performances": [
-        {
-          "type": "inspect",
-          "label": "Lean in and inspect",
-          "duration": 3.4,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.1
-            ],
-            [
-              0.65,
-              "forward",
-              0.75
-            ],
-            [
-              1.6,
-              "lean",
-              -1.2
-            ],
-            [
-              2.3,
-              "forward",
-              -0.35
-            ]
-          ]
-        },
-        {
-          "type": "doubletake",
-          "label": "Double-take and pause",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.05,
-              "lean",
-              -1.9
-            ],
-            [
-              0.3,
-              "lean",
-              2.4
-            ],
-            [
-              0.65,
-              "lift",
-              1.2
-            ],
-            [
-              0.9,
-              "forward",
-              -0.5
-            ]
-          ]
-        },
-        {
-          "type": "peek",
-          "label": "Avert, then peek",
-          "duration": 3.4,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              -0.9
-            ],
-            [
-              0.65,
-              "squash",
-              -0.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2,
-              "forward",
-              0.5
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "curious-eggs",
         "mouth": "peering-o",
@@ -667,6 +188,12 @@
         "mouthY": -0.092,
         "cheeks": "none",
         "note": "One eye clearly bigger than the other under a lifted brow, and a small open tilted o: peering at something. Reads apart from calm at arm's length."
+      },
+      "traits": {
+        "delayMs": 40.000000000000014,
+        "spacing": 1.0416666666666667,
+        "gain": 0.9386666666666666,
+        "lean": 0.0045000000000000005
       }
     },
     "focused": {
@@ -678,89 +205,6 @@
       "blush": 0,
       "family": "cognition",
       "tears": "none",
-      "performances": [
-        {
-          "type": "nod",
-          "label": "Purposeful bob",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              0.65
-            ],
-            [
-              0.3,
-              "squash",
-              -0.85
-            ],
-            [
-              0.8,
-              "forward",
-              -0.35
-            ],
-            [
-              1.3,
-              "squash",
-              0.5
-            ]
-          ]
-        },
-        {
-          "type": "inspect",
-          "label": "Lean in and inspect",
-          "duration": 3.4,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.1
-            ],
-            [
-              0.65,
-              "forward",
-              0.75
-            ],
-            [
-              1.6,
-              "lean",
-              -1.2
-            ],
-            [
-              2.3,
-              "forward",
-              -0.35
-            ]
-          ]
-        },
-        {
-          "type": "brace",
-          "label": "Grounded effort brace",
-          "duration": 3,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.6
-            ],
-            [
-              0.25,
-              "forward",
-              0.9
-            ],
-            [
-              0.8,
-              "squash",
-              -0.85
-            ],
-            [
-              1.7,
-              "forward",
-              -0.35
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "attentive-eggs",
         "mouth": "small-u-line",
@@ -769,6 +213,12 @@
         "mouthY": -0.083,
         "cheeks": "none",
         "note": "Two even, taller soft egg eyes and a compact settled smile; alert without looking robotic."
+      },
+      "traits": {
+        "delayMs": -3.999999999999986,
+        "spacing": 0.9270833333333334,
+        "gain": 0.852,
+        "lean": 0.004312500000000001
       }
     },
     "determined": {
@@ -780,84 +230,6 @@
       "blush": 0,
       "family": "cognition",
       "tears": "none",
-      "performances": [
-        {
-          "type": "brace",
-          "label": "Grounded effort brace",
-          "duration": 3,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.6
-            ],
-            [
-              0.25,
-              "forward",
-              0.9
-            ],
-            [
-              0.8,
-              "squash",
-              -0.85
-            ],
-            [
-              1.7,
-              "forward",
-              -0.35
-            ]
-          ]
-        },
-        {
-          "type": "nod",
-          "label": "Purposeful bob",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              0.65
-            ],
-            [
-              0.3,
-              "squash",
-              -0.85
-            ],
-            [
-              0.8,
-              "forward",
-              -0.35
-            ],
-            [
-              1.3,
-              "squash",
-              0.5
-            ]
-          ]
-        },
-        {
-          "type": "lean-in",
-          "label": "Expectant forward lean",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              1
-            ],
-            [
-              0.55,
-              "squash",
-              0.6
-            ],
-            [
-              1.8,
-              "forward",
-              -0.4
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "gentle-resolve",
         "mouth": "firm-w",
@@ -866,6 +238,12 @@
         "mouthY": -0.079,
         "cheeks": "effort",
         "note": "Subtle upward brows and attentive ink eggs; a little determined mouth, never a villain glare."
+      },
+      "traits": {
+        "delayMs": -12.00000000000001,
+        "spacing": 0.9062499999999999,
+        "gain": 0.8341818181818181,
+        "lean": 0.005931818181818182
       }
     },
     "proud": {
@@ -877,89 +255,6 @@
       "blush": 0.08,
       "family": "confidence",
       "tears": "none",
-      "performances": [
-        {
-          "type": "present",
-          "label": "Rise and present",
-          "duration": 3.5,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              1.3
-            ],
-            [
-              0.3,
-              "lift",
-              0.8
-            ],
-            [
-              0.65,
-              "forward",
-              0.5
-            ],
-            [
-              2,
-              "roll",
-              0.35
-            ]
-          ]
-        },
-        {
-          "type": "sway",
-          "label": "Contented side sway",
-          "duration": 3,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.3
-            ],
-            [
-              0.8,
-              "lean",
-              -1.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2.3,
-              "lean",
-              -0.5
-            ]
-          ]
-        },
-        {
-          "type": "chin-up",
-          "label": "Taller smug pose",
-          "duration": 3.7,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              1.6
-            ],
-            [
-              0.6,
-              "forward",
-              -0.4
-            ],
-            [
-              1.6,
-              "lean",
-              1
-            ],
-            [
-              2.4,
-              "lean",
-              -0.45
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "smug-lids",
         "mouth": "curled-smirk",
@@ -968,6 +263,12 @@
         "mouthY": -0.075,
         "cheeks": "soft",
         "note": "Dark proud reference: short upward slanted confident eye beans and a deliberate curling w/smirk."
+      },
+      "traits": {
+        "delayMs": 47.999999999999986,
+        "spacing": 1.0625,
+        "gain": 0.8959999999999999,
+        "lean": 0.0043125
       }
     },
     "mischievous": {
@@ -979,84 +280,6 @@
       "blush": 0.12,
       "family": "confidence",
       "tears": "none",
-      "performances": [
-        {
-          "type": "feint",
-          "label": "Playful elastic feint",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              -1.7
-            ],
-            [
-              0.45,
-              "lean",
-              2.3
-            ],
-            [
-              0.65,
-              "forward",
-              0.7
-            ],
-            [
-              1.2,
-              "squash",
-              -0.8
-            ]
-          ]
-        },
-        {
-          "type": "peek",
-          "label": "Avert, then peek",
-          "duration": 3.4,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              -0.9
-            ],
-            [
-              0.65,
-              "squash",
-              -0.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2,
-              "forward",
-              0.5
-            ]
-          ]
-        },
-        {
-          "type": "wink",
-          "label": "Wink and tilt",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "roll",
-              0.55
-            ],
-            [
-              0.55,
-              "forward",
-              0.5
-            ],
-            [
-              1.4,
-              "roll",
-              -0.25
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "cheeky-beans",
         "mouth": "puckered-three",
@@ -1065,6 +288,12 @@
         "mouthY": -0.055,
         "cheeks": "soft",
         "note": "Green naughty reference: tiny cheeky diagonal bean eyes and a recognisable rounded 3 mouth."
+      },
+      "traits": {
+        "delayMs": -23.999999999999968,
+        "spacing": 0.88,
+        "gain": 0.8938181818181818,
+        "lean": 0.011045454545454544
       }
     },
     "affectionate": {
@@ -1076,84 +305,6 @@
       "blush": 0.3,
       "family": "social",
       "tears": "none",
-      "performances": [
-        {
-          "type": "snuggle",
-          "label": "Soft inward snuggle",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1
-            ],
-            [
-              0.45,
-              "forward",
-              0.6
-            ],
-            [
-              1.3,
-              "lean",
-              0.6
-            ],
-            [
-              2,
-              "lean",
-              -0.6
-            ]
-          ]
-        },
-        {
-          "type": "lean-in",
-          "label": "Expectant forward lean",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              1
-            ],
-            [
-              0.55,
-              "squash",
-              0.6
-            ],
-            [
-              1.8,
-              "forward",
-              -0.4
-            ]
-          ]
-        },
-        {
-          "type": "sway",
-          "label": "Contented side sway",
-          "duration": 3,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              1.3
-            ],
-            [
-              0.8,
-              "lean",
-              -1.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2.3,
-              "lean",
-              -0.5
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "warm-lids",
         "mouth": "warm-w",
@@ -1162,6 +313,12 @@
         "mouthY": -0.072,
         "cheeks": "blush",
         "note": "Original Rimuru soft closed arcs with a warm little w and broad, soft blush cheeks."
+      },
+      "traits": {
+        "delayMs": 15.999999999999996,
+        "spacing": 0.9791666666666666,
+        "gain": 0.8763636363636365,
+        "lean": 0.0069545454545454554
       }
     },
     "lonely": {
@@ -1173,79 +330,6 @@
       "blush": 0,
       "family": "social",
       "tears": "none",
-      "performances": [
-        {
-          "type": "slow-look",
-          "label": "Look aside and return",
-          "duration": 3.6,
-          "cues": [
-            [
-              0.15,
-              "lean",
-              -0.8
-            ],
-            [
-              1.8,
-              "lean",
-              0.8
-            ],
-            [
-              2.8,
-              "lean",
-              -0.3
-            ]
-          ]
-        },
-        {
-          "type": "peek",
-          "label": "Avert, then peek",
-          "duration": 3.4,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              -0.9
-            ],
-            [
-              0.65,
-              "squash",
-              -0.6
-            ],
-            [
-              1.6,
-              "lean",
-              1.3
-            ],
-            [
-              2,
-              "forward",
-              0.5
-            ]
-          ]
-        },
-        {
-          "type": "sag",
-          "label": "Droop and recover",
-          "duration": 3.8,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.4
-            ],
-            [
-              1,
-              "lean",
-              -0.5
-            ],
-            [
-              2.5,
-              "squash",
-              0.4
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "longing-beans",
         "mouth": "small-pout",
@@ -1254,6 +338,12 @@
         "mouthY": -0.098,
         "cheeks": "soft",
         "note": "Small lifted inner bean eyes and a vulnerable tiny pout; no accusing eyebrows or large sobs."
+      },
+      "traits": {
+        "delayMs": 72.00000000000001,
+        "spacing": 1.125,
+        "gain": 0.84,
+        "lean": 0.00045000000000000037
       }
     },
     "annoyed": {
@@ -1265,79 +355,6 @@
       "blush": 0,
       "family": "frustration",
       "tears": "none",
-      "performances": [
-        {
-          "type": "side-eye",
-          "label": "Lean back and side-eye",
-          "duration": 2.8,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              -0.5
-            ],
-            [
-              0.6,
-              "lean",
-              -0.9
-            ],
-            [
-              1.9,
-              "lean",
-              0.45
-            ]
-          ]
-        },
-        {
-          "type": "correction",
-          "label": "Clipped impatient correction",
-          "duration": 2.5,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              -1.1
-            ],
-            [
-              0.45,
-              "lean",
-              1.8
-            ],
-            [
-              0.75,
-              "squash",
-              -1
-            ],
-            [
-              1.2,
-              "lean",
-              -0.7
-            ]
-          ]
-        },
-        {
-          "type": "lean-back",
-          "label": "Cautious recoil",
-          "duration": 3.1,
-          "cues": [
-            [
-              0.1,
-              "forward",
-              -0.9
-            ],
-            [
-              0.35,
-              "squash",
-              -0.5
-            ],
-            [
-              1.6,
-              "forward",
-              0.4
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "annoyed-beans",
         "mouth": "pushed-pout",
@@ -1346,6 +363,12 @@
         "mouthY": -0.083,
         "cheeks": "none",
         "note": "Soft uneven low beans and a pushed-aside pout: restrained, not angry."
+      },
+      "traits": {
+        "delayMs": -23.999999999999968,
+        "spacing": 0.88,
+        "gain": 0.864,
+        "lean": -0.006524999999999998
       }
     },
     "grumpy": {
@@ -1357,114 +380,6 @@
       "blush": 0,
       "family": "frustration",
       "tears": "none",
-      "performances": [
-        {
-          "type": "stomp",
-          "label": "Fast squash impacts",
-          "duration": 2.7,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -2.5
-            ],
-            [
-              0.1,
-              "ripple",
-              2
-            ],
-            [
-              0.5,
-              "squash",
-              -2.1
-            ],
-            [
-              0.6,
-              "ripple",
-              1.8
-            ],
-            [
-              1,
-              "squash",
-              -2.3
-            ],
-            [
-              1.1,
-              "lean",
-              1.5
-            ]
-          ]
-        },
-        {
-          "type": "protest",
-          "label": "Brace, protest and recoil",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.05,
-              "forward",
-              1.2
-            ],
-            [
-              0.12,
-              "squash",
-              -2
-            ],
-            [
-              0.4,
-              "lift",
-              1.3
-            ],
-            [
-              0.65,
-              "lean",
-              -2
-            ],
-            [
-              1.05,
-              "lean",
-              2.5
-            ],
-            [
-              1.6,
-              "ripple",
-              2
-            ]
-          ]
-        },
-        {
-          "type": "headshake",
-          "label": "Emphatic no-no wobble",
-          "duration": 2.6,
-          "cues": [
-            [
-              0.1,
-              "lean",
-              2
-            ],
-            [
-              0.4,
-              "lean",
-              -2.8
-            ],
-            [
-              0.7,
-              "lean",
-              2.6
-            ],
-            [
-              1,
-              "lean",
-              -2.1
-            ],
-            [
-              1.3,
-              "lean",
-              1.2
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "grumpy-beans",
         "mouth": "grumpy-pout",
@@ -1484,109 +399,6 @@
       "blush": 0,
       "family": "frustration",
       "tears": "none",
-      "performances": [
-        {
-          "type": "protest",
-          "label": "Brace, protest and recoil",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.05,
-              "forward",
-              1.2
-            ],
-            [
-              0.12,
-              "squash",
-              -2
-            ],
-            [
-              0.4,
-              "lift",
-              1.3
-            ],
-            [
-              0.65,
-              "lean",
-              -2
-            ],
-            [
-              1.05,
-              "lean",
-              2.5
-            ],
-            [
-              1.6,
-              "ripple",
-              2
-            ]
-          ]
-        },
-        {
-          "type": "stomp",
-          "label": "Fast squash impacts",
-          "duration": 2.7,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -2.5
-            ],
-            [
-              0.1,
-              "ripple",
-              2
-            ],
-            [
-              0.5,
-              "squash",
-              -2.1
-            ],
-            [
-              0.6,
-              "ripple",
-              1.8
-            ],
-            [
-              1,
-              "squash",
-              -2.3
-            ],
-            [
-              1.1,
-              "lean",
-              1.5
-            ]
-          ]
-        },
-        {
-          "type": "brace",
-          "label": "Grounded effort brace",
-          "duration": 3,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.6
-            ],
-            [
-              0.25,
-              "forward",
-              0.9
-            ],
-            [
-              0.8,
-              "squash",
-              -0.85
-            ],
-            [
-              1.7,
-              "forward",
-              -0.35
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "angry-squeeze",
         "mouth": "protest-bean",
@@ -1595,6 +407,12 @@
         "mouthY": -0.086,
         "cheeks": "hatch",
         "note": "Squeezed, rounded >.< eye curves and a small comic protest mouth; do not stack sharp brows on tiny pupils."
+      },
+      "traits": {
+        "delayMs": -3.999999999999986,
+        "spacing": 0.9270833333333334,
+        "gain": 1.12,
+        "lean": 0.010546875
       }
     },
     "sad": {
@@ -1606,84 +424,6 @@
       "blush": 0,
       "family": "sadness",
       "tears": "occasional",
-      "performances": [
-        {
-          "type": "sob",
-          "label": "Soft sob and settle",
-          "duration": 3.8,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.2
-            ],
-            [
-              0.4,
-              "forward",
-              -0.3
-            ],
-            [
-              1.3,
-              "squash",
-              -0.9
-            ],
-            [
-              1.7,
-              "ripple",
-              0.6
-            ],
-            [
-              2.5,
-              "squash",
-              0.35
-            ]
-          ]
-        },
-        {
-          "type": "sag",
-          "label": "Droop and recover",
-          "duration": 3.8,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.4
-            ],
-            [
-              1,
-              "lean",
-              -0.5
-            ],
-            [
-              2.5,
-              "squash",
-              0.4
-            ]
-          ]
-        },
-        {
-          "type": "slow-look",
-          "label": "Look aside and return",
-          "duration": 3.6,
-          "cues": [
-            [
-              0.15,
-              "lean",
-              -0.8
-            ],
-            [
-              1.8,
-              "lean",
-              0.8
-            ],
-            [
-              2.8,
-              "lean",
-              -0.3
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "sad-lids",
         "mouth": "sad-pout",
@@ -1703,84 +443,6 @@
       "blush": 0,
       "family": "sadness",
       "tears": "thin",
-      "performances": [
-        {
-          "type": "flinch",
-          "label": "Protective flinch",
-          "duration": 2.8,
-          "cues": [
-            [
-              0.05,
-              "forward",
-              -1.1
-            ],
-            [
-              0.1,
-              "squash",
-              -1.5
-            ],
-            [
-              0.3,
-              "lean",
-              -0.9
-            ],
-            [
-              1.3,
-              "forward",
-              0.3
-            ]
-          ]
-        },
-        {
-          "type": "hide-peek",
-          "label": "Shrink, hide and peek",
-          "duration": 4,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.3
-            ],
-            [
-              0.3,
-              "forward",
-              -0.6
-            ],
-            [
-              1.5,
-              "lean",
-              0.9
-            ],
-            [
-              2.4,
-              "forward",
-              0.45
-            ]
-          ]
-        },
-        {
-          "type": "sag",
-          "label": "Droop and recover",
-          "duration": 3.8,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.4
-            ],
-            [
-              1,
-              "lean",
-              -0.5
-            ],
-            [
-              2.5,
-              "squash",
-              0.4
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "hurt-eggs",
         "mouth": "hurt-pout",
@@ -1789,6 +451,12 @@
         "mouthY": -0.092,
         "cheeks": "soft",
         "note": "Green hurt reference: small vertical oval eyes, tender tear trails and a fragile rounded pout."
+      },
+      "traits": {
+        "delayMs": 63.999999999999986,
+        "spacing": 1.1041666666666665,
+        "gain": 0.872,
+        "lean": -0.005931818181818181
       }
     },
     "surprised": {
@@ -1800,84 +468,6 @@
       "blush": 0,
       "family": "surprise",
       "tears": "none",
-      "performances": [
-        {
-          "type": "doubletake",
-          "label": "Double-take and pause",
-          "duration": 3.2,
-          "cues": [
-            [
-              0.05,
-              "lean",
-              -1.9
-            ],
-            [
-              0.3,
-              "lean",
-              2.4
-            ],
-            [
-              0.65,
-              "lift",
-              1.2
-            ],
-            [
-              0.9,
-              "forward",
-              -0.5
-            ]
-          ]
-        },
-        {
-          "type": "bounce",
-          "label": "Single buoyant hop",
-          "duration": 2.4,
-          "cues": [
-            [
-              0.05,
-              "squash",
-              -1.4
-            ],
-            [
-              0.22,
-              "lift",
-              2.3
-            ],
-            [
-              0.3,
-              "ripple",
-              1
-            ],
-            [
-              0.7,
-              "squash",
-              -0.8
-            ]
-          ]
-        },
-        {
-          "type": "freeze",
-          "label": "Surprise rise and freeze",
-          "duration": 3.5,
-          "cues": [
-            [
-              0.05,
-              "lift",
-              1.5
-            ],
-            [
-              0.2,
-              "squash",
-              0.85
-            ],
-            [
-              0.4,
-              "forward",
-              -0.45
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "surprise-dots",
         "mouth": "round-gasp",
@@ -1886,6 +476,12 @@
         "mouthY": -0.092,
         "cheeks": "soft",
         "note": "Round ink dots that widen, and a rounded o; still a childlike slime rather than a human alarm face."
+      },
+      "traits": {
+        "delayMs": 3.999999999999986,
+        "spacing": 0.9479166666666666,
+        "gain": 1.016,
+        "lean": -0.0018409090909090908
       }
     },
     "calm:asleep": {
@@ -1897,79 +493,6 @@
       "blush": 0,
       "family": "reference",
       "tears": "none",
-      "performances": [
-        {
-          "type": "yawn",
-          "label": "Stretchy yawn",
-          "duration": 4.2,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              1.2
-            ],
-            [
-              0.45,
-              "lift",
-              0.4
-            ],
-            [
-              1.8,
-              "squash",
-              -1.1
-            ],
-            [
-              2.8,
-              "forward",
-              -0.3
-            ]
-          ]
-        },
-        {
-          "type": "long-nod",
-          "label": "Sleepy slow nod",
-          "duration": 4.4,
-          "cues": [
-            [
-              0.15,
-              "forward",
-              0.5
-            ],
-            [
-              0.7,
-              "squash",
-              -1
-            ],
-            [
-              2.8,
-              "squash",
-              0.3
-            ]
-          ]
-        },
-        {
-          "type": "sag",
-          "label": "Droop and recover",
-          "duration": 3.8,
-          "cues": [
-            [
-              0.1,
-              "squash",
-              -1.4
-            ],
-            [
-              1,
-              "lean",
-              -0.5
-            ],
-            [
-              2.5,
-              "squash",
-              0.4
-            ]
-          ]
-        }
-      ],
       "art": {
         "eyes": "sleepy-lid",
         "mouth": "baby-yawn",
@@ -1978,6 +501,12 @@
         "mouthY": -0.098,
         "cheeks": "soft",
         "note": "Long drooping, round-tipped lids and a tiny oval yawn; sleepy rather than sorrowful."
+      },
+      "traits": {
+        "delayMs": 136.00000000000006,
+        "spacing": 1.18,
+        "gain": 0.8271999999999999,
+        "lean": -0.0013499999999999999
       }
     }
   },
@@ -2116,7 +645,7 @@
           -0.07
         ],
         [
-          1.0,
+          1,
           "lids",
           1
         ],
@@ -2163,12 +692,12 @@
           0.6
         ],
         [
-          1.0,
+          1,
           "forward",
           1.8
         ],
         [
-          1.0,
+          1,
           "ripple",
           2.2
         ],
@@ -2190,7 +719,7 @@
       ],
       "contacts": [
         [
-          1.0,
+          1,
           "sneeze_contact",
           0.6
         ]
@@ -3090,100 +1619,6 @@
     }
   ],
   "pastimes": [
-    {
-      "id": "busy-typing",
-      "label": "Busier typing, with two or three agents at work",
-      "recipe": {
-        "duration": 3.2,
-        "lean": 0.022,
-        "jitter": true,
-        "contacts": [
-          [
-            0.3,
-            "key_contact",
-            1.05,
-            1
-          ],
-          [
-            0.45,
-            "key_contact",
-            1.05,
-            -1
-          ],
-          [
-            0.6,
-            "key_contact",
-            1.05,
-            1
-          ],
-          [
-            1.3,
-            "key_contact",
-            1.05,
-            -1
-          ],
-          [
-            1.45,
-            "key_contact",
-            1.05,
-            1
-          ],
-          [
-            1.6,
-            "key_contact",
-            1.05,
-            -1
-          ]
-        ]
-      }
-    },
-    {
-      "id": "frantic-typing",
-      "label": "Frantic typing, with four or more agents at work",
-      "recipe": {
-        "duration": 3.2,
-        "lean": 0.03,
-        "jitter": true,
-        "contacts": [
-          [
-            0.18,
-            "key_contact",
-            1.15,
-            1
-          ],
-          [
-            0.3,
-            "key_contact",
-            1.15,
-            -1
-          ],
-          [
-            0.42,
-            "key_contact",
-            1.15,
-            1
-          ],
-          [
-            0.54,
-            "key_contact",
-            1.15,
-            -1
-          ],
-          [
-            0.66,
-            "key_contact",
-            1.15,
-            1
-          ],
-          [
-            0.78,
-            "key_contact",
-            1.15,
-            -1
-          ]
-        ]
-      }
-    },
     {
       "id": "deep-snore",
       "label": "A deeper snore at night",

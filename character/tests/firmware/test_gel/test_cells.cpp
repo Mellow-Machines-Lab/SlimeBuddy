@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "frames.h"
+#include "rig_tables.h"
 
 using namespace render;
 using namespace render::gel;
@@ -211,9 +212,6 @@ void test_every_cell_plays_truthfully() {
           TEST_ASSERT_FALSE(sameRecipe(take(p, row, a), take(p, row, b)));
         }
     }
-    for (int a = 0; a < Acting::takes(p); ++a)
-      for (int b = a + 1; b < Acting::takes(p); ++b)
-        TEST_ASSERT_TRUE(std::strcmp(Acting::gesture(p, a).type, Acting::gesture(p, b).type) != 0);
     // Waiting and listening make no contacts.
     for (int v = 0; v < 3; ++v) {
       TEST_ASSERT_EQUAL_UINT8(0, take(p, int(SceneState::kWaiting), v).count);
@@ -244,12 +242,19 @@ void test_every_cell_plays_truthfully() {
       }
       Facts facts;
       if (state == SceneState::kIdle) {
-        // Idle's takes are its acting's: its gestures, then its comedy.
+        // Idle's takes are its acting's: its mood's move, which the face
+        // plays as a rig clip, then its comedy.
         for (int v = 0; v < Acting::takes(mood); ++v) {
           Run r(mood);
           r.step();
           TEST_ASSERT_TRUE(r.e->acting.perform(r.e->motion.time, r.e->random, v));
-          r.run(F(Acting::gesture(mood, v).duration * 1000).integer() + 160);
+          if (!v) {
+            TEST_ASSERT_EQUAL_STRING(slime::kIdleMoves[mood], r.e->acting.move);
+            TEST_ASSERT_NOT_NULL(rig::kRig.clip(r.e->acting.move));
+            continue;
+          }
+          TEST_ASSERT_NULL(r.e->acting.move);
+          r.run(F(Acting::duration(mood, v) * 1000).integer() + 160);
           TEST_ASSERT_TRUE(r.e->scenes.route.state == SceneState::kIdle);
           TEST_ASSERT_TRUE(r.moved > q(.0001));
           TEST_ASSERT_EQUAL_INT(0, r.reveals);

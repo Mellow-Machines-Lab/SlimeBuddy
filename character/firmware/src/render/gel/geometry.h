@@ -97,7 +97,10 @@ struct Projector {
     int dist = product(bx, 15974), dy = product(by - 819, 12698);
     int dent = std::max(0, 4096 - int((int64_t(dist) * dist + int64_t(dy) * dy) / 4096));
     dent = product(dent, dent);
-    return project(deform(p, h, product(h, h), 4096, dent));
+    Point at = project(deform(p, h, product(h, h), 4096, dent));
+    // Trailing the body, at its size.
+    at.x += int(int64_t(c.faceDx16) * c.scale / 4096), at.y += int(int64_t(c.faceDy16) * c.scale / 4096);
+    return at;
   }
 };
 }  // namespace render::gel

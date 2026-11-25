@@ -44,8 +44,11 @@ MoveShow currentMove(const Engine& e);
 // An invite's now, if the pack has a clip for its pose or payoff there.
 MoveShow inviteMove(const InviteShow& v);
 // The move's channels over `c`: its clip's tracks at its time, added, and
-// after a hit a small shake.
-void addMove(rig::Channels& c, const MoveShow& m);
+// after a hit a small shake (addShake), unless `shake` is false.
+void addMove(rig::Channels& c, const MoveShow& m, bool shake = true);
+// After a hit, the small shake alone: the glass's, over the motion layer
+// (render/gel/lively.h), so no spring softens it.
+void addShake(rig::Channels& c, const MoveShow& m);
 // How long since its last hit, ms, or -1 for none yet.
 int sinceHit(const MoveShow& m);
 // A hit's ring and its shake last this long; the shake is kShakePx canvas

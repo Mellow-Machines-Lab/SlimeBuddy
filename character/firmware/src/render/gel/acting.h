@@ -7,20 +7,20 @@
 #include "render/gel/router.h"
 #include "render/tags.h"
 namespace render::gel {
-// A profile's gestures, as slimegen sizes them: the first takes of idle and
-// of every scene row.
-constexpr int kGestures = int(std::size(slime::kProfile[0].performances));
+// The first takes every scene row has (slime::kRecipes).
+constexpr int kFirstTakes = 3;
 // A shuffle bag of a key's takes. Its first round deals the
 // first three, the ones every state has always had; from its second round on
-// it deals every take, the comedy ones too. Never the take it dealt last.
+// it deals every take, the comedy ones too. Never the take it dealt last,
+// while it has another.
 template <int Capacity>
 struct Bag {
-  static_assert(Capacity >= kGestures, "every bag deals at least three takes");
+  static_assert(Capacity >= kFirstTakes, "every bag deals at least three takes");
   uint8_t values[Capacity]{}, left = 0, size = 0, last = 255;
   bool dealt = false;
-  int next(Random& random, int takes = kGestures) {
+  int next(Random& random, int takes = kFirstTakes) {
     if (!left) {
-      size = uint8_t(dealt ? std::min(takes, Capacity) : std::min(takes, kGestures));
+      size = uint8_t(dealt ? std::min(takes, Capacity) : std::min(takes, kFirstTakes));
       dealt = true;
       for (int i = 0; i < size; ++i) values[i] = uint8_t(i);
       for (int i = size - 1; i > 0; --i) std::swap(values[i], values[random.index(i + 1)]);
@@ -48,7 +48,7 @@ struct Acting {
   // The six gesture springs, then a bit's own: the dome's slide, and how far
   // its lids are closed (critically damped).
   Spring channels[6], slide, lids;
-  Bag<slime::kMaxGestures> bags[slime::kProfiles];
+  Bag<kFirstTakes> bags[slime::kProfiles];
   // performance is the take playing, or -1; playing, a recipe's or a
   // pastime's bit (kGags) playing in its place.
   int emotion = slime::kCalm, performance = -1, playing = -1, expression = slime::kCalm, chosen = -1, cursor = 0,
@@ -62,19 +62,22 @@ struct Acting {
   // This step's bit contacts, the sounds of a sneeze or the zoomies.
   std::vector<ContactEvent> contacts;
   Acting() { contacts.reserve(4); }
-  // Idle's takes for an expression: its three gestures, then its own bits.
-  // The comedy every mood shares is the face's to deal, as pastimes.
-  static int takes(int profile) { return kGestures + slime::kProfile[profile].gagCount; }
-  // A take's bit; none for the three gestures.
+  // Idle's takes for an expression: its lasting mood's one move (take 0, the
+  // rig clip slime::kIdleMoves names, which the face plays: `move`), then
+  // its own bits. The comedy every mood shares is the face's to deal, as
+  // pastimes.
+  static_assert(slime::kIdleTakes <= kFirstTakes, "a bag deals every idle take in its first round");
+  static int takes(int profile) { return 1 + slime::kProfile[profile].gagCount; }
+  // A take's bit; none for the move.
   static const slime::Gag* gag(int profile, int take) {
-    if (take < kGestures) return nullptr;
-    return &slime::kGags[slime::kProfile[profile].gags[take - kGestures]];
+    if (take < 1) return nullptr;
+    return &slime::kGags[slime::kProfile[profile].gags[take - 1]];
   }
-  // A take's impulses and timing.
-  static const slime::Performance& gesture(int profile, int take) {
-    const auto* g = gag(profile, take);
-    return g ? g->gesture : slime::kProfile[profile].performances[take];
-  }
+  // How long a take plays: its bit's, or its move's clip's.
+  static T duration(int profile, int take);
+  // The mood's move, dealt and not yet played: its clip's id, which the
+  // face plays and clears.
+  const char* move = nullptr;
   // What plays now: a recipe's bit, or the take's (none for a gesture of
   // the expression's own).
   const slime::Gag* current() const { return playing >= 0 ? &slime::kGags[playing] : gag(emotion, performance); }
@@ -93,12 +96,14 @@ struct Acting {
   void setMood(int id, T time) {
     emotion = id;
     performance = playing = -1;
+    move = nullptr;
     nextPerformance = time + T::literal(.4);
   }
   void setSuppressed(bool value, T time) {
     if (value == suppressed) return;
     suppressed = value;
     performance = playing = -1;
+    move = nullptr;
     if (!value) nextPerformance = max(nextPerformance, time + T::literal(.4));
   }
   void advance(T dt, T time, bool grab, Random& random);

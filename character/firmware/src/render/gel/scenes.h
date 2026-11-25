@@ -22,7 +22,7 @@ static_assert(slime::kRecipeTakes[int(SceneState::kAsleep)] == 4 && slime::kReci
                   slime::kRecipeTakes[int(SceneState::kNoApp)] == 3,
               "asleep and a success have a fourth take; a failure and a lost link don't");
 inline int takes(int row) { return slime::kRecipeTakes[row]; }
-static_assert(int(std::size(slime::kRecipes[0][0])) == kGestures, "a row's first takes, one for each gesture");
+static_assert(int(std::size(slime::kRecipes[0][0])) == kFirstTakes, "a row's first takes");
 // The gesture state's takes are render::Gesture's, one for each, the same in
 // every mood (kGestureTakes); the board names one, and no bag deals them.
 static_assert(slime::kGestureCount == int(Gesture::kCount), "a take for each of render::Gesture");
@@ -33,12 +33,12 @@ constexpr int kSuccessRow = int(SceneState::kCount);
 inline const slime::Recipe& take(int profile, int row, int variant) {
   if (row == int(SceneState::kGesture)) return slime::kGestureTakes[variant < slime::kGestureCount ? variant : 0];
   if (row == kSuccessRow && isFinishVariant(variant)) return finishRecipe(finishOf(variant));
-  return variant < kGestures ? slime::kRecipes[profile][row][variant]
-                             : slime::kFourthTakes[profile][slime::kFourthRow[row]];
+  return variant < kFirstTakes ? slime::kRecipes[profile][row][variant]
+                               : slime::kFourthTakes[profile][slime::kFourthRow[row]];
 }
-// Idle's takes: an expression's three gestures, then its own bits
-// (acting.h Acting::takes), at most this many.
-static_assert(slime::kMaxGestures == 4, "three gestures and an own gag");
+// Idle's takes: its mood's move, then its own bits (acting.h
+// Acting::takes), at most this many.
+static_assert(slime::kIdleTakes == 2, "the mood's move and an own gag");
 enum ContactKind {
   kKey,
   kKnock,

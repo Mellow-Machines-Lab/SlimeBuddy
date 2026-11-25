@@ -1,6 +1,6 @@
 # VideoG Slime Blob — the gel slime's design
 
-Updated 2026-11-15. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
+Updated 2026-11-25. Imported from `VideoG-Slime-Blob` on 2026-10-02, this
 is the design of Boop's gel slime: its moods, faces, acting, scenes and
 sounds as data. The slime has one engine, the C++ one the AMOLED runs
 (`character/firmware/src/render/gel/`), which the simulator and the
@@ -123,10 +123,11 @@ its `moods` the 18 faces the board draws. Read it there; nothing here
 restates it. [MOODS.md](MOODS.md) says how the two fit.
 
 What the design holds for each face is in
-[expressions.json](expressions.json): its art, its three gestures, any
-bit of its own, and its sound profile in `sound/sound-plan.json`. The
+[expressions.json](expressions.json): its art, its scenes' timing traits,
+any bit of its own, and its sound profile in `sound/sound-plan.json`. The
 board's own sleeping face is the alternate `calm:asleep`, which is no
-mood.
+mood. Each lasting mood's idle move is a rig clip, `rig/clips/idle-<mood>.json`
+([CONTINUITY.md](CONTINUITY.md), Idle moves).
 
 There is no mood graph. Jev may move to any mood when what happened gives
 a reason; the app fades a mood by its minutes and counts how cross it is.

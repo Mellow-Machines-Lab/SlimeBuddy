@@ -70,7 +70,7 @@ int sinceHit(const MoveShow& m) {
   return last < 0 ? -1 : int(t) - last;
 }
 
-void addMove(rig::Channels& c, const MoveShow& m) {
+void addMove(rig::Channels& c, const MoveShow& m, bool shake) {
   if (!m.on()) return;
   const uint32_t t = m.clip->local(m.ms);
   for (const rig::Track& track : m.clip->tracks) {
@@ -78,6 +78,10 @@ void addMove(rig::Channels& c, const MoveShow& m) {
     int16_t& to = c[track.channel];
     to = int16_t(std::clamp(int(to) + rig::sample(track, t), int(info.lo), int(info.hi)));
   }
+  if (shake) addShake(c, m);
+}
+
+void addShake(rig::Channels& c, const MoveShow& m) {
   // A hit shakes the body (and the hands on it) a little side to side,
   // dying away.
   const int hit = sinceHit(m);

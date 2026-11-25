@@ -33,6 +33,10 @@ struct PaintControls {
   // `faceW` (Q12) and moved `faceX` face units (Q12) across the dome, so it
   // looks over its shoulder from near its rim.
   int faceX = 0, faceW = 4096;
+  // The face trailing the body (render/gel/lively.h's face rule): its art
+  // drawn this far from where the body puts it, sixteenths of a panel px,
+  // at the body's size.
+  int faceDx16 = 0, faceDy16 = 0;
   // Up at the glass (the rig's glass, Q12): the whole body bigger about
   // where it stands (applyGlass), and where it touches the glass a pale
   // patch, `patch` its size (Q12 of kPatchPx), at patchX across its front

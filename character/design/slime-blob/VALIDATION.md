@@ -1,6 +1,6 @@
 # Slime validation
 
-Updated 2026-11-24. What checks the gel slime, and which rule each check
+Updated 2026-11-25. What checks the gel slime, and which rule each check
 holds it to. The slime has one engine, the C++ one
 (`character/firmware/src/render/gel/`), so every rule
 [CONTINUITY.md](CONTINUITY.md) states is checked on it, from the
@@ -26,8 +26,9 @@ fails, naming what's wrong, when:
   or no sound profile, or the first expressions aren't those faces; a
   lasting mood rests in a face there isn't, or a face is of no lasting
   mood;
-- an expression hasn't three gestures or is of no face, a face names a
-  bit there isn't, or a gesture or a notice take borrows an expression
+- an expression is of no face, has no scene traits of its own (but a
+  reviewed mood's), or names a bit there isn't; a lasting mood has no
+  idle move (`rig/clips/idle-<mood>.json`); or a gesture or a notice take borrows an expression
   there isn't;
 - two pastimes' bodies share an id, or one has neither a bit of its own
   nor a recipe;
@@ -68,8 +69,18 @@ ramps and springs can, and no jolt at an event. By file:
   this test); a finger's springs, reach and fling; acting's timing and
   springs; every setter keeping every spring, and an engine replaying the
   same from the same seed; the scenes' formulas (the waiting wave, the
-  cards' and the error's, the recovery gesture, the desk's jitter, a bit's
-  keys inside their bounds).
+  cards' and the error's, the desk's jitter, a bit's keys inside their
+  bounds).
+- `test_lively.cpp`: motion V2, the motion layer
+  (`test_the_motion_v2_numbers`, its numbers); each of its five rules off
+  giving back the motion before it exactly, by name as `dbg.motion` sets
+  it (`test_each_motion_rule_off_gives_back_the_motion_before`); every
+  spring at rest on the clips' channels after a move, and staying there
+  (`test_the_motion_layer_comes_to_rest`); a hand arriving and leaving
+  late, off the desk's keys and back with no jump
+  (`test_hands_follow_and_change_owner_without_a_jump`); and the seven
+  idle moves, one a lasting mood, each face its mood's, the face playing
+  it in idle (`test_the_seven_idle_moves`).
 - `test_main.cpp`'s invite tests: the gel draws invites, nothing changes
   the body with none, the palm and the lean are the pack's clips, each up
   at the glass whole as it waits (the palm the right hand open and flat on

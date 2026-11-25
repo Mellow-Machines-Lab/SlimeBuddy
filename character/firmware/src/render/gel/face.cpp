@@ -85,8 +85,10 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   pendingCount_ = 0;
   revision_ = cueRevision_ = 0;
   mixer_.reset(0, 0, nullptr);
+  lively_.reset();
   layers_ = {};
-  clip_ = cueing_ = base_ = nullptr;
+  clip_ = cueing_ = base_ = idleMove_ = nullptr;
+  idleMoveEnds_ = 0;
   pastime_ = lastPastime_ = Pastime::kNone;
   pastimeAt_ = pastimeEnds_ = stoppedAt_ = restUntil_ = 0;
   moved_ = false;
@@ -148,6 +150,17 @@ void GelFace::advanceTo(uint32_t t) {
     if (cueAge_ >= cueing_->ms) cueing_ = nullptr;
   }
   engine_->step(engineMs_);
+  // Idle's mood move, as its acting deals it: the mood's rig clip, which
+  // fades out as acting is held off (anything but idle, a finger), as its
+  // own takes stop.
+  if (const char* id = engine_->acting.move) {
+    engine_->acting.move = nullptr;
+    if (const rig::Clip* clip = rig::kRig.clip(id)) play(*clip), idleMove_ = clip, idleMoveEnds_ = t + clip->ms;
+  }
+  if (idleMove_ && (!after(idleMoveEnds_, t) || engine_->acting.suppressed)) {
+    if (after(idleMoveEnds_, t)) mixer_.stop(*idleMove_);
+    idleMove_ = nullptr;
+  }
   mixer_.advance(t - lastTick_);
   lastTick_ = t;
   passTime(t);
@@ -171,6 +184,7 @@ void GelFace::advanceTo(uint32_t t) {
   breathe(t);
   showInvite(t);
   showMove();
+  showLively(dt, t);
   for (const auto& cue : engine_->cues) {
     int clip = clipFor(cue.recipe, cue.variant);
     if (clip < 0 || pendingCount_ >= kMaxCues) continue;
@@ -591,6 +605,23 @@ void GelFace::followLean(uint32_t dt) {
 }
 
 rig::Channels GelFace::channels() const {
+  rig::Channels c = lively_.apply(clipChannels());
+  addShake(c, currentMove(*engine_));
+  return c;
+}
+
+// The motion layer, a step after what the clips ask now: the body's place
+// the engine's own lift and slide too, in canvas px, and the face's lag for
+// the painter.
+void GelFace::showLively(uint32_t dt, uint32_t t) {
+  Engine& e = *engine_;
+  const F unit = F(kPxPerUnit);
+  const bool desk = e.scenes.desk.x > q(.5) || along_.value(t) > 500;
+  lively_.advance(dt, clipChannels(), e.life()[0] * unit, e.acting.slide.x * unit, desk);
+  e.faceLagX16 = lively_.faceX16(), e.faceLagY16 = lively_.faceY16();
+}
+
+rig::Channels GelFace::clipChannels() const {
   rig::Channels c = mixer_.channels();
   auto add = [&](rig::Channel ch, int by) {
     const rig::ChannelInfo& info = rig::kChannelInfo[int(ch)];
@@ -602,7 +633,7 @@ rig::Channels GelFace::channels() const {
   add(rig::Channel::kGazeX, followBy_[kFollowGazeX] / 256);
   add(rig::Channel::kGazeY, followBy_[kFollowGazeY] / 256);
   // A move (an invite's, the knock): its clip at its time, over the rest.
-  addMove(c, currentMove(*engine_));
+  addMove(c, currentMove(*engine_), false);
   return c;
 }
 
