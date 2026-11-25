@@ -7,6 +7,7 @@
 #include <iterator>
 
 #include "render/gel/geometry.h"
+#include "render/gel/invite.h"
 #include "render/gel/profile.h"
 #include "render/maths.h"
 #include "render/palette.h"
@@ -75,6 +76,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   pace_ = 100;
   source_ = {};
   replyAt_ = 0, replied_ = false;
+  invite_ = {}, inviteAt_ = 0, inviteSounded_ = false;
   finger_ = false;  // the new engine has no drag: a finger still down grabs it afresh
   signHop_ = 0;
   lean_ = Lean::kNone, breathTake_ = 0;
@@ -165,6 +167,7 @@ void GelFace::advanceTo(uint32_t t) {
     }
   pendingCount_ = kept;
   breathe(t);
+  showInvite(t);
   for (const auto& cue : engine_->cues) {
     int clip = clipFor(cue.recipe, cue.variant);
     if (clip < 0 || pendingCount_ >= kMaxCues) continue;
@@ -204,7 +207,7 @@ bool GelFace::showsLook(SceneState anim, SceneState& look) const {
   const bool needsYou = e.router.facts.attention.on;
   look = needsYou ? SceneState::kNeedsYou : e.router.facts.base;
   const Route& route = e.scenes.route;
-  return anim == SceneState::kNone && !route.reaction &&
+  return anim == SceneState::kNone && !route.reaction && !invite_.shows() &&
          route.state == (needsYou ? SceneState::kNeedsYou : e.router.facts.look());
 }
 
@@ -777,6 +780,26 @@ void GelFace::leanOn(Lean level) {
   engine_->lean(int(level), clamp(F(fingerNowX_ - kMidX) / wide, -1, 1), clamp(F(kMidY - fingerNowY_) / tall, -1, 1), keeps);
 }
 
+void GelFace::showInvite(uint32_t t) {
+  engine_->invite = invite_;
+  if (!invite_.shows()) return;
+  engine_->invite.ms = t - inviteAt_;
+  auto& acting = engine_->acting;
+  acting.nextPerformance = max(acting.nextPerformance, engine_->motion.time + 2);
+  if (inviteSounded_ || payoffAge(engine_->invite) < 0 || pendingCount_ >= kMaxCues) return;
+  inviteSounded_ = true;
+  const InviteSound sound = inviteSound(invite_.payoff);
+  const int clip = clipFor(sound.recipe, 0);
+  if (clip < 0) return;
+  pendingAt_[pendingCount_] = t;
+  voice::FxEvent& e = pending_[pendingCount_++];
+  e.atMs = 0;
+  e.clip = uint8_t(clip);
+  e.gain = sound.gain;
+  e.pitch = sound.pitch;
+  e.duck = true;
+}
+
 // While it leans, a soft breath now and then, through the same queue as the
 // engine's contacts: the volume and face down are the device's to mind.
 void GelFace::breathe(uint32_t t) {
@@ -850,6 +873,15 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   energy_ = context.energy;
   engine_->energy = context.energy;
   pointer_ = context.pointer, pointerNear_ = context.pointerNear, pointerX_ = context.pointerX, pointerY_ = context.pointerY;
+  // The invite: a new phase sounds its payoff afresh, and a pose takes the
+  // body from the pastime playing.
+  {
+    const InviteShow& v = context.invite;
+    if (v.phase != invite_.phase) inviteSounded_ = false;
+    if (v.shows() && playing()) endPastime(t, true);
+    invite_ = v, inviteAt_ = t - v.ms;
+    showInvite(t);
+  }
   Measure measure(gel::profile.sync);
   auto& e = *engine_;
   if (factsChanged(context)) {
@@ -887,6 +919,9 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   // Leaning in, it wears a stroke's shut eyes, unless its mood keeps its own.
   if (borrowed < 0 && lean_ != Lean::kNone && !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
     borrowed = slime::kGestureFaces[int(Gesture::kStroke)];
+  // An invite's pose and payoff their own, as a touch's, the same mood keeping its own.
+  if (borrowed < 0 && context.invite.shows() && !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
+    borrowed = expressionFromName(inviteFace(context.invite));
   bool next = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
   if (next) {
     // Behaviour times the reaction (its loops, its line), so the engine

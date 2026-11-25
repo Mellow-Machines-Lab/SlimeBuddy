@@ -1,6 +1,6 @@
 # Slime asset generator
 
-Updated 2026-11-15.
+Updated 2026-11-24.
 
 Run `node character/tools/slimegen/slimegen.mjs` at the repo root; `--check`
 checks freshness without writing. No dependencies, device or network.
@@ -43,6 +43,10 @@ or stroke and colour: two arts of one shape there morph, path by path and
 point by point, and others cross-fade. `slime_mesh.h` samples the dome's
 geometry and analytic studio lighting. None of these are animation frames:
 the board deforms and projects geometry on every draw.
+
+An invite's poses and payoffs (the gel's `render/gel/invite.h`) are code,
+as a finish is, and take nothing from here; nor do the keys' contacts
+sound, though the keyboard sketch is still baked into the bank.
 
 The Mac's popover and onboarding show the board's own firmware: the pack's
 `mac/mirror/` is the firmware built to WebAssembly

@@ -278,10 +278,11 @@ void test_a_request_keeps_its_identity() {
   }
 }
 
-// Sound stays sparse and quiet. At work, a pass of a loop sounds at most
-// four of its contacts, a loop shorter than 3.5 s sounds every other pass,
-// and fewer than two in five contacts sound in all; stepping to the same
-// time again sounds nothing. Idle sounds only its comedy's sneeze (the
+// Sound stays sparse and quiet. At work its keys sound none: the paws on
+// the keys show the typing, and a click at every word was too much. Were
+// they to, a pass of a loop would sound at most four of its contacts, and a
+// loop shorter than 3.5 s every other pass; stepping to the same time again
+// sounds nothing. Idle sounds only its comedy's sneeze (the
 // face's to deal: here every 20 s) and sleep
 // only its snore's breaths, each fewer than half its contacts, ducked under
 // a line like any routine sound; waiting and listening sound nothing. A
@@ -301,7 +302,8 @@ void test_cues_stay_sparse_and_quiet() {
     e->step(at);
     TEST_ASSERT_EQUAL_INT(0, int(e->cues.size()));
   }
-  TEST_ASSERT_TRUE(cues > 0 && cues * 5 < contacts * 2);
+  TEST_ASSERT_TRUE(contacts > 0);
+  TEST_ASSERT_EQUAL_INT(0, cues);
   struct Quiet {
     SceneState base;
     const char* recipe;

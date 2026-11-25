@@ -54,6 +54,10 @@ class GelFace final : public Face {
   bool leans(uint32_t t) const override;
   void lean(Lean level, uint32_t t) override;
   bool captionsTouches() const override { return true; }
+  // An invite (render/gel/invite.h): its pose up at the glass, the place to
+  // touch glowing, the payoff or a shrug. Over the look, as a Moment is:
+  // no pastime, typing along, gaze or base pose while it shows.
+  bool drawsInvites() const override { return true; }
   const char* passing(uint32_t t) const override;
   // The board's steady tilt: the body sloshes that way, while nothing else
   // moves it: no finger, Moment, needs-you, listening, work act, pastime,
@@ -305,6 +309,14 @@ class GelFace final : public Face {
   // When the last move started (kMoveGapMs), if one has.
   uint32_t movedAt_ = 0;
   bool moved_ = false;
+  // The invite as Behaviour last said (FaceContext::invite), from when on
+  // the board's clock its phase began, and whether its payoff has sounded.
+  InviteShow invite_;
+  uint32_t inviteAt_ = 0;
+  bool inviteSounded_ = false;
+  // The engine's copy of it at t, the engine's own gestures held off while
+  // it shows, and the payoff's one sound as the payoff begins.
+  void showInvite(uint32_t t);
   // The reply it played last (FaceContext::reply), by when it started, so
   // each plays once.
   uint32_t replyAt_ = 0;

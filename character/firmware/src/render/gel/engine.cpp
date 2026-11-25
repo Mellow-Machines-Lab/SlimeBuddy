@@ -155,8 +155,10 @@ void Engine::consumeCues() {
   const bool quiet = state == SceneState::kIdle || state == SceneState::kAsleep || state == SceneState::kNoApp ||
                      state == SceneState::kListening || state == SceneState::kWaiting;
   const bool protect = state == SceneState::kNeedsYou || state == SceneState::kTaskComplete;
-  static const char* recipes[] = {"keyboard", "knock",  "squish", "ding",   "complete", "failed",
-                                  nullptr,    "squish", "squish", "sneeze", "breath",   "bounce"};
+  // A key's contact sounds none: the keys clicking at every word were too
+  // much, and the paws on the keyboard show it.
+  static const char* recipes[] = {nullptr, "knock",  "squish", "ding",   "complete", "failed",
+                                  nullptr, "squish", "squish", "sneeze", "breath",   "bounce"};
   static_assert(std::size(recipes) == slime::kContactKinds, "a recipe, or none, for every contact kind");
   // The scene's contacts, then a bit's, then a rig clip's cues'.
   for (const auto* list : {&scenes.contacts, &acting.contacts, &clipContacts_})

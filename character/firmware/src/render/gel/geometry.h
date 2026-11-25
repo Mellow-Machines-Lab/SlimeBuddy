@@ -87,7 +87,9 @@ struct Projector {
     return {px, py};
   }
   Point face(int x, int y) const {
-    // Undo the face texture's 1.24 scale and .92 UV mapping.
+    // Turned away (an invite's), first; then undo the face texture's 1.24
+    // scale and .92 UV mapping.
+    x = product(x, c.faceW) + c.faceX;
     int bx = product(x, 5521), by = product(y, 5521), bz = root(uint32_t(std::max(0, 16777216 - bx * bx - by * by)));
     int raw = 2294 + product(3727, by), py = (raw + root(uint32_t(raw * raw + 53687))) / 2 + 78;
     int radius = 4506 - product(287, by), h = py * 4096 / 6103;
