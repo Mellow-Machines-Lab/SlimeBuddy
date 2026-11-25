@@ -1,5 +1,6 @@
 {
   "about": "Working, running (a command, the tests, a build, helpers): it scoots back from the desk and sits up tall, its paws held together off the keys, eyes wide and fixed on the monitor, bobbing on the spot with anticipation.",
+  "group": "work_poses",
   "ms": 2000,
   "loop": true,
   "tracks": {

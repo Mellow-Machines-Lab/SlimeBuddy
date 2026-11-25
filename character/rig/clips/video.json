@@ -1,5 +1,6 @@
 {
   "about": "Watching a video with you: turned to the screen (the face leans and slides it toward the Mac's side), a little taller and still, its eyes wide and fixed, a slow blink now and then, and once in a while a small start, a lift and back, as at something on the screen.",
+  "group": "with_you",
   "ms": 20000,
   "loop": true,
   "tracks": {

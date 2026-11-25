@@ -1,4 +1,4 @@
-{"about": "A late tap on the palm: it comes back to the glass with a little hop, its palm up again, for the high five.", "ms": 600, "tracks": {
+{"about": "A late tap on the palm: it comes back to the glass with a little hop, its palm up again, for the high five.", "group": "touch_answers", "ms": 600, "tracks": {
     "squash": [[0, 0], [100, 140], [240, -120], [400, 80], [600, 0]],
     "lift": [[0, 0], [110, 0], [250, 14, "out"], [400, 0, "in"]],
     "glass": [[0, 0], [460, 1000, "out"]],

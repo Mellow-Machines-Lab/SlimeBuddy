@@ -1,4 +1,4 @@
-{"about": "The win's invite: a hop, and up at the glass it holds one palm flat on it, beside its right eye, about 85 px across, its patch pale, and waits for your tap.", "ms": 900, "tracks": {
+{"about": "The win's invite: a hop, and up at the glass it holds one palm flat on it, beside its right eye, about 85 px across, its patch pale, and waits for your tap.", "group": "touch_answers", "ms": 900, "tracks": {
     "squash": [[0, 0], [120, 170, "out"], [270, -160, "out"], [430, 130, "in"], [580, -40], [760, 0]],
     "lift": [[0, 0], [140, 0], [300, 20, "out"], [440, 0, "in"], [900, 0]],
     "glass": [[0, 0], [380, 0], [820, 1000, "out"]],

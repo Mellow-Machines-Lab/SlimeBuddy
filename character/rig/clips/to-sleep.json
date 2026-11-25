@@ -1,5 +1,6 @@
 {
   "about": "Falling asleep: a slow yawn, up tall with its mouth wide and its eyes shut, then it sinks and settles.",
+  "group": "bases",
   "ms": 1000,
   "tracks": {
     "mouthOpen": [[0, 0], [300, 800], [560, 800], [780, 0], [1000, 0]],

@@ -1,5 +1,6 @@
 {
   "about": "An idle pastime: it falls asleep where it sits, Zs rising and a snore bubble growing until it pops.",
+  "group": "pastimes",
   "ms": 6000,
   "tracks": {
     "eyeOpen": [[0, 0], [400, -1000], [5000, -1000], [5050, -500], [5250, -500], [5400, -1000], [5800, -1000], [6000, 0]],

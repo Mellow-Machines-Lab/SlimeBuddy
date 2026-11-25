@@ -1,5 +1,6 @@
 {
   "about": "A reply to what you said, thanks: it puffs up proud, chin up and tall, eyes half shut, smug.",
+  "group": "moments",
   "ms": 1500,
   "tracks": {
     "squash": [[0, 0], [200, 80], [400, -200, "out"], [1100, -180], [1350, 0], [1500, 0]],

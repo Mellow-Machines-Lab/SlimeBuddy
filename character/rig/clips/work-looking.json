@@ -1,5 +1,6 @@
 {
   "about": "Working, looking (a read, a search): it slides over to the monitor at its left and presses right up to it, craning up, its paws off the keys, squinting, and its eyes scan a line left to right, step down to the next, four lines, and again.",
+  "group": "work_poses",
   "ms": 2800,
   "loop": true,
   "tracks": {

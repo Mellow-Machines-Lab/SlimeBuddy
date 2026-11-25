@@ -1,5 +1,6 @@
 {
   "about": "Asleep, a while: it rolls over in its sleep, one way and then the other, and mumbles.",
+  "group": "pastimes",
   "ms": 4200,
   "tracks": {
     "lean": [[0, 0], [1600, -260], [2000, -260], [3400, 230], [4200, 0]],

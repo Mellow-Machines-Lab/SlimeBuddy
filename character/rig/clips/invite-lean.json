@@ -1,4 +1,4 @@
-{"about": "The back's invite: you're back, it perks up, comes to the glass and rests its cheek on it, the patch pale where it touches, looking up at you.", "ms": 1500, "tracks": {
+{"about": "The back's invite: you're back, it perks up, comes to the glass and rests its cheek on it, the patch pale where it touches, looking up at you.", "group": "touch_answers", "ms": 1500, "tracks": {
     "squash": [[0, 0], [240, -230, "out"], [600, 0], [1500, 160, "out"]],
     "eyeSize": [[0, 0], [200, 230, "out"], [700, 80]],
     "gazeY": [[0, 0], [300, -380], [1500, -320]],

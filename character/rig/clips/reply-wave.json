@@ -1,5 +1,6 @@
 {
   "about": "A wave at your lock or unlock, a small moment: a slight sway from side to side, the eyes a little soft. Slighter than bye or hello, and over in a second.",
+  "group": "moments",
   "ms": 1000,
   "tracks": {
     "lean": [[0, 0], [250, 70], [500, -70], [750, 40], [1000, 0]],

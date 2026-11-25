@@ -1,5 +1,6 @@
 {
   "about": "A reply to what you said, hush: ok, I'll be quiet. It presses its lips together and squeezes its eyes shut, sinking a little with a small nod, then settles, still.",
+  "group": "moments",
   "ms": 1300,
   "tracks": {
     "squash": [[0, 0], [150, -40], [350, 160, "out"], [550, 110], [700, 170], [900, 120], [1150, 0], [1300, 0]],

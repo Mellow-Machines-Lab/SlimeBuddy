@@ -306,20 +306,18 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   `stream` scene keeps two lanes busy and a word coming forward
   every 2 s (`stream_us`).
 - `internal/tools/fluid/measure.py` measures how fluid the everyday
-  transitions are on the board (`transitions.jsonl`, `idle-swipes.jsonl`),
-  and the Character Studio's Transitions view ranks them in the page.
+  transitions are on the board (`transitions.jsonl`, `idle-swipes.jsonl`).
 
 ## For the eye
 
-The Character Studio's **Gel on the board** card is the board's firmware:
-its **Tools** record the review set (24 representative activities,
+The Character Studio's board is the board's firmware: it plays each rig
+clip, face and skit with its invite, and its **Tools** record the review set (24 representative activities,
 `character/studio/review-sets.json`) from the
 board as silent WebM clips, and play the sound sketches each on its own.
 The studio's server saves the clips only with `--capture-dir DIR`, only
 those the pack names, from its own page with its token, at most 8 MiB
-each, never over a file (`characters/studio/tests/`). `node
-characters/studio/check.cjs` records one in a headless browser
-([the studio's README](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/studio/README.md), Checking it). Clips are
+each, never over a file (`characters/studio/tests/`,
+[the studio's README](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/studio/README.md), Checking it). Clips are
 art evidence, not owner approval.
 
 ## Limits that remain

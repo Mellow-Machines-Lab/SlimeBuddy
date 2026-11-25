@@ -1,5 +1,6 @@
 {
   "about": "Cross's idle move: two stomps, up a little and down hard, flat at each, then a huff to one side and back.",
+  "group": "pastimes",
   "ms": 2700,
   "tracks": {
     "lift": [[0, 0], [150, 6, "out"], [250, 0, "in"], [560, 0], [650, 5, "out"], [740, 0, "in"], [2700, 0]],

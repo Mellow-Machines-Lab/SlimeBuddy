@@ -1,5 +1,6 @@
 {
   "about": "You're speaking (another app records, no camera: dictation, a voice prompt): leaning in toward you and nodding on a slow, even 1.6 s beat, eyes open and up at you, mouth closed. It can't follow your words, since it never hears them: an even beat reads as listening. The face draws a cupped hand at its side and rings pulsing by it (render/gel/layers.h, paintListening).",
+  "group": "with_you",
   "ms": 1600,
   "loop": true,
   "tracks": {

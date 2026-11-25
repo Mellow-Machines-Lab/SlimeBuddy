@@ -1,5 +1,6 @@
 {
   "about": "From resting to work, half a second and a bit: it tucks one side and the other, as if rolling up its sleeves, then settles down onto its seat and looks to the keys.",
+  "group": "bases",
   "ms": 850,
   "tracks": {
     "lean": [[0, 0], [120, 130], [260, -130], [400, 0], [850, 0]],

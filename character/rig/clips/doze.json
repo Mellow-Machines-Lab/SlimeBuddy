@@ -1,5 +1,6 @@
 {
   "about": "Asleep's base: eyes shut whatever the mood, the mouth a little open, a slow deep breath, flatter on the out-breath.",
+  "group": "bases",
   "ms": 4800,
   "loop": true,
   "additive": false,

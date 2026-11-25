@@ -1,5 +1,6 @@
 {
   "about": "A reply to what you said, yes: two nods, looking down and back up at you, bobbing with each.",
+  "group": "moments",
   "ms": 1200,
   "tracks": {
     "squash": [[0, 0], [150, 90], [320, -30], [480, 90], [650, -20], [900, 0], [1200, 0]],

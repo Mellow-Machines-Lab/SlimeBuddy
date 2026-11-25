@@ -1,5 +1,6 @@
 {
   "about": "Focused's idle move: a small lean back, then in to inspect something to its right, eyes narrowed, held, and back.",
+  "group": "pastimes",
   "ms": 3400,
   "tracks": {
     "lean": [[0, 0], [200, -30], [700, 110, "out"], [2000, 110], [2600, 0], [3400, 0]],

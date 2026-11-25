@@ -1,5 +1,6 @@
 {
   "about": "An idle pastime: it looks up at you, eyes big, bounces twice and wonders, ...?",
+  "group": "pastimes",
   "ms": 2600,
   "tracks": {
     "gazeY": [[0, 0], [300, -900, "out"], [2200, -900], [2600, 0]],

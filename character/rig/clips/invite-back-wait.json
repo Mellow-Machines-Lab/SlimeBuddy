@@ -1,4 +1,4 @@
-{"about": "Its back to you, sulking: slow breaths; then it looks over its shoulder, one eye at the rim, to check whether you saw, and snaps its back to you again.", "ms": 4000, "loop": true, "tracks": {
+{"about": "Its back to you, sulking: slow breaths; then it looks over its shoulder, one eye at the rim, to check whether you saw, and snaps its back to you again.", "group": "touch_answers", "ms": 4000, "loop": true, "tracks": {
     "squash": [[0, 150], [400, 175], [800, 150], [2700, 150], [2850, 210, "out"], [3200, 150], [3600, 175], [4000, 150]],
     "eyeOpen": [[0, -380], [700, -380], [1200, 0], [2450, 0], [2700, -380], [4000, -380]],
     "gazeX": [[0, 0], [700, 0], [1200, 520, "out"], [2450, 520], [2700, 0], [4000, 0]],

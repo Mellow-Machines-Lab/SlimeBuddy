@@ -1,4 +1,4 @@
-{"about": "No stroke: it eases off the glass and shrugs, lids heavy, a glance aside.", "ms": 1200, "tracks": {
+{"about": "No stroke: it eases off the glass and shrugs, lids heavy, a glance aside.", "group": "touch_answers", "ms": 1200, "tracks": {
     "glass": [[0, 1000], [900, 0]],
     "lean": [[0, -560], [800, 0]],
     "x": [[0, -16], [800, 0]],

@@ -1,5 +1,6 @@
 {
   "about": "A stretch at the desk on a long turn: eyes squeezed, up tall, a lean each way, and back to it.",
+  "group": "pastimes",
   "ms": 2600,
   "tracks": {
     "eyeOpen": [[0, 0], [500, -700], [1900, -700], [2300, 0]],

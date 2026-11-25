@@ -1,5 +1,6 @@
 {
   "about": "Idle's base: a slow, gentle breath, a little taller on the in-breath.",
+  "group": "bases",
   "ms": 3600,
   "loop": true,
   "tracks": {

@@ -1,5 +1,6 @@
 {
   "about": "An idle pastime: it looks round the room, one way then the other, curious.",
+  "group": "pastimes",
   "ms": 3200,
   "tracks": {
     "gazeX": [[0, 0], [500, -950], [1200, -950], [1800, 950], [2500, 950], [3000, 0], [3200, 0]],

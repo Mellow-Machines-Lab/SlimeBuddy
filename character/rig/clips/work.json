@@ -1,5 +1,6 @@
 {
   "about": "Working's base: looking down at the desk, breathing a little quicker.",
+  "group": "bases",
   "ms": 2400,
   "loop": true,
   "tracks": {

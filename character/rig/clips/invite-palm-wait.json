@@ -1,4 +1,4 @@
-{"about": "The palm on the glass, waiting: a small eager bob, the palm pressed flat.", "ms": 1260, "loop": true, "tracks": {
+{"about": "The palm on the glass, waiting: a small eager bob, the palm pressed flat.", "group": "touch_answers", "ms": 1260, "loop": true, "tracks": {
     "squash": [[0, 0], [105, 14], [210, 24], [315, 28], [420, 24], [525, 14], [630, 0], [735, -14], [840, -24], [945, -28], [1050, -24], [1155, -14], [1260, 0]],
     "glass": [[0, 1000], [1260, 1000]],
     "lean": [[0, 110], [1260, 110]],

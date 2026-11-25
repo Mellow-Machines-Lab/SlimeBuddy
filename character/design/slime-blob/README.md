@@ -30,16 +30,17 @@ Reference images inform the simple rounded facial language—not copied
 Rimuru/Pokémon accessories, exact character identity or licensed artwork.
 
 Review it on the board: the [Character Studio](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/studio/README.md)'s
-**Gel on the board** card is the firmware itself, every mood and state on
-its matrix, transitions measured frame by frame, and in its **Tools** the
-review sets (recorded from the board as silent clips) and the sound
-sketches. From the repository root:
+board is the firmware itself: every rig clip as a move in its group
+(each clip's `group`), every face at rest and the change between two, each
+skit's Moment with its invite answered or missed, and the motion layer's
+switches; and in its **Tools** the review sets (recorded from the board
+as silent clips) and the sound sketches. From the repository root:
 
 ```sh
-node characters/studio/serve.cjs --port 4190
+python3 simulator/web/serve.py
 ```
 
-Then open `http://127.0.0.1:4190/`. To save the review clips, start the
+Then open `http://127.0.0.1:8206/characters/studio/`. To save the review clips, start the
 server with `--capture-dir DIR` (an empty folder); it saves only the clips
 the pack's [review-sets.json](../../studio/review-sets.json) names, and
 never over a file. After editing this design, bake it and check it:

@@ -1,5 +1,6 @@
 {
   "about": "Proud's idle move: a small dip, then chin up: tall, eyes up and half shut, a slight tilt, held, and down again.",
+  "group": "pastimes",
   "ms": 3700,
   "tracks": {
     "squash": [[0, 0], [200, 60], [700, -220, "out"], [2400, -220], [3100, 0], [3700, 0]],

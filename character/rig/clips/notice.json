@@ -1,5 +1,6 @@
 {
   "about": "notice: it heard its name, from the notice-perk reference. Its eyes snap open, wide and up, and it perks up tall; it winds up, hops beaming with its eyes squeezed happy, lands flat with a squish and wobbles, looking at you.",
+  "group": "moments",
   "ms": 1000,
   "tracks": {
     "squash": [[0, 0], [200, 30], [280, -110, "out"], [400, 140], [460, -120, "out"], [560, 0], [700, -50], [760, 160, "in"], [840, -55, "out"], [910, 25], [1000, 0]],

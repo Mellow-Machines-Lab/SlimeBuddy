@@ -1,4 +1,4 @@
-{"about": "A late stroke, after it got over it: a small hop and a pretend sulk, its back to you again for the sigh.", "ms": 600, "tracks": {
+{"about": "A late stroke, after it got over it: a small hop and a pretend sulk, its back to you again for the sigh.", "group": "touch_answers", "ms": 600, "tracks": {
     "squash": [[0, 0], [100, 140], [240, -120], [420, 120], [600, 150]],
     "lift": [[0, 0], [110, 0], [250, 12, "out"], [400, 0, "in"]],
     "eyeOpen": [[0, 0], [400, -380]],

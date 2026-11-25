@@ -1,5 +1,6 @@
 {
   "about": "A reply to what you said, huh: its head tilts to one side, one eye narrowed, looking up at you.",
+  "group": "moments",
   "ms": 1600,
   "tracks": {
     "lean": [[0, 0], [250, 300, "out"], [1200, 300], [1500, 0], [1600, 0]],

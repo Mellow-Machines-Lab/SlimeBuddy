@@ -1,5 +1,6 @@
 {
   "about": "A note it remembers about you: its eyes go up and to the side as it thinks of it, then back to you, a little lift and a small nod as it holds up the line.",
+  "group": "moments",
   "ms": 1300,
   "tracks": {
     "gazeY": [[0, 0], [180, -550], [620, -550], [800, 0], [1300, 0]],
