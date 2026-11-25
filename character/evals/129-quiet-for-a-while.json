@@ -9,10 +9,10 @@
     {"event": "poke", "at": "5m", "expect": {"said": "none"}},
     {"event": "turn started", "at": "10m"},
     {"event": "turn finished", "at": "14m", "expect": {"move": "success|none", "said": "none"}},
-    {"event": "poke", "at": "35m", "expect": {"say": "tickled|upset|glad|hello|quiet|shaken"}},
+    {"event": "poke", "at": "35m"},
     {"event": "hush", "at": "40m"},
     {"event": "poke", "at": "41m", "expect": {"said": "none"}},
     {"event": "said", "at": "42m", "words": "okay okay, you can talk now", "expect": {"move": "yes|thanks|hello|hehe"}},
-    {"event": "poke", "at": "44m", "expect": {"say": "tickled|upset|glad|hello|quiet|shaken"}}
+    {"event": "poke", "at": "44m"}
   ]
 }

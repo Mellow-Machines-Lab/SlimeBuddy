@@ -6,8 +6,8 @@
   "steps": [
     {"event": "session started", "at": "0s"},
     {"event": "poke", "at": "0s", "expect": {"offered": "calm|happy|focused|proud|cross|sad"}, "brain": {"react.face": "curious", "mood": "calm"}},
-    {"event": "poke", "at": "1s", "brain": {"react.face": "annoyed", "say": "upset", "mood": "cross"}},
-    {"event": "poke", "at": "2s", "brain": {"react.face": "grumpy", "say": "upset", "mood": "cross"}},
+    {"event": "poke", "at": "1s", "brain": {"react.face": "annoyed", "mood": "cross"}},
+    {"event": "poke", "at": "2s", "brain": {"react.face": "grumpy", "mood": "cross"}},
     {"event": "turn started", "at": "4m", "prompt": "carry on", "brain": {"react.face": "none", "mood": "cross"}}
   ]
 }

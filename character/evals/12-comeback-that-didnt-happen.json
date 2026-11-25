@@ -8,6 +8,6 @@
     {"event": "command", "at": "1m", "topic": "tests", "failed": true},
     {"event": "command", "at": "3m", "topic": "tests", "failed": true},
     {"event": "command", "at": "5m", "topic": "tests", "failed": false, "reaction": "failed: waited too long", "brain": {"react.face": "proud"}},
-    {"event": "turn finished", "at": "5m20s", "brain": {"react.face": "proud", "say": "glad"}}
+    {"event": "turn finished", "at": "5m20s", "brain": {"react.face": "proud"}}
   ]
 }

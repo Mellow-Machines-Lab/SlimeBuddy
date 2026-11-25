@@ -1,6 +1,6 @@
 # Boop: harness example, end to end
 
-Updated 2026-10-25. One turn of failing tests, from the raw events to
+Updated 2026-11-24. One turn of failing tests, from the raw events to
 what Boop does: the view events, the state and questions Jev gets, its
 answers, and what the outputs did. How it works is in the code; this
 file only shows it.
@@ -10,6 +10,10 @@ Everything here is real: the first of three runs of the eval scenario
 run of every scenario against `jev:jev-latest` on 2026-10-25, with that
 day's code, steering and voice bank. Nothing is replayed: the lines
 below are copied from that run's log, and the passes' times are Jev's.
+Since then Jev is asked less: the move and the size became the rules',
+and on 2026-11-24 `say` went too, so what Boop says is the skits' (the
+engine's characters/CHARACTER.md §8). The `say` answers below are that
+day's.
 The state is left out of the `pass` lines (`"state":"…"`).
 
 The eval has no device: its fake one answers each reaction `done` at

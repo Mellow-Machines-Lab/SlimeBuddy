@@ -7,7 +7,12 @@
   "claims_a_fix": [
     "Fixed"
   ],
-  "remember_word": "Hey",
+  "skits": [
+    {"id": "win",   "slots": ["doneLong", "doneVeryLong"]},
+    {"id": "upset", "slots": ["failed", "failedVeryLong", "gaveUp", "checkFailing"]},
+    {"id": "fix",   "slots": ["checkFixed"]},
+    {"id": "back",  "slots": ["back", "backDays", "backAfterADay"]}
+  ],
   "faces": {
     "amoled206": "gel"
   },

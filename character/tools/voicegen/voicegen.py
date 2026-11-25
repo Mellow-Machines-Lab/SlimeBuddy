@@ -20,14 +20,18 @@ there. Rerun this whenever the bank or a mapping changes:
   the board reports.
 
 Pixel's pack has its own copy of the two built files, so it stands
-alone; copy them over when the voice changes and Pixel should get it.
+alone, from before needs you's takes were left out. Rebuild it from
+this pack's checkout of the voice bank, with its own borrowed.json and
+its voice file kept as its boards' cards have it:
 
-Every take is one of the brain's answers to `say`: how Boop feels or
-what NOW is about,
-by the bank's intent (FEELING, ABOUT), or for a few entries by their
-words (ABOUT_OF_ENTRY): the greetings are the `hello` topic. Needs you's
-other takes (`attention`) Boop never says, so they're left out of both
-files.
+    python3 character/tools/voicegen/voicegen.py --pack ../PixelBuddy/character --keep-attention
+
+Every take has a part and a meaning: how Boop feels or what a moment
+is about, by the bank's intent (FEELING, ABOUT), or for a few entries by
+their words (ABOUT_OF_ENTRY): the greetings are the `hello` topic, which
+Boop's hello and bye at your lock and unlock say. Needs you's other
+takes (`attention`) Boop never says, so they're left out of both files
+(but for `--keep-attention`).
 
 A take may also be what Boop says replying to what you said on
 push-to-talk: an entry of intent `talk.<reply>` is that reply's own
@@ -36,7 +40,10 @@ words, and a feeling's or topic's that fits one counts for it too
 a second time for each reply, as part `reply`, by the same id; the voice
 file has it once, so neither it nor the version changes. The same goes
 for the `shaken` feeling's takes (SHAKEN): startled words, and cross ones
-in a cross mood, listed again as that feeling. Six takes were recorded in
+in a cross mood, listed again as that feeling; and for a skit's
+(SKIT_OF, characters/CHARACTER.md §8): the few moments that always
+speak, each from takes of its own, such as `win`'s "Done" and "Nailed
+it", listed again as part `skit`, the skit's id their meaning. Six takes were recorded in
 moods Boop doesn't have; MOOD_OF gives them one, by the owner's word
 (2026-09-29).
 
@@ -44,7 +51,9 @@ The takes were recorded in 13 moods, which MOODS keeps as the bank has
 them. Boop draws 18 faces: borrowed.json beside this script says which
 face a recorded mood that's no longer one plays in (`plays`: engaged's
 takes are focused's), and, temporarily, which recorded face each face
-with no takes of its own borrows (`borrows`). A take's moods in the table
+with no takes of its own borrows (`borrows`); a pack built with `--pack`
+that has a tools/borrowed.json of its own (Pixel's) lends by that one
+instead. A take's moods in the table
 are the face it plays in, then those that borrow it. Only takes.tsv says
 so; the audio and the version don't change.
 
@@ -72,9 +81,9 @@ PACK_DIR = Path(__file__).resolve().parents[2]
 BANK = PACK_DIR / "design" / "assets" / "boop-voice-v1"
 PACK, TABLE = "voice/voice.bin", "mac/takes.tsv"  # in a character pack
 # The face each recorded mood that's no longer one plays in; and, TEMPORARY,
-# the faces with no takes of their own, and the one each borrows.
-_BORROWED = json.loads((Path(__file__).resolve().parent / "borrowed.json").read_text())
-PLAYS, BORROWS = _BORROWED["plays"], _BORROWED["borrows"]
+# the faces with no takes of their own, and the one each borrows. A pack
+# with its own tools/borrowed.json (Pixel's) lends by that one.
+BORROWED = Path(__file__).resolve().parent / "borrowed.json"
 CARD_PATH = "boop/voice.bin"  # where the board looks on its card
 
 RATE = 11025        # the takes' sample rate on the board
@@ -158,6 +167,30 @@ REPLY_OF = {
     "phrase.return.mission-update": ["status"],
     "word.idle.quiet": ["hush"],
     "nonverbal.relief.ahh": ["unhush"], "nonverbal.relief.phew": ["unhush"], "word.celebrate.hooray": ["unhush"],
+}
+# Entries that are also a skit's own takes (the pack's `skits` in
+# character.json, and code says when each plays): each of their takes
+# counts for those skits too, in its own mood, as REPLY_OF's do for a
+# reply. Plain words a person understands at that moment, words and
+# phrases both: win says the turn is done; upset is a failure, its swears
+# (the `swear` kind) for when failures pile up and swearing is on; fix is
+# relief at a check passing again, with every claims_a_fix word; back is
+# the hello topic's greetings, for you coming back.
+SKIT_OF = {
+    "word.success.done": ["win"], "word.success.finish": ["win"], "word.success.finished": ["win"],
+    "word.success.complete": ["win"], "word.success.success": ["win"], "word.celebrate.victory": ["win"],
+    "phrase.pride.nailed-it": ["win"], "phrase.celebrate.ta-da-da": ["win"], "phrase.success.all-done": ["win"],
+    "phrase.success.job-done": ["win"], "phrase.success.and-done": ["win"], "phrase.success.we-did-it": ["win"],
+    "explicit.fuck": ["upset"], "explicit.shit": ["upset"], "explicit.damn": ["upset"], "explicit.crap": ["upset"],
+    "phrase.setback.oh-no": ["upset"], "phrase.frustration.not-again": ["upset"], "phrase.frustration.oh-come-on": ["upset"],
+    "phrase.setback.aw-nuts": ["upset"], "word.setback.failed": ["upset"], "word.setback.broken": ["upset"],
+    "word.setback.drat": ["upset"], "word.setback.uh-oh": ["upset"], "word.setback.oops": ["upset"],
+    "nonverbal.relief.phew": ["fix"], "nonverbal.relief.whew": ["fix"], "nonverbal.relief.ahh": ["fix"],
+    "nonverbal.relief.haa": ["fix"], "word.success.fixed": ["fix"], "word.success.passed": ["fix"],
+    "word.success.cleared": ["fix"], "phrase.success.there-it-is": ["fix"],
+    "word.attention.hello": ["back"], "word.attention.hey": ["back"], "phrase.attention.hello-hello": ["back"],
+    "word.poke.hi": ["back"], "word.poke.howdy": ["back"], "borrowed.salut": ["back"], "phrase.poke.oh-hello": ["back"],
+    "phrase.poke.hey-hey": ["back"], "word.idle.hullo": ["back"],
 }
 # Entries that are also how Boop feels when it's shaken (the `shaken`
 # feeling), by the moods they were recorded in, None for every one:
@@ -306,21 +339,21 @@ def write_pack(path: Path, ver: str, takes: list[dict], clips: list[bytes], mout
     tmp.replace(path)
 
 
-def lent(mood: str) -> list[str]:
-    """The faces a take recorded in `mood` plays in: its own (`PLAYS`), then
+def lent(mood: str, borrowed: dict) -> list[str]:
+    """The faces a take recorded in `mood` plays in: its own (`plays`), then
     those that borrow that one's takes."""
-    face = PLAYS.get(mood, mood)
-    return [face] + [m for m, lender in BORROWS.items() if lender == face]
+    face = borrowed.get("plays", {}).get(mood, mood)
+    return [face] + [m for m, lender in borrowed["borrows"].items() if lender == face]
 
 
-def write_table(ver: str, takes: list[dict]) -> str:
+def write_table(ver: str, takes: list[dict], borrowed: dict) -> str:
     """takes.tsv, the Mac's table in a character pack
     (characters/CHARACTER.md §8): two comment lines, the pack's version,
     then every take as one line of tab-separated fields. The app reads it at
     start (`Take.all`)."""
     for t in takes:
         assert not any(c in t["text"] for c in '\t\n'), t["id"]
-    rows = ["\t".join([t["id"], t["text"], t["part"], t["meaning"], t["kind"], " ".join(lent(t["mood"])), t["finish"] or "",
+    rows = ["\t".join([t["id"], t["text"], t["part"], t["meaning"], t["kind"], " ".join(lent(t["mood"], borrowed)), t["finish"] or "",
                        str(t["ms"])])
             for t in takes]
     return "\n".join([
@@ -339,12 +372,16 @@ def main() -> None:
                     help="the character pack to write it into (default: this one, Boop's)")
     ap.add_argument("--card", type=Path, help="also copy the pack onto the card mounted here, as boop/voice.bin")
     ap.add_argument("--wav-dir", type=Path, help="also write every converted take as a WAV here")
+    ap.add_argument("--keep-attention", action="store_true",
+                    help="keep needs you's takes in both files, as Pixel's older copy has them")
     args = ap.parse_args()
 
     manifest = json.loads((BANK / "manifest.json").read_text())
     entries = {e["id"]: e for e in json.loads((BANK / "dictionary.json").read_text())["entries"]}
     # Needs you's other takes (`attention`) Boop never says: left out.
-    recs = [r for r in manifest["recordings"] if answer(entries[r["entryId"]])[0] != "attention"]
+    recs = [r for r in manifest["recordings"] if args.keep_attention or answer(entries[r["entryId"]])[0] != "attention"]
+    own = args.pack / "tools" / "borrowed.json"
+    borrowed = json.loads((own if own.is_file() else BORROWED).read_text())
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as pool:
         out = list(pool.map(convert, [r["files"][TEXTURE]["path"] for r in recs], chunksize=16))
     takes, clips, mouths = [], [], []
@@ -361,13 +398,16 @@ def main() -> None:
                for rec, t in zip(recs, takes) for reply in REPLY_OF.get(rec["entryId"], [])]
     # And a shaken take's: rows of the table only, as a reply's.
     shaken = [{**t, "part": "feeling", "meaning": "shaken"} for rec, t in zip(recs, takes) if is_shaken(rec["entryId"], t["mood"])]
-    for name, table_of in (("REPLY_OF", REPLY_OF), ("SHAKEN", SHAKEN)):
+    # And a skit's: rows of the table only, as a reply's.
+    skits = [{**t, "part": "skit", "meaning": skit, "finish": None}
+             for rec, t in zip(recs, takes) for skit in SKIT_OF.get(rec["entryId"], [])]
+    for name, table_of in (("REPLY_OF", REPLY_OF), ("SHAKEN", SHAKEN), ("SKIT_OF", SKIT_OF)):
         missing = set(table_of) - {rec["entryId"] for rec in recs}
         if missing:
             raise SystemExit(f"voicegen: {name} names entries with no recording: {', '.join(sorted(missing))}")
-    said = [t for t in takes + replies + shaken
+    said = [t for t in takes + replies + shaken + skits
             if not (t["part"] == "about" and t["meaning"] in UNSAID) and not (t["part"] == "reply" and t["meaning"] in UNMADE)]
-    table = write_table(ver, said)
+    table = write_table(ver, said, borrowed)
     write_pack(args.pack / PACK, ver, takes, clips, mouths)
     (args.pack / TABLE).parent.mkdir(parents=True, exist_ok=True)
     (args.pack / TABLE).write_text(table)
@@ -390,7 +430,7 @@ def main() -> None:
                 w.writeframes(c)
     ms = [t["ms"] for t in takes]
     where = f", copied to {args.card / CARD_PATH}" if args.card else ""
-    print(f"voicegen: {len(takes)} takes ({len(replies)} more rows as replies, {len(shaken)} as shaken), version {ver}, {built.stat().st_size} B pack "
+    print(f"voicegen: {len(takes)} takes ({len(replies)} more rows as replies, {len(shaken)} as shaken, {len(skits)} as skits), version {ver}, {built.stat().st_size} B pack "
           f"({min(ms)}–{max(ms)} ms) → {PACK} and {TABLE} in {args.pack.name}{where}")
     if args.card:
         print("voicegen: put the card back in the board and press its reset button: it mounts the card only at boot")
