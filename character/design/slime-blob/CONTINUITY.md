@@ -190,7 +190,7 @@ where it starts, which idle plays as its acting deals it (the mood's move
 and the expression's own bits, `Acting::takes`): the face plays the clip
 (`GelFace::advanceTo`), and every face plays its lasting mood's
 (slimegen's `kIdleMoves`), but a meme face, which plays its own move
-(Meme faces, below). They replace the 19 faces' three mood gestures
+(Meme faces, below). They replace the faces' three mood gestures
 each, the spring kicks motion V2 gives every pose by itself.
 
 | Mood | Its move | Why it reads so |
@@ -607,7 +607,7 @@ lands, once each, never ducked.
 
 The brain's Moment to a finished turn, a finish or only a face, names
 whose turn it was (the `do`'s `who`), and the board marks it on screen
-for as long as the Moment plays and 3 s after (`Behaviour::done`,
+for as long as the Moment plays and 5 s after (`Behaviour::done`,
 `kFinishLingerMs`), so a face or a word reads as being about that turn
 (`gel/done.h`):
 
@@ -850,7 +850,7 @@ function draws a hand, `paintHand`: a gel disk shaded as the dome is, its
 light up and to its left, a pale rim as the dome's, a soft shadow down and
 to its right, in the buddy's colour; a flat pad when it rests on
 something; an open palm has three small fingertips over its top, a fist is
-a little tighter; on the glass it's 2.5 times its size (`kHandGlassGrow`),
+a little tighter; on the glass it's 1.5 times its size (`kHandGlassGrow`),
 paler and flat, with a pale patch where it presses; fading, it's one flat
 shape so it fades evenly. It never grows fingers.
 

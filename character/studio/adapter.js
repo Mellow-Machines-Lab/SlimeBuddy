@@ -153,15 +153,7 @@
     const hidden = () => { if (document.hidden) SlimeSFX.stop(); };
     document.addEventListener('visibilitychange', hidden);
 
-    const destroy = instance.destroy;
     instance.busy = () => recording;
-    instance.destroy = () => {
-      stopped = true;
-      SlimeSFX.stop();
-      document.removeEventListener('visibilitychange', hidden);
-      ctx.tools.replaceChildren();
-      destroy();
-    };
     return instance;
   }});
 })();

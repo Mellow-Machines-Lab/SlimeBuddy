@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img alt="macOS 15+" src="https://img.shields.io/badge/macOS-15%2B-black?logo=apple">
+  <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-black?logo=apple">
   <img alt="ESP32-S3 AMOLED" src="https://img.shields.io/badge/board-ESP32--S3%20AMOLED-E7352C?logo=espressif&logoColor=white">
   <img alt="A Boop character" src="https://img.shields.io/badge/a-Boop%20character-6f9fe8">
   <img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-blue">
@@ -38,8 +38,8 @@ every turn your agents take.
 - 👉 **Feels your touch.** Stroke it and it calms down, rub it the wrong
   way and it ruffles, boop it and it's tickled, shake it and it gets dizzy.
   Hold its button and talk to it: it answers.
-- 📔 **Keeps a diary**, a line a day about the one before, and puts on
-  its nightcap at night.
+- 📔 **Keeps a diary**, a line a day about the one before, and gets
+  sleepy at night.
 
 It's cheeky: it teases the agents and the work, never you, and it's
 always on your side. It has moods of its own, seven of them, and 18 faces, and there's no
@@ -64,7 +64,7 @@ on your Mac, beside every session and what it's doing.
 
 | You need | Why |
 | --- | --- |
-| 💻 **A Mac** | macOS 15 or later, with Command Line Tools 26 or later (`xcode-select --install`): Swift 6.2 and the macOS 26 SDK |
+| 💻 **A Mac** | macOS 14 or later, with Command Line Tools 26 or later (`xcode-select --install`): Swift 6.2 and the macOS 26 SDK |
 | 🐍 **A newer Python** | For flashing the board, unless you already have PlatformIO's `pio`: `brew install python`. PlatformIO installs itself |
 | 🟦 **The board** | A Waveshare **ESP32-S3-Touch-AMOLED-2.06**: a 2.06" AMOLED, 410×502, with capacitive touch. And a USB-C cable that carries data |
 | 💾 **A microSD card** | Optional, for the slime's voice: copy `character/voice/voice.bin` onto a FAT32 card as `boop/voice.bin`. Without one it's silent, and its faces work the same |
@@ -136,7 +136,7 @@ the slime.
 ## Other characters
 
 - **[PixelBuddy](https://github.com/Mellow-Machines-Lab/PixelBuddy)**:
-  Pixel, a pixel-art face on the Cheap Yellow Display.
+  Pixel, a pixel-art face on the Cheap Yellow Display. Archived.
 - **Your own.** A character is a folder of files:
   [CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md)
   says what goes in one.

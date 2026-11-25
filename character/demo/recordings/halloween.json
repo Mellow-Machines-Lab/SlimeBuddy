@@ -6,7 +6,7 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"morning\",\"halloween\"]}"
     },
     {
-      "at": 0.001,
+      "at": 0.002,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"morning\",\"halloween\"]}"
     },
     {
@@ -17,79 +17,86 @@
       }
     },
     {
-      "at": 0.856,
+      "at": 0.855,
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier3\"]}"
     },
     {
       "at": 0.856,
       "effect": "Boop reacts",
-      "line": "{\"t\":\"do\",\"id\":405613948,\"name\":\"react\",\"play\":\"if_free\",\"args\":{\"reason\":\"quiet for 1 h\"}}"
+      "line": "{\"t\":\"do\",\"id\":750298365,\"name\":\"react\",\"play\":\"if_free\",\"args\":{\"reason\":\"quiet for 1 h\"}}"
     },
     {
-      "at": 1.182,
-      "effect": "Boop stretches and yawns and says “Ooh!”",
-      "line": "{\"t\":\"do\",\"id\":405613949,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"happy halloween!\",\"reason\":\"you were away 10 h\",\"greeting\":true,\"say\":{\"take\":\"phase1.nonverbal.delight.ooh__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+      "at": 0.999,
+      "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier3\"],\"energy\":\"bright\"}"
     },
     {
-      "at": 1.183,
+      "at": 1.177,
+      "effect": "Boop stretches and yawns and says “Hullo”",
+      "line": "{\"t\":\"do\",\"id\":750298366,\"name\":\"wake_up\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"sign\":\"happy halloween!\",\"reason\":\"you were away 10 h\",\"invite\":{\"skit\":\"back\",\"pose\":\"lean\",\"touch\":\"stroke\",\"payoff\":\"purr\",\"label\":\"pet\",\"ms\":12000},\"greeting\":true,\"say\":{\"take\":\"phase1.word.idle.hullo__proud__contained\"},\"mood\":\"mischievous\",\"loops\":2}}"
+    },
+    {
+      "at": 1.178,
       "effect": "Boop's mood is now happy",
-      "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier3\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\",\"tier3\"],\"energy\":\"bright\"}"
     },
     {
-      "at": 7.585,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
+      "at": 7.244,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"energy\":\"bright\"}"
     },
     {
-      "at": 7.585,
+      "at": 7.244,
       "effect": "Boop reacts",
-      "line": "{\"t\":\"do\",\"id\":405613950,\"name\":\"react\",\"play\":\"if_free\",\"args\":{\"reason\":\"claude woke Boop\"}}"
+      "line": "{\"t\":\"do\",\"id\":750298367,\"name\":\"react\",\"play\":\"if_free\",\"args\":{\"reason\":\"claude woke Boop\"}}"
     },
     {
-      "at": 7.588,
+      "at": 7.246,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Add a spooky theme for today”"
       }
     },
     {
-      "at": 8.654,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"calls\":[[0,1,\"edit +1 -1\"]]}"
+      "at": 8.25,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"tool_use\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"energy\":\"bright\",\"calls\":[[0,1,\"editing +1\"]]}"
     },
     {
-      "at": 10.788,
+      "at": 10.383,
       "cause": {
         "kind": "tool",
         "text": "Claude edits src/theme.css"
       }
     },
     {
-      "at": 12.492,
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"]}"
+      "at": 11.999,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"happy\",\"busy\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"energy\":\"bright\",\"calls\":[[0,1,\"editing +1\"]]}"
     },
     {
-      "at": 12.492,
-      "line": "{\"t\":\"do\",\"id\":405613951,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 12.079,
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"happy\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"evening\",\"halloween\"],\"energy\":\"bright\"}"
     },
     {
-      "at": 12.493,
+      "at": 12.079,
+      "line": "{\"t\":\"do\",\"id\":750298368,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+    },
+    {
+      "at": 12.08,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 12.813,
-      "effect": "Boop celebrates and says “Boop”",
-      "line": "{\"t\":\"do\",\"id\":405613952,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{\"take\":\"phase1.word.poke.boop__proud__contained\"},\"mood\":\"mischievous\",\"loops\":1}}"
+      "at": 12.392,
+      "effect": "Boop celebrates",
+      "line": "{\"t\":\"do\",\"id\":750298369,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":18185,\"args\":{\"outcome\":\"success\",\"turn\":0,\"xp\":5,\"who\":{\"agent\":\"claude\",\"thread\":\"halloween\"},\"say\":{},\"mood\":\"mischievous\",\"loops\":1}}"
     }
   ],
   "face": "gel",
-  "length": 19,
+  "length": 18.49,
   "name": "Boop",
-  "script": "9e035451caeb65a030e221a789c529627b0634d6e1cf3e9c75637274436eb6c5",
+  "script": "f01aef2ec07ee75363b8090855981e1ea1bf43271828ccf2bc8703d449547899",
   "takes": [
-    "phase1.nonverbal.delight.ooh__proud__contained",
-    "phase1.word.poke.boop__proud__contained"
+    "phase1.word.idle.hullo__proud__contained"
   ],
   "version": 1
 }
