@@ -12,7 +12,7 @@
      "invite": {"pose": "palm", "touch": "tap", "payoff": "highfive"}},
     {"id": "upset", "slots": ["failed", "failedVeryLong", "gaveUp", "checkFailing"],
      "invite": {"pose": "back", "touch": "stroke", "payoff": "sigh"}},
-    {"id": "fix",   "slots": ["checkFixed"]},
+    {"id": "fix",   "slots": ["checkFixed"], "clip": "flop"},
     {"id": "back",  "slots": ["back", "backDays", "backAfterADay"],
      "invite": {"pose": "lean", "touch": "stroke", "payoff": "purr"}}
   ],
