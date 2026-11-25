@@ -1,6 +1,7 @@
 #include "render/gel/card.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 
 #include "render/font.h"
