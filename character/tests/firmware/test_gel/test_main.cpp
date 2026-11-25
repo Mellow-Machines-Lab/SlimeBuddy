@@ -13,6 +13,7 @@
 #include "render/helper.h"
 #include "render/gel/geometry.h"
 #include "render/gel/face.h"
+#include "render/gel/invite.h"
 #include "app/behaviour.h"
 #include "render/gel/sounds.h"
 #include "app/device.h"
@@ -759,8 +760,39 @@ static void test_gel_clips_use_the_shared_mixer() {
     TEST_ASSERT_TRUE(audible);
   }
 }
+// The invite (render/gel/invite.h): the gel draws them; with none the body
+// is as it was; each pose comes up to the glass to its scale; a late one's
+// payoff waits for its turn round; the XP shows low only while a payoff
+// that earns plays.
+static void test_the_gel_draws_invites() {
+  GelFace f;
+  TEST_ASSERT_TRUE(f.drawsInvites());
+  const Surface s{502, 410, nullptr, 110};
+  PaintControls rest, c;
+  applyInvite(c, s, InviteShow{});
+  TEST_ASSERT_EQUAL_INT(rest.scale, c.scale);
+  TEST_ASSERT_EQUAL_INT(rest.faceX, c.faceX);
+  for (InvitePose p : {InvitePose::kPalm, InvitePose::kLean, InvitePose::kBack}) {
+    InviteShow v;
+    v.phase = InviteShow::kPose, v.pose = p, v.ms = 2000;
+    PaintControls held;
+    applyInvite(held, s, v);
+    TEST_ASSERT_EQUAL_INT(kInviteScale[int(p)], held.scale);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack, held.faceX > 0);
+    TEST_ASSERT_FALSE(inviteSign(v).shows());
+  }
+  InviteShow late;
+  late.phase = InviteShow::kLate, late.payoff = InvitePayoff::kHighFive, late.xp = 3, late.ms = InviteShow::kTurnMs - 1;
+  TEST_ASSERT_EQUAL_INT(-1, payoffAge(late));
+  TEST_ASSERT_FALSE(inviteSign(late).shows());
+  late.ms = InviteShow::kTurnMs + 100;
+  TEST_ASSERT_EQUAL_INT(100, payoffAge(late));
+  TEST_ASSERT_EQUAL_INT(3, inviteSign(late).xp);
+  late.xp = 0;
+  TEST_ASSERT_FALSE(inviteSign(late).shows());
+}
 // Each sound carries its own duck. A needs-you alert's
-// knocks and ding stay up under a line; routine typing turns down.
+// knocks and ding stay up under a line; a poke's squish, routine, turns down.
 static void test_each_cue_carries_its_own_duck() {
   linkkit::Rng rng;
   GelFace f;
@@ -775,6 +807,11 @@ static void test_each_cue_carries_its_own_duck() {
   voice::FxEvent cues[Face::kMaxCues];
   bool changed = false;
   for (uint32_t t = 16; t <= 16000; t += 16) {
+    if (t == 16 || t == 3200) {  // a poke, over the work, and gone
+      s.anim = t == 16 ? SceneState::kPoked : SceneState::kNone;
+      s.at = 16;
+      f.sync(s, c, t);
+    }
     if (t == 9600) {
       c.attention = true;
       c.attentionId = 7;
@@ -3035,6 +3072,7 @@ int main() {
   RUN_TEST(test_the_lane_fades_whatever_the_draw_cadence);
   RUN_TEST(test_gel_clips_use_the_shared_mixer);
   RUN_TEST(test_each_cue_carries_its_own_duck);
+  RUN_TEST(test_the_gel_draws_invites);
   RUN_TEST(test_pick_is_pure_and_started_commits_it);
   RUN_TEST(test_a_power_on_seeds_the_engine_and_a_reset_restores_53);
   RUN_TEST(test_a_reset_lets_go_of_the_finger);

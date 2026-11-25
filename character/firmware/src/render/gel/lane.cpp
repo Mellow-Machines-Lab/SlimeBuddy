@@ -9,6 +9,7 @@
 #include "fonts_gel.h"
 #include "render/gel/drawer.h"
 #include "render/gel/engine.h"
+#include "render/gel/invite.h"
 #include "render/font.h"
 #include "render/gel/layers.h"
 #include "render/gel/painter.h"
@@ -751,6 +752,9 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
   // takes the lane from all of these, its rim glowing gold.
   const GoldShow gold = goldShow(sign);
   if (gold.sign.shows()) low = gold.sign;
+  // An invite's payoff that earns says so, "+3 XP", over all of them.
+  const LowSign earned = inviteSign(e.invite);
+  if (earned.shows()) low = earned;
   gTerm = stream ? termFor(*stream, now, s.watch >= 0 ? s.pipSlot[s.watch] : -1) : Term{};
   noteSwitch(s, now);
   gSwitchDx = switchDx(now), gArrows = switchArrows(now);
@@ -785,6 +789,7 @@ bool paintFrame(Surface& surface, const Engine& e, bool mouthOpen, int dy, const
     paintStreamFront(surface, *stream, at, now);
   }
   if (wish) paintWish(surface, *wish, at);
+  paintInvite(surface, e.invite, at);
   if (sign.text && !sign.low) paintSign(surface, sign, at, hop);
   if (held) paintCard(surface, *card, s.pipCount > 1 ? gSwitchDx : 0);
   Measure measure(profile.lane);

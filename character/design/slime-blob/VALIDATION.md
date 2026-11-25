@@ -70,8 +70,12 @@ ramps and springs can, and no jolt at an event. By file:
   same from the same seed; the scenes' formulas (the waiting wave, the
   cards' and the error's, the recovery gesture, the desk's jitter, a bit's
   keys inside their bounds).
+- `test_main.cpp`'s invite tests: the gel draws invites, nothing changes
+  the body with none, each pose comes up to the glass to its scale, a late
+  one's payoff after its turn, and the low sign only while a payoff earns.
 - `test_requests.cpp`: what routes when (no app, listening, needs you, a
-  moment, the look), a request's identity, cues sparse and quiet, a
+  moment, the look), a request's identity, cues sparse and quiet (the
+  keys silent at work), a
   request sounding once whatever changes, and sound's randomness changing
   nothing drawn.
 - `test_hand.cpp`: your hand on the whole board, the device with the gel's
@@ -196,6 +200,13 @@ ramps and springs can, and no jolt at an event. By file:
   face and sign, the hush reply's squeeze and nod among them, a no over the
   needs-you screen, the slight wave at a lock and the bye at a night's
   lock), the
+  invite (`invite-answered.jsonl`: after a skit's face and sign, the palm
+  with its word, its high five clapping and after; the lean and its purr;
+  the back, in a sad mood, and its sigh; `invite-missed.jsonl`: each pose's
+  glow with no word, the shrug, and it back after; `invite-late.jsonl`:
+  missed, then a late stroke turning it round into a sigh, and a tap past
+  the window a poke; `invite-cut.jsonl`: needs you and a newer Moment
+  ending one), the
   with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
   gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: nothing worn at night or on a party night, Zs

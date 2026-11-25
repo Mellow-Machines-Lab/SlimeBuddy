@@ -1,6 +1,6 @@
 # Nonverbal slime sound handover
 
-Updated 2026-10-25. Scope: basic material/emotion/attention SFX, **not**
+Updated 2026-11-24. Scope: basic material/emotion/attention SFX, **not**
 ElevenLabs, recorded speech/mumbles or background music. The executable
 [sfx.js](sfx.js) provides procedural timbre sketches; slimegen cuts the
 board's effects from them, and the gel engine's cues sound them at
@@ -136,7 +136,8 @@ not a claim of identical choreography. Reveal guards keep request identity
 across mood retargets and repeated result loops, in a bounded history of
 the last 64 requests.
 
-`key_contact` maps to keyboard, `body_contact` to squish, `screen_knock` to
+`key_contact` maps to nothing (the keys make no sound; the keyboard
+sketch stays in the bank, unplayed), `body_contact` to squish, `screen_knock` to
 knock, and `alert_reveal` to ding. Only explicit success maps to complete;
 a successful finish a size above small maps its reveal to cheer and its
 landings to bounce instead ([CONTINUITY.md](../CONTINUITY.md), Finishes);

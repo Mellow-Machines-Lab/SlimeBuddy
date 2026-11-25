@@ -29,6 +29,10 @@ struct PaintControls {
   // (anchorX, anchorY) and moved by (offsetX, offsetY), in sixteenths of a
   // pixel, its face and anchors with it.
   int scale = 4096, anchorX = 0, anchorY = 0, offsetX = 0, offsetY = 0;
+  // An invite's turn away (render/gel/invite.h): the face art squeezed to
+  // `faceW` (Q12) and moved `faceX` face units (Q12) across the dome, so it
+  // looks over its shoulder from near its rim.
+  int faceX = 0, faceW = 4096;
 };
 // The canvas row the body stands on (restBodyBottom), and how far above it
 // its eyes are.

@@ -12,8 +12,8 @@ Tagged pastimes), and one face flows into the next
 (The mood beat: its arts morph or cross-fade, never closing). Q1
 representative art review was approved on 2026-10-02. Each rule below
 names the code that keeps it; [VALIDATION.md](VALIDATION.md) names the
-test that pins it. Contact-synchronized sound is implemented; timbres
-remain sketches.
+test that pins it. Contact-synchronized sound is implemented, but for
+the keys, which make none; timbres remain sketches.
 
 ## Keep the object; change its targets
 
@@ -709,6 +709,37 @@ reply, but a reply to what you said, which shows over it.
 over the needs-you screen, the slight wave at a lock and the bye at a
 night's lock.
 
+## Invites
+
+After a skit the Mac may ask for one touch (the `do`'s `invite`, the
+engine's firmware/README.md, The invite): the engine times it and the face
+draws it from `FaceContext::invite` (`gel/invite.h`), all in code, as a
+finish is, with no clip of the rig's. Once the skit's face, words and
+sign are over, Boop comes up to the glass over 450 ms, bigger about where
+it stands (`kInviteScale`), and holds its pose; the place to touch glows
+(light means "this is for you"), a warm gold light that breathes, a ripple
+going out from it every 1.6 s, so it reads as "touch here" with no word,
+and the Mac's `label` ("tap", "pet") stands by it in the sign's font,
+rimmed dark, its letters rippling one after another.
+
+| Pose | What it does | Glows | Touch | Payoff |
+| --- | --- | --- | --- | --- |
+| palm | Faces you, happy, eyes wide, leaning a little to its right; one gel palm flat on the glass beside its right eye, its heel pressed paler, the word under it | the palm, a ring round it | tap | high five: the palm claps in with a flash ring and sparks, it squashes, hops and wobbles round, excited |
+| lean | Its head leaned and tilted on the glass, bigger still, eyes wide and up at you | its forehead, the word beside it | stroke | purr: eyes shut, a slow wiggle, breathing, three hearts rising |
+| back | Its back turned, slumped, its face (its mood's own) squeezed to its right rim, looking over its shoulder | its back, the word under it | stroke | sigh: a breath in, its shoulders drop as it turns round, pleased, a puff of breath |
+
+Missed, it shrugs (up and down, a glance aside under heavy lids) as the
+glow goes and it settles back to where it stood, its face coming round. A
+late touch turns it round with a hop and a pop of sparks by its head, then
+the payoff. A payoff that earns says so low, "high five", "purr" or
+"better now" with the XP's chip, as a finish's does. While an invite shows
+no pastime, base pose, typing along, look of its own or idle gesture
+plays (`GelFace::showsLook`); a finger still takes the body, and leans in
+as it would. A mood that keeps its face through a touch keeps it here too.
+Each payoff has one sound from the bank (`inviteSound`): the cheer for a
+high five, the snore's breath, low, for a purr and a sigh (the bank has no
+purr).
+
 ## Tagged pastimes
 
 A tagged pastime is one that needs a tag (`render/tags.h`: `night`), or
@@ -758,8 +789,10 @@ typing, searching as looking, testing and delegating as running).
   `kPoseMs` (400 ms, the mixer's `setLook`), the paws ease on a spring as
   quick (`Scenes::pose`), and typing's taps go with typing's share. The
   monitor cuts.
-- **Keys only while it types.** A recipe's key contacts, their clicks and
-  the paws' taps play in typing alone (`Scenes::advance`); the rows of
+- **Keys only while it types.** A recipe's key contacts and the paws'
+  taps play in typing alone, and the keys make no sound: a click at every
+  word was too much, and the paws show the typing (`gel/engine.cpp`'s
+  recipes, `key_contact` none) (`Scenes::advance`); the rows of
   `slime.h` for the states never shown (planning, tool_use, searching,
   testing, delegating) are still generated and never played.
 - **Pastimes.** At work only the stretch is dealt, in any pose.
@@ -784,7 +817,7 @@ the zone, low calm lids, a slow wide sway and a deep breath
 own (above). Under a
 Moment, or while something needs you, the base fades out over the
 mixer's 150 ms, and back after. While it types, the desk's paws type: before each key
-contact of the recipe (its keyboard click) a paw lifts and lands on it
+contact of the recipe (silent: the keys make no sound) a paw lifts and lands on it
 (`kTapMs`, `kTapLift`), and between them they tap softly by turns,
 lower and without a sound (`kTypeMs`, `kTypeLift`), so the paws work
 even between the recipe's bursts. A pastime may take them (below).

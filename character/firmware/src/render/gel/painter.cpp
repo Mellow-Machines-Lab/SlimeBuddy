@@ -5,6 +5,7 @@
 #include "render/gel/finish.h"
 #include "render/gel/frame.h"
 #include "render/gel/geometry.h"
+#include "render/gel/invite.h"
 #include "render/gel/layers.h"
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
@@ -724,6 +725,9 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
     applyMove(c, surface, move);
   }
+  // An invite brings it up to the glass in its pose; under a finish or the
+  // drawer it waits.
+  if (!finish.on && !squeeze) applyInvite(c, surface, e.invite);
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;

@@ -71,6 +71,9 @@ class Engine {
     int side = 1, scroll = 0;
     uint32_t notesMs = 0;
   } with;
+  // The invite showing (render/gel/invite.h), its time the board's as of the
+  // last step: the face's to set, the painter's to draw.
+  InviteShow invite;
   void sync();
   void step(uint32_t ms);
   void setMood(int id) {
