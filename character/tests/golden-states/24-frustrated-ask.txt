@@ -6,7 +6,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -21,6 +22,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't
@@ -186,7 +189,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -201,6 +205,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't
