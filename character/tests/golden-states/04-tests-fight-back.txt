@@ -537,7 +537,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had an annoyed moment (medium).
 2 min ago: claude's tests failed on "fix-nav" (landing), the 3rd in a row.
   Boop is more cross: angry now.
-  Boop had an annoyed moment (medium), and said "Crap".
+  Boop had an annoyed moment (medium), and said "Shit".
 Boop has been cross for 6 min.
 
 NOW (14:07)

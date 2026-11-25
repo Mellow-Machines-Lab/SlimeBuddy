@@ -206,7 +206,9 @@ ramps and springs can, and no jolt at an event. By file:
   glow with no word, the shrug, and it back after; `invite-late.jsonl`:
   missed, then a late stroke turning it round into a sigh, and a tap past
   the window a poke; `invite-cut.jsonl`: needs you and a newer Moment
-  ending one), the
+  ending one; `behind-a-finish.jsonl`: a busy board, then a finish and the
+  low Moment queued behind it with the Mac's ttls, the finish, the low
+  sign and the invite's pose all playing in turn), the
   with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
   gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: nothing worn at night or on a party night, Zs

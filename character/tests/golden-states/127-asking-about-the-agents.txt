@@ -553,7 +553,7 @@ just now: You said to Boop: "did the tests pass?"
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 just now: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 Boop has been happy for under a minute.
 
 NOW (14:06)
@@ -577,7 +577,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 1 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 Boop has been happy for 1 min.
@@ -603,7 +603,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 2 min ago: You said to Boop: "so, is it finished?"
@@ -632,7 +632,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 2 min ago: You said to Boop: "so, is it finished?"
@@ -663,7 +663,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 4 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 3 min ago: You said to Boop: "so, is it finished?"

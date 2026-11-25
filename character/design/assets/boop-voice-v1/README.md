@@ -1,6 +1,6 @@
 # Boop voice bank v1 — agent integration handoff
 
-Updated 2026-10-25. **Recorded audition assets, not a production voice engine.**
+Updated 2026-11-24. **Recorded audition assets, not a production voice engine.**
 Robot Minion 1 only: voice ID `rErOatUrNIU3vfNcLl6Z`, generation model `eleven_v4`.
 This package sits beside the V4 animation bank; it does not change the app, firmware,
 mood graph, generic harness, or approval rules. Publication is not listening approval.
@@ -77,7 +77,7 @@ or audition checkout. Animation/SFX previews remain in the sibling V4 review ban
 | `storage-report.json` | Exact logical bytes, durations, category counts and recorded mood coverage |
 | `plans/phase1.json` | Completed slot IDs mapped to actual recording IDs; includes reused pilot mappings |
 | `plans/deferred.json` | Disjoint remaining 4,421 slots; not authorized for automatic generation |
-| `plans/replies.json` | The replies' own words as slots, from `plan/voice-range.md` (`character/tools/voicegen/reply_slots.py`) |
+| `plans/replies.json` | The replies' own words as slots, which `placeholders.py` speaks until real takes replace them |
 | `plans/regenerate.json` | Every placeholder take's slot: what to record for real (`placeholders.py` rewrites it) |
 | `review/` | Self-contained continuous audition; serve the package root as above |
 
