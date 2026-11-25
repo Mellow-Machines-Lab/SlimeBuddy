@@ -39,7 +39,7 @@
 {"clock":700}
 {"shot":"needs-you-at-you"}
 {"clock":3000}
-{"shot":"needs-you-at-the-mac-right"}
+{"shot":"needs-you-at-the-mac-right","pin":true}
 {"clock":20000}
 {"t":"state","base":"working","act":"terminal","mood":"focused","busy":1,"vol":0,"when":["day","macright"],"attn":{"id":7,"agent":"codex","project":"api","name":"Fix the login test","kind":"approve"}}
 {"clock":24000}

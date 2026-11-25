@@ -194,14 +194,17 @@ std::set<int> look(Run& r, int row, int ms) {
 // bounds, nothing drawn jumping.
 void test_every_cell_plays_truthfully() {
   // The takes of a row differ, but for the rests and idle, whose scene is
-  // one still rest (idle's takes are its acting's, which differ too), and
-  // notice, whose takes are one rig clip, each under its own face.
+  // one still rest (idle's takes are its acting's, which differ too),
+  // notice, whose takes are one rig clip, each under its own face, and
+  // needs you, one knock in every mood and take (the pack's `knock` clip).
   for (int a = 0; a < slime::kNoticeCount; ++a)
     for (int b = a + 1; b < slime::kNoticeCount; ++b)
       TEST_ASSERT_TRUE(slime::kNoticeFaces[a] != slime::kNoticeFaces[b]);
   for (int p = 0; p < slime::kCanonical; ++p) {
     for (int row = 0; row < slime::kRecipeStates; ++row) {
-      if (row == int(SceneState::kIdle) || row == int(SceneState::kNoApp) || row == int(SceneState::kNotice)) continue;
+      if (row == int(SceneState::kIdle) || row == int(SceneState::kNoApp) || row == int(SceneState::kNotice) ||
+          row == int(SceneState::kNeedsYou))
+        continue;
       for (int a = 0; a < takes(row); ++a)
         for (int b = a + 1; b < takes(row); ++b) {
           if (row == int(SceneState::kAsleep) && b < 3) continue;  // its still rests, then the snore

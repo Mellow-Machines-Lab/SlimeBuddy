@@ -23,6 +23,9 @@ export function firmwareCatalog(pack,character){
  const design=read('expressions.json'),profiles=design.expressions,sound=read('sound/sound-plan.json');
  // The notice state plays the pack's rig clip, which its recipe times.
  design.noticeClip=JSON.parse(fs.readFileSync(path.join(pack,'rig/clips/notice.json')));
+ // The knock, and its climb when nobody comes, that time needs you's scene.
+ design.knockClip=JSON.parse(fs.readFileSync(path.join(pack,'rig/clips/knock.json')));
+ design.climbClip=JSON.parse(fs.readFileSync(path.join(pack,'rig/clips/knock-climb.json')));
  // Every gag the port plays: comedy's, then each gesture's, then the
  // pastimes'.
  const allGags=[...Object.entries(design.gags),...design.gestures.map(g=>[gestureGagName(g),gestureGag(g)]),...pastimeGags(design.pastimes)];

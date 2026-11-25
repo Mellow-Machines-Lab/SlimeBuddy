@@ -1038,7 +1038,7 @@
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"calm","idle":1}
 {"clock":50050}
 {"clock":50100}
-{"shot":"left-big"}
+{"shot":"left-big","pin":true}
 {"t":"dbg.imu","ax":0,"ay":0,"az":1000}
 {"clock":50150}
 {"clock":50200}

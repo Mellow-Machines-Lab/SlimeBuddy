@@ -30,7 +30,7 @@
 {"clock":2700}
 {"clock":2800}
 {"clock":3000}
-{"shot":"open"}
+{"shot":"open","pin":true}
 {"expect":{"drawer":{"open":1000,"rows":4},"last_input":{"k":"touch"},"touch":{"last":{"was":"drawer"}}}}
 {"clock":6000}
 {"t":"dbg.touch","x":160,"y":112,"ms":80}

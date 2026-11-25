@@ -9,7 +9,7 @@
 {"t":"do","name":"react","play":"now","args":{"sign":"bye bye code"}}
 {"expect":{"sign":"bye bye code"}}
 {"clock":1600}
-{"shot":"short"}
+{"shot":"short","pin":true}
 {"clock":3499}
 {"expect":{"sign":"bye bye code"}}
 {"clock":3500}

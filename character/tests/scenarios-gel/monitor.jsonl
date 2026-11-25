@@ -262,7 +262,7 @@
 {"clock": 12500}
 {"clock": 12550}
 {"clock": 12600}
-{"shot": "tests-failed"}
+{"shot": "tests-failed", "pin": true}
 {"t": "state", "base": "working", "act": "tool_use", "mood": "focused", "busy": 1, "vol": 0, "when": ["day"], "calls": [[0, 5, "edit +4"]]}
 {"clock": 12650}
 {"clock": 12700}

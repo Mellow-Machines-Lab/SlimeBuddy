@@ -23,4 +23,4 @@
 {"clock":1000}
 {"t":"do","name":"notice","play":"now","args":{"sign":"that's me!"}}
 {"clock":1600}
-{"shot":"with-sign"}
+{"shot":"with-sign","pin":true}

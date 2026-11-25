@@ -7,7 +7,7 @@
 {"t":"state","base":"working","mood":"grumpy","busy":1,"vol":0}
 {"clock": 30600}
 {"expect":{"screen":"no_app","bl":255}}
-{"shot":"resting-plug"}
+{"shot":"resting-plug","pin":true}
 {"t":"dbg.touch","x":160,"y":120,"ms":40}
 {"clock": 31000}
 {"shot":"poked"}

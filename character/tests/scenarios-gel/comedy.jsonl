@@ -32,7 +32,7 @@
 {"t":"state","base":"idle","mood":"excited","vol":0}
 {"clock":44400}
 {"expect":{"screen":"face","mood":"excited","moment":null}}
-{"shot":"zoomies_left"}
+{"shot":"zoomies_left","pin":true}
 {"clock":44800}
 {"shot":"zoomies_right"}
 {"t":"dbg.reset"}

@@ -21,7 +21,7 @@
 {"clock":4400}
 {"expect":{"moment":{"anim":"gesture","variant":2}}}
 {"clock":5800}
-{"shot":"stroke"}
+{"shot":"stroke","pin":true}
 {"clock":9000}
 {"t":"dbg.touch","x":160,"y":134,"ms":60}
 {"clock":9100}

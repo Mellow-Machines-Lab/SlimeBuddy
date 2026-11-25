@@ -16,7 +16,7 @@
 {"clock":1100}
 {"clock":1200}
 {"clock":1300}
-{"shot":"poke"}
+{"shot":"poke","pin":true}
 {"t":"dbg.touch","x":160,"y":70,"ms":40}
 {"clock":1400}
 {"clock":1500}
@@ -799,7 +799,7 @@
 {"clock":72600}
 {"clock":72700}
 {"clock":72800}
-{"shot":"act-reason"}
+{"shot":"act-reason","pin":true}
 {"clock":72900}
 {"clock":73000}
 {"clock":73100}

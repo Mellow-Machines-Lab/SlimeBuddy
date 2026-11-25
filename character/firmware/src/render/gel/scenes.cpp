@@ -286,8 +286,10 @@ void Scenes::advance(T dt, T time, bool grab, Random& random) {
     }
   }
   bool active = !grab && !route.quiet;
+  // A key's or the body's contact dips the body; a knock's is a hand's on
+  // the glass (the knock's rig clip, render/gel/moves.h), so the body stays.
   F strength = hasLast ? last.strength : F(1),
-    contact = active ? max(max(envelope(time, kKey), envelope(time, kKnock)), envelope(time, kBody)) * strength : F(0);
+    contact = active ? max(envelope(time, kKey), envelope(time, kBody)) * strength : F(0);
   F reveal = active ? max(envelope(time, kSuccess), envelope(time, kFailure)) * strength : F(0), present = 0;
   if (active)
     for (int kind : {kStart, kReply}) present = max(present, envelope(time, kind));

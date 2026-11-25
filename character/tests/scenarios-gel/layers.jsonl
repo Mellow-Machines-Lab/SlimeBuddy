@@ -13,7 +13,7 @@
 {"clock":0}
 {"t":"state","base":"asleep","mood":"calm","vol":0,"when":["night"]}
 {"clock":2000}
-{"shot":"asleep-night"}
+{"shot":"asleep-night","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"asleep","mood":"happy","vol":0,"when":["night","winter"]}

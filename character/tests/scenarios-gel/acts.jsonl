@@ -102,7 +102,7 @@
 {"clock": 4100}
 {"clock": 4150}
 {"clock": 4200}
-{"shot": "tests-pass"}
+{"shot": "tests-pass", "pin": true}
 // The result has shown its time: the strip is back.
 {"clock": 4250}
 {"clock": 4300}
@@ -202,7 +202,7 @@
 {"clock": 8500}
 {"clock": 8550}
 {"clock": 8600}
-{"shot": "build-fail"}
+{"shot": "build-fail", "pin": true}
 {"clock": 8650}
 {"clock": 8700}
 {"clock": 8750}

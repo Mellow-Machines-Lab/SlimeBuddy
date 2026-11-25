@@ -8,6 +8,7 @@
 #include "render/gel/fixed.h"
 #include "render/gel/frame.h"
 #include "render/gel/lane.h"
+#include "render/gel/moves.h"
 #include "render/gel/raster.h"
 #include "render/palette.h"
 
@@ -17,9 +18,9 @@ namespace {
 
 using Phase = InviteShow::Phase;
 
-// The props' inks (render/gel/layers.cpp): a dark rim, the gel of a hand and
-// its shine; the glow's warm light, sparks' pale gold, a heart's pink.
-constexpr uint16_t kRim = rgb565(27, 55, 78), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
+// The props' inks (render/gel/layers.cpp): a dark rim; the glow's warm
+// light, sparks' pale gold, a heart's pink.
+constexpr uint16_t kRim = rgb565(27, 55, 78);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kGlow = rgb565(255, 226, 150), kWhite = rgb565(255, 255, 255);
 constexpr uint16_t kSpark = rgb565(250, 230, 160), kHeart = rgb565(226, 78, 104);
 
@@ -59,32 +60,16 @@ int turned(const InviteShow& v) {
   }
 }
 
-// How much of the palm shows (Q12): up with the pose, held through the
-// high five, down after it or at a miss.
-int palmShown(const InviteShow& v) {
-  if (v.pose != InvitePose::kPalm) return 0;
-  const int ms = int(v.ms), age = payoffAge(v);
-  switch (v.phase) {
-    case Phase::kPose: return ease(ms, 80, kInviteInMs + 80);
-    case Phase::kShrug: return 4096 - ease(ms, 0, 350);
-    case Phase::kPayoff:
-    case Phase::kLate: return age < 0 ? 0 : age < 120 ? ease(age, 0, 120) : 4096 - ease(age, 700, 1000);
-    default: return 0;
-  }
-}
-
 // How much of the glow and its word show (Q12): in just after the pose,
 // out at a miss; a touch flashes it away (the payoff's ring).
 int glowShown(const InviteShow& v) {
   const int ms = int(v.ms);
-  if (v.phase == Phase::kPose) return ease(ms, 150, kInviteInMs + 150);
+  // A palm's once it's up on the glass (its clip's), the others' as they come.
+  if (v.phase == Phase::kPose) return v.pose == InvitePose::kPalm ? ease(ms, 600, 900) : ease(ms, 150, kInviteInMs + 150);
   if (v.phase == Phase::kShrug) return 4096 - ease(ms, 0, 250);
   if (v.phase == Phase::kPayoff) return 4096 - ease(ms, 0, 180);
   return 0;
 }
-
-// The body's scale now (Q12).
-int scaleOf(const InviteShow& v) { return 4096 + of(kInviteScale[std::min(int(v.pose), 3)] - 4096, closeness(v)); }
 
 // A circle of `n` points about (cx, cy), px, `radius` px.
 void circle(Raster& r, int cx, int cy, int radius, int width16, uint16_t ink) {
@@ -114,36 +99,6 @@ void glow(Raster& r, Point at, int radius, int shown, int ms) {
     r.alpha = of(of(220, 4096 - age * 4096 / 1000), shown);
     circle(r, at.x, at.y, radius * (18 + age * 22 / 1000) / 16, 3 * 16, kGlow);
   }
-  r.alpha = 255;
-}
-
-// An open palm, flat on the glass, facing you: a dark rim, the gel, its
-// heel pressed paler, and four fingers and a thumb. `size` px its palm's
-// radius; `side` the way its thumb points (-1 left).
-void palm(Raster& r, Point at, int size, int side, int shown) {
-  if (shown <= 0) return;
-  const int s = size;
-  struct Finger {
-    int dx, len;
-  };
-  const Finger fingers[4] = {
-      {-s * 11 / 16, s * 20 / 16}, {-s * 4 / 16, s * 26 / 16}, {s * 4 / 16, s * 27 / 16}, {s * 11 / 16, s * 21 / 16}};
-  const int width = s * 9 / 16;
-  for (int pass = 0; pass < 2; ++pass) {
-    const uint16_t ink = pass ? kGel : kRim;
-    const int grow = pass ? 0 : 3;
-    r.alpha = of(255, shown);
-    r.disk(at.x, at.y, s + grow, ink);
-    for (const Finger& f : fingers)
-      r.line({at.x + side * f.dx, at.y - s / 3}, {at.x + side * f.dx * 9 / 8, at.y - f.len}, width + 2 * grow, ink);
-    r.line({at.x - side * s * 13 / 16, at.y + s / 8}, {at.x - side * s * 25 / 16, at.y - s * 6 / 16}, width + 2 * grow,
-           ink);
-  }
-  // Pressed flat: the heel paler, a shine on each fingertip.
-  r.alpha = of(110, shown);
-  r.disk(at.x, at.y + s / 8, s * 10 / 16, kShine);
-  r.alpha = of(170, shown);
-  for (const Finger& f : fingers) r.disk(at.x + side * f.dx * 9 / 8, at.y - f.len + 1, std::max(2, width / 4), kShine);
   r.alpha = 255;
 }
 
@@ -206,25 +161,17 @@ int payoffAge(const InviteShow& v) {
   return -1;
 }
 
-void applyInvite(PaintControls& c, const Surface& s, const InviteShow& v) {
-  if (!v.shows()) return;
+void applyInvite(PaintControls& c, const Surface&, const InviteShow& v) {
+  if (!v.shows() || inviteMove(v).on()) return;
   const int ms = int(v.ms), age = payoffAge(v), k = closeness(v), u = turned(v);
-  const Point anchor = finishAnchor(s);
-  c.anchorX = anchor.x, c.anchorY = anchor.y;
-  c.scale = scaleOf(v);
+  // Up to the glass, as a clip's glass brings it (applyGlass).
+  c.glass = std::max(c.glass, of(kBackGlass, k));
   // The pose's lean, roll (its head tilted), squash, eyes up and wider, in
   // as it comes up to the glass. Turned away, it slumps, and its eyes come
   // round to you over its shoulder.
-  int lean = 0, roll = 0, squash = 0, lift = 0, gaze = 0, up = 0, eyes = 0;
+  int lean = 0, squash = 0, lift = 0, gaze = 0, up = 0, eyes = 0;
   const int w = v.pose == InvitePose::kBack ? u : k;
-  switch (v.pose) {
-    case InvitePose::kPalm: lean = of(700, w), roll = of(-140, w), eyes = of(450, w); break;
-    case InvitePose::kLean:
-      lean = of(-1500, w), roll = of(640, w), squash = of(600, w), up = of(520, w), eyes = of(300, w);
-      break;
-    case InvitePose::kBack: lean = of(600, w), squash = of(800, w), gaze = of(-280, w); break;
-    default: break;
-  }
+  if (v.pose == InvitePose::kBack) lean = of(600, w), squash = of(800, w), gaze = of(-280, w);
   // The shrug: up and down, a glance aside under heavy lids.
   if (v.phase == Phase::kShrug) {
     const int b = bump(ms, 0, 900);
@@ -233,28 +180,9 @@ void applyInvite(PaintControls& c, const Surface& s, const InviteShow& v) {
   }
   // A late one turns round with a little hop.
   if (v.phase == Phase::kLate && ms < int(InviteShow::kTurnMs)) lift += of(12, bump(ms, 0, int(InviteShow::kTurnMs)));
-  if (age >= 0) {
-    switch (v.payoff) {
-      case InvitePayoff::kHighFive:
-        // The clap squashes it, then it hops, and wobbles round, pleased.
-        squash += of(1300, bump(age, 0, 260)) - of(900, bump(age, 260, 560));
-        lift += of(14, bump(age, 240, 720));
-        lean += of(of(1100, sinTurn((age - 700) * 4096 / 650)), bump(age, 700, 2000));
-        break;
-      case InvitePayoff::kPurr:
-        // A slow wiggle, eyes shut, breathing.
-        lean += of(of(800, sinTurn(age * 4096 / 1200)), 4096 - ease(age, 1500, 2300));
-        squash += of(220, sinTurn(age * 4096 / 600));
-        break;
-      case InvitePayoff::kSigh:
-        // A breath in, tall; its shoulders drop; it settles.
-        squash += of(1500, bump(age, 450, 1400)) - of(1000, bump(age, 0, 500));
-        break;
-      default: break;
-    }
-  }
+  // A sigh: a breath in, tall; its shoulders drop; it settles.
+  if (age >= 0 && v.payoff == InvitePayoff::kSigh) squash += of(1500, bump(age, 450, 1400)) - of(1000, bump(age, 0, 500));
   c.lean = std::clamp(c.lean + lean, -5120, 5120);
-  c.roll += roll;
   c.squash = std::clamp(c.squash + squash, -5407, 5407);
   c.lift = std::clamp(c.lift + lift * 4096 / kPxPerUnit, 0, 983);
   c.gaze += gaze;
@@ -283,7 +211,13 @@ const char* inviteFace(const InviteShow& v) {
   }
 }
 
-Point inviteSpot(const InviteShow& v, const rig::Anchors& at) {
+Point inviteSpot(const InviteShow& v, const rig::Anchors& at, const Hand hands[2], int& radius) {
+  radius = of(kGlowRadius, 4096 + kGlassScale);
+  if (v.pose == InvitePose::kPalm && hands[1].shown()) {  // the palm on the glass
+    radius = std::max(radius, hands[1].drawn16() / 16 + 4);
+    return {hands[1].x16 / 16, hands[1].y16 / 16};
+  }
+  if (v.pose == InvitePose::kLean && (at.patch.x || at.patch.y)) return {at.patch.x / 16, at.patch.y / 16};
   const Point eyes{(at.eyeL.x + at.eyeR.x) / 2, (at.eyeL.y + at.eyeR.y) / 2};
   switch (v.pose) {
     case InvitePose::kPalm:  // held up at its right side, clear of its eye
@@ -296,20 +230,22 @@ Point inviteSpot(const InviteShow& v, const rig::Anchors& at) {
   }
 }
 
-void paintInvite(Surface& s, const InviteShow& v, const rig::Anchors& at) {
+void paintInviteGlow(Surface& s, const InviteShow& v, Point spot, int radius) {
+  const int shown = glowShown(v);
+  if (!v.shows() || !s.pixels || shown <= 0) return;
+  Raster r{s};
+  glow(r, spot, radius, shown, int(v.ms));
+}
+
+void paintInvite(Surface& s, const InviteShow& v, const rig::Anchors& at, Point spot, int radius) {
   if (!v.shows() || !s.pixels) return;
   Raster r{s};
-  const int ms = int(v.ms), age = payoffAge(v), scale = scaleOf(v);
-  const Point spot = inviteSpot(v, at);
-  const int radius = of(kGlowRadius, scale), shown = glowShown(v);
-  // The glow, behind the palm; the palm, its heel pushed in as it claps.
-  if (shown > 0) glow(r, spot, v.pose == InvitePose::kPalm ? radius * 5 / 4 : radius, shown, ms);
-  const int push = age >= 0 && v.payoff == InvitePayoff::kHighFive ? bump(age, 0, 300) : 0;
-  palm(r, spot, of(of(radius * 5 / 4, 4096 + of(900, push)), 4096 - 300 + of(300, palmShown(v))), 1, palmShown(v));
+  const int ms = int(v.ms), age = payoffAge(v), shown = glowShown(v);
+  // A ring round the palm, breathing with the glow.
   if (shown > 0 && v.pose == InvitePose::kPalm) {
     const int breath = (sinTurn(ms * 4096 / kGlowBreathMs) + 4096) / 2;
     r.alpha = of(of(150, 2000 + of(2096, breath)), shown);
-    circle(r, spot.x, spot.y, radius * 27 / 16, 3 * 16, kGlow);
+    circle(r, spot.x, spot.y, radius * 21 / 16, 3 * 16, kGlow);
     r.alpha = 255;
   }
   // The word by the glow: beside the palm, on the side away from the head's
@@ -318,9 +254,12 @@ void paintInvite(Surface& s, const InviteShow& v, const rig::Anchors& at) {
     const Font& f = kSign;
     const int w = glyphsIn(v.label) * f.w, reach = radius * 2;
     int x = spot.x + reach, y = spot.y - f.h / 2;
-    // Under the palm, and under the glow on its back.
+    // Under the palm, and under the glow on its back; beside the cheek, on
+    // the side away from the face.
     if (v.pose != InvitePose::kLean)
       x = spot.x - w / 2, y = spot.y + radius * (v.pose == InvitePose::kPalm ? 2 : 3) / 2;
+    else if (spot.x < (at.eyeL.x + at.eyeR.x) / 32)
+      x = spot.x - reach - w;
     const int edge = s.inset(y, y + f.h) + 10;
     if (x + w > s.width - edge) x = spot.x - reach - w;
     x = std::clamp(x, edge, s.width - edge - w);
@@ -333,16 +272,10 @@ void paintInvite(Surface& s, const InviteShow& v, const rig::Anchors& at) {
     return;
   }
   switch (v.payoff) {
-    case InvitePayoff::kHighFive: {
-      // A flash ring off the palm, and sparks flying.
-      if (age < 420) {
-        r.alpha = 230 - age * 230 / 420;
-        circle(r, spot.x, spot.y, radius * 3 / 2 + age * radius * 2 / 420, 5 * 16, kWhite);
-        r.alpha = 255;
-      }
+    case InvitePayoff::kHighFive:
+      // Sparks flying off the palm (its clap's ring is the hit's).
       sparks(r, spot, radius * 2, age, 800, 8);
       break;
-    }
     case InvitePayoff::kPurr: {
       // Little hearts rising from its head, one after another.
       for (int i = 0; i < 3; ++i) {

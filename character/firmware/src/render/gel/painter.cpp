@@ -5,6 +5,7 @@
 #include "render/gel/finish.h"
 #include "render/gel/frame.h"
 #include "render/gel/geometry.h"
+#include "render/gel/hands.h"
 #include "render/gel/invite.h"
 #include "render/gel/layers.h"
 #include "render/gel/pastimes.h"
@@ -413,6 +414,7 @@ const int* matrix(int index) {
 }
 }  // namespace
 
+int bodyColorIndex() { return std::max(0, bodyColorNow); }
 uint16_t tinted(uint16_t texel, int index) {
   if (index <= 0 || index >= kBodyColors) return texel;
   const int r = ((texel >> 11) & 31) * 255 / 31, g = ((texel >> 5) & 63) * 255 / 63, b = (texel & 31) * 255 / 31;
@@ -684,6 +686,48 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
   c.eyeSize = rig[Channel::kEyeSize] * 4096 / 1000;
   c.gaze += off(Channel::kGazeX) * kRigGaze / 1000;
   c.gazeUp -= off(Channel::kGazeY) * kRigGaze / 1000;
+  c.glass = std::clamp(c.glass + off(Channel::kGlass) * 4096 / 1000, 0, 4096);
+  c.patch = rig[Channel::kPatch] * 4096 / 1000;
+  c.patchX = rig[Channel::kPatchX] * 4096 / 1000, c.patchY = rig[Channel::kPatchY] * 4096 / 1000;
+}
+
+void applyGlass(PaintControls& c, const Surface& s) {
+  if (c.glass <= 0) return;
+  if (c.scale == 4096 && !c.offsetX && !c.offsetY) {
+    const Point anchor = finishAnchor(s);
+    c.anchorX = anchor.x, c.anchorY = anchor.y;
+  }
+  c.scale = int(int64_t(c.scale) * (4096 + int64_t(kGlassScale) * c.glass / 4096) / 4096);
+}
+
+void paintPatch(Surface& s, const PaintControls& c, rig::Anchors& at) {
+  const int shown = int(int64_t(c.glass) * c.patch / 4096);
+  at.patch = {};
+  if (shown <= 0) return;
+  // Up its front from its foot (the hem's middle) to its crown, and across
+  // it as wide as it is there: the hem's width low down, the brim's above.
+  const rig::Point foot = at.hem[rig::Anchors::kRingPoints / 2];
+  const int y = foot.y + int(int64_t(at.crown.y - foot.y) * c.patchY / 4096);
+  const int hemHalf = (at.hem[rig::Anchors::kRingPoints - 1].x - at.hem[0].x) / 2,
+            brimHalf = (at.brimR.x - at.brimL.x) / 2;
+  const int brimUp = std::max(1, foot.y - at.brimF.y), up = foot.y - y;
+  const int half = up <= brimUp ? hemHalf + int(int64_t(brimHalf - hemHalf) * up / brimUp)
+                                : brimHalf * std::max(0, foot.y - at.crown.y - up) / std::max(1, foot.y - at.crown.y - brimUp);
+  const int middle = foot.x + int(int64_t(at.crown.x - foot.x) * c.patchY / 4096);
+  const int x = middle + int(int64_t(half) * c.patchX / 4096);
+  at.patch = {x, y};
+  if (!s.pixels) return;
+  const int rx = int(int64_t(kPatchPx) * 8 * c.patch / 4096 * c.scale / 4096), ry = rx * 2 / 3;
+  Point ring[33];
+  for (int i = 0; i <= 32; ++i) {
+    const int a = i * 4096 / 32;
+    ring[i] = {x + int(int64_t(rx) * sinTurn(a + 1024) / 4096), y + int(int64_t(ry) * sinTurn(a) / 4096)};
+  }
+  Raster r{s};
+  r.alpha = 60 * shown / 4096;
+  r.polygon16(ring, 32, rgb565(214, 240, 255));
+  r.alpha = 150 * shown / 4096;
+  r.stroke16(ring, 33, 2 * 16, rgb565(236, 249, 255));
 }
 void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t keepLane, rig::Anchors* anchors,
            const rig::Channels& rig, const rig::Layers* layers, uint32_t t, const PastimeShow* pastimes,
@@ -725,9 +769,11 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
     applyMove(c, surface, move);
   }
-  // An invite brings it up to the glass in its pose; under a finish or the
-  // drawer it waits.
+  // An invite's pose drawn in code (its turn away) brings it up to the
+  // glass too; under a finish or the drawer it waits. Then the glass,
+  // whoever brought it there.
   if (!finish.on && !squeeze) applyInvite(c, surface, e.invite);
+  if (!squeeze) applyGlass(c, surface);
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;
   if (!anchors) anchors = &local;
@@ -759,6 +805,10 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     drawBody(surface, c, anchors, behind ? nullptr : &erasing);
   }
   if (bodyAlone) return;
+  paintPatch(surface, c, *anchors);
+  // The rig's hands, where the body is now and at its size: the frame
+  // draws them (paintFrame), over the face and its layers.
+  for (int side = 0; side < 2; ++side) handsPlan().moved[side] = fromRig(rig, *anchors, side, c.scale);
   {
     Measure measure(profile.art);
     paintArt(surface, e, c, mouth, anchors);

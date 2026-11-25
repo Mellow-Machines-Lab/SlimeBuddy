@@ -1,4 +1,5 @@
 #include "render/gel/low_sign.h"
+#include "render/gel/hands.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -19,7 +20,7 @@ constexpr int kPad = 16, kMarkWide = 18, kMarkGap = 10, kRim = 2, kRadius = 16, 
 // the fonts' cells have room of their own above and below.
 constexpr int kLineStep = 27, kTallPad = 4;
 constexpr int kHand = 10;  // the hands on its top corners, as a reaction's sign's
-constexpr uint16_t kFill = rgb565(22, 20, 18), kGel = rgb565(89, 169, 224), kShine = rgb565(184, 233, 245);
+constexpr uint16_t kFill = rgb565(22, 20, 18);
 // The XP chip: its pad round the words, its height, and the gap before it.
 constexpr int kChipPad = 8, kChipTall = 28, kChipGap = 10;
 // A medal's metal, and its rim a shade deeper.
@@ -187,13 +188,9 @@ void paintLowSign(Surface& s, const LowSign& sign) {
     text(r, kLarge, cx + kChipPad, cy + (kChipTall - kLarge.h) / 2, chip, kFill);
   }
   // Boop's hands on its top corners, holding it up.
-  for (int side : {-1, 1}) {
-    const int hx = side < 0 ? l.x + kRadius / 2 : l.x + l.w - kRadius / 2;
-    r.disk(hx, y + 2, kHand, kGel);
-    r.alpha = 160;
-    r.disk(hx - 3, y - 2, 3, kShine);
-    r.alpha = 255;
-  }
+  for (int side : {-1, 1})
+    if (handsPlan().has(side, HandsAt::kLowSign))
+      paintHand(r, holdingUp(side < 0 ? l.x + kRadius / 2 : l.x + l.w - kRadius / 2, y + 4, side, kHand));
 }
 
 }  // namespace render::gel

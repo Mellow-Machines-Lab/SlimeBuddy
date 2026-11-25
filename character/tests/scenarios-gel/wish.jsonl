@@ -7,7 +7,7 @@
 {"clock":0}
 {"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"pet"}
 {"clock":1500}
-{"shot":"pet"}
+{"shot":"pet","pin":true}
 {"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"chat"}
 {"clock":1600}
 {"shot":"chat"}
@@ -31,7 +31,7 @@
 {"clock":1800}
 {"shot":"gone"}
 {"clock":2050}
-{"shot":"slump"}
+{"shot":"slump","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"curious","idle":1,"vol":0,"wish":"pet","wish_how":true}

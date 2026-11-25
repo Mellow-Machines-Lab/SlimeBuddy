@@ -8,6 +8,7 @@
 
 #include "render/gel/geometry.h"
 #include "render/gel/invite.h"
+#include "render/gel/moves.h"
 #include "render/gel/profile.h"
 #include "render/maths.h"
 #include "render/palette.h"
@@ -77,6 +78,7 @@ void GelFace::reset(uint32_t t, linkkit::Rng&) {
   source_ = {};
   replyAt_ = 0, replied_ = false;
   invite_ = {}, inviteAt_ = 0, inviteSounded_ = false;
+  move_ = nullptr, moveMs_ = 0;
   finger_ = false;  // the new engine has no drag: a finger still down grabs it afresh
   signHop_ = 0;
   lean_ = Lean::kNone, breathTake_ = 0;
@@ -168,6 +170,7 @@ void GelFace::advanceTo(uint32_t t) {
   pendingCount_ = kept;
   breathe(t);
   showInvite(t);
+  showMove();
   for (const auto& cue : engine_->cues) {
     int clip = clipFor(cue.recipe, cue.variant);
     if (clip < 0 || pendingCount_ >= kMaxCues) continue;
@@ -598,7 +601,34 @@ rig::Channels GelFace::channels() const {
   add(rig::Channel::kX, followBy_[kFollowX] / 256);
   add(rig::Channel::kGazeX, followBy_[kFollowGazeX] / 256);
   add(rig::Channel::kGazeY, followBy_[kFollowGazeY] / 256);
+  // A move (an invite's, the knock): its clip at its time, over the rest.
+  addMove(c, currentMove(*engine_));
   return c;
+}
+
+// The move playing sounds its cues as it crosses them, once each, where its
+// scene doesn't (render/gel/moves.h): a clip new or started again from its
+// own time, it's the cues from there.
+void GelFace::showMove() {
+  const MoveShow m = currentMove(*engine_);
+  if (!m.on() || !m.sounds) {
+    move_ = nullptr;
+    return;
+  }
+  if (m.clip == move_ && !after(moveMs_, m.ms)) {
+    const char* names[Engine::kClipCues];
+    const int n = rig::crossed(*m.clip, moveMs_, m.ms, names, Engine::kClipCues);
+    for (int i = 0; i < n; ++i) engine_->contact(names[i]);
+  }
+  move_ = m.clip, moveMs_ = m.ms;
+}
+
+bool GelFace::playClip(const char* name, uint32_t t) {
+  const rig::Clip* clip = rig::kRig.clip(name);
+  if (!clip) return false;
+  advanceTo(t);
+  play(*clip);
+  return true;
 }
 
 // Where it looks by itself (render/gel/gaze.h): the facts now, and the

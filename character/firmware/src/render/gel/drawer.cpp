@@ -1,4 +1,5 @@
 #include "render/gel/drawer.h"
+#include "render/gel/hands.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -19,8 +20,7 @@ namespace {
 constexpr uint16_t kSheet = rgb565(0, 0, 0), kRow = rgb565(22, 28, 36), kRowNeedsYou = rgb565(42, 31, 0),
                    kRowPicked = rgb565(44, 57, 70), kTitle = rgb565(kEyeRgb), kResting = rgb565(kNarrationRgb),
                    kWorkingBar = rgb565(89, 97, 107), kIdleBar = rgb565(58, 65, 75), kEyes = rgb565(8, 36, 72),
-                   kCheeks = rgb565(255, 140, 200), kGel = rgb565(89, 169, 224), kToes = rgb565(66, 140, 210),
-                   kShine = rgb565(184, 233, 245);
+                   kCheeks = rgb565(255, 140, 200);
 constexpr int kRowRadius = 10, kBar = 6, kCornerGap = 4, kMargin = 18;
 // How far the sheet's corners round as it opens, at its whole.
 constexpr int kSheetRadius = 20;
@@ -172,15 +172,12 @@ void paintDrawer(Surface& s, const Drawer& d, const Strip& strip, const rig::Anc
     const int ty = l.listTop(d.open) + (most > 0 ? span * std::clamp(d.scroll, 0, most) / most : 0);
     r.round(s.width - l.margin() + 5, ty, kThumbW, kThumbH, 1, rgb565(kGrabberRgb));
   }
-  // The paw, hung over the edge once it's open, dropping into place.
-  if (d.paw > 0) {
+  // A hand, hung over the edge once it's open, dropping into place.
+  if (d.paw > 0 && handsPlan().has(1, HandsAt::kDrawer)) {
     // Off to the side of its face, hanging down the sheet's edge.
     const int px = body.crown.x / 16 + l.u(104), py = top - 6 - (1000 - d.paw) * 14 / 1000;
     r.alpha = std::min(255, d.paw * 255 / 600);
-    r.round(px - 14, py, 28, 22, 10, kGel);
-    for (int i = -1; i <= 1; ++i) r.disk(px + i * 8, py + 21 + (i ? 0 : 2), 5, kToes);
-    r.alpha = r.alpha * 160 / 255;
-    r.disk(px - 6, py + 5, 3, kShine);
+    paintHand(r, hung(px, py + 10));
     r.alpha = 255;
   }
 }

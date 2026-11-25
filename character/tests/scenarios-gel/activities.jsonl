@@ -19,7 +19,7 @@
 {"clock":4600}
 {"shot":"typing-1600"}
 {"clock":5400}
-{"shot":"typing-2400"}
+{"shot":"typing-2400","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"when":["day"]}
@@ -49,7 +49,7 @@
 {"clock":4600}
 {"shot":"running-1600"}
 {"clock":5400}
-{"shot":"running-2400"}
+{"shot":"running-2400","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"when":["day"]}

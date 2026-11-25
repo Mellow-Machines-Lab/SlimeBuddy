@@ -71,8 +71,23 @@ ramps and springs can, and no jolt at an event. By file:
   cards' and the error's, the recovery gesture, the desk's jitter, a bit's
   keys inside their bounds).
 - `test_main.cpp`'s invite tests: the gel draws invites, nothing changes
-  the body with none, each pose comes up to the glass to its scale, a late
-  one's payoff after its turn, and the low sign only while a payoff earns.
+  the body with none, the palm and the lean are the pack's clips, each up
+  at the glass whole as it waits (the palm the right hand open and flat on
+  it, the lean's cheek a patch), the back up through the same glass in
+  code, the miss and the high five clips of their own, the clap a hit, a
+  late one's payoff after its turn, and the low sign only while a payoff
+  earns. The glass (`test_the_glass_scales_the_body_to_115_at_most`): 1.15
+  at the whole, never more, over a finish's own scale. One pair of hands
+  (`test_one_pair_of_hands`): none at size 0, a hand its radius across, a
+  palm on the glass about 85 px across, the rig's hand from the body's
+  front at its scale, and the frame's plan letting only the part that
+  holds a hand draw it. The knock (`test_the_knock_is_one_move_that_climbs`):
+  one recipe in every mood and take, its knocks the clip's cues and the
+  ding after them, lasting until the climb is over; the climb at
+  `kKnockClimbAtMs`, both fists, then its forehead on the glass, sounded
+  by the face. The flop (`test_the_flop_plays_by_its_id`): by its id, both
+  palms and the body on the glass. `test_cells.cpp` lets needs you's takes
+  be the same, one knock.
 - `test_requests.cpp`: what routes when (no app, listening, needs you, a
   moment, the look), a request's identity, cues sparse and quiet (the
   keys silent at work), a
@@ -178,7 +193,15 @@ ramps and springs can, and no jolt at an event. By file:
 ## The board's frames
 
 - `internal/tools/boopctl sim --face gel` plays the pack's
-  `tests/scenarios-gel/` against its `tests/golden-gel/`: every canonical
+  `tests/scenarios-gel/` and compares their pinned shots with its
+  `tests/golden-gel/`. The set is frozen small on purpose while the
+  gel's pictures are redesigned: each scenario pins one or two shots,
+  the ones that say the most about it (`"pin": true` on the step), 60 in
+  all, and only those have a golden; the engine's `test_pins` holds it
+  to that. The other shots are still taken, for a person to look at,
+  `boopctl mirror` and `boopctl run`, and every `expect` still runs.
+  When the redesign settles, a new small set is pinned. The scenarios
+  shoot every canonical
   mood and factual state, failure and neutral-finish frames, the host lane
   at the panel's size (`lane.jsonl`: the counts in words and as marks, a
   long name that needs you, cut with its "…" and how many more in a pill, a
@@ -206,9 +229,15 @@ ramps and springs can, and no jolt at an event. By file:
   glow with no word, the shrug, and it back after; `invite-late.jsonl`:
   missed, then a late stroke turning it round into a sigh, and a tap past
   the window a poke; `invite-cut.jsonl`: needs you and a newer Moment
-  ending one; `behind-a-finish.jsonl`: a busy board, then a finish and the
-  low Moment queued behind it with the Mac's ttls, the finish, the low
-  sign and the invite's pose all playing in turn), the
+  ending one; `missed-high-five.jsonl`: the palm coming and waiting, then
+  looking at its palm, lowering it, shrugging and back;
+  `behind-a-finish.jsonl`: a busy board, then a finish and the low Moment
+  queued behind it with the Mac's ttls, the finish, the low sign and the
+  invite's pose all playing in turn), the knock
+  (`knock.jsonl`: each step of the climb: the knock, the look round for
+  you, louder, both fists, its forehead on the glass and slid down), the
+  flop (`flop.jsonl`, by `dbg.clip`: holding its breath, flat on the glass,
+  sliding down, peeling off), the
   with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
   gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: nothing worn at night or on a party night, Zs
@@ -237,8 +266,9 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   scrolls), and an agent's card (`cards.jsonl`: a status coming and held,
   its guess run out, one with no small line, one of three with its dots, a
   swipe and a tap that are the card's, a result, under a sign and back
-  after it, under needs you, and a tap under a work act, which is Boop's). `--accept` updates only the gel
-  goldens, after looking at them.
+  after it, under needs you, and a tap under a work act, which is Boop's). `--accept` updates only the pinned
+  gel goldens, after looking at them, and removes any whose shot isn't
+  pinned.
 - `boopctl mirror` (in `make -C internal mirror`) plays the same scenarios
   on the Mac's mirror of the board (`character/mac/mirror/board.js`)
   and on the native simulator, both with no card, and checks every shot is

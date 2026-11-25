@@ -118,6 +118,9 @@ class GelFace final : public Face {
   const rig::Clip* transition(uint32_t t) const { return transition_ && after(transitionEnds_, t) ? transition_ : nullptr; }
   const rig::Clip* cueing() const { return cueing_; }
   bool playPastime(const char* name, uint32_t t) override;
+  // A rig clip of the pack's, by its id, over what's there now: for
+  // scenarios and the Studio (the flop, which no Moment names yet).
+  bool playClip(const char* name, uint32_t t) override;
   // What it shows of the pastimes at t: the one playing.
   PastimeShow pastimes(uint32_t t) const;
   // How long its keyboard stays out after you stop typing (showAlong).
@@ -195,6 +198,11 @@ class GelFace final : public Face {
   void answerAct(uint32_t t);
   // How far the sign has lifted the body, as last drawn (signHop).
   int signHop_ = 0;
+  // The move whose cues the face sounds (showMove), and how far into it it
+  // was as last seen.
+  const rig::Clip* move_ = nullptr;
+  uint32_t moveMs_ = 0;
+  void showMove();
   // The pastime playing, its clip on the mixer (none for a bit's or a
   // take's, which the engine plays), from when until when, and the look
   // it's for; the one stopped early, fading out from stoppedAt_; the one

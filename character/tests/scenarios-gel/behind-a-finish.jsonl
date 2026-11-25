@@ -18,9 +18,9 @@
 {"shot": "finish"}
 {"clock": 12000}
 {"expect": {"sign": "that was fast", "invite": {"stage": "ahead"}, "turn": {"holder": {"id": 2}, "waiting": []}}}
-{"shot": "low-sign"}
+{"shot": "low-sign", "pin": true}
 {"clock": 16000}
 {"expect": {"invite": {"stage": "pose", "pose": "palm"}, "turn": {"holder": {"id": 2}}}}
 {"clock": 17200}
 {"expect": {"invite": {"stage": "pose", "pose": "palm"}}}
-{"shot": "pose"}
+{"shot": "pose", "pin": true}

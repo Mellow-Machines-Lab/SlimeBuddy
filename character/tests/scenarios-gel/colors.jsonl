@@ -29,7 +29,7 @@
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"color":5}
 {"clock":600}
-{"shot":"berry"}
+{"shot":"berry","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0,"color":6}

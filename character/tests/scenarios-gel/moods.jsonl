@@ -16,7 +16,7 @@
 {"t":"state","base":"idle","mood":"happy","vol":0}
 {"clock":960}
 {"expect":{"mood":"happy","moment":null}}
-{"shot":"happy"}
+{"shot":"happy","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"excited","vol":0}
@@ -70,7 +70,7 @@
 {"t":"state","base":"idle","mood":"angry","vol":0}
 {"clock":960}
 {"expect":{"mood":"angry","moment":null}}
-{"shot":"angry"}
+{"shot":"angry","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"sad","vol":0}

@@ -36,7 +36,7 @@
 {"clock":2400}
 {"clock":2500}
 {"clock":2600}
-{"shot":"ring-closed"}
+{"shot":"ring-closed","pin":true}
 {"clock":2700}
 {"clock":2800}
 {"clock":2900}
@@ -65,7 +65,7 @@
 {"clock":1800}
 {"clock":1900}
 {"clock":2000}
-{"shot":"level-up"}
+{"shot":"level-up","pin":true}
 {"clock":2100}
 {"clock":2200}
 {"clock":2300}

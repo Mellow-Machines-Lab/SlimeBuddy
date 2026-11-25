@@ -14,7 +14,7 @@
 {"clock":200}
 {"shot":"arrows-as-agents-come"}
 {"clock":1500}
-{"shot":"three-agents"}
+{"shot":"three-agents","pin":true}
 {"t":"state","base":"working","mood":"calm","vol":0,"busy":2,"idle":1,"when":["day"],"calls":[[0,4,"searching TODO"],[1,2,"editing Api.ts +31"]],"pips":"w0w1i2","watch":1,"who":"api"}
 {"clock":1610}
 {"shot":"sliding-in-from-the-right"}

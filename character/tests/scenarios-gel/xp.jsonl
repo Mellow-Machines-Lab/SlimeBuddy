@@ -6,7 +6,7 @@
 {"t":"state","base":"idle","mood":"happy","vol":0}
 {"t":"do","id":31,"name":"task_complete","args":{"outcome":"success","who":{"agent":"claude","thread":"api"},"mood":"happy","loops":1,"xp":5}}
 {"clock":4500}
-{"shot":"finish"}
+{"shot":"finish","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"idle","mood":"happy","vol":0}

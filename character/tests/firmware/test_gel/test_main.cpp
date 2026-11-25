@@ -13,7 +13,9 @@
 #include "render/helper.h"
 #include "render/gel/geometry.h"
 #include "render/gel/face.h"
+#include "render/gel/hands.h"
 #include "render/gel/invite.h"
+#include "render/gel/moves.h"
 #include "app/behaviour.h"
 #include "render/gel/sounds.h"
 #include "app/device.h"
@@ -321,7 +323,7 @@ static void test_interrupted_alert_signals_exactly_once() {
       f.attention.on = true;
       f.attention.id = std::to_string(after);
       e->setFacts(f);
-      int knocks = 0, reveals = 0, dings = 0, variant = e->scenes.variant;
+      int knocks = 0, reveals = 0, dings = 0;
       uint32_t t = 0;
       auto run = [&](int ms) {
         for (int i = 0; i < ms; i += 16) {
@@ -348,7 +350,7 @@ static void test_interrupted_alert_signals_exactly_once() {
       TEST_ASSERT_TRUE(e->scenes.route.state == SceneState::kNeedsYou);
       TEST_ASSERT_TRUE(e->scenes.quietRestored);
       run(4800);
-      TEST_ASSERT_EQUAL_INT(variant + 1, knocks);
+      TEST_ASSERT_EQUAL_INT(e->scenes.recipe.count - 1, knocks);  // the knock's, then its ding
       TEST_ASSERT_EQUAL_INT(1, reveals);
       TEST_ASSERT_EQUAL_INT(1, dings);
     }
@@ -761,36 +763,204 @@ static void test_gel_clips_use_the_shared_mixer() {
   }
 }
 // The invite (render/gel/invite.h): the gel draws them; with none the body
-// is as it was; each pose comes up to the glass to its scale; a late one's
-// payoff waits for its turn round; the XP shows low only while a payoff
-// that earns plays.
+// is as it was; the palm and the lean are the pack's clips (render/gel/
+// moves.h), each up at the glass whole as it waits, the palm the right
+// hand open and flat on it, the lean's cheek a patch on it; the back,
+// drawn in code, comes up through the same glass; a late one's payoff
+// waits for its turn round; the XP shows low only while a payoff that
+// earns plays.
 static void test_the_gel_draws_invites() {
+  using rig::Channel;
   GelFace f;
   TEST_ASSERT_TRUE(f.drawsInvites());
   const Surface s{502, 410, nullptr, 110};
   PaintControls rest, c;
   applyInvite(c, s, InviteShow{});
-  TEST_ASSERT_EQUAL_INT(rest.scale, c.scale);
+  TEST_ASSERT_EQUAL_INT(rest.glass, c.glass);
   TEST_ASSERT_EQUAL_INT(rest.faceX, c.faceX);
   for (InvitePose p : {InvitePose::kPalm, InvitePose::kLean, InvitePose::kBack}) {
     InviteShow v;
     v.phase = InviteShow::kPose, v.pose = p, v.ms = 2000;
+    const MoveShow m = inviteMove(v);
+    TEST_ASSERT_EQUAL_INT(p != InvitePose::kBack, m.on());
+    rig::Channels ch = rig::kRest;
+    addMove(ch, m);
     PaintControls held;
     applyInvite(held, s, v);
-    TEST_ASSERT_EQUAL_INT(kInviteScale[int(p)], held.scale);
+    applyRig(held, ch);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack ? kBackGlass : 4096, held.glass);
     TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack, held.faceX > 0);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kLean, held.patch > 0);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kPalm ? 1000 : 0, ch[Channel::kHandRGlass]);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kPalm ? 1000 : 0, ch[Channel::kHandRShape]);
     TEST_ASSERT_FALSE(inviteSign(v).shows());
   }
+  // The miss and the high five have clips of their own; the sigh doesn't.
+  InviteShow v;
+  v.pose = InvitePose::kPalm, v.payoff = InvitePayoff::kHighFive, v.phase = InviteShow::kShrug;
+  TEST_ASSERT_EQUAL_STRING("invite-palm-miss", inviteMove(v).clip->id);
+  v.phase = InviteShow::kPayoff;
+  TEST_ASSERT_EQUAL_STRING("invite-highfive", inviteMove(v).clip->id);
+  TEST_ASSERT_EQUAL_INT(0, sinceHit(inviteMove(v)));  // the clap hits the glass as it starts
+  v.pose = InvitePose::kBack, v.payoff = InvitePayoff::kSigh;
+  TEST_ASSERT_FALSE(inviteMove(v).on());
   InviteShow late;
-  late.phase = InviteShow::kLate, late.payoff = InvitePayoff::kHighFive, late.xp = 3, late.ms = InviteShow::kTurnMs - 1;
+  late.phase = InviteShow::kLate, late.pose = InvitePose::kPalm, late.payoff = InvitePayoff::kHighFive, late.xp = 3,
+  late.ms = InviteShow::kTurnMs - 1;
+  TEST_ASSERT_EQUAL_STRING("invite-palm-late", inviteMove(late).clip->id);
   TEST_ASSERT_EQUAL_INT(-1, payoffAge(late));
   TEST_ASSERT_FALSE(inviteSign(late).shows());
   late.ms = InviteShow::kTurnMs + 100;
+  TEST_ASSERT_EQUAL_STRING("invite-highfive", inviteMove(late).clip->id);
   TEST_ASSERT_EQUAL_INT(100, payoffAge(late));
   TEST_ASSERT_EQUAL_INT(3, inviteSign(late).xp);
   late.xp = 0;
   TEST_ASSERT_FALSE(inviteSign(late).shows());
 }
+
+// The glass (render/gel/painter.h): the rig's glass brings the body up to
+// it, 1.15 its size at the whole and never more, about where it stands,
+// over a finish's own scale; with none, it's its own size.
+static void test_the_glass_scales_the_body_to_115_at_most() {
+  const Surface s{502, 410, nullptr, 110};
+  PaintControls c;
+  applyGlass(c, s);
+  TEST_ASSERT_EQUAL_INT(4096, c.scale);
+  rig::Channels ch = rig::kRest;
+  ch[rig::Channel::kGlass] = 1000;
+  applyRig(c, ch);
+  applyGlass(c, s);
+  TEST_ASSERT_EQUAL_INT(4096 + kGlassScale, c.scale);
+  TEST_ASSERT_TRUE(c.scale * 100 <= 4096 * 115);  // 1.15 at most
+  TEST_ASSERT_EQUAL_INT(finishAnchor(s).y, c.anchorY);
+  PaintControls finish;
+  finish.scale = 3440, finish.anchorX = 7, finish.anchorY = 9, finish.glass = 2048;
+  applyGlass(finish, s);
+  TEST_ASSERT_EQUAL_INT(3440 * (4096 + kGlassScale / 2) / 4096, finish.scale);
+  TEST_ASSERT_EQUAL_INT(9, finish.anchorY);  // a finish's own anchor kept
+}
+
+// The one pair of hands (render/gel/hands.h): a hand at size 0 draws
+// nothing; a hand is a disk of its radius (its shadow a little past it),
+// on the glass kHandGlassGrow bigger, a palm about 85 px across at the
+// body's glass scale; the rig's hand sits from the body's front, at its
+// scale; and each frame's plan lets only the part that has a hand draw it.
+static void test_one_pair_of_hands() {
+  static uint16_t px[502 * 410];
+  Surface s{502, 410, px, 110};
+  auto drawn = [&](const Hand& h) {
+    std::fill(std::begin(px), std::end(px), 0);
+    Raster r{s};
+    paintHand(r, h);
+    int x0 = 1 << 30, x1 = -1;
+    for (int y = 0; y < 410; ++y)
+      for (int x = 0; x < 502; ++x)
+        if (px[y * 502 + x]) x0 = std::min(x0, x), x1 = std::max(x1, x);
+    return x1 < 0 ? 0 : x1 - x0 + 1;
+  };
+  Hand none;
+  TEST_ASSERT_EQUAL_INT(0, drawn(none));
+  Hand ball;
+  ball.x16 = 200 * 16, ball.y16 = 150 * 16, ball.radius16 = kHandPx * 16;
+  const int across = drawn(ball);
+  TEST_ASSERT_TRUE(across >= 2 * kHandPx && across <= 2 * kHandPx + 6);
+  Hand palm = ball;
+  palm.shape = 4096, palm.glass = 4096;
+  palm.radius16 = kHandPx * 16 * 870 / 1000 * (4096 + kGlassScale) / 4096;
+  TEST_ASSERT_EQUAL_INT(palm.radius16 * 5 / 2, palm.drawn16());
+  const int wide = drawn(palm);
+  TEST_ASSERT_TRUE(wide >= 80 && wide <= 96);  // about 85 px across
+  rig::Anchors at;
+  at.handF = {251 * 16, 300 * 16};
+  rig::Channels ch = rig::kRest;
+  TEST_ASSERT_FALSE(fromRig(ch, at, 1, 4096).shown());  // hidden in the body at rest
+  ch[rig::Channel::kHandRSize] = 1000, ch[rig::Channel::kHandRX] = 85, ch[rig::Channel::kHandRY] = 85;
+  const Hand right = fromRig(ch, at, 1, 4096);
+  TEST_ASSERT_EQUAL_INT((251 + 128) * 16, right.x16);  // a body unit right and up
+  TEST_ASSERT_EQUAL_INT((300 - 128) * 16, right.y16);
+  TEST_ASSERT_EQUAL_INT(kHandPx * 16, right.radius16);
+  TEST_ASSERT_FALSE(fromRig(ch, at, 0, 4096).shown());
+  HandsPlan plan;
+  TEST_ASSERT_TRUE(plan.has(-1, HandsAt::kSign) && plan.has(1, HandsAt::kDesk));  // alone, each draws its own
+  plan.at[0] = HandsAt::kMove, plan.at[1] = HandsAt::kDesk;
+  TEST_ASSERT_FALSE(plan.has(-1, HandsAt::kDesk));
+  TEST_ASSERT_TRUE(plan.has(-1, HandsAt::kMove) && plan.has(1, HandsAt::kDesk));
+  TEST_ASSERT_FALSE(plan.has(1, HandsAt::kSign));
+}
+
+// The knock (render/gel/moves.h, slimegen's scenes.mjs `knock`): one move
+// for every mood and take, its knocks the clip's cues and the ding after
+// them; it climbs at slime::kKnockClimbAtMs, after the knock ('follows')
+// or at its end ('replaces'), and the needs-you scene lasts until the
+// climb is over, so a needs-you come back to never climbs twice.
+static void test_the_knock_is_one_move_that_climbs() {
+  const rig::Clip* knock = rig::kRig.clip("knock");
+  const rig::Clip* climb = rig::kRig.clip("knock-climb");
+  TEST_ASSERT_NOT_NULL(knock);
+  TEST_ASSERT_NOT_NULL(climb);
+  TEST_ASSERT_TRUE(slime::kKnockClimbAtMs >= knock->ms);
+  const int row = int(SceneState::kNeedsYou);
+  const slime::Recipe& first = slime::kRecipes[0][row][0];
+  for (int p = 0; p < slime::kProfiles; ++p)
+    for (int v = 0; v < 3; ++v) {
+      const slime::Recipe& r = slime::kRecipes[p][row][v];
+      TEST_ASSERT_EQUAL_INT(F(first.duration).integer(), F(r.duration).integer());
+      TEST_ASSERT_EQUAL_INT(first.count, r.count);
+      for (int i = 0; i < r.count; ++i) TEST_ASSERT_EQUAL_INT(F(first.contacts[i].at).integer(), F(r.contacts[i].at).integer());
+    }
+  TEST_ASSERT_EQUAL_INT(int(slime::kKnockClimbAtMs + climb->ms), F(first.duration).integer());
+  int knocks = 0;
+  for (int i = 0; i < first.count; ++i)
+    if (first.contacts[i].kind == kKnock) {
+      TEST_ASSERT_EQUAL_INT(int(knock->cues[knocks].ms), F(first.contacts[i].at).integer());
+      ++knocks;
+    }
+  TEST_ASSERT_EQUAL_INT(knock->cues.count, knocks);
+  TEST_ASSERT_EQUAL_INT(kAlert, first.contacts[first.count - 1].kind);
+
+  auto e = std::make_unique<Engine>(1);
+  Facts f;
+  f.base = SceneState::kWorking;
+  f.attention = {true, "4", "claude", "boop", "", 0, AttnKind::kApprove};
+  e->setFacts(f);
+  uint32_t now = 0;
+  auto at = [&](uint32_t ms) {
+    while (now < ms) e->step(now = std::min(ms, now + 16));
+    return currentMove(*e);
+  };
+  TEST_ASSERT_EQUAL_STRING("knock", at(1000).clip->id);
+  TEST_ASSERT_FALSE(at(1000).sounds);  // its scene sounds the knock
+  TEST_ASSERT_FALSE(at(slime::kKnockClimbAtMs - 100).on() && slime::kKnockClimbAtMs > knock->ms + 100);
+  const MoveShow climbing = at(slime::kKnockClimbAtMs + 600);
+  TEST_ASSERT_EQUAL_STRING("knock-climb", climbing.clip->id);
+  TEST_ASSERT_TRUE(climbing.sounds);  // the face sounds the climb
+  rig::Channels ch = rig::kRest;
+  addMove(ch, at(slime::kKnockClimbAtMs + 3000));
+  TEST_ASSERT_TRUE(ch[rig::Channel::kHandLSize] > 0 && ch[rig::Channel::kHandRSize] > 0);  // both fists
+  TEST_ASSERT_TRUE(ch[rig::Channel::kHandLShape] < 0 && ch[rig::Channel::kHandRShape] < 0);
+  ch = rig::kRest;
+  addMove(ch, at(slime::kKnockClimbAtMs + 6000));
+  TEST_ASSERT_TRUE(ch[rig::Channel::kPatch] > 0 && ch[rig::Channel::kPatchY] > 500);  // its forehead on the glass
+  TEST_ASSERT_FALSE(at(slime::kKnockClimbAtMs + climb->ms + 100).on());
+}
+
+// The flop (the pack's clip `flop`) plays on the face by its id
+// (dbg.clip's): its palms both on the glass with the body; an id the pack
+// hasn't plays nothing.
+static void test_the_flop_plays_by_its_id() {
+  GelFace f;
+  linkkit::Rng rng;
+  f.reset(0, rng);
+  TEST_ASSERT_FALSE(f.playClip("no-such-clip", 16));
+  TEST_ASSERT_TRUE(f.playClip("flop", 16));
+  for (uint32_t t = 32; t <= 2500; t += 16) f.step(t, rng);
+  const rig::Channels c = f.channels();
+  TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kGlass]);
+  TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandLGlass]);
+  TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandRGlass]);
+  TEST_ASSERT_TRUE(c[rig::Channel::kPatch] > 0);
+}
+
 // Each sound carries its own duck. A needs-you alert's
 // knocks and ding stay up under a line; a poke's squish, routine, turns down.
 static void test_each_cue_carries_its_own_duck() {
@@ -3073,6 +3243,10 @@ int main() {
   RUN_TEST(test_gel_clips_use_the_shared_mixer);
   RUN_TEST(test_each_cue_carries_its_own_duck);
   RUN_TEST(test_the_gel_draws_invites);
+  RUN_TEST(test_the_glass_scales_the_body_to_115_at_most);
+  RUN_TEST(test_one_pair_of_hands);
+  RUN_TEST(test_the_knock_is_one_move_that_climbs);
+  RUN_TEST(test_the_flop_plays_by_its_id);
   RUN_TEST(test_pick_is_pure_and_started_commits_it);
   RUN_TEST(test_a_power_on_seeds_the_engine_and_a_reset_restores_53);
   RUN_TEST(test_a_reset_lets_go_of_the_finger);

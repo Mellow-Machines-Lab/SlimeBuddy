@@ -32,7 +32,7 @@
 {"clock": 5000}
 {"expect": {"invite": {"stage": "shrug"}}}
 {"clock": 5400}
-{"shot": "shrug"}
+{"shot": "shrug", "pin": true}
 {"clock": 6200}
 {"expect": {"invite": {"stage": "window"}}}
 {"shot": "after"}
