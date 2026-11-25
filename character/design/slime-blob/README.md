@@ -65,7 +65,7 @@ in [VALIDATION.md](VALIDATION.md).
 | Acting | Three authored gesture recipes per expression; idle comedy: a yawn and a sneeze for every mood, zoomies for excited | Owner review of the comedy on the board |
 | Drag | Bounded local surface pull, face follows body, release wobble | Real touchscreen QA |
 | Mood changes | The face crosses over, and the body gives one of three small beats at a change of mood | Owner review on the board |
-| Activity/state | All 22 states in eight scene families, one set of takes for each state with the mood's timing, persistent desk/cards and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
+| Activity/state | All 21 states in eight scene families, one set of takes for each state with the mood's timing, persistent desk/cards and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
 | Sounds | Contact-synchronized cues, sparse and voice-first, cut from procedural sketches (a sneeze and a snore's breath among them) | Speaker review and physical audio latency; the snore's level |
 
 **Coverage is earned by execution.** `test_gel` plays every canonical mood
@@ -84,7 +84,7 @@ the initial 24-clip representative set before the matrix was filled out.
   (`gestures`), the notice's takes (`notices`) and the occasions' bodies,
   a gag or a take each (`pastimes`: the face's table says when each
   plays). Edit this, then run slimegen.
-- [STATES.md](STATES.md): the 22 states in their eight scene families, and
+- [STATES.md](STATES.md): the 21 states in their eight scene families, and
   how the host's events reach them.
 - [CONTINUITY.md](CONTINUITY.md): the persistent actor, layer ownership,
   the scenes, comedy, gestures, tagged pastimes, the mood beat and the rules of what is
@@ -162,7 +162,7 @@ them the same blob with the same desk. Visual drama need not add dense audio.
 state, and a success comes in three sizes ([CONTINUITY.md](CONTINUITY.md),
 Finishes). Failure must never use the trophy, fanfare or cheer; `error` is an observed
 tool failure, not automatically a failed whole task. `reply_ready` is a
-ready reply, not an accomplishment. `starting` has no card. See [STATES.md](STATES.md).
+ready reply, not an accomplishment. See [STATES.md](STATES.md).
 
 The bottom 20% is the host's lane: the board's strip and bubble, softly
 rounded and readable. The scenes keep their props above it. Do not

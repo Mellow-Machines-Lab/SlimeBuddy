@@ -86,19 +86,18 @@ void test_the_face_picks_a_finish_and_plays_it_once() {
   const SceneState done = SceneState::kTaskComplete;
   const uint32_t before = f.engine().random.state;
   TEST_ASSERT_EQUAL_UINT8(finishVariant(Finish::kConfetti),
-                          f.pick(done, Mood::kHappy, 0, Outcome::kSuccess, StartCtx::kNone, rng, 2, 1));
+                          f.pick(done, Mood::kHappy, 0, Outcome::kSuccess, rng, 2, 1));
   for (Mood mood : {Mood::kHappy, Mood::kExcited, Mood::kProud, Mood::kCalm})
     for (int turn : {2, 3})
-      TEST_ASSERT_EQUAL_UINT8(finishVariant(Finish::kGoldRush),
-                              f.pick(done, mood, 0, Outcome::kSuccess, StartCtx::kNone, rng, 1, turn));
+      TEST_ASSERT_EQUAL_UINT8(finishVariant(Finish::kGoldRush), f.pick(done, mood, 0, Outcome::kSuccess, rng, 1, turn));
   const uint8_t big = finishVariant(Finish::kGoldRush);
   TEST_ASSERT_EQUAL_UINT32(before, f.engine().random.state);
-  f.started(done, Mood::kExcited, big, Outcome::kSuccess, StartCtx::kNone);
+  f.started(done, Mood::kExcited, big, Outcome::kSuccess);
   TEST_ASSERT_EQUAL_UINT32(before, f.engine().random.state);  // no bag deals a finish
   // Small deals Little Win's takes from the bag.
-  TEST_ASSERT_TRUE(f.pick(done, Mood::kHappy, 0, Outcome::kSuccess, StartCtx::kNone, rng, 3, 0) < kFinishBase);
-  TEST_ASSERT_TRUE(f.pick(done, Mood::kSad, 0, Outcome::kSuccess, StartCtx::kNone, rng, 3, 3) < kFinishBase);
-  TEST_ASSERT_TRUE(f.pick(done, Mood::kHappy, 0, Outcome::kFailure, StartCtx::kNone, rng, 3, 3) < 3);
+  TEST_ASSERT_TRUE(f.pick(done, Mood::kHappy, 0, Outcome::kSuccess, rng, 3, 0) < kFinishBase);
+  TEST_ASSERT_TRUE(f.pick(done, Mood::kSad, 0, Outcome::kSuccess, rng, 3, 3) < kFinishBase);
+  TEST_ASSERT_TRUE(f.pick(done, Mood::kHappy, 0, Outcome::kFailure, rng, 3, 3) < 3);
   for (Finish fin : kBig) {
     TEST_ASSERT_EQUAL_INT(1, f.plays(done, uint8_t(finishVariant(fin)), 4));
     TEST_ASSERT_EQUAL_UINT32(uint32_t(lengthMs(fin)), f.loopMs(Mood::kHappy, done, finishVariant(fin)));

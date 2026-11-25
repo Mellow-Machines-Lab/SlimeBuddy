@@ -6,7 +6,7 @@
 // take (render/gel/scenes.h, inMood). The board plays them: it jitters a
 // desk's contacts, deals the takes and owns every spring.
 // The board's states, as the engine names them (render/types.cpp).
-export const states=['idle','working','needs_you','task_complete','asleep','no_app','listening','starting','planning','terminal','tool_use','searching','analyzing','testing','delegating','waiting','reply_ready','poked','tap_spam','wake_up','gesture','notice'];
+export const states=['idle','working','needs_you','task_complete','asleep','no_app','listening','planning','terminal','tool_use','searching','analyzing','testing','delegating','waiting','reply_ready','poked','tap_spam','wake_up','gesture','notice'];
 // The activities with no row of their own, each with the row of the desk
 // the board shows for it (render/gel/router.cpp's deskStateOf): the four
 // the Mac no longer sends (its Act has four: tool_use, analyzing, terminal
@@ -91,12 +91,8 @@ function statusResultRecipe(state,variant) {
     contacts:result.contacts.map(contact=>({...contact,kind:state+'_reveal'}))};
 }
 
-function startRecipe(variant) {
-  return {duration:cycleMs[variant],intent:['perk and present start','nod into the new work','stretch and resume'][variant],
-    lean:0,moody:true,contacts:[{at:[520,820,1080][variant],kind:'start_reveal',side:0,strength:1}]};
-}
 // wake_up: the person back at the Mac after a long break. The start family's
-// body without its card: a stretch up and forward (a presentation beat), then
+// body, with no card: a stretch up and forward (a presentation beat), then
 // a soft settle, and the mood's own recovery.
 function wakeRecipe(variant) {
   const stretch={kind:'start_reveal',side:0,strength:1};
@@ -182,7 +178,7 @@ export function pastimeGags(pastimes) {
 export function takesOf(state,outcome=null) {
   return state==='gesture'?10:state==='asleep'||(state==='task_complete'&&outcome==='success')?4:3;
 }
-// The recipe for a state (its outcome or context) and take, the same in
+// The recipe for a state (and its outcome) and take, the same in
 // every mood, and whether the board jitters its contacts (a desk's).
 export function recipe({state,outcome},v,design){
  let r,jitter=false;
@@ -193,7 +189,6 @@ export function recipe({state,outcome},v,design){
  else if(state==='needs_you')r=alertRecipe(design);
  else if(state==='task_complete')r=resultRecipe(outcome||null,v);
  else if(state==='reply_ready')r=statusResultRecipe(state,v);
- else if(state==='starting')r=startRecipe(v);
  else if(state==='wake_up')r=wakeRecipe(v);
  else if(['poked','tap_spam'].includes(state))r=touchRecipe(state,v);
  else if(state==='listening')r=listenRecipe(v);

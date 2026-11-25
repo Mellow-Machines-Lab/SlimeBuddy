@@ -96,8 +96,8 @@ struct Contact {T at;uint8_t kind;int8_t side;F strength;};
 struct Recipe {T duration;F lean;uint8_t count,focus;bool jitter,gift,moody;int8_t gag;Contact contacts[6];};
 inline constexpr int kContactKinds=12;
 inline constexpr const char* kContactKindNames[kContactKinds]={"key_contact","screen_knock","body_contact","alert_reveal","success_reveal","failure_reveal","result_reveal","start_reveal","reply_ready_reveal","sneeze_contact","breath_contact","zoom_contact"};
-inline constexpr int kStates=22, kStateRows=17, kRecipeStates=19;
-inline constexpr uint8_t kRecipeRow[kStates]={0,1,2,3,4,5,6,7,1,8,1,9,9,8,8,10,11,12,13,14,15,16};
+inline constexpr int kStates=21, kStateRows=16, kRecipeStates=18;
+inline constexpr uint8_t kRecipeRow[kStates]={0,1,2,3,4,5,6,1,7,1,8,8,7,7,9,10,11,12,13,14,15};
 inline constexpr Recipe kRecipes[kRecipeStates][3]={
 {{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},},
 {{T::literal(3200),F::fromRaw(301990),3,1,true,false,true,-1,{{T::literal(580),0,1,F::fromRaw(16777216)},{T::literal(780),0,-1,F::fromRaw(16777216)},{T::literal(1040),0,1,F::fromRaw(16777216)}}},{T::literal(3700),F::fromRaw(301990),4,2,true,false,true,-1,{{T::literal(560),0,1,F::fromRaw(16777216)},{T::literal(760),0,-1,F::fromRaw(16777216)},{T::literal(1680),0,1,F::fromRaw(16777216)},{T::literal(1880),0,-1,F::fromRaw(16777216)}}},{T::literal(4200),F::fromRaw(301990),2,3,true,false,true,-1,{{T::literal(1100),0,1,F::fromRaw(16777216)},{T::literal(2220),0,-1,F::fromRaw(16777216)}}},},
@@ -106,7 +106,6 @@ inline constexpr Recipe kRecipes[kRecipeStates][3]={
 {{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},},
 {{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},{T::literal(3200),F::fromRaw(0),0,1,false,false,false,-1,{}},},
 {{T::literal(3200),F::fromRaw(369099),0,2,false,false,false,-1,{}},{T::literal(3700),F::fromRaw(-201327),0,1,false,false,false,-1,{}},{T::literal(4200),F::fromRaw(134218),0,3,false,false,false,-1,{}},},
-{{T::literal(3200),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(520),7,0,F::fromRaw(16777216)}}},{T::literal(3700),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(820),7,0,F::fromRaw(16777216)}}},{T::literal(4200),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(1080),7,0,F::fromRaw(16777216)}}},},
 {{T::literal(3200),F::fromRaw(301990),3,1,true,false,true,-1,{{T::literal(600),0,1,F::fromRaw(16777216)},{T::literal(780),0,-1,F::fromRaw(16777216)},{T::literal(960),0,1,F::fromRaw(16777216)}}},{T::literal(3700),F::fromRaw(301990),3,2,true,false,true,-1,{{T::literal(780),0,1,F::fromRaw(16777216)},{T::literal(1810),0,-1,F::fromRaw(16777216)},{T::literal(2090),0,1,F::fromRaw(16777216)}}},{T::literal(4200),F::fromRaw(301990),6,3,true,false,true,-1,{{T::literal(580),0,1,F::fromRaw(16777216)},{T::literal(740),0,-1,F::fromRaw(16777216)},{T::literal(900),0,1,F::fromRaw(16777216)},{T::literal(1060),0,-1,F::fromRaw(16777216)},{T::literal(1960),0,1,F::fromRaw(16777216)},{T::literal(2120),0,-1,F::fromRaw(16777216)}}},},
 {{T::literal(3200),F::fromRaw(301990),1,1,true,false,true,-1,{{T::literal(1020),0,1,F::fromRaw(16777216)}}},{T::literal(3700),F::fromRaw(301990),2,2,true,false,true,-1,{{T::literal(720),0,1,F::fromRaw(16777216)},{T::literal(1680),0,-1,F::fromRaw(16777216)}}},{T::literal(4200),F::fromRaw(301990),1,3,true,false,true,-1,{{T::literal(1520),0,1,F::fromRaw(16777216)}}},},
 {{T::literal(3200),F::fromRaw(100663),0,1,true,false,false,-1,{}},{T::literal(3700),F::fromRaw(234881),0,2,true,false,false,-1,{}},{T::literal(4200),F::fromRaw(-167772),0,3,true,false,false,-1,{}},},
@@ -120,9 +119,9 @@ inline constexpr Recipe kRecipes[kRecipeStates][3]={
 {{T::literal(3200),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(680),5,0,F::fromRaw(16777216)}}},{T::literal(3700),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(960),5,0,F::fromRaw(16777216)}}},{T::literal(4200),F::fromRaw(0),1,1,false,false,true,-1,{{T::literal(1240),5,0,F::fromRaw(16777216)}}},},
 };
 inline constexpr int kMaxTakes=4;
-inline constexpr uint8_t kRecipeTakes[kRecipeStates]={3,3,3,3,4,3,3,3,3,3,3,3,3,3,3,10,3,4,3};
+inline constexpr uint8_t kRecipeTakes[kRecipeStates]={3,3,3,3,4,3,3,3,3,3,3,3,3,3,10,3,4,3};
 inline constexpr int kFourthRows=2;
-inline constexpr int8_t kFourthRow[kRecipeStates]={-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1};
+inline constexpr int8_t kFourthRow[kRecipeStates]={-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1};
 inline constexpr Recipe kFourthTakes[kFourthRows]={{T::literal(4800),F::fromRaw(0),2,1,false,false,false,-1,{{T::literal(600),10,0,F::fromRaw(5872026)},{T::literal(2600),10,0,F::fromRaw(5872026)}}},{T::literal(3700),F::fromRaw(0),4,1,false,false,true,-1,{{T::literal(680),4,0,F::fromRaw(16777216)},{T::literal(1640),2,0,F::fromRaw(7549747)},{T::literal(2060),2,0,F::fromRaw(7549747)},{T::literal(2480),2,0,F::fromRaw(7549747)}}}
 };
 inline constexpr Recipe kGestureTakes[kGestureCount]={

@@ -39,8 +39,7 @@ class GelFace final : public Face {
   // The engine picks the look's variations itself; the Mac's is ignored.
   uint8_t lookVariant() const override { return uint8_t(engine_->scenes.variant); }
   // A successful finish is sized by its turn, or its loops with none (render/gel/finish.h).
-  uint8_t pick(SceneState, Mood, int, Outcome, StartCtx, linkkit::Rng&, int loops = 1,
-               int turn = kNoTurn) const override;
+  uint8_t pick(SceneState, Mood, int, Outcome, linkkit::Rng&, int loops = 1, int turn = kNoTurn) const override;
   // A finish a size above small plays once.
   int plays(SceneState anim, uint8_t variant, int loops) const override;
   // A finger: the dome follows it (the engine's drag), from where it first
@@ -85,7 +84,7 @@ class GelFace final : public Face {
   void drawerShown(const Drawer& drawer, int& first, int& last) const override {
     DrawerLayout(size_.width, size_.height, size_.corner).shown(drawer, first, last);
   }
-  void started(SceneState, Mood, uint8_t, Outcome, StartCtx) override;
+  void started(SceneState, Mood, uint8_t, Outcome) override;
   int variants(Mood, SceneState) const override;
   uint32_t loopMs(Mood, SceneState, int variant) const override;
   // Its recipes are chosen for the outcome asked for.

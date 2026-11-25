@@ -693,7 +693,7 @@ void test_the_scenes_formulas() {
       {slime::kHappy, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kSuccess, 6000},
       {slime::kCalm, facts(SceneState::kWorking), SceneState::kTaskComplete, Outcome::kFailure, 6000},
       {slime::kCalm, facts(SceneState::kWorking, SceneState::kTerminal), SceneState::kNone, Outcome::kNone, 20000},
-      {slime::kCalm, facts(SceneState::kWorking), SceneState::kStarting, Outcome::kNone, 6000},
+      {slime::kCalm, facts(SceneState::kWorking), SceneState::kWakeUp, Outcome::kNone, 6000},
       {slime::kCalm, facts(SceneState::kAsleep), SceneState::kNone, Outcome::kNone, 90000},
   };
   const double limit[] = {.08, .06, .05};

@@ -36,9 +36,8 @@ A Wednesday afternoon. Claude works in the `fix-nav` worktree of
 | 14:05 | A third time | 22 | determined · determined, no move, medium · retry 0.89 | A determined face, held twice: "Retry" |
 | 14:07 | They pass | 29 | proud · proud, no move, medium · glad 0.67 | **Turns proud**, a proud face, held twice: "Heh..." |
 
-Beside the brain, the rules play their own: the `starting` reaction at
-the turn's start, and the work stream's words, each run of the tests
-coming forward as `tests` and its result as `FAIL` or `PASS`.
+Beside the brain, the rules play their own: the work stream's words,
+each run of the tests coming forward as `tests` and its result as `FAIL` or `PASS`.
 
 The pass at 14:01 is shown in full (§2–§6), and the ones after it more
 briefly (§7). Each answer came back in 98–116 ms.
@@ -120,8 +119,8 @@ Boop did nothing on its own.
 ```
 
 The quiet pass at 14:00 left nothing under the turn's start: a reaction
-that didn't happen isn't in HISTORY. Nor are the rules' `starting` and
-the work stream's words: NOW's last line says Boop did nothing on its
+that didn't happen isn't in HISTORY. Nor are the work stream's words:
+NOW's last line says Boop did nothing on its
 own.
 
 ## 4. The questions (14:01)
@@ -211,8 +210,7 @@ claude's tests failed again on "fix-nav" (landing), 3 times in a row.
 Boop did nothing on its own.
 ```
 
-The scenario ends at 14:07 with Boop proud. The transcript holds 34
+The scenario ends at 14:07 with Boop proud. The transcript holds 33
 events: nine of Claude's (the turn's start, and four starts and four
-ends of a command), five passes, sixteen of Boop's outputs (the rules'
-`starting` and eight work-stream `call`s, three mood changes and four
-reactions) and the reactions' four ends, with five view events.
+ends of a command), five passes, fifteen of Boop's outputs (eight
+work-stream `call`s, three mood changes and four reactions) and the reactions' four ends, with five view events.

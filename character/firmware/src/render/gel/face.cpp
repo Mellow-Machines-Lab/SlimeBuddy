@@ -1028,8 +1028,7 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
 // The engine's shuffle bag for the reaction, drawn from copies: a call
 // refused after its pick (Device::refuse) leaves the bag and the engine's
 // randomness as they were. started draws the same take for real.
-uint8_t GelFace::pick(SceneState a, Mood mood, int, Outcome outcome, StartCtx, linkkit::Rng&, int loops,
-                      int turn) const {
+uint8_t GelFace::pick(SceneState a, Mood mood, int, Outcome outcome, linkkit::Rng&, int loops, int turn) const {
   // A successful finish by its size: small deals Little Win's takes from
   // the bag, as every other row does.
   if (a == SceneState::kTaskComplete && outcome == Outcome::kSuccess) {
@@ -1046,7 +1045,7 @@ uint8_t GelFace::pick(SceneState a, Mood mood, int, Outcome outcome, StartCtx, l
   return uint8_t(bag.next(random, takes(row)));
 }
 
-void GelFace::started(SceneState a, Mood mood, uint8_t variant, Outcome outcome, StartCtx) {
+void GelFace::started(SceneState a, Mood mood, uint8_t variant, Outcome outcome) {
   if (a == SceneState::kGesture) return;
   if (a == SceneState::kTaskComplete && isFinishVariant(variant)) return;
   const int row = recipeState(a, outcome);

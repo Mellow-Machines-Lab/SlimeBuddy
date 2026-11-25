@@ -137,7 +137,7 @@ void test_requests_route_by_priority() {
   TEST_ASSERT_TRUE(e->play(ask(SceneState::kListening)));
   e->clear();
   TEST_ASSERT_TRUE(state(*e) == SceneState::kWorking);
-  for (SceneState anim : {SceneState::kStarting, SceneState::kReplyReady, SceneState::kTaskComplete, SceneState::kPoked, SceneState::kTapSpam,
+  for (SceneState anim : {SceneState::kReplyReady, SceneState::kTaskComplete, SceneState::kPoked, SceneState::kTapSpam,
                           SceneState::kWakeUp, SceneState::kGesture, SceneState::kNotice}) {
     auto single = engine(look(SceneState::kWorking));
     TEST_ASSERT_TRUE(single->play(ask(anim, Outcome::kFailure)));
@@ -180,15 +180,14 @@ void test_requests_route_by_priority() {
   TEST_ASSERT_TRUE((passes == std::set<int>{0, 1, 2}));
   TEST_ASSERT_EQUAL_INT(3, failures);
   TEST_ASSERT_TRUE(state(*looped) == SceneState::kTaskComplete && looped->scenes.iteration == 2);
-  // A start holds its last until it's cleared, then shows the latest facts.
+  // A wake-up holds its last until it's cleared, then shows the latest facts.
   auto start = engine(look(SceneState::kWorking));
-  Request starting = ask(SceneState::kStarting);
-  start->play(starting);
-  TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
+  start->play(ask(SceneState::kWakeUp));
+  TEST_ASSERT_TRUE(state(*start) == SceneState::kWakeUp);
   start->setFacts(look(SceneState::kWorking, SceneState::kTerminal));
   t = 0;
   run(*start, t, 16000);
-  TEST_ASSERT_TRUE(state(*start) == SceneState::kStarting);
+  TEST_ASSERT_TRUE(state(*start) == SceneState::kWakeUp);
   start->clear();
   TEST_ASSERT_TRUE(state(*start) == SceneState::kTerminal);
   // A lost link: facts don't clear it, the link coming back plays the latest.

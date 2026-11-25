@@ -334,7 +334,7 @@ void test_work_settles_by_tier() {
   app::ReactionIn in;
   in.anim = SceneState::kPoked;
   in.id = 9;
-  in.variant = board.b.pick(in.anim, board.m.mood, 255, in.outcome, StartCtx::kNone, board.rng);
+  in.variant = board.b.pick(in.anim, board.m.mood, 255, in.outcome, board.rng);
   board.b.play(in, board.t);
   board.to(board.t + 600);
   TEST_ASSERT_TRUE(board.face().mixer().channels()[rig::Channel::kEyeOpenL] > 950);

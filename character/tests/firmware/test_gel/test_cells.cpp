@@ -36,8 +36,7 @@ bool revealsOnce(SceneState s) {
   switch (s) {
     case SceneState::kNeedsYou:
     case SceneState::kTaskComplete:
-    case SceneState::kReplyReady:
-    case SceneState::kStarting: return true;
+    case SceneState::kReplyReady: return true;
     default: return false;
   }
 }

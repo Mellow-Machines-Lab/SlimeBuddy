@@ -158,7 +158,7 @@ static void test_one_face_vocabulary_and_latest_facts() {
   in.anim = SceneState::kTaskComplete;
   in.outcome = Outcome::kFailure;
   in.id = 42;
-  in.variant = b.pick(in.anim, m.mood, 255, in.outcome, StartCtx::kNone, rng);
+  in.variant = b.pick(in.anim, m.mood, 255, in.outcome, rng);
   b.play(in, 0);
   b.advance(1504, rng);
   auto& e = static_cast<GelFace&>(b.face()).engine();
@@ -1163,14 +1163,13 @@ static void test_pick_is_pure_and_started_commits_it() {
   GelFace f;
   f.reset(0, rng);
   const uint32_t before = f.engine().random.state;
-  const uint8_t first = f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, StartCtx::kNone, rng);
-  TEST_ASSERT_EQUAL_UINT8(first,
-                          f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, StartCtx::kNone, rng));
+  const uint8_t first = f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, rng);
+  TEST_ASSERT_EQUAL_UINT8(first, f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, rng));
   TEST_ASSERT_EQUAL_UINT32(before, f.engine().random.state);
-  f.started(SceneState::kTaskComplete, Mood::kGrumpy, first, Outcome::kSuccess, StartCtx::kNone);
+  f.started(SceneState::kTaskComplete, Mood::kGrumpy, first, Outcome::kSuccess);
   TEST_ASSERT_TRUE(f.engine().random.state != before);
   // The shuffle bag never repeats a take straight away.
-  TEST_ASSERT_TRUE(first != f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, StartCtx::kNone, rng));
+  TEST_ASSERT_TRUE(first != f.pick(SceneState::kTaskComplete, Mood::kGrumpy, 0, Outcome::kSuccess, rng));
 }
 // After a reset the engine draws from one seed, 53, so the board and the simulator choose alike; a board's power-on
 // seeds it from the kit's randomness instead, and the next reset goes back.
@@ -1311,18 +1310,17 @@ static void test_timing_comes_from_the_recipe_table() {
   constexpr int kRows = slime::kStateRows;
   for (int v = 0; v < 3; ++v) {
     const auto& done = slime::kRecipes[rowOf(SceneState::kTaskComplete)][v];
-    const auto& start = slime::kRecipes[rowOf(SceneState::kStarting)][v];
     for (int row : {kRows, kRows + 1}) TEST_ASSERT_TRUE(slime::kRecipes[row][v].duration == done.duration);
-    // wake_up stretches in the start family's timing.
+    // wake_up stretches in a take's usual length, a finish's.
     const auto& wake = slime::kRecipes[rowOf(SceneState::kWakeUp)][v];
-    TEST_ASSERT_TRUE(wake.duration == start.duration);
+    TEST_ASSERT_TRUE(wake.duration == done.duration);
     TEST_ASSERT_EQUAL_UINT8(kStart, wake.contacts[0].kind);
   }
   TEST_ASSERT_EQUAL_INT(int(SceneState::kCount) - 5, kRows);
   TEST_ASSERT_EQUAL_INT(kRows + 2, slime::kRecipeStates);
   TEST_ASSERT_EQUAL_INT(kRows, recipeState(SceneState::kTaskComplete, Outcome::kSuccess));
   TEST_ASSERT_EQUAL_INT(kRows + 1, recipeState(SceneState::kTaskComplete, Outcome::kFailure));
-  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kStarting), recipeState(SceneState::kStarting, Outcome::kNone));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kWakeUp), recipeState(SceneState::kWakeUp, Outcome::kNone));
   TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kWorking), rowOf(SceneState::kPlanning));
   TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kAnalyzing), rowOf(SceneState::kSearching));
   TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kTerminal), rowOf(SceneState::kTesting));
@@ -1547,7 +1545,7 @@ static void test_each_gesture_plays_its_own_gag() {
     TEST_ASSERT_EQUAL_UINT32(uint32_t(F(r.duration).integer()), f.loopMs(Mood::kHappy, SceneState::kGesture, g));
   }
   const uint32_t random = f.engine().random.state;
-  f.started(SceneState::kGesture, Mood::kHappy, 5, Outcome::kNone, StartCtx::kNone);
+  f.started(SceneState::kGesture, Mood::kHappy, 5, Outcome::kNone);
   TEST_ASSERT_EQUAL_UINT32(random, f.engine().random.state);
   struct Shot {
     std::array<F, 4> pose;
@@ -1789,7 +1787,7 @@ static void test_a_rig_clip_plays_on_the_gel() {
         app::ReactionIn in;
         in.anim = SceneState::kPoked;
         in.id = 7;
-        in.variant = b.pick(in.anim, m.mood, 255, in.outcome, StartCtx::kNone, rng);
+        in.variant = b.pick(in.anim, m.mood, 255, in.outcome, rng);
         b.play(in, t);
       }
       b.advance(t, rng);

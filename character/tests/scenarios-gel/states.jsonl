@@ -28,12 +28,6 @@
 {"shot":"listening","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
-{"t":"state","base":"working","mood":"happy","vol":0}
-{"t":"do","id":104,"name":"starting","args":{}}
-{"clock":1504}
-{"shot":"starting"}
-{"t":"dbg.reset"}
-{"clock":0}
 {"t":"state","base":"working","mood":"sad","vol":0}
 {"clock":1504}
 {"shot":"working"}

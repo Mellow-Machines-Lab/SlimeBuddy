@@ -1,6 +1,6 @@
 # State coverage and event mapping
 
-Updated 2026-11-25. The board's 22 states (the firmware's `kStateNames`,
+Updated 2026-11-25. The board's 21 states (the firmware's `kStateNames`,
 `firmware/src/render/types.cpp`) fall into eight visual scene families, below.
 Each state's takes (three each; idle's six or seven and asleep's four,
 with their comedy, a successful finish's four and a gesture's ten) are
@@ -18,7 +18,7 @@ remaining matrix was implemented and exercised.
 | Quiet rest | no_app, asleep | Lost app vs no sessions; both quiet, retained mood suppressed visually; only asleep snores now and then |
 | Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn or a sneeze (excited has zoomies) |
 | Listen | listening | Actual mic-on, not every input event |
-| Start | starting, wake_up, notice | starting perks up with no card, whatever its ctx (the Mac sends none); wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
+| Start | wake_up, notice | wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
 | Desk | working, analyzing, terminal, waiting; tool_use, which the desk shows as working; and planning, searching, testing and delegating, which the Mac no longer sends | One computer, four activities, each a pose of the whole body: typing (working, tool_use, planning), looking (analyzing, searching), running (terminal, testing, delegating), waiting (CONTINUITY.md, The four activities). A helper lands in the work stream |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
 | Result | reply_ready, task_complete | Reply vs whole-task success/failure; no card: a failed call hits it in the work stream, and a stop drops its words there |

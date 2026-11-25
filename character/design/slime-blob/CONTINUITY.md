@@ -456,7 +456,6 @@ timings above:
 
 | Family/state | Authored contacts before mood delay | Visible meaning |
 | --- | --- | --- |
-| Starting | Reveal at [520, 820, 1080] ms by variant | It perks up, with no card, whatever its context; the Mac sends none |
 | Wake up | Stretch [560], [760], [900, 1500] ms, then settle [1180], [1240, 1420], none | You back after a long break: the start family's body, with no card. The stretch is a start reveal (the second of variant 2 at 0.7 strength); a settle is a body contact of strength 0.35, sides 0, then ±1 |
 | Reply ready | Reveal at [680, 960, 1240] ms | A neutral reveal, with no card and no trophy |
 | Poked | [160], [200, 480], [160, 520] ms | Bounded local dent/wobble/bounce |
