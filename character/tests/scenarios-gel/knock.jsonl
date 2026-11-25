@@ -10,7 +10,7 @@
 {"clock": 1000}
 {"t": "state", "base": "working", "act": "working", "mood": "calm", "busy": 1, "vol": 0, "when": ["day"], "attn": {"agent": "claude", "project": "boop", "name": "Ship the knock", "kind": "approve", "more": 0, "id": 21}}
 {"clock": 1920}
-{"shot": "1-knock"}
+{"shot": "1-knock", "pin": true}
 {"clock": 2700}
 {"shot": "1-waits"}
 {"clock": 4000}
@@ -20,7 +20,7 @@
 {"clock": 23730}
 {"shot": "3-both-fists"}
 {"clock": 26300}
-{"shot": "4-forehead-on-the-glass"}
+{"shot": "4-forehead-on-the-glass", "pin": true}
 {"clock": 28100}
 {"shot": "4-slid-down"}
 {"clock": 29500}

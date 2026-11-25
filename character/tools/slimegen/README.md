@@ -67,6 +67,8 @@ device completion events. Both modes use temporary HOME/state directories.
 See [verification](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/internal/VERIFICATION.md).
 
 After `firmware/tools/pio.sh run -e native`, `internal/tools/boopctl sim
---face gel` checks native RGB565 screenshots against the gel goldens, and
+--face gel` checks native RGB565 screenshots against the gel goldens (one
+or two pinned shots a scenario, a set frozen small on purpose until the
+gel's redesign settles; design/slime-blob/VALIDATION.md), and
 `make -C internal fw-test` runs `test_gel`, the engine's rules. These
 checks do not measure physical display throughput or speaker quality.

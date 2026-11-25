@@ -125,7 +125,7 @@
 {"clock":11400}
 {"clock":11500}
 {"clock":11600}
-{"shot":"lean"}
+{"shot":"lean","pin":true}
 {"clock":11700}
 {"clock":11800}
 {"clock":11900}

@@ -8,7 +8,7 @@
 {"clock":1120}
 {"shot":"to-work-1"}
 {"clock":1260}
-{"shot":"to-work-2"}
+{"shot":"to-work-2","pin":true}
 {"clock":1400}
 {"shot":"to-work-3"}
 {"clock":1560}

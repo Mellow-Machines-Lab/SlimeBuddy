@@ -14,7 +14,7 @@
 {"clock": 5000}
 {"expect": {"invite": {"stage": "shrug"}}}
 {"clock": 5200}
-{"shot": "looks-at-palm"}
+{"shot": "looks-at-palm", "pin": true}
 {"clock": 5600}
 {"shot": "lowers-it"}
 {"clock": 5900}

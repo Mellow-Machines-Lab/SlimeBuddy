@@ -29,4 +29,4 @@
 {"clock": 2600}
 {"expect": {"invite": null}}
 {"clock": 3300}
-{"shot": "newer-moment"}
+{"shot": "newer-moment", "pin": true}

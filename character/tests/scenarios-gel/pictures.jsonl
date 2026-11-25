@@ -8,7 +8,7 @@
 {"clock":0}
 {"t":"state","base":"working","act":"tool_use","mood":"calm","vol":0,"busy":1,"when":["day"],"calls":[[0,3,"editing Nav.css +12"]],"pic":["p",0,"claude",2,5,"fix the overflow",4]}
 {"clock":1500}
-{"shot":"plan"}
+{"shot":"plan","pin":true}
 {"t":"state","base":"working","act":"tool_use","mood":"calm","vol":0,"busy":1,"when":["day"],"calls":[[0,6,"editing nav.test.ts +35"]],"pic":["c",0,"claude","nav.test.ts",35,0,"Nav.css",48,15,"Nav.tsx",22,4]}
 {"clock":3000}
 {"shot":"changes"}

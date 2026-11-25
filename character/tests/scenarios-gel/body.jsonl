@@ -147,7 +147,7 @@
 {"clock":1950}
 {"clock":2200}
 {"clock":2400}
-{"shot":"gold"}
+{"shot":"gold","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"working","mood":"focused","busy":1,"calls":[[0,1,"edit"]]}
@@ -175,7 +175,7 @@
 {"clock":1500}
 {"clock":1550}
 {"clock":1600}
-{"shot":"low-sign"}
+{"shot":"low-sign","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","vol":0,"when":["day"],"base":"idle","mood":"curious","idle":1,"wish":"pet"}

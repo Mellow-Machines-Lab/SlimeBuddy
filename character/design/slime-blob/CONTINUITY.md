@@ -12,7 +12,10 @@ Tagged pastimes), and one face flows into the next
 (The mood beat: its arts morph or cross-fade, never closing). Q1
 representative art review was approved on 2026-10-02. Each rule below
 names the code that keeps it; [VALIDATION.md](VALIDATION.md) names the
-test that pins it. Contact-synchronized sound is implemented, but for
+test that pins it. The scenarios in `tests/scenarios-gel/` shoot every
+scene, but while the pictures are redesigned only one or two shots a
+scenario are pinned to a golden, on purpose; a new small set is pinned
+when the redesign settles. Contact-synchronized sound is implemented, but for
 the keys, which make none; timbres remain sketches.
 
 ## Keep the object; change its targets

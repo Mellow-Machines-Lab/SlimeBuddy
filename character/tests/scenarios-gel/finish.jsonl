@@ -23,7 +23,7 @@
 {"clock":216}
 {"expect":{"moment":{"anim":"task_complete","variant":5}}}
 {"clock":1500}
-{"shot":"confetti"}
+{"shot":"confetti","pin":true}
 // Three times: the gold floods in and the trophy lands on its head; the desk goes.
 {"t":"dbg.reset"}
 {"clock":0}
@@ -108,5 +108,5 @@
 {"clock":1000}
 {"t":"do","name":"notice","play":"now","args":{"sign":"your turn","low":true,"loops":1}}
 {"clock":2200}
-{"shot":"chat-turn-your-turn"}
+{"shot":"chat-turn-your-turn","pin":true}
 {"t":"dbg.reset"}

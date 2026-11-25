@@ -8,7 +8,7 @@
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","vol":0,"when":["day","tier3"]}
 {"clock":1000}
-{"shot":"tier3"}
+{"shot":"tier3","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"focused","busy":2,"vol":0,"when":["day","tier1"],"todo":{"done":3,"total":7},"calls":[[0,1,"grep"],[1,1,"edit +18"]]}

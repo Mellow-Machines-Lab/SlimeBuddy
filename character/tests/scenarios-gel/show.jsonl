@@ -17,7 +17,7 @@
 {"t":"blob","id":7,"n":4,"of":5,"d":"D9U2BjMGMww3AzcGMQ8CNAQ1AjUHMwM1DjYEMwAxAjUENQ//D14xD/8PgzEP/w+DMQ//D4MxD/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w//D/8P/w8m"}
 {"t":"state","base":"idle","mood":"calm","vol":0,"busy":0,"idle":1,"when":["day"],"show":{"i":1,"h":"search is 2.1x faster","a":0,"g":"claude","b":7}}
 {"clock":3000}
-{"shot":"picture"}
+{"shot":"picture","pin":true}
 {"t":"state","base":"idle","mood":"calm","vol":0,"busy":0,"idle":1,"when":["day"],"show":{"i":1,"h":"search is 2.1x faster","a":0,"g":"claude","b":8}}
 {"clock":4500}
 {"shot":"another-blob"}

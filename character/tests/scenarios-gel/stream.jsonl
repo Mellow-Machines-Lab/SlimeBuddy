@@ -18,7 +18,7 @@
 {"clock": 4700}
 {"shot": "bonk-flying"}
 {"clock": 5200}
-{"shot": "bonk-dizzy"}
+{"shot": "bonk-dizzy", "pin": true}
 // Up the ladder: more stars.
 {"clock": 7500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "swift", "as": "bonk3"}}
@@ -51,7 +51,7 @@
 {"clock": 64500}
 {"t": "do", "name": "call", "play": "now", "args": {"a": 1, "w": "edit +18 -2", "as": "land"}}
 {"clock": 65000}
-{"shot": "edit"}
+{"shot": "edit", "pin": true}
 // No new call for 20 s: nothing comes up beside it or on the monitor.
 {"clock": 67500}
 {"shot": "quiet"}

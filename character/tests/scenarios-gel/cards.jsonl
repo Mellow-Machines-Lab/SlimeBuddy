@@ -12,7 +12,7 @@
 {"clock":100}
 {"shot":"status-coming"}
 {"clock":1500}
-{"shot":"status"}
+{"shot":"status","pin":true}
 {"t":"state","base":"working","act":"terminal","mood":"engaged","busy":1,"vol":0,"when":["day"],"calls":[[0,2,"npm test"]],"card":{"a":0,"g":"claude","k":"s","t":"running the tests","d":"4 of 5 · 2 min over","o":1,"at":[1,1]}}
 {"clock":3000}
 {"shot":"status-over"}

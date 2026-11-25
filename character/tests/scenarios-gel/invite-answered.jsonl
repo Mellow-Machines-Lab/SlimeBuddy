@@ -12,7 +12,7 @@
 {"clock": 3600}
 {"expect": {"invite": {"stage": "pose", "pose": "palm"}}}
 {"clock": 4800}
-{"shot": "palm-label"}
+{"shot": "palm-label", "pin": true}
 {"input": {"touch": [236, 110]}}
 {"clock": 4860}
 {"clock": 4920}
@@ -21,7 +21,7 @@
 {"clock": 5300}
 {"shot": "highfive-clap"}
 {"clock": 5800}
-{"shot": "highfive"}
+{"shot": "highfive", "pin": true}
 {"clock": 8000}
 {"expect": {"invite": null}}
 {"t": "dbg.reset"}

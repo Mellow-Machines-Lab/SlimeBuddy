@@ -18,7 +18,7 @@
 {"clock": 20600}
 {"shot": "turn"}
 {"clock": 21600}
-{"shot": "late-sigh"}
+{"shot": "late-sigh", "pin": true}
 {"clock": 24000}
 {"expect": {"invite": null}}
 {"t": "dbg.reset"}

@@ -10,7 +10,7 @@
 {"clock": 1400}
 {"shot": "holds-its-breath"}
 {"clock": 2500}
-{"shot": "flat-on-the-glass"}
+{"shot": "flat-on-the-glass", "pin": true}
 {"clock": 4400}
 {"shot": "sliding-down"}
 {"clock": 6300}

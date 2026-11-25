@@ -11,7 +11,7 @@
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","busy":2,"vol":0,"attn":{"agent":"claude","project":"buddygotchi","name":"Make the device answer every touch at once","more":2,"id":7}}
 {"clock":1504}
-{"shot":"needs-you-long-name"}
+{"shot":"needs-you-long-name","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"happy","busy":1,"vol":0}
@@ -52,7 +52,7 @@
 {"clock":9000}
 {"t":"state","base":"working","mood":"happy","busy":2,"helpers":4,"idle":3,"vol":0}
 {"clock":9600}
-{"shot":"working-counts"}
+{"shot":"working-counts","pin":true}
 // Seven helpers: four minis, then +3.
 {"t":"state","base":"working","mood":"happy","busy":1,"helpers":7,"vol":0}
 {"clock":9800}

@@ -193,7 +193,15 @@ ramps and springs can, and no jolt at an event. By file:
 ## The board's frames
 
 - `internal/tools/boopctl sim --face gel` plays the pack's
-  `tests/scenarios-gel/` against its `tests/golden-gel/`: every canonical
+  `tests/scenarios-gel/` and compares their pinned shots with its
+  `tests/golden-gel/`. The set is frozen small on purpose while the
+  gel's pictures are redesigned: each scenario pins one or two shots,
+  the ones that say the most about it (`"pin": true` on the step), 60 in
+  all, and only those have a golden; the engine's `test_pins` holds it
+  to that. The other shots are still taken, for a person to look at,
+  `boopctl mirror` and `boopctl run`, and every `expect` still runs.
+  When the redesign settles, a new small set is pinned. The scenarios
+  shoot every canonical
   mood and factual state, failure and neutral-finish frames, the host lane
   at the panel's size (`lane.jsonl`: the counts in words and as marks, a
   long name that needs you, cut with its "…" and how many more in a pill, a
@@ -255,8 +263,9 @@ and is taken down, and the sign by its name and a big cheer's (`done.jsonl`), th
   scrolls), and an agent's card (`cards.jsonl`: a status coming and held,
   its guess run out, one with no small line, one of three with its dots, a
   swipe and a tap that are the card's, a result, under a sign and back
-  after it, under needs you, and a tap under a work act, which is Boop's). `--accept` updates only the gel
-  goldens, after looking at them.
+  after it, under needs you, and a tap under a work act, which is Boop's). `--accept` updates only the pinned
+  gel goldens, after looking at them, and removes any whose shot isn't
+  pinned.
 - `boopctl mirror` (in `make -C internal mirror`) plays the same scenarios
   on the Mac's mirror of the board (`character/mac/mirror/board.js`)
   and on the native simulator, both with no card, and checks every shot is

@@ -18,7 +18,7 @@
 {"clock":0}
 {"t":"state","base":"idle","mood":"calm","vol":0,"idle":1,"when":["night","tier1"],"energy":"tired"}
 {"clock":3000}
-{"shot":"tired"}
+{"shot":"tired","pin":true}
 {"t":"dbg.reset"}
 {"clock":0}
 {"t":"state","base":"working","mood":"calm","vol":0,"busy":1,"when":["night"],"energy":"tired","calls":[[0,3,"editing Core.swift +12"]]}

@@ -15,7 +15,7 @@
 {"clock":4040}
 {"clock":4080}
 {"clock":4120}
-{"shot":"swipe-down-held"}
+{"shot":"swipe-down-held","pin":true}
 {"clock":4160}
 {"clock":4200}
 {"shot":"swipe-down-let-go"}
