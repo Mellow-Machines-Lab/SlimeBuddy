@@ -5,36 +5,56 @@
 #include "render/gel/finish.h"
 #include "render/gel/router.h"
 namespace render::gel {
-// The recipe table's rows (slime::kRecipes): every state, then
-// task_complete's success and failure.
+// The recipe table's rows (slime::kRecipes): each state's, which a state
+// the Mac no longer sends shares with the one that stands in for it
+// (slime::kRecipeRow), then task_complete's success and failure.
+static_assert(int(SceneState::kCount) == slime::kStates, "a row for every state");
+static_assert(slime::kStateRows + 2 == slime::kRecipeStates, "recipe rows: states, outcomes");
 inline int recipeState(SceneState state, Outcome outcome) {
-  constexpr int kStates = int(SceneState::kCount);
-  if (state == SceneState::kTaskComplete && outcome != Outcome::kNone) return kStates + int(outcome) - 1;
-  return int(state);
+  if (state == SceneState::kTaskComplete && outcome != Outcome::kNone) return slime::kStateRows + int(outcome) - 1;
+  return slime::kRecipeRow[int(state)];
 }
-static_assert(int(SceneState::kCount) + 2 == slime::kRecipeStates, "recipe rows: states, outcomes");
+constexpr int rowOf(SceneState state) { return slime::kRecipeRow[int(state)]; }
 // A row's takes: three, and a fourth for two rows, asleep's snore and a
 // successful finish's hiccups. The fourths are a
 // table of their own, so the other rows stay three.
 static_assert(slime::kMaxTakes == 4 && slime::kFourthRows == 2, "two rows have a fourth take");
-static_assert(slime::kRecipeTakes[int(SceneState::kAsleep)] == 4 && slime::kRecipeTakes[int(SceneState::kCount)] == 4 &&
-                  slime::kRecipeTakes[int(SceneState::kCount) + 1] == 3 &&
-                  slime::kRecipeTakes[int(SceneState::kNoApp)] == 3,
+static_assert(slime::kRecipeTakes[rowOf(SceneState::kAsleep)] == 4 && slime::kRecipeTakes[slime::kStateRows] == 4 &&
+                  slime::kRecipeTakes[slime::kStateRows + 1] == 3 &&
+                  slime::kRecipeTakes[rowOf(SceneState::kNoApp)] == 3,
               "asleep and a success have a fourth take; a failure and a lost link don't");
 inline int takes(int row) { return slime::kRecipeTakes[row]; }
-static_assert(int(std::size(slime::kRecipes[0][0])) == kFirstTakes, "a row's first takes");
+static_assert(int(std::size(slime::kRecipes[0])) == kFirstTakes, "a row's first takes");
 // The gesture state's takes are render::Gesture's, one for each, the same in
 // every mood (kGestureTakes); the board names one, and no bag deals them.
 static_assert(slime::kGestureCount == int(Gesture::kCount), "a take for each of render::Gesture");
-static_assert(slime::kRecipeTakes[int(SceneState::kGesture)] == slime::kGestureCount, "the gesture row's takes");
+static_assert(slime::kRecipeTakes[rowOf(SceneState::kGesture)] == slime::kGestureCount, "the gesture row's takes");
 // A successful finish's row, whose variations go on past its takes with
 // the finishes a size above small (render/gel/finish.h).
-constexpr int kSuccessRow = int(SceneState::kCount);
-inline const slime::Recipe& take(int profile, int row, int variant) {
-  if (row == int(SceneState::kGesture)) return slime::kGestureTakes[variant < slime::kGestureCount ? variant : 0];
+constexpr int kSuccessRow = slime::kStateRows;
+// A take in a profile's mood. A moody recipe (a desk's, a result's, a
+// start's, a wake's) takes the profile's timing traits: each contact at
+// first + delay + (at - first) * spacing, from the first contact's time,
+// its strength times the gain, and the lean added. The lifted success's
+// gift is proud's alone. Any other recipe is the same in every mood.
+inline slime::Recipe inMood(const slime::Recipe& base, int profile) {
+  if (!base.moody) return base;
+  slime::Recipe r = base;
+  const F* traits = slime::kProfile[profile].traits;  // delay, spacing, gain, lean
+  const T first = r.count ? base.contacts[0].at : T(0);
+  for (int i = 0; i < r.count; ++i) {
+    r.contacts[i].at = first + T(traits[0]) + T((base.contacts[i].at - first) * traits[1]);
+    r.contacts[i].strength = base.contacts[i].strength * traits[2];
+  }
+  r.lean = base.lean + traits[3];
+  r.gift = base.gift && profile == slime::kProud;
+  return r;
+}
+inline slime::Recipe take(int profile, int row, int variant) {
+  if (row == rowOf(SceneState::kGesture)) return slime::kGestureTakes[variant < slime::kGestureCount ? variant : 0];
   if (row == kSuccessRow && isFinishVariant(variant)) return finishRecipe(finishOf(variant));
-  return variant < kFirstTakes ? slime::kRecipes[profile][row][variant]
-                               : slime::kFourthTakes[profile][slime::kFourthRow[row]];
+  return inMood(variant < kFirstTakes ? slime::kRecipes[row][variant] : slime::kFourthTakes[slime::kFourthRow[row]],
+                profile);
 }
 // Idle's takes: its mood's move, then its own bits (acting.h
 // Acting::takes), at most this many.
@@ -95,14 +115,14 @@ struct Scenes {
   bool hasLast = false, resultRevealed = false, completed = false, quietRestored = false;
   const char* phase = "sustain";
   Bag<slime::kMaxTakes> bags[slime::kCanonical][slime::kRecipeStates];
-  // A take kept: the catalog is immutable, so its address and its jitter's
-  // seed, not its contacts. The needs-you showing and the reaction held
+  // A take kept: the catalog is immutable, so where it is (its row, take
+  // and profile, which take() builds it from) and its jitter's seed, not
+  // its contacts. The needs-you showing and the reaction held
   // each keep theirs, and an alert how far it got, so one interrupted
   // resumes there.
   struct Saved {
     uint64_t key = 0;  // what it showed (Route::key)
-    int variant, profile;
-    const slime::Recipe* recipe;
+    int variant, profile, row;
     uint32_t seed;
     T ageMs;
     int cursor = 0;

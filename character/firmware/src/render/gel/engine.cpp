@@ -137,7 +137,7 @@ bool Engine::admits(const ContactEvent& c, SceneState state, bool quiet, bool pr
     if (revealed_.find([&](uint64_t k) { return k == identity; })) return false;
     revealed_.add(identity);
   }
-  if (isDesk(state) && state != SceneState::kDelegating) {
+  if (isDesk(state)) {
     if (scenes.recipe.duration < slime::kShortLoopMs && scenes.iteration % slime::kShortLoopEvery) return false;
     if (cueCount_ >= slime::kMaxRoutine || soundRandom.unit() >= slime::kRoutineProbability) return false;
     ++cueCount_;

@@ -52,8 +52,13 @@ ramps and springs can, and no jolt at an event. By file:
   the mood held, one reveal for each of a request's, the prop it needs
   shown, only a successful finish's trophy and proud's gift, quiet states
   silent but for comedy and still but for a snore, each take moving the
-  body its own way; ten minutes at work; contacts a finger or an alert
-  interrupts; asleep's stillness.
+  body its own way (notice's body is its clip, which the face plays); ten
+  minutes at work; contacts a finger or an alert interrupts; asleep's
+  stillness. `test_timing_comes_from_the_recipe_table` (`test_main.cpp`)
+  pins one set of takes for each state: the rows the desk shows as
+  another's, and a mood's traits on a moody take (sad's keys on the
+  desk's second take at 720, 956, 2041.6 and 2277.6 ms, its strength
+  times 0.62).
 - `test_finish.cpp`: a successful finish's size by its loops and its
   turn's tier (small short of tier1, the confetti at tier1, Gold Rush from
   tier2, a sad one small); the face's pure pick, a finish above small played
@@ -104,7 +109,9 @@ ramps and springs can, and no jolt at an event. By file:
   ding after them, lasting until the climb is over; the climb at
   `kKnockClimbAtMs`, both fists, then its forehead on the glass, sounded
   by the face. The flop (`test_the_flop_plays_by_its_id`): by its id, both
-  palms and the body on the glass. `test_cells.cpp` lets needs you's takes
+  palms and the body on the glass; and as a fix's Moment brings it
+  (`test_a_moments_clip_plays_by_its_own_name`), a `clip` with no
+  `reply-<clip>` played by its own name. `test_cells.cpp` lets needs you's takes
   be the same, one knock.
 - `test_requests.cpp`: what routes when (no app, listening, needs you, a
   moment, the look), a request's identity, cues sparse and quiet (the
@@ -255,7 +262,8 @@ ramps and springs can, and no jolt at an event. By file:
   (`knock.jsonl`: each step of the climb: the knock, the look round for
   you, louder, both fists, its forehead on the glass and slid down), the
   flop (`flop.jsonl`, by `dbg.clip`: holding its breath, flat on the glass,
-  sliding down, peeling off), turning round (`back.jsonl`: the upset skit's back,
+  sliding down, peeling off; `fix.jsonl`, the same flop from a fix's
+  Moment, with "tests fixed" low), turning round (`back.jsonl`: the upset skit's back,
   a stomp, turning, its back, over its shoulder in side-eye, its back
   again, missed and coming round; `spin.jsonl`: the high five's spin, going
   round, its back, coming round), the meme faces (`meme-deadpan-side-eye`,

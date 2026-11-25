@@ -1,5 +1,5 @@
-// The flop of relief (the pack's rig clip `flop`): a check passes after
-// failing. No Moment names it yet, so dbg.clip plays it: it holds its
+// The flop of relief (the pack's rig clip `flop`), played alone by
+// dbg.clip; a fix's Moment plays it as fix.jsonl shows. It holds its
 // breath, lets go flat against the glass with both palms on it, slides
 // down, and peels off.
 {"t": "dbg.reset"}

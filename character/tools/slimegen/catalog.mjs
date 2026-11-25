@@ -84,7 +84,7 @@ export function firmwareCatalog(pack,character){
  out+='constexpr const char* kIdleMoves[kProfiles]={'+Object.values(profiles).map(p=>s(idleMove(p))).join(',')+'};\n';
  out+='constexpr F kRoutineProbability='+q(sound.mix.routineContactProbability)+';\nconstexpr int kMaxRoutine='+sound.mix.maxRoutineGesturesPerCycle+', kShortLoopMs='+sound.mix.shortLoopMinimumSeconds*1000+', kShortLoopEvery='+sound.mix.shortLoopSoundEvery+';\n';
  out+='constexpr F kPitchLo='+q(sound.seededVariation.pitch[0])+', kPitchHi='+q(sound.seededVariation.pitch[1])+', kGainLo='+q(sound.seededVariation.gain[0])+', kGainHi='+q(sound.seededVariation.gain[1])+';\n';
- out+=recipes(profiles,q,t,{design,gagIds});
+ out+=recipes(q,t,{design,gagIds});
  const sfx=require(path.join(base,'sound/sfx.js')),samples=[],clips=[];
  for(const name of Object.keys(sfx.recipes))for(let variant=0;variant<3;variant++){
   const clip=sfx.render(name,{sampleRate:11025,seed:53,variant,pitch:1,gain:.8});

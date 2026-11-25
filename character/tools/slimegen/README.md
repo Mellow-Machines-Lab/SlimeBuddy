@@ -14,7 +14,7 @@ is as code, the one source of each:
 
 | Module | What it is | What it writes |
 | --- | --- | --- |
-| `scenes.mjs` | Every state's scene recipes, by mood and take (their contacts, timed in ms, and leans), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits (the reviewed moods' table, else its own `traits` in `expressions.json`) | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
+| `scenes.mjs` | Every state's scene recipes, one set of takes for each state (their contacts, timed in ms, and leans; which are `moody`, which the board times by the mood's traits as it deals them; and `standsIn`, the activities the desk shows as another's, which have no row of their own), the gestures' recipes and bits and the pastimes' bodies, the notice's recipe, timed by the pack's rig clip for it (`rig/clips/notice.json`), needs you's one knock, timed by `rig/clips/knock.json` (`knock`: where it climbs), and each expression's traits (the reviewed moods' table, else its own `traits` in `expressions.json`) | `slime.h`'s recipes, bits and pastime takes (`recipes.mjs`, `catalog.mjs`) |
 | `face.mjs` | Each expression's face as the board's controls: where its eyes and mouth sit, and the sizes its art draws them at | `slime.h`'s profiles |
 | `painter.mjs` | Each expression's art at rest, as Canvas calls | `slime_art.h`: vector paths, and each art's groups' shapes (`art.mjs`) |
 | `mesh.mjs` | The dome and its studio material, from equations | `slime_mesh.h`: a mesh and a dense material lookup, 1025 × 513 texels (under a pixel each across the dome; the AMOLED reads a copy in PSRAM) |
@@ -30,8 +30,10 @@ it and never writes it. An expression whose id has a colon
 before the colon, and no mood.
 
 `slime.h` holds the expression profiles, the bits and which
-expressions play them, the scene recipes with each row's takes and the two
-rows' fourth takes, the gesture state's ten takes, each with a bit of its
+expressions play them, the scene recipes, one row of takes for each
+state the same in every mood, with each state's row (`kRecipeRow`), each
+row's takes and the two rows' fourth takes, each expression's traits the
+board times a moody take by, the gesture state's ten takes, each with a bit of its
 own and the face it borrows, which moods keep their own face through a
 gesture, the notice state's three takes' faces, the
 contact kinds' names (a rig clip's cues name them), the pastimes' takes

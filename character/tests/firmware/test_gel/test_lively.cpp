@@ -276,6 +276,16 @@ void test_a_spin_never_unwinds() {
   TEST_ASSERT_EQUAL_INT(420, l.apply(target)[Channel::kTurn]);
 }
 
+// Exactly half a turn off (a stroke as the back pose turns, which sends it
+// from its back to its front) is as near either way: it turns, and ends there.
+void test_half_a_turn_off_still_turns() {
+  Lively l;
+  rig::Channels target = rig::kRest;
+  l.advance(16, target, 0, 0, false);
+  target[Channel::kTurn] = Lively::kWholeTurn / 2;
+  for (int ms = 16; ms <= 3000; ms += 16) l.advance(16, target, 0, 0, false);
+  TEST_ASSERT_EQUAL_INT(Lively::kWholeTurn / 2, l.apply(target)[Channel::kTurn]);
+}
 void test_the_seven_idle_moves() {
   const char* moods[] = {"calm", "happy", "focused", "proud", "cross", "sad", "lonely"};
   for (const char* m : moods) {
@@ -284,7 +294,7 @@ void test_the_seven_idle_moves() {
     const rig::Clip* clip = rig::kRig.clip(id);
     TEST_ASSERT_NOT_NULL_MESSAGE(clip, id);
     TEST_ASSERT_TRUE_MESSAGE(clip->additive && !clip->loop && clip->ms >= 1000 && clip->ms <= 4000, id);
-    for (const rig::Track& t : clip->tracks) TEST_ASSERT_EQUAL_INT_MESSAGE(0, rig::sample(t, clip->ms), id);
+    for (const rig::Track& t : clip->tracks) TEST_ASSERT_EQUAL_INT_MESSAGE(0, clip->value(t, clip->ms), id);
   }
   const struct {
     int profile;

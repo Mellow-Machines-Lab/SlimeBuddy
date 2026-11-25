@@ -69,10 +69,11 @@ void Lively::advance(uint32_t ms, const rig::Channels& target, F engineLift, F e
       s = {to, 0};
       continue;
     }
-    // Round the short way: half a turn or more off, it's a whole turn
-    // nearer where it is.
+    // Round the short way: more than half a turn off, it's a whole turn
+    // nearer where it is. Exactly half a turn off is as near either way,
+    // and a whole turn would leave it half a turn off again.
     if (kSettled[i] == Channel::kTurn)
-      while (abs(s.x - to) * 2 >= F(kWholeTurn)) s.x = s.x + (s.x < to ? F(kWholeTurn) : F(-kWholeTurn));
+      while (abs(s.x - to) * 2 > F(kWholeTurn)) s.x = s.x + (s.x < to ? F(kWholeTurn) : F(-kWholeTurn));
     step(s, dt, to, kSettle[i]);
     // The body stands on the floor: a lift going past it lands there.
     if (kSettled[i] == Channel::kLift && s.x < F(0)) s = {0, 0};

@@ -66,7 +66,7 @@ int sinceHit(const MoveShow& m) {
   const uint32_t t = m.clip->local(m.ms);
   int last = -1;
   for (const rig::Cue& c : m.clip->cues)
-    if (c.ms <= t) last = int(c.ms);
+    if (m.clip->played(c.ms) <= t) last = int(m.clip->played(c.ms));
   return last < 0 ? -1 : int(t) - last;
 }
 
@@ -76,7 +76,7 @@ void addMove(rig::Channels& c, const MoveShow& m, bool shake) {
   for (const rig::Track& track : m.clip->tracks) {
     const rig::ChannelInfo& info = rig::kChannelInfo[int(track.channel)];
     int16_t& to = c[track.channel];
-    to = int16_t(std::clamp(int(to) + rig::sample(track, t), int(info.lo), int(info.hi)));
+    to = int16_t(std::clamp(int(to) + m.clip->value(track, t), int(info.lo), int(info.hi)));
   }
   if (shake) addShake(c, m);
 }
