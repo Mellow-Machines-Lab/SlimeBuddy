@@ -1,10 +1,12 @@
 # State coverage and event mapping
 
-Updated 2026-11-15. The board's 22 states (the firmware's `kStateNames`,
-`firmware/src/render/types.cpp`) fall into nine visual scene families, below.
+Updated 2026-11-25. The board's 22 states (the firmware's `kStateNames`,
+`firmware/src/render/types.cpp`) fall into eight visual scene families, below.
 Each state's takes (three each; idle's six or seven and asleep's four,
 with their comedy, a successful finish's four and a gesture's ten) are
-slimegen's `scenes.mjs` recipes, baked into `slime.h`; the gel engine's
+slimegen's `scenes.mjs` recipes, one set for each state in every mood,
+baked into `slime.h`; the five activities the desk shows as another's
+have no takes of their own; the gel engine's
 router (`render/gel/router.cpp`) picks the state from the facts and
 moments it's given. The owner approved the representative set before the
 remaining matrix was implemented and exercised.
@@ -17,14 +19,13 @@ remaining matrix was implemented and exercised.
 | Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn, a doze or a sneeze (excited has zoomies, the low moods a long yawn) |
 | Listen | listening | Actual mic-on, not every input event |
 | Start | starting, wake_up, notice | starting perks up with no card, whatever its ctx (the Mac sends none); wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
-| Desk | working, analyzing, terminal, waiting; and planning, tool_use, searching, testing, which the Mac no longer sends | One computer, four activities, each a pose of the whole body: typing (working, tool_use, planning), looking (analyzing, searching), running (terminal, testing, delegating), waiting (CONTINUITY.md, The four activities) |
-| Helpers | delegating | No longer sent; shown as running. One coming back lands in the work stream |
+| Desk | working, analyzing, terminal, waiting; tool_use, which the desk shows as working; and planning, searching, testing and delegating, which the Mac no longer sends | One computer, four activities, each a pose of the whole body: typing (working, tool_use, planning), looking (analyzing, searching), running (terminal, testing, delegating), waiting (CONTINUITY.md, The four activities). A helper lands in the work stream |
 | Alert | needs_you | Permission/input pending, stable recognizable ding and card |
 | Result | reply_ready, task_complete | Reply vs whole-task success/failure; no card: a failed call hits it in the work stream, and a stop drops its words there |
 | Touch | poked, tap_spam, gesture | Ordinary local response vs repeated-tap response vs the board's own gesture (a stroke, a shake, BOOT's hand-off: a gag each, under a borrowed face, or the mood's own in a low or cross mood) |
 
-`test_gel` plays every one of the 924 mood/state cells, each of its
-takes, the two completion outcomes apart. Shared
+`test_gel` plays every mood in every row of takes, 24 faces × 19 rows,
+each of its takes, the two completion outcomes apart. Shared
 rest rows alias one quiet family; they still keep the mood. Active cells
 are compositions, not isolated exported assets.
 

@@ -400,7 +400,8 @@ class GelFace final : public Face {
   void start(const PastimeInfo& p, SceneState look, uint32_t t);
   // The engine's own idle gestures wait for the clip dealt or asked for.
   void holdGestures(const rig::Clip& clip);
-  // A reply asked for: its pack's clip, reply-<name>.
+  // A reply or a clip asked for: its pack's clip, reply-<name>, else
+  // <name> itself (a skit's clip, the fix's flop).
   void reply(const char* name);
   // The playing one stops, fading out unless it ran its length; the rest
   // before the next starts now.
@@ -423,6 +424,6 @@ class GelFace final : public Face {
   void restartCues();
   bool factsChanged(const FaceContext& context) const;
   // The recipe a design names: its mood's profile, its row and take.
-  static const slime::Recipe& recipe(Mood mood, SceneState state, int variant, Outcome outcome);
+  static slime::Recipe recipe(Mood mood, SceneState state, int variant, Outcome outcome);
 };
 }  // namespace render::gel

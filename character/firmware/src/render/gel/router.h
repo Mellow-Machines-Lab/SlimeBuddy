@@ -4,7 +4,7 @@
 #include "render/types.h"
 #include "render/gel/time.h"
 namespace render::gel {
-enum class Family { kRest, kIdle, kListen, kStart, kDesk, kHelpers, kAlert, kResult, kTouch };
+enum class Family { kRest, kIdle, kListen, kStart, kDesk, kAlert, kResult, kTouch };
 Family family(SceneState state);
 bool isDesk(SceneState state);
 // What the agents are doing at the desk, as the whole body shows it: typing

@@ -53,7 +53,7 @@ void operator delete(void* p) noexcept {
 }
 void operator delete(void* p, size_t) noexcept { operator delete(p); }
 static_assert(sizeof(Scenes::Saved) < sizeof(slime::Recipe),
-              "history stores a catalog reference, not a full recipe copy");
+              "history stores where a take is, not a full recipe copy");
 static void test_all_expressions_draw_inside_native_surface() {
   std::vector<uint16_t> px(502 * 410 + 2, 0xA55A);
   Surface s{502, 410, px.data() + 1};
@@ -923,11 +923,11 @@ static void test_the_knock_is_one_move_that_climbs() {
   TEST_ASSERT_NOT_NULL(knock);
   TEST_ASSERT_NOT_NULL(climb);
   TEST_ASSERT_TRUE(slime::kKnockClimbAtMs >= knock->ms);
-  const int row = int(SceneState::kNeedsYou);
-  const slime::Recipe& first = slime::kRecipes[0][row][0];
+  const int row = rowOf(SceneState::kNeedsYou);
+  const slime::Recipe first = take(0, row, 0);
   for (int p = 0; p < slime::kProfiles; ++p)
     for (int v = 0; v < 3; ++v) {
-      const slime::Recipe& r = slime::kRecipes[p][row][v];
+      const slime::Recipe r = take(p, row, v);
       TEST_ASSERT_EQUAL_INT(F(first.duration).integer(), F(r.duration).integer());
       TEST_ASSERT_EQUAL_INT(first.count, r.count);
       for (int i = 0; i < r.count; ++i) TEST_ASSERT_EQUAL_INT(F(first.contacts[i].at).integer(), F(r.contacts[i].at).integer());
@@ -983,6 +983,33 @@ static void test_the_flop_plays_by_its_id() {
   TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandLGlass]);
   TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandRGlass]);
   TEST_ASSERT_TRUE(c[rig::Channel::kPatch] > 0);
+}
+
+// A Moment's clip (the `do`'s `clip`, the fix skit's flop) plays by its own
+// name when the pack has no reply-<clip>: a fix's Moment, a face with the
+// low sign and `clip: flop`, brings the body and both palms to the glass.
+static void test_a_moments_clip_plays_by_its_own_name() {
+  linkkit::Rng rng;
+  app::Behaviour b(std::make_unique<GelFace>());
+  b.reset(0, rng);
+  app::Model m;
+  m.base = SceneState::kIdle, m.mood = Mood::kCalm;
+  b.onState(m, 0);
+  TEST_ASSERT_NULL(rig::kRig.clip("reply-flop"));
+  app::ReactionIn in;
+  in.expr = true, in.mood = Mood::kPleased, in.low = true;
+  std::snprintf(in.sign, sizeof(in.sign), "%s", "tests fixed");
+  std::snprintf(in.clip, sizeof(in.clip), "%s", "flop");
+  b.play(in, 1008);
+  int glass = 0, palms = 0;
+  for (uint32_t t = 1008; t < 4000; t += 16) {
+    b.advance(t + 16, rng);
+    const rig::Channels c = static_cast<GelFace&>(b.face()).channels();
+    glass = std::max(glass, int(c[rig::Channel::kGlass]));
+    palms = std::max(palms, int(std::min(c[rig::Channel::kHandLGlass], c[rig::Channel::kHandRGlass])));
+  }
+  TEST_ASSERT_TRUE(glass > 900);
+  TEST_ASSERT_TRUE(palms > 900);
 }
 
 // Turning round (the rig's `turn`, render/gel/geometry.h's Projector::face): each
@@ -1272,59 +1299,84 @@ static void test_a_finger_moves_the_dome_its_way() {
 }
 // The timing Behaviour plays by is the recipe table's. The outcome rows
 // time like their state's own row, which is what loopMs and voiceMs read.
+// One set of takes for each state: the table has no mood, and the
+// activities the desk shows as another's (the four the Mac no longer sends,
+// and tool_use, which it shows as working) play that one's row.
 static void test_timing_comes_from_the_recipe_table() {
   GelFace f;
-  constexpr int kStates = int(SceneState::kCount);
-  for (int p = 0; p < slime::kProfiles; ++p)
-    for (int v = 0; v < 3; ++v) {
-      const auto& done = slime::kRecipes[p][int(SceneState::kTaskComplete)][v];
-      const auto& start = slime::kRecipes[p][int(SceneState::kStarting)][v];
-      for (int row : {kStates, kStates + 1}) TEST_ASSERT_TRUE(slime::kRecipes[p][row][v].duration == done.duration);
-      // wake_up stretches in the start family's timing.
-      const auto& wake = slime::kRecipes[p][int(SceneState::kWakeUp)][v];
-      TEST_ASSERT_TRUE(wake.duration == start.duration);
-      TEST_ASSERT_EQUAL_UINT8(kStart, wake.contacts[0].kind);
-    }
-  TEST_ASSERT_EQUAL_INT(kStates + 2, slime::kRecipeStates);
-  TEST_ASSERT_EQUAL_INT(kStates, recipeState(SceneState::kTaskComplete, Outcome::kSuccess));
-  TEST_ASSERT_EQUAL_INT(kStates + 1, recipeState(SceneState::kTaskComplete, Outcome::kFailure));
-  TEST_ASSERT_EQUAL_INT(int(SceneState::kStarting), recipeState(SceneState::kStarting, Outcome::kNone));
+  constexpr int kRows = slime::kStateRows;
+  for (int v = 0; v < 3; ++v) {
+    const auto& done = slime::kRecipes[rowOf(SceneState::kTaskComplete)][v];
+    const auto& start = slime::kRecipes[rowOf(SceneState::kStarting)][v];
+    for (int row : {kRows, kRows + 1}) TEST_ASSERT_TRUE(slime::kRecipes[row][v].duration == done.duration);
+    // wake_up stretches in the start family's timing.
+    const auto& wake = slime::kRecipes[rowOf(SceneState::kWakeUp)][v];
+    TEST_ASSERT_TRUE(wake.duration == start.duration);
+    TEST_ASSERT_EQUAL_UINT8(kStart, wake.contacts[0].kind);
+  }
+  TEST_ASSERT_EQUAL_INT(int(SceneState::kCount) - 5, kRows);
+  TEST_ASSERT_EQUAL_INT(kRows + 2, slime::kRecipeStates);
+  TEST_ASSERT_EQUAL_INT(kRows, recipeState(SceneState::kTaskComplete, Outcome::kSuccess));
+  TEST_ASSERT_EQUAL_INT(kRows + 1, recipeState(SceneState::kTaskComplete, Outcome::kFailure));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kStarting), recipeState(SceneState::kStarting, Outcome::kNone));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kWorking), rowOf(SceneState::kPlanning));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kAnalyzing), rowOf(SceneState::kSearching));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kTerminal), rowOf(SceneState::kTesting));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kTerminal), rowOf(SceneState::kDelegating));
+  TEST_ASSERT_EQUAL_INT(rowOf(SceneState::kWorking), rowOf(SceneState::kToolUse));
   TEST_ASSERT_EQUAL_INT(int(Family::kStart), int(family(SceneState::kWakeUp)));
+  // A moody take in a mood (scenes.h's inMood): each contact at first +
+  // delay + (at - first) * spacing, its strength times the gain, the lean
+  // added. Sad's (160 ms late, 1.18 apart, a gain of .62) over the desk's
+  // second take, keys at 560, 760, 1680 and 1880 ms: 720, 956, 2041.6 and
+  // 2277.6. Waiting's and a touch's are the same in every mood.
+  const slime::Recipe& desk = slime::kRecipes[rowOf(SceneState::kWorking)][1];
+  const slime::Recipe sad = take(slime::kSad, rowOf(SceneState::kWorking), 1);
+  TEST_ASSERT_TRUE(desk.moody && sad.count == 4 && desk.count == 4);
+  TEST_ASSERT_TRUE(sad.lean == desk.lean + q(-.016));
+  const int keys[] = {720, 956, 2041, 2277};
+  for (int i = 0; i < 4; ++i) {
+    TEST_ASSERT_EQUAL_INT(keys[i], F(sad.contacts[i].at).integer());
+    TEST_ASSERT_TRUE(sad.contacts[i].strength == desk.contacts[i].strength * q(.62));
+  }
+  for (SceneState still : {SceneState::kWaiting, SceneState::kPoked, SceneState::kNeedsYou, SceneState::kListening})
+    TEST_ASSERT_FALSE(slime::kRecipes[rowOf(still)][0].moody);
   // Looks rest on one 3.2 s loop whatever the take.
   TEST_ASSERT_EQUAL_UINT32(3200, f.loopMs(Mood::kHappy, SceneState::kIdle, 2));
   // Two rows have a fourth take. A success's is its
   // hiccups: the first take's card at 680 ms, then three little contacts in a
   // 3.7 s take; a finish timed without its outcome finds it too.
   for (int row = 0; row < slime::kRecipeStates; ++row)
-    TEST_ASSERT_EQUAL_INT(row == int(SceneState::kGesture)                    ? 10
-                          : row == int(SceneState::kAsleep) || row == kStates ? 4
+    TEST_ASSERT_EQUAL_INT(row == rowOf(SceneState::kGesture)                  ? 10
+                          : row == rowOf(SceneState::kAsleep) || row == kRows ? 4
                                                                               : 3,
                           takes(row));
-  const auto& hiccups = take(slime::kHappy, kStates, 3);
+  // Happy's timing traits move nothing (no delay, a spacing of 1).
+  const slime::Recipe hiccups = take(slime::kHappy, kRows, 3);
   TEST_ASSERT_EQUAL_UINT8(4, hiccups.count);
   TEST_ASSERT_EQUAL_UINT8(kSuccess, hiccups.contacts[0].kind);
   const int hics[] = {1640, 2060, 2480};
   for (int i = 0; i < 3; ++i) {
     TEST_ASSERT_EQUAL_UINT8(kBody, hiccups.contacts[i + 1].kind);
     TEST_ASSERT_TRUE(hiccups.contacts[i + 1].at == T(hics[i]));
-    TEST_ASSERT_TRUE(hiccups.contacts[i + 1].strength == q(.45));
+    TEST_ASSERT_TRUE(hiccups.contacts[i + 1].strength == q(.45) * slime::kProfile[slime::kHappy].traits[2]);
   }
   TEST_ASSERT_EQUAL_UINT32(3700, f.loopMs(Mood::kHappy, SceneState::kTaskComplete, 3));
   TEST_ASSERT_EQUAL_UINT32(750, f.voiceMs(Mood::kHappy, SceneState::kTaskComplete, 3));
   // Asleep's is a snore: two breaths in 4.8 s; its other takes are still.
-  const auto& snore = take(slime::kCalm, int(SceneState::kAsleep), 3);
+  const slime::Recipe snore = take(slime::kCalm, rowOf(SceneState::kAsleep), 3);
   TEST_ASSERT_TRUE(snore.duration == T(4800));
   TEST_ASSERT_EQUAL_UINT8(2, snore.count);
   for (int i = 0; i < 2; ++i) TEST_ASSERT_EQUAL_UINT8(kBreath, snore.contacts[i].kind);
   TEST_ASSERT_TRUE(snore.contacts[0].at == T(600) && snore.contacts[1].at == T(2600));
-  for (int v = 0; v < 3; ++v) TEST_ASSERT_EQUAL_UINT8(0, take(slime::kCalm, int(SceneState::kAsleep), v).count);
+  for (int v = 0; v < 3; ++v) TEST_ASSERT_EQUAL_UINT8(0, take(slime::kCalm, rowOf(SceneState::kAsleep), v).count);
   // The gift: proud's lifted success alone shows a bug beside its card.
   int gifts = 0;
   for (int p = 0; p < slime::kProfiles; ++p)
     for (int row = 0; row < slime::kRecipeStates; ++row)
       for (int v = 0; v < takes(row); ++v) gifts += take(p, row, v).gift;
   TEST_ASSERT_EQUAL_INT(1, gifts);
-  TEST_ASSERT_TRUE(take(slime::kProud, kStates, 1).gift);
+  TEST_ASSERT_TRUE(take(slime::kProud, kRows, 1).gift);
   // A finish's result reaches the strip (screens.cpp's tick or cross).
   TEST_ASSERT_TRUE(f.outcome(Mood::kSad, SceneState::kTaskComplete, 1, Outcome::kFailure) == Outcome::kFailure);
 }
@@ -1478,10 +1530,11 @@ static void test_each_gesture_plays_its_own_gag() {
   f.reset(0, rng);
   TEST_ASSERT_EQUAL_INT(int(Gesture::kCount), f.variants(Mood::kHappy, SceneState::kGesture));
   TEST_ASSERT_EQUAL_INT(3, f.variants(Mood::kHappy, SceneState::kPoked));
-  const int row = int(SceneState::kGesture);
+  const int row = rowOf(SceneState::kGesture);
   for (int g = 0; g < int(Gesture::kCount); ++g) {
-    const auto& r = take(slime::kGrumpy, row, g);
-    TEST_ASSERT_TRUE(&r == &take(slime::kCalm, row, g));  // the same in every mood
+    const slime::Recipe r = take(slime::kGrumpy, row, g);
+    TEST_ASSERT_FALSE(r.moody);  // the same in every mood
+    TEST_ASSERT_TRUE(r.duration == take(slime::kCalm, row, g).duration);
     TEST_ASSERT_TRUE(r.gag >= 0 && r.count > 0);
     char type[32];
     std::snprintf(type, sizeof type, "gesture:%s", gestureName(Gesture(g)));
@@ -1643,7 +1696,7 @@ static void test_a_notice_plays_its_rig_clip() {
   TEST_ASSERT_EQUAL_INT(3, f.variants(Mood::kHappy, SceneState::kNotice));
   TEST_ASSERT_EQUAL_INT(3, slime::kNoticeCount);
   TEST_ASSERT_TRUE(family(SceneState::kNotice) == Family::kStart);
-  const int row = int(SceneState::kNotice);
+  const int row = rowOf(SceneState::kNotice);
   for (int v = 0; v < 3; ++v) {
     const auto& r = take(slime::kGrumpy, row, v);
     TEST_ASSERT_TRUE(r.gag < 0 && r.count == 0);
@@ -3376,6 +3429,7 @@ int main() {
   RUN_TEST(test_one_pair_of_hands);
   RUN_TEST(test_the_knock_is_one_move_that_climbs);
   RUN_TEST(test_the_flop_plays_by_its_id);
+  RUN_TEST(test_a_moments_clip_plays_by_its_own_name);
   RUN_TEST(test_the_turn_narrows_each_eye_on_its_own);
   RUN_TEST(test_the_meme_faces_and_their_moves);
   RUN_TEST(test_pick_is_pure_and_started_commits_it);

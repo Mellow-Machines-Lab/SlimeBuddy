@@ -284,7 +284,7 @@ void test_the_seven_idle_moves() {
     const rig::Clip* clip = rig::kRig.clip(id);
     TEST_ASSERT_NOT_NULL_MESSAGE(clip, id);
     TEST_ASSERT_TRUE_MESSAGE(clip->additive && !clip->loop && clip->ms >= 1000 && clip->ms <= 4000, id);
-    for (const rig::Track& t : clip->tracks) TEST_ASSERT_EQUAL_INT_MESSAGE(0, rig::sample(t, clip->ms), id);
+    for (const rig::Track& t : clip->tracks) TEST_ASSERT_EQUAL_INT_MESSAGE(0, clip->value(t, clip->ms), id);
   }
   const struct {
     int profile;

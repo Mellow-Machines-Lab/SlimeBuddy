@@ -1,8 +1,20 @@
-// The slime's scenes as authored: for each state, mood and take, the recipe
+// The slime's scenes as authored: for each state and take, the recipe
 // slimegen bakes into slime.h (its length, lean and contacts, timed in ms),
-// and the gestures', notices' and pastimes' gags. The board plays them: it
-// jitters a desk's contacts, deals the takes and owns every spring.
+// and the gestures', notices' and pastimes' gags. One set of takes for each
+// state: the mood changes only the face and, on a recipe that's `moody`,
+// the timing traits (profileTraits), which the board applies as it deals a
+// take (render/gel/scenes.h, inMood). The board plays them: it jitters a
+// desk's contacts, deals the takes and owns every spring.
+// The board's states, as the engine names them (render/types.cpp).
 export const states=['idle','working','needs_you','task_complete','asleep','no_app','listening','starting','planning','terminal','tool_use','searching','analyzing','testing','delegating','waiting','reply_ready','poked','tap_spam','wake_up','gesture','notice'];
+// The activities with no row of their own, each with the row of the desk
+// the board shows for it (render/gel/router.cpp's deskStateOf): the four
+// the Mac no longer sends (its Act has four: tool_use, analyzing, terminal
+// and waiting), and tool_use, which it sends for typing and the desk shows
+// as working.
+export const standsIn=Object.freeze({planning:'working',tool_use:'working',searching:'analyzing',testing:'terminal',delegating:'terminal'});
+// The recipe table's state rows: the states with takes of their own.
+export const rows=states.filter(state=>!standsIn[state]);
 // A take's length: the first take's, the second's, the third's.
 const cycleMs=[3200,3700,4200];
 
@@ -16,44 +28,28 @@ export const sceneMoodTraits=Object.freeze({
 // An expression's intent: how late, how spread, how strong and which way
 // its scenes' contacts lean. The reviewed moods' are the table above; every
 // other expression's are its own `traits` (expressions.json), numbers once
-// derived from the mood gestures it had before the motion layer.
+// derived from the mood gestures it had before the motion layer. On a moody
+// recipe the board moves each contact to first + delayMs + (at - first) *
+// spacing, its first contact's time, multiplies its strength by gain, and
+// adds lean to the recipe's.
 export function profileTraits(profile) {
   return sceneMoodTraits[profile.mood]||profile.traits;
 }
 
-// The desk: rhythm, rather than tint, distinguishes each take.
+// The desk: rhythm, rather than tint, distinguishes each take. The mood's
+// traits give each mood its own timing over it.
 const rhythms={
   working:[[580,780,1040],[560,760,1680,1880],[1100,2220]],
   terminal:[[600,780,960],[780,1810,2090],[580,740,900,1060,1960,2120]],
-  planning:[[940],[620,860],[760,1560]],
-  tool_use:[[520],[780,1060],[620,1460]],
-  searching:[[620],[540,760],[660,1640]],
-  analyzing:[[1020],[720,1680],[1520]],
-  testing:[[560],[480,720],[740,1840]],
-  waiting:[[],[],[]]
+  analyzing:[[1020],[720,1680],[1520]]
 };
-function deskRecipe(state,variant,profile) {
-  const mood=profile.mood;
-  let times=[...rhythms[state][variant]],intent=state==='terminal'?'type and inspect':'type and think';
-  let gain=1,lean=.018;
-  if(mood==='grumpy'&&state==='terminal'){
-    times=[[640,800,960],[800,960,1120,2100],[660,820,980,1140,2120]][variant];
-    intent='firm compact cluster, then inspect';gain=1.12;lean=.032;
-  }else if(mood==='sad'){
-    times=times.filter((_,index)=>index%2===0);intent='small effort and longer pause';gain=.62;lean=-.016;
-  }else if(mood==='happy'){intent='buoyant working rhythm';gain=1.05;}
-  else if(mood!=='grumpy'||state!=='working'){
-    const traits=profileTraits(profile),first=times[0]||0;
-    times=times.map(at=>first+traits.delayMs+(at-first)*traits.spacing);
-    gain=traits.gain;lean+=traits.lean;
-    intent='its own timing over '+state;
-  }
-  if(state==='waiting'){
-    times=[];lean=[.006,.014,-.010][variant];
-    intent=['still attentive watch','small side look while waiting','settle at the same desk'][variant];
-  }
-  const contacts=times.map((at,index)=>({at,kind:'key_contact',side:index%2?-1:1,strength:gain}));
-  return {duration:cycleMs[variant],contacts,intent,lean,focusCycles:[1,2,3][variant]};
+// Waiting has no keys, and leans the same in every mood.
+function deskRecipe(state,variant) {
+  const focusCycles=[1,2,3][variant];
+  if(state==='waiting')return {duration:cycleMs[variant],contacts:[],focusCycles,lean:[.006,.014,-.010][variant],
+    intent:['still attentive watch','small side look while waiting','settle at the same desk'][variant]};
+  const contacts=rhythms[state][variant].map((at,index)=>({at,kind:'key_contact',side:index%2?-1:1,strength:1}));
+  return {duration:cycleMs[variant],contacts,intent:state==='terminal'?'type and inspect':'type and think',lean:.018,focusCycles,moody:true};
 }
 
 // Needs you: one move for every mood and take, the pack's rig clip `knock`
@@ -77,49 +73,38 @@ function alertRecipe(design) {
 // A successful finish's fourth take: the card as the first take shows it,
 // then three small hiccups, each a little body contact.
 const hiccups=Object.freeze({revealMs:680,atMs:Object.freeze([1640,2060,2480]),strength:.45});
-function resultRecipe(outcome,variant,profile) {
-  const traits=profileTraits(profile);
-  if(variant===3&&outcome==='success')return {duration:cycleMs[1],intent:'present completed work, then hiccup',lean:traits.lean,
-    contacts:[{at:hiccups.revealMs+traits.delayMs,kind:'success_reveal',side:0,strength:traits.gain},
-      ...hiccups.atMs.map(at=>({at:at+traits.delayMs,kind:'body_contact',side:0,strength:hiccups.strength}))]};
-  const at=[680,960,1240][variant]+traits.delayMs;
+function resultRecipe(outcome,variant) {
+  if(variant===3&&outcome==='success')return {duration:cycleMs[1],intent:'present completed work, then hiccup',lean:0,moody:true,
+    contacts:[{at:hiccups.revealMs,kind:'success_reveal',side:0,strength:1},
+      ...hiccups.atMs.map(at=>({at,kind:'body_contact',side:0,strength:hiccups.strength}))]};
+  const at=[680,960,1240][variant];
   const kind=outcome==='success'?'success_reveal':outcome==='failure'?'failure_reveal':'result_reveal';
-  // Proud's lifted success shows off a gift beside its card: a small bug.
-  const gift=outcome==='success'&&variant===1&&profile.mood==='proud';
+  // The lifted success may show off a gift beside its card, a small bug:
+  // only proud does (the board's inMood).
+  const gift=outcome==='success'&&variant===1;
   return {duration:cycleMs[variant],intent:outcome==='success'?'present completed work':outcome==='failure'?'recover and show failed result':'show neutral finish',
-    lean:traits.lean,contacts:[{at,kind,side:0,strength:traits.gain}],...(gift?{gift:true}:{})};
+    lean:0,moody:true,contacts:[{at,kind,side:0,strength:1}],...(gift?{gift:true}:{})};
 }
-function statusResultRecipe(state,variant,profile) {
-  const result=resultRecipe(null,variant,profile);
+function statusResultRecipe(state,variant) {
+  const result=resultRecipe(null,variant);
   return {...result,intent:'show a neutral reply',
     contacts:result.contacts.map(contact=>({...contact,kind:state+'_reveal'}))};
 }
 
-function startRecipe(variant,profile) {
-  const traits=profileTraits(profile),at=[520,820,1080][variant]+traits.delayMs;
+function startRecipe(variant) {
   return {duration:cycleMs[variant],intent:['perk and present start','nod into the new work','stretch and resume'][variant],
-    lean:traits.lean,contacts:[{at,kind:'start_reveal',side:0,strength:traits.gain}]};
+    lean:0,moody:true,contacts:[{at:[520,820,1080][variant],kind:'start_reveal',side:0,strength:1}]};
 }
 // wake_up: the person back at the Mac after a long break. The start family's
 // body without its card: a stretch up and forward (a presentation beat), then
 // a soft settle, and the mood's own recovery.
-function wakeRecipe(variant,profile) {
-  const traits=profileTraits(profile),stretch={kind:'start_reveal',side:0,strength:traits.gain};
+function wakeRecipe(variant) {
+  const stretch={kind:'start_reveal',side:0,strength:1};
   const settle=side=>({kind:'body_contact',side,strength:.35});
   const beats=[[[560,stretch],[1180,settle(0)]],[[760,stretch],[1240,settle(1)],[1420,settle(-1)]],
-    [[900,stretch],[1500,{...stretch,strength:traits.gain*.7}]]][variant];
+    [[900,stretch],[1500,{...stretch,strength:.7}]]][variant];
   return {duration:cycleMs[variant],intent:['yawn and stretch up','stretch, then shake awake','slow double stretch'][variant],
-    lean:traits.lean,contacts:beats.map(([at,beat])=>({at:at+traits.delayMs,...beat}))};
-}
-
-function helpersRecipe(state,variant,profile) {
-  const traits=profileTraits(profile),returning=false;
-  const times=returning?[[680],[960],[1240]][variant]:[[660,1040],[540,880,1220],[820,1640]][variant];
-  return {duration:cycleMs[variant],
-    intent:returning?['welcome a neutral report','settle beside a returning helper','receive and inspect a report'][variant]:['send two small helpers','dispatch three helpers','nod and relay to helpers'][variant],
-    lean:traits.lean,helperCount:returning?1:[2,3,2][variant],helperDirection:variant===2?-1:1,
-    contacts:times.map((at,index)=>({at:at+traits.delayMs,kind:returning?'helper_reveal':'body_contact',
-      side:index%2?-1:1,strength:traits.gain}))};
+    lean:0,moody:true,contacts:beats.map(([at,beat])=>({at,...beat}))};
 }
 
 function touchRecipe(state,variant) {
@@ -197,19 +182,19 @@ export function pastimeGags(pastimes) {
 export function takesOf(state,outcome=null) {
   return state==='gesture'?10:state==='asleep'||(state==='task_complete'&&outcome==='success')?4:3;
 }
-// The recipe for a profile's state (its outcome or context) and take, and
-// whether the board jitters its contacts (a desk's).
-export function recipe(p,{state,outcome},v,design){
+// The recipe for a state (its outcome or context) and take, the same in
+// every mood, and whether the board jitters its contacts (a desk's).
+export function recipe({state,outcome},v,design){
  let r,jitter=false;
+ if(standsIn[state])throw Error(state+' has no row of its own');
  if(state==='gesture')r=gestureRecipe(design.gestures,v);
  else if(state==='notice')r=noticeRecipe(design.noticeClip);
- else if(['working','planning','terminal','tool_use','searching','analyzing','testing','waiting'].includes(state)){r=deskRecipe(state,v,p);jitter=true;}
+ else if(['working','terminal','analyzing','waiting'].includes(state)){r=deskRecipe(state,v);jitter=true;}
  else if(state==='needs_you')r=alertRecipe(design);
- else if(state==='task_complete')r=resultRecipe(outcome||null,v,p);
- else if(state==='reply_ready')r=statusResultRecipe(state,v,p);
- else if(state==='starting')r=startRecipe(v,p);
- else if(state==='wake_up')r=wakeRecipe(v,p);
- else if(state==='delegating')r=helpersRecipe(state,v,p);
+ else if(state==='task_complete')r=resultRecipe(outcome||null,v);
+ else if(state==='reply_ready')r=statusResultRecipe(state,v);
+ else if(state==='starting')r=startRecipe(v);
+ else if(state==='wake_up')r=wakeRecipe(v);
  else if(['poked','tap_spam'].includes(state))r=touchRecipe(state,v);
  else if(state==='listening')r=listenRecipe(v);
  else if(state==='asleep')r=restRecipe(v);else if(state==='no_app')r=restRecipe();else r=idleRecipe();

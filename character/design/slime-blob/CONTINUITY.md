@@ -257,8 +257,8 @@ masks current activity and suppresses contacts; presentation time
 continues, so elapsed moments are not replayed when the link returns.
 
 One desk persists across work modes. Three shuffle-bag recipes per
-mood/state/factual outcome or context differ in rhythm, with no adjacent
-repeats; asleep and a successful finish have a fourth (Comedy, below).
+state and factual outcome differ in rhythm, with no adjacent repeats
+(One set of takes for each state, below); asleep and a successful finish have a fourth (Comedy, below).
 Routine work changes variation after recovery; alert/result requests choose
 once at entry. Mood retargeting does not restart an existing recipe or
 alert. The mood's idle move (Idle moves, below) plays only in idle without a
@@ -339,12 +339,11 @@ slimegen's `scenes.mjs`:
 | --- | --- | --- | --- |
 | Working | 580, 780, 1040 | 560, 760, 1680, 1880 | 1100, 2220 |
 | Terminal | 600, 780, 960 | 780, 1810, 2090 | 580, 740, 900, 1060, 1960, 2120 |
-| Grumpy terminal | 640, 800, 960 | 800, 960, 1120, 2100 | 660, 820, 980, 1140, 2120 |
+| Analyzing | 1020 | 720, 1680 | 1520 |
 
-Sad work keeps every other contact of its ordinary rhythm, starting with
-the first, for longer pauses. Keyboard strength/lean are 1.05/0.018 for
-happy, 1.12/0.032 for grumpy terminal and 0.62/−0.016 for sad; other work
-uses 1/0.018. Contact side alternates. The body
+Each mood times these by its traits (below): its delay, its spacing,
+its strength and its lean added to the desk's 0.018. Contact side
+alternates. The body
 uses the contact envelope and strength for side lean 0.024, squash −0.052
 and forward 0.045. A successful reveal targets squash/forward 0.036/0.025;
 a failed reveal −0.048/−0.035, before the activity bounds.
@@ -375,9 +374,10 @@ safe envelope or produce competing repeated impacts.
 
 ## Full activity scene matrix
 
-The engine implements all 22 factual states in the nine scene families of
-[STATES.md](STATES.md): 24 faces × 22 states, 528 cells (the Mac's 18
-and the six meme faces), including 48 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
+The engine implements all 22 factual states in the eight scene families of
+[STATES.md](STATES.md), 17 of them with takes of their own: 24 faces × 22
+states, 528 cells (the Mac's 18 and the six meme faces) from one set of
+takes for each state, including 48 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
 all its takes: three, a successful finish's four, a gesture's ten (each
 asked for, as the board does), and idle's (its mood's move, and excited's
 zoomies); quiet aliases keep the mood and use the
@@ -385,7 +385,7 @@ shared sleeping face without acting, and without contacts but a snore's
 breaths. The two face alternates are outside this canonical matrix.
 
 The scene selects a shuffle bag keyed by mood, state and factual
-outcome/context. Desk modes, delegating and listening select again only
+outcome/context. Desk modes and listening select again only
 after recovery. A Moment selects once per request and keeps that recipe
 across explicit loops; an attention entry selects once and then holds.
 Idle plays its lasting mood's one move, and an expression's own bit, with
@@ -410,31 +410,40 @@ cue count (a denominator of one for none):
 | Contact strength | `clamp(0.6 + E × 0.32, 0.68, 1.12)` |
 | Lean | `clamp(L × 0.045, −0.022, 0.022)` |
 
-The four reviewed moods keep the explicit table above. Their
-working/terminal rhythms stay as they are. For other desk moods, the first
-contact receives the delay and later offsets from that first contact
-receive the spacing multiplier; lean adds the trait to the ordinary desk
-target. Crying+working has an authored exception: contact times [760,
-1780], [640, 2120] or [1020, 2300] ms, strength 0.55 and lean −0.024. All
-keyboard contacts then receive the bounded jitter.
+The reviewed moods (happy, grumpy, sad) keep the explicit table above.
+
+### One set of takes for each state
+
+`slime::kRecipes` has one set of takes for each state, the same in every
+mood: 19 rows (17 states' and a finish's success and failure) of three,
+and two fourths, 59 recipes. The mood changes only the face and, on a
+moody recipe (a desk's, a result's, a reply's, a start's and a wake's),
+the timing, as the board deals the take (`scenes.h`'s `inMood`): each
+contact moves to first + delay + (at − first) × spacing, from its first
+contact's time; its strength takes the gain; the recipe's lean adds the
+mood's. Waiting, listening, the rests, idle, needs you, a touch, a
+gesture and notice are the same in every mood. Proud's lifted success
+alone shows its gift. The desk's contacts then take the bounded jitter.
+
+Before, slimegen baked each of the 25 profiles' 24 rows apart, 1,850
+recipes, and three moods' desks were exceptions: happy kept the plain
+lean, grumpy's terminal had a compact cluster of its own and grumpy's
+working no traits, and sad kept every other contact with a lean of
+−0.016. They now take their traits as every mood does: happy leans 0.014
+more at the desk, grumpy types a little earlier and closer together on
+every desk, and sad types every key, 160 ms late and 1.18 apart. A
+success's hiccups and a wake's settles take the spacing and the gain too.
+
+The five activities the desk shows as another's have no row of their own
+(`scenes.mjs`'s `standsIn`): tool_use and planning play working's,
+searching analyzing's, testing and delegating terminal's. The Mac sends
+tool_use for typing; it no longer sends the other four.
 
 Until motion V2 a mood's gesture also echoed as a small recovery pose at
 the desk; it went with the gestures, and the desk's recovery is now the
 scene's lean easing back alone.
 
-The additional desk rhythms before mood shaping and jitter are:
-
-| State | Variant 0 contacts (ms) | Variant 1 contacts (ms) | Variant 2 contacts (ms) |
-| --- | --- | --- | --- |
-| Planning | 940 | 620, 860 | 760, 1560 |
-| Tool use | 520 | 780, 1060 | 620, 1460 |
-| Searching | 620 | 540, 760 | 660, 1640 |
-| Analyzing | 1020 | 720, 1680 | 1520 |
-| Testing | 560 | 480, 720 | 740, 1840 |
-| Waiting | None | None | None |
-
-Sad desk modes keep every other contact of the usual rhythm, beginning
-with the first. Waiting overrides contacts to an empty list and uses lean targets
+Waiting has no contacts and uses lean targets
 [0.006, 0.014, −0.010]. Its focus cycles are [1, 2, 3] per recipe. Listening
 also has no contacts, uses lean [0.022, −0.012, 0.008] and pulse cycles
 [2, 1, 3]. For both, lean is modulated by
@@ -451,14 +460,12 @@ timings above:
 | --- | --- | --- |
 | Starting | Reveal at [520, 820, 1080] ms by variant | It perks up, with no card, whatever its context; the Mac sends none |
 | Wake up | Stretch [560], [760], [900, 1500] ms, then settle [1180], [1240, 1420], none | You back after a long break: the start family's body, with no card. The stretch is a start reveal (the second of variant 2 at 0.7 strength); a settle is a body contact of strength 0.35, sides 0, then ±1 |
-| Delegating | [660, 1040], [540, 880, 1220], [820, 1640] ms | It sends [2, 3, 2] helpers off, a contact each, on its own: none is drawn beside it |
 | Reply ready | Reveal at [680, 960, 1240] ms | A neutral reveal, with no card and no trophy |
 | Poked | [160], [200, 480], [160, 520] ms | Bounded local dent/wobble/bounce |
 | A run of pokes | [160, 400], [160, 340, 520], [220, 620] ms | Bounded wobble/squash/dodge complaint |
 
-Start, wake-up, helper and reply contacts receive the mood/profile
-delay; their reveals take its strength. Helper contact sides alternate,
-and variant 2 reverses them. Touch contacts have strength 0.6 for poked
+Start, wake-up and reply contacts take the mood's traits as the desk's
+do; a single reveal only moves by the delay. Touch contacts have strength 0.6 for poked
 and 0.9 for a run, alternating sides and lean targets [0.008, −0.018,
 0.012]; they have no timing jitter or mood-derived delay. Their mood face
 stays the current expression, with the bounded recovery profile where it
@@ -507,8 +514,7 @@ and leaves its shape as it is.
 **A scene's fourth take is a table of its own.** Every row of
 `slime::kRecipes` keeps its three takes; asleep and a successful finish
 have a fourth, in `slime::kFourthTakes`, and `slime::kRecipeTakes` says how
-many each row has. Widening every row to four would have carried 296 KB of
-empty recipes on the AMOLED; the fourths are about 20 KB. A host may ask
+many each row has, so the other rows carry no empty fourth. A host may ask
 for a take from 0 to 3; one its state hasn't is dealt from the bag. A
 finish timed without its outcome finds a success's fourth (`GelFace::recipe`).
 A finish's row goes on past its fourth with the finishes a size
@@ -769,7 +775,29 @@ is the same move, picked by the Mac's rule with no brain (`MomentRule.bye`,
 night at a night's lock, after which Boop's Doing goes to asleep at once;
 and for a routine one `reply-wave`, a sway at about a third of `bye`'s
 lean with the eyes barely softening, over in a second, so it reads as a
-nod to you going by.
+nod to you going by. Both are one clip, `wave`: `reply-bye` plays it as
+it is (1.6 s), `reply-wave` at a size of 350 over 1 s, so its sway is
+quicker as well as smaller (CHARACTER.md §15, a clip at a size and a
+pace).
+
+### One move at its sizes
+
+The spec's table of moves that exist several times asks for each to be
+one move with sizes. A clip may now be another's at a size and a pace
+(`of`, `size`, `ms`). Of its rows, only the wave is merged: its copies
+are one rig clip each, a size and a pace apart. The rest are left, each
+for a reason:
+
+| Row | Copies | Why it stays apart |
+| --- | --- | --- |
+| Hop | `hop`, `reply-hello`, `notice`, the finish's hop, a pass's hop | `hop` is three hops; `notice` snaps its eyes wide and up as it perks; `reply-hello` is a hop then a sway (a size can't make a sequence); the finish's hop is drawn by code (`finishPose`) and a pass's is a spring jolt (`GelFace::answerAct`), not clips |
+| Flinch | `reply-ouch`, a failed call's, a failed build's | One clip; the other two are spring jolts (`GelFace::land`, `answerAct`) |
+| Droop | `wish-gone`, sad at the desk, a failed result | One clip; the others are recipe contacts and the mood's traits |
+| Melt | `melt`, `work-waiting`, the stroke | `work-waiting` loops with its chin on the desk and sways; `melt` drips and pulls itself up; the stroke is a gesture's bit |
+| Yawn | `to-sleep`, the yawns | One clip; the yawns are acting bits |
+| Shrug | `reply-dunno`, the missed high five | The miss is a sequence (look at the palm, lower it, shrug), timed to the engine's `kShrugMs` |
+| Lean in | `reply-comfort`, `speak-along`, the hand-off, `work-looking` | `speak-along` and `work-looking` loop (a nod; a slide to the monitor), `reply-comfort` plays once; the hand-off is a bit |
+| Wave | `reply-wave`, `reply-bye`, `reply-hello` | Merged but for `reply-hello` (a hop then a sway). No hand: a size scales every track, a hand's place and shape too, so a small wave's hand would sit inside the body |
 
 While something needs you the face doesn't play, so neither does its
 reply, but a reply to what you said, which shows over it.
@@ -851,8 +879,9 @@ how long (`currentMove`): the invite's by its phase and time, the knock's
 by the needs-you scene's own age, which an interrupted needs-you keeps.
 The face sounds the climb's cues as it crosses them; the knock's are its
 scene's contacts, and an invite's payoff has its own sound. The flop
-(`flop`), for a check passing after failing, plays by `dbg.clip`: the
-Mac's Moment for it names no move yet.
+(`flop`), for a check passing after failing, plays as the fix's Moment
+starts: the Mac names it in the `do`'s `clip`, and a Moment's clip with no
+`reply-<clip>` plays by its own name (`GelFace::reply`).
 
 **Its cost.** A hand is a few disks or bars, each a convex fill: about ten
 for a palm, a few hundred pixels for one on the keys and a few thousand
@@ -972,9 +1001,9 @@ typing, searching as looking, testing and delegating as running).
 - **Keys only while it types.** A recipe's key contacts and the paws'
   taps play in typing alone, and the keys make no sound: a click at every
   word was too much, and the paws show the typing (`gel/engine.cpp`'s
-  recipes, `key_contact` none) (`Scenes::advance`); the rows of
-  `slime.h` for the states never shown (planning, tool_use, searching,
-  testing, delegating) are still generated and never played.
+  recipes, `key_contact` none) (`Scenes::advance`). The states never
+  shown (planning, tool_use, searching, testing, delegating) have no
+  recipe row of their own: each plays its activity's.
 - **Pastimes.** At work only the stretch is dealt, in any pose.
 - **The Mac holds them** so the body doesn't rock: running and looking
   show at least 3 s (`Core.poseHoldMs`), typing and waiting 1.5 s.

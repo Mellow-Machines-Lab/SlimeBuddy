@@ -14,7 +14,7 @@ slime::Recipe realize(const slime::Recipe& source, Random& random) {
 }
 slime::Recipe restore(const Scenes::Saved& saved) {
   Random random(saved.seed);
-  return realize(*saved.recipe, random);
+  return realize(take(saved.profile, saved.row, saved.variant), random);
 }
 void prop(Spring& s, F dt, F target, int frequency, int damping) {
   while (dt > 0) {
@@ -141,10 +141,10 @@ void Scenes::pickRecipe(T time, Random& random) {
       ((!route.quiet && route.state != SceneState::kIdle) || (route.state == SceneState::kAsleep && iteration));
   variant = ask ? asked : deal ? bags[mood][row].next(random, count) : 0;
   profileExpression = expression;
-  const auto* base = &take(expression, row, variant);
+  const slime::Recipe base = take(expression, row, variant);
   uint32_t seed = random.state;
-  recipe = realize(*base, random);
-  Saved saved{key, variant, profileExpression, base, seed};
+  recipe = realize(base, random);
+  Saved saved{key, variant, profileExpression, row, seed};
   if (route.state == SceneState::kNeedsYou) alert = saved;
   if (route.reaction && shows(key) == Shows::kReaction) held = saved;
   phase = "enter";

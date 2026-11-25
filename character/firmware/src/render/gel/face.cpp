@@ -26,7 +26,7 @@ int profileFor(Mood mood) {
   return p < 0 ? slime::kCalm : p;
 }
 
-constexpr int kTakes = int(sizeof(slime::kRecipes[0][0]) / sizeof(slime::kRecipes[0][0][0]));
+constexpr int kTakes = int(sizeof(slime::kRecipes[0]) / sizeof(slime::kRecipes[0][0]));
 
 // A clip of the staged pack's, which it must have: its lookup at start.
 const rig::Clip& clipNamed(const char* name) {
@@ -57,7 +57,7 @@ const GelFace::Clips GelFace::clips_ = {
     &clipNamed("stretch"),
     &clipNamed("look-around")};
 
-const slime::Recipe& GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome) {
+slime::Recipe GelFace::recipe(Mood mood, SceneState state, int variant, Outcome outcome) {
   if (state == SceneState::kTaskComplete && outcome != Outcome::kFailure && isFinishVariant(variant))
     return finishRecipe(finishOf(variant));
   int row = recipeState(state, outcome);
@@ -392,7 +392,9 @@ void GelFace::playPastime(Pastime p, uint32_t t) {
 void GelFace::reply(const char* name) {
   char clip[24];
   std::snprintf(clip, sizeof(clip), "reply-%s", name);
-  if (const rig::Clip* c = rig::kRig.clip(clip)) play(*c);
+  const rig::Clip* c = rig::kRig.clip(clip);
+  if (!c) c = rig::kRig.clip(name);
+  if (c) play(*c);
 }
 
 bool GelFace::playPastime(const char* name, uint32_t t) {
@@ -1064,7 +1066,7 @@ uint32_t GelFace::loopMs(Mood mood, SceneState state, int variant) const {
 // A line over a reaction starts at its first result contact (the card or
 // the alert), less the speaker's lead.
 uint32_t GelFace::voiceMs(Mood mood, SceneState state, int variant) const {
-  const auto& r = recipe(mood, state, variant, Outcome::kNone);
+  const slime::Recipe r = recipe(mood, state, variant, Outcome::kNone);
   for (int i = 0; i < r.count; ++i)
     if (reveals(r.contacts[i].kind)) return uint32_t(F(r.contacts[i].at).integer() + 70);
   return 0;

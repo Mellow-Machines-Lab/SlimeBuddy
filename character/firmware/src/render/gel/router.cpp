@@ -42,7 +42,6 @@ Family family(SceneState s) {
     case SceneState::kStarting:
     case SceneState::kWakeUp:
     case SceneState::kNotice: return Family::kStart;
-    case SceneState::kDelegating: return Family::kHelpers;
     case SceneState::kNeedsYou: return Family::kAlert;
     case SceneState::kTaskComplete:
     case SceneState::kReplyReady: return Family::kResult;

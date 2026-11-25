@@ -18,7 +18,13 @@ using namespace render::gel;
 
 namespace {
 
-constexpr int kStates = int(SceneState::kCount);
+// The state a recipe row plays: the first state with that row, or a
+// finish's for the two outcomes' rows.
+SceneState stateOfRow(int row) {
+  for (int s = 0; s < int(SceneState::kCount); ++s)
+    if (rowOf(SceneState(s)) == row) return SceneState(s);
+  return SceneState::kTaskComplete;
+}
 
 // The states whose cues may only be comedy's: the engine's quiet ones.
 bool quietSounds(SceneState s) {
@@ -145,7 +151,8 @@ std::vector<F> play(int mood, int row, SceneState state, Outcome outcome, int ta
   // Every reveal of the take shows, once; a factual one is exactly one.
   TEST_ASSERT_EQUAL_INT(recipeReveals, r.reveals);
   if (revealsOnce(state)) TEST_ASSERT_EQUAL_INT(1, r.reveals);
-  TEST_ASSERT_TRUE(r.moved > q(.0001));
+  // Notice's body is its rig clip, which the face plays, not the engine.
+  if (state != SceneState::kNotice) TEST_ASSERT_TRUE(r.moved > q(.0001));
   showsItsProp(r, state, outcome);
   // Only a successful finish shows the trophy, and only proud's lifted one
   // a gift beside it.
@@ -179,7 +186,7 @@ std::set<int> look(Run& r, int row, int ms) {
   const int count = takes(row);
   for (int at = 0; at < ms && int(dealt.size()) < count; at += 16) {
     r.step();
-    TEST_ASSERT_EQUAL_INT(row, int(r.e->scenes.route.state));
+    TEST_ASSERT_EQUAL_INT(row, rowOf(r.e->scenes.route.state));
     TEST_ASSERT_TRUE(r.e->scenes.variant < count);
     dealt.insert(r.e->scenes.variant);
   }
@@ -203,27 +210,27 @@ void test_every_cell_plays_truthfully() {
       TEST_ASSERT_TRUE(slime::kNoticeFaces[a] != slime::kNoticeFaces[b]);
   for (int p = 0; p < slime::kCanonical; ++p) {
     for (int row = 0; row < slime::kRecipeStates; ++row) {
-      if (row == int(SceneState::kIdle) || row == int(SceneState::kNoApp) || row == int(SceneState::kNotice) ||
-          row == int(SceneState::kNeedsYou))
+      if (row == rowOf(SceneState::kIdle) || row == rowOf(SceneState::kNoApp) || row == rowOf(SceneState::kNotice) ||
+          row == rowOf(SceneState::kNeedsYou))
         continue;
       for (int a = 0; a < takes(row); ++a)
         for (int b = a + 1; b < takes(row); ++b) {
-          if (row == int(SceneState::kAsleep) && b < 3) continue;  // its still rests, then the snore
+          if (row == rowOf(SceneState::kAsleep) && b < 3) continue;  // its still rests, then the snore
           TEST_ASSERT_FALSE(sameRecipe(take(p, row, a), take(p, row, b)));
         }
     }
     // Waiting and listening make no contacts.
     for (int v = 0; v < 3; ++v) {
-      TEST_ASSERT_EQUAL_UINT8(0, take(p, int(SceneState::kWaiting), v).count);
-      TEST_ASSERT_EQUAL_UINT8(0, take(p, int(SceneState::kListening), v).count);
+      TEST_ASSERT_EQUAL_UINT8(0, take(p, rowOf(SceneState::kWaiting), v).count);
+      TEST_ASSERT_EQUAL_UINT8(0, take(p, rowOf(SceneState::kListening), v).count);
     }
   }
   int id = 0, cells = 0;
   for (int mood = 0; mood < slime::kCanonical; ++mood) {
     for (int row = 0; row < slime::kRecipeStates; ++row) {
-      const SceneState state = row < kStates ? SceneState(row) : SceneState::kTaskComplete;
-      const Outcome outcome = row == kStates       ? Outcome::kSuccess
-                              : row == kStates + 1 ? Outcome::kFailure
+      const SceneState state = stateOfRow(row);
+      const Outcome outcome = row == kSuccessRow       ? Outcome::kSuccess
+                              : row == kSuccessRow + 1 ? Outcome::kFailure
                                                    : Outcome::kNone;
       ++cells;
       if (isMoment(state) && state != SceneState::kListening) {
@@ -346,7 +353,7 @@ void test_every_cell_plays_truthfully() {
         facts.act = state;
         const SceneState shown = deskStateOf(activityOf(state));
         Run r(mood, facts);
-        TEST_ASSERT_EQUAL_INT(3, int(look(r, int(shown), 40000).size()));
+        TEST_ASSERT_EQUAL_INT(3, int(look(r, rowOf(shown), 40000).size()));
         TEST_ASSERT_TRUE(r.moved > q(.0001));
         if (shown == SceneState::kWorking) TEST_ASSERT_TRUE(r.keys > 0);
         else TEST_ASSERT_EQUAL_INT(0, r.keys);
@@ -363,20 +370,22 @@ void test_every_cell_plays_truthfully() {
 // mood stay, each take is one the row has, a pick never deals the take its
 // row dealt last, no contact comes twice, and nothing drawn jumps.
 void test_ten_minutes_of_work() {
+  // The Mac's four, working, and the four it no longer sends, which the
+  // desk shows as theirs.
   const SceneState acts[] = {SceneState::kWorking,   SceneState::kTerminal, SceneState::kPlanning,
                              SceneState::kSearching, SceneState::kTesting,  SceneState::kToolUse,
                              SceneState::kAnalyzing, SceneState::kWaiting,  SceneState::kDelegating};
   Facts facts;
   facts.base = SceneState::kWorking;
   Run r(slime::kDetermined, facts);
-  int last[kStates], iterations = 0, generation = 0, iteration = 0;
+  int last[slime::kRecipeStates], iterations = 0, generation = 0, iteration = 0;
   for (int& l : last) l = -1;
   // A pick, at a new act's route or the next pass of a take's.
   auto picked = [&] {
     const auto& s = r.e->scenes;
     if (s.generation == generation && s.iteration == iteration) return;
     generation = s.generation, iteration = s.iteration;
-    const int row = int(s.route.state);
+    const int row = rowOf(s.route.state);
     TEST_ASSERT_TRUE(s.variant < takes(row) && s.variant != last[row]);
     last[row] = s.variant;
     iterations += s.iteration > 3;
