@@ -88,7 +88,7 @@ void test_the_motion_v2_numbers() {
     TEST_ASSERT_EQUAL_STRING(names[i], kRules[i].name);
     TEST_ASSERT_TRUE(kRules[i].on);
   }
-  constexpr LivelySpring settle[] = {{44, 31}, {30, 21}, {40, 36}, {34, 31}, {30, 30}, {30, 30}, {36, 36}};
+  constexpr LivelySpring settle[] = {{44, 31}, {30, 21}, {40, 36}, {34, 31}, {30, 30}, {30, 30}, {36, 36}, {26, 24}};
   for (int i = 0; i < Lively::kSettledCount; ++i) {
     TEST_ASSERT_EQUAL_INT(settle[i].frequency, Lively::kSettle[i].frequency);
     TEST_ASSERT_EQUAL_INT(settle[i].damping, Lively::kSettle[i].damping);
@@ -252,6 +252,30 @@ void test_hands_follow_and_change_owner_without_a_jump() {
 // lasting mood's (the faces that settle into happy, happy's hop; the cross
 // ones, the stomp). Idle, the face plays it as its acting deals it, about a
 // second in.
+// The turn settles like any body channel, and goes round the short way: a
+// spin that ends a whole turn round (the high five's) carries on to rest
+// where it began and never unwinds back through its back; with settle off
+// it's the clip's own.
+void test_a_spin_never_unwinds() {
+  Lively l;
+  rig::Channels target = rig::kRest;
+  bool round = false;
+  for (int ms = 16; ms <= 3000; ms += 16) {
+    target[Channel::kTurn] = int16_t(ms <= 800 ? ms * 1000 / 800 : ms <= 1600 ? 1000 : 0);
+    l.advance(16, target, 0, 0, false);
+    const int turn = l.apply(target)[Channel::kTurn];
+    if (ms > 800 && turn > 950) round = true;
+    // Past 950 it never comes back below 900 (the far side, its back).
+    if (round && ms > 1000) TEST_ASSERT_TRUE(turn < 100 || turn > 900);
+  }
+  TEST_ASSERT_TRUE(round);
+  TEST_ASSERT_EQUAL_INT(0, l.apply(target)[Channel::kTurn]);  // at rest where it began
+  l.set("settle", false);
+  target[Channel::kTurn] = 420;
+  l.advance(16, target, 0, 0, false);
+  TEST_ASSERT_EQUAL_INT(420, l.apply(target)[Channel::kTurn]);
+}
+
 void test_the_seven_idle_moves() {
   const char* moods[] = {"calm", "happy", "focused", "proud", "cross", "sad", "lonely"};
   for (const char* m : moods) {

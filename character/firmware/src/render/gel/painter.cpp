@@ -6,7 +6,6 @@
 #include "render/gel/frame.h"
 #include "render/gel/geometry.h"
 #include "render/gel/hands.h"
-#include "render/gel/invite.h"
 #include "render/gel/layers.h"
 #include "render/gel/pastimes.h"
 #include "render/gel/profile.h"
@@ -689,6 +688,7 @@ void applyRig(PaintControls& c, const rig::Channels& rig) {
   c.glass = std::clamp(c.glass + off(Channel::kGlass) * 4096 / 1000, 0, 4096);
   c.patch = rig[Channel::kPatch] * 4096 / 1000;
   c.patchX = rig[Channel::kPatchX] * 4096 / 1000, c.patchY = rig[Channel::kPatchY] * 4096 / 1000;
+  c.turn += off(Channel::kTurn) * 4096 / 1000;
 }
 
 void applyGlass(PaintControls& c, const Surface& s) {
@@ -771,10 +771,7 @@ void paint(Surface& surface, const Engine& e, bool mouthOpen, int dy, uint32_t k
     move = finishPose(surface, finish.finish, finish.ageMs, finish.revealMs);
     applyMove(c, surface, move);
   }
-  // An invite's pose drawn in code (its turn away) brings it up to the
-  // glass too; under a finish or the drawer it waits. Then the glass,
-  // whoever brought it there.
-  if (!finish.on && !squeeze) applyInvite(c, surface, e.invite);
+  // Then the glass, whoever brought it there.
   if (!squeeze) applyGlass(c, surface);
   const bool mouth = mouthOpen || rig[rig::Channel::kMouthOpen] >= kRigMouthOpen;
   rig::Anchors local;

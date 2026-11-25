@@ -980,8 +980,11 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
   // Leaning in, it wears a stroke's shut eyes, unless its mood keeps its own.
   if (borrowed < 0 && lean_ != Lean::kNone && !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
     borrowed = slime::kGestureFaces[int(Gesture::kStroke)];
-  // An invite's pose and payoff their own, as a touch's, the same mood keeping its own.
-  if (borrowed < 0 && context.invite.shows() && !slime::kKeepsFaceThroughGestures[profileFor(context.mood)])
+  // An invite's pose and payoff their own, as a touch's, the same mood
+  // keeping its own; but the back's side-eye is every mood's.
+  const bool sideEye = context.invite.phase == InviteShow::kPose && context.invite.pose == InvitePose::kBack;
+  if (borrowed < 0 && context.invite.shows() &&
+      (sideEye || !slime::kKeepsFaceThroughGestures[profileFor(context.mood)]))
     borrowed = expressionFromName(inviteFace(context.invite));
   bool next = source.anim != SceneState::kNone && (source.anim != source_.anim || source.at != source_.at);
   if (next) {
@@ -996,6 +999,10 @@ void GelFace::sync(const FaceSource& source, const FaceContext& context, uint32_
     e.play(r);
     restartCues();
     if (const rig::Clip* clip = rig::kRig.clip(stateName(source.anim))) play(*clip);
+    // A face with a move of its own (a meme face's, face-<face>) plays it
+    // once as the Moment comes, unless a reply brings a clip of its own.
+    if (borrowed >= 0 && !context.reply[0] && !std::strncmp(slime::kIdleMoves[borrowed], "face-", 5))
+      if (const rig::Clip* clip = rig::kRig.clip(slime::kIdleMoves[borrowed])) play(*clip);
   } else if (source.anim == SceneState::kNone && source_.anim != SceneState::kNone && !timeout) {
     e.clear();
     restartCues();

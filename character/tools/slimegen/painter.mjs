@@ -23,6 +23,14 @@ export function paintArt(ctx, profile, face){
       ctx.fillStyle=fill;ctx.fill();if(edge){ctx.strokeStyle=ink;ctx.lineWidth=edge;pen();}ctx.restore();
     }
     function bean(rx,ry,angle=0){egg(0,0,rx,ry,ink,angle);}
+    // A dark eye under a lid: what's below the lid's line `top` (above
+    // `bottom`, when given) shows, the lid tilted by `tilt`.
+    function lidded(rx,ry,top,bottom,tilt=0){
+      ctx.save();ctx.beginPath();
+      const low=bottom===undefined?-ry-.02:bottom;
+      ctx.moveTo(-rx-.02,low);ctx.lineTo(rx+.02,low);ctx.lineTo(rx+.02,top+tilt*(rx+.02));ctx.lineTo(-rx-.02,top-tilt*(rx+.02));ctx.closePath();
+      ctx.clip();egg(0,0,rx,ry,ink);ctx.restore();
+    }
     function eyeArc(width=.128,height=.092,weight=.031){q([-width,-.018],[0,height],[width,-.018],weight);}
     function droop(width=.128,depth=.069,weight=.030){q([-width,.030],[-.014,-depth],[width,.017],weight);}
     function squeeze(width=.109,weight=.030){
@@ -69,6 +77,14 @@ export function paintArt(ctx, profile, face){
       else if(kind==='round-gasp')egg(0,-.008,.035,.047,ink);
       // Curious's: a small open o, tilted toward what it peers at.
       else if(kind==='peering-o')egg(0,0,.024,.034,'rgba(153,216,236,.75)',.30,.017);
+      // The meme faces': deadpan's dead flat line, side-eye's short one
+      // aslant, the squint's and the faint's wobble, smug's cat w, and the
+      // silent scream's tall open oval.
+      else if(kind==='flat-line')stroke([['M',-.050,0],['L',.050,0]],.024);
+      else if(kind==='side-line')stroke([['M',-.010,.004],['L',.058,-.008]],.024);
+      else if(kind==='wavy-line')stroke([['M',-.060,0],['C',-.040,.026,-.020,-.026,0,0],['C',.020,.026,.040,-.026,.060,0]],.022);
+      else if(kind==='cat-w')wSmile(.074,.044,.024,.010);
+      else if(kind==='scream-o'){egg(0,-.050,.068,.112,ink);egg(0,-.120,.034,.026,'#afdde8');}
     }
     // The features, each drawn by its own function: the cheeks, the tears,
     // each eye, the strain mark and the mouth.
@@ -135,6 +151,18 @@ export function paintArt(ctx, profile, face){
       else if(type==='sad-lids')droop(.128,.077,.029);
       else if(type==='hurt-eggs')bean(.024,.050);
       else if(type==='surprise-dots')bean(.043,.058);
+      // The meme faces': solid dark eyes still, the lids and where they
+      // look doing the acting. Deadpan's under flat lids half down;
+      // side-eye's a flat lid's line across, the eye pressed under its one
+      // end, both to your right; squint's one eye narrowed to a slit, the
+      // other under a flat lid; smug's half under a tilted lid, glancing
+      // aside; the scream's tall; the faint's crosses.
+      else if(type==='flat-lids')lidded(.044,.058,.008);
+      else if(type==='side-glance'){stroke([['M',-.066,.012],['L',.066,.012]],.024);ctx.translate(-side*.034,0);lidded(.034,.046,.012);}
+      else if(type==='slits'){if(side===-1){ctx.rotate(-.10);lidded(.064,.046,.014,-.014);}else lidded(.042,.056,.016);}
+      else if(type==='smug-half'){ctx.translate(-side*.012,0);lidded(.046,.052,.010,undefined,-.16);}
+      else if(type==='scream-eggs')bean(.044,.074);
+      else if(type==='x-eyes')stroke([['M',-.038,.038],['L',.038,-.038],['M',-.038,-.038],['L',.038,.038]],.026);
       ctx.restore();
     };
     const strain=()=>{if(a.cheeks==='strain'){

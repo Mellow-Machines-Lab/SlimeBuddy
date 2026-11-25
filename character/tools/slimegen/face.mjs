@@ -8,7 +8,8 @@ const eyeDimensions={
   'laugh-lid':.123,'amused-wink':.068,'curious-eggs':.0555,'attentive-eggs':.058,
   'gentle-resolve':.056,'smug-lids':.024,'cheeky-beans':.018,'warm-lids':.087,
   'longing-beans':.043,'annoyed-beans':.027,'grumpy-beans':.026,'angry-squeeze':.055,
-  'sad-lids':.077,'hurt-eggs':.050,'surprise-dots':.058
+  'sad-lids':.077,'hurt-eggs':.050,'surprise-dots':.058,
+  'flat-lids':.033,'side-glance':.031,'slits':.014,'smug-half':.031,'scream-eggs':.074,'x-eyes':.038
 };
 const mouthDimensions={
   'tiny-ring':[.018,.026],'baby-w':[.076,.037],'baby-yawn':[.036,.049],
@@ -17,7 +18,8 @@ const mouthDimensions={
   'curled-smirk':[.075,.032],'puckered-three':[.074,.064],'warm-w':[.068,.036],
   'small-pout':[.032,.030],'pushed-pout':[.043,.021],'grumpy-pout':[.065,.039],
   'protest-bean':[.074,.075],'sad-pout':[.035,.028],'hurt-pout':[.033,.033],
-  'round-gasp':[.035,.047]
+  'round-gasp':[.035,.047],
+  'flat-line':[.050,.012],'side-line':[.058,.012],'wavy-line':[.060,.026],'cat-w':[.074,.044],'scream-o':[.068,.112]
 };
 
 export function faceTarget(profile) {

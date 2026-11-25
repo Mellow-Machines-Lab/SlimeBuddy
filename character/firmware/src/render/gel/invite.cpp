@@ -24,48 +24,18 @@ constexpr uint16_t kRim = rgb565(27, 55, 78);
 constexpr uint16_t kCream = rgb565(246, 240, 226), kGlow = rgb565(255, 226, 150), kWhite = rgb565(255, 255, 255);
 constexpr uint16_t kSpark = rgb565(250, 230, 160), kHeart = rgb565(226, 78, 104);
 
-// A hump from a to b, 0 at either end and 4096 at its middle.
-int bump(int t, int a, int b) { return t <= a || t >= b ? 0 : sinTurn(int(int64_t(t - a) * 2048 / (b - a))); }
 int of(int v, int q12) { return int(int64_t(v) * q12 / 4096); }
-
-// How far up to the glass it is (Q12): in with the pose, back as the
-// payoff ends or as it shrugs; a late one comes as it turns round.
-int closeness(const InviteShow& v) {
-  const int ms = int(v.ms);
-  switch (v.phase) {
-    case Phase::kPose: return ease(ms, 0, kInviteInMs);
-    case Phase::kPayoff: return 4096 - ease(ms, int(InviteShow::kPayoffMs) - kInviteOutMs, int(InviteShow::kPayoffMs));
-    case Phase::kShrug: return 4096 - ease(ms, 0, int(InviteShow::kShrugMs) * 3 / 4);
-    case Phase::kLate:
-      return ms < int(InviteShow::kTurnMs)
-                 ? ease(ms, 0, int(InviteShow::kTurnMs))
-                 : 4096 - ease(ms, int(InviteShow::kLateMs) - kInviteOutMs, int(InviteShow::kLateMs));
-    default: return 0;
-  }
-}
-
-// How far its face is turned away, over its shoulder (Q12): the back
-// pose's, turning round as it sighs or shrugs; a late one's as it turns
-// round to you.
-int turned(const InviteShow& v) {
-  const int ms = int(v.ms);
-  if (v.phase == Phase::kLate)
-    return ms < int(InviteShow::kTurnMs) ? 2900 - of(2900, ease(ms, 0, int(InviteShow::kTurnMs))) : 0;
-  if (v.pose != InvitePose::kBack) return 0;
-  switch (v.phase) {
-    case Phase::kPose: return ease(ms, 0, kInviteInMs);
-    case Phase::kShrug: return 4096 - ease(ms, 200, int(InviteShow::kShrugMs));
-    case Phase::kPayoff: return 4096 - ease(ms, 300, 1100);
-    default: return 0;
-  }
-}
 
 // How much of the glow and its word show (Q12): in just after the pose,
 // out at a miss; a touch flashes it away (the payoff's ring).
 int glowShown(const InviteShow& v) {
   const int ms = int(v.ms);
-  // A palm's once it's up on the glass (its clip's), the others' as they come.
-  if (v.phase == Phase::kPose) return v.pose == InvitePose::kPalm ? ease(ms, 600, 900) : ease(ms, 150, kInviteInMs + 150);
+  // A palm's once it's up on the glass, its back once it's turned (their
+  // clips'), the lean's as it comes.
+  if (v.phase == Phase::kPose)
+    return v.pose == InvitePose::kPalm   ? ease(ms, 600, 900)
+           : v.pose == InvitePose::kBack ? ease(ms, 1000, 1300)
+                                         : ease(ms, 150, 600);
   if (v.phase == Phase::kShrug) return 4096 - ease(ms, 0, 250);
   if (v.phase == Phase::kPayoff) return 4096 - ease(ms, 0, 180);
   return 0;
@@ -161,37 +131,6 @@ int payoffAge(const InviteShow& v) {
   return -1;
 }
 
-void applyInvite(PaintControls& c, const Surface&, const InviteShow& v) {
-  if (!v.shows() || inviteMove(v).on()) return;
-  const int ms = int(v.ms), age = payoffAge(v), k = closeness(v), u = turned(v);
-  // Up to the glass, as a clip's glass brings it (applyGlass).
-  c.glass = std::max(c.glass, of(kBackGlass, k));
-  // The pose's lean, roll (its head tilted), squash, eyes up and wider, in
-  // as it comes up to the glass. Turned away, it slumps, and its eyes come
-  // round to you over its shoulder.
-  int lean = 0, squash = 0, lift = 0, gaze = 0, up = 0, eyes = 0;
-  const int w = v.pose == InvitePose::kBack ? u : k;
-  if (v.pose == InvitePose::kBack) lean = of(600, w), squash = of(800, w), gaze = of(-280, w);
-  // The shrug: up and down, a glance aside under heavy lids.
-  if (v.phase == Phase::kShrug) {
-    const int b = bump(ms, 0, 900);
-    lift += of(9, b), squash -= of(900, b), c.blink = std::max(c.blink, of(1500, b));
-    gaze += of(of(320, ease(ms, 150, 450)), 4096 - ease(ms, 750, 1100));
-  }
-  // A late one turns round with a little hop.
-  if (v.phase == Phase::kLate && ms < int(InviteShow::kTurnMs)) lift += of(12, bump(ms, 0, int(InviteShow::kTurnMs)));
-  // A sigh: a breath in, tall; its shoulders drop; it settles.
-  if (age >= 0 && v.payoff == InvitePayoff::kSigh) squash += of(1500, bump(age, 450, 1400)) - of(1000, bump(age, 0, 500));
-  c.lean = std::clamp(c.lean + lean, -5120, 5120);
-  c.squash = std::clamp(c.squash + squash, -5407, 5407);
-  c.lift = std::clamp(c.lift + lift * 4096 / kPxPerUnit, 0, 983);
-  c.gaze += gaze;
-  c.gazeUp += up;
-  c.eyeSize = of(c.eyeSize, 4096 + eyes);
-  // Its face over its shoulder: squeezed toward its right rim.
-  c.faceX += of(2150, u), c.faceW -= of(1850, u);
-}
-
 const char* inviteFace(const InviteShow& v) {
   const int age = payoffAge(v);
   if (v.phase == Phase::kLate && age < 0) return "happy";
@@ -207,6 +146,7 @@ const char* inviteFace(const InviteShow& v) {
   switch (v.pose) {
     case InvitePose::kPalm: return "happy";
     case InvitePose::kLean: return "happy";
+    case InvitePose::kBack: return "side_eye";  // over its shoulder: did you see?
     default: return nullptr;
   }
 }
@@ -224,8 +164,8 @@ Point inviteSpot(const InviteShow& v, const rig::Anchors& at, const Hand hands[2
       return {(at.eyeR.x + (at.eyeR.x - at.eyeL.x) * 7 / 16) / 16, (at.eyeR.y + at.mouth.y * 2) / 3 / 16 + 8};
     case InvitePose::kLean:  // its forehead, on the glass
       return {(at.crown.x * 3 + eyes.x * 2) / 5 / 16, (at.crown.y * 3 + eyes.y * 2) / 5 / 16};
-    case InvitePose::kBack:  // its back, the side away from its face
-      return {(at.brimL.x * 5 + at.brimR.x * 3) / 8 / 16, (at.brimF.y + at.handF.y) / 2 / 16};
+    case InvitePose::kBack:  // its back, the side away from its face (round to its left)
+      return {(at.brimL.x * 3 + at.brimR.x * 5) / 8 / 16, (at.brimF.y + at.handF.y) / 2 / 16};
     default: return {at.crown.x / 16, at.crown.y / 16};
   }
 }

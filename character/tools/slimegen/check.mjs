@@ -7,12 +7,12 @@ import {sceneMoodTraits} from './scenes.mjs';
 const fail=(what)=>{throw Error('slimegen: '+what);};
 
 // The expressions: one for each face the pack names (character.json's
-// `moods`), of that face, before any alternate; each
+// `moods`, then its `board_faces`), of that face, before any alternate; each
 // with its sound's pitch and gain, its scenes' traits unless it's a
 // reviewed mood's (scenes.mjs sceneMoodTraits), and only gags that exist. Every lasting mood rests in faces that exist; and the gestures' and
 // the notice takes' faces are each an expression.
 function expressionRules(character,design,sound) {
-  const ids=character.moods.map(m=>m.id);
+  const ids=[...character.moods,...(character.board_faces||[])].map(m=>m.id);
   if(JSON.stringify(Object.keys(design.expressions).slice(0,ids.length).sort())!==JSON.stringify([...ids].sort()))fail('the first expressions aren\'t the pack\'s faces');
   for(const id of ids){
     if(design.expressions[id].mood!==id)fail(`${id} has no expression of its own`);

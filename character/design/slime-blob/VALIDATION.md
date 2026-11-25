@@ -72,7 +72,8 @@ ramps and springs can, and no jolt at an event. By file:
   cards' and the error's, the desk's jitter, a bit's keys inside their
   bounds).
 - `test_lively.cpp`: motion V2, the motion layer
-  (`test_the_motion_v2_numbers`, its numbers); each of its five rules off
+  (`test_the_motion_v2_numbers`, its numbers, `turn`'s settle among
+  them; a spin never unwinding, `test_a_spin_never_unwinds`); each of its five rules off
   giving back the motion before it exactly, by name as `dbg.motion` sets
   it (`test_each_motion_rule_off_gives_back_the_motion_before`); every
   spring at rest on the clips' channels after a move, and staying there
@@ -82,12 +83,18 @@ ramps and springs can, and no jolt at an event. By file:
   idle moves, one a lasting mood, each face its mood's, the face playing
   it in idle (`test_the_seven_idle_moves`).
 - `test_main.cpp`'s invite tests: the gel draws invites, nothing changes
-  the body with none, the palm and the lean are the pack's clips, each up
-  at the glass whole as it waits (the palm the right hand open and flat on
-  it, the lean's cheek a patch), the back up through the same glass in
-  code, the miss and the high five clips of their own, the clap a hit, a
-  late one's payoff after its turn, and the low sign only while a payoff
-  earns. The glass (`test_the_glass_scales_the_body_to_115_at_most`): 1.15
+  the body with none, every pose and payoff the pack's clips, the palm and
+  the lean each up at the glass whole as it waits (the palm the right hand
+  open and flat on it, the lean's cheek a patch), the back half a turn
+  away and looking over its shoulder, the misses, the high five's spin and
+  the sigh coming round, the clap a hit, a late one's payoff after its
+  turn, and the low sign only while a payoff earns. Turning round
+  (`test_the_turn_narrows_each_eye_on_its_own`): each point of the face
+  round the dome on its own, the eye nearer the rim far narrower than the
+  other, one behind faded out, nothing at its back, a whole turn as none.
+  The meme faces (`test_the_meme_faces_and_their_moves`): 24 faces, the
+  six by name after the Mac's 18, each its own move as its idle move and
+  by `dbg.clip`, and once as a Moment shows it. The glass (`test_the_glass_scales_the_body_to_115_at_most`): 1.15
   at the whole, never more, over a finish's own scale. One pair of hands
   (`test_one_pair_of_hands`): none at size 0, a hand its radius across, a
   palm on the glass about 85 px across, the rig's hand from the body's
@@ -207,7 +214,7 @@ ramps and springs can, and no jolt at an event. By file:
   `tests/scenarios-gel/` and compares their pinned shots with its
   `tests/golden-gel/`. The set is frozen small on purpose while the
   gel's pictures are redesigned: each scenario pins one or two shots,
-  the ones that say the most about it (`"pin": true` on the step), 60 in
+  the ones that say the most about it (`"pin": true` on the step), 69 in
   all, and only those have a golden; the engine's `test_pins` holds it
   to that. The other shots are still taken, for a person to look at,
   `boopctl mirror` and `boopctl run`, and every `expect` still runs.
@@ -245,7 +252,12 @@ ramps and springs can, and no jolt at an event. By file:
   (`knock.jsonl`: each step of the climb: the knock, the look round for
   you, louder, both fists, its forehead on the glass and slid down), the
   flop (`flop.jsonl`, by `dbg.clip`: holding its breath, flat on the glass,
-  sliding down, peeling off), the
+  sliding down, peeling off), turning round (`back.jsonl`: the upset skit's back,
+  a stomp, turning, its back, over its shoulder in side-eye, its back
+  again, missed and coming round; `spin.jsonl`: the high five's spin, going
+  round, its back, coming round), the meme faces (`meme-deadpan-side-eye`,
+  `meme-squint-smug`, `meme-scream-faint`: each at rest, in its move by
+  `dbg.clip`, and after), the
   with you (`with-you.jsonl`: nothing told; the pointer to your left, right, up and at the edge nearest it, and rest once it stops; reading along at its start, down a line, the next line, after you stop, settled in, and up at a screen above; typing, typing fast, its other paw, the look up as a long stretch stops and the rest after; the groove, its sway and its rest, and the look round as the music stops; a video and its start; a call and its stretch; reading along at work in a pose of its own, its page beside it; music, a video and a call at work; and headphones on while you type, idle), the
   gaze (`gaze.jsonl`: at work typing, forward, and still forward as a call comes; looking, running and waiting where the pose has the eyes; needs you up at you, then turned to the Mac on either side and held, forward with no side), typing along (`along.jsonl`: the keys out and each paw tapping, paused, put away, gone under a Moment, at work each brisk paw with its eyes down and back to soft when you stop, its paws off the keys while it runs or looks though you type and typing with you again after, nothing asleep), the
   layers (`layers.jsonl`: nothing worn at night or on a party night, Zs

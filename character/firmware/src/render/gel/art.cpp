@@ -71,6 +71,11 @@ struct Crossing {
 CrossFade& crossing = (new Crossing)->fade;
 }  // namespace
 int crossingPeak = 0;
+int shownFacing(int facing) {
+  return facing <= kFacingGone    ? 0
+         : facing >= kFacingShown ? 4096
+                                  : (facing - kFacingGone) * 4096 / (kFacingShown - kFacingGone);
+}
 // The engine's face layers: settled,
 // one art as authored. While arts cross over, a group (an eye, the mouth,
 // the tears, the cheeks) that has one shape in several layers is drawn once,
@@ -167,14 +172,18 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
     alpha /= weighted ? std::max(weight, 4096) : weight;
     if (g == 4) alpha = alpha * scalar(f.controls[7]) / 4096;
     if (g == 5) alpha = alpha * scalar(f.controls[6]) / 4096;
-    raster.alpha = alpha;
     if (!alpha) return;
+    // How far its outline faces the camera, summed: turned, a path going
+    // round behind the dome fades as it goes (kFacingGone … kFacingShown).
+    int64_t facingSum = 0;
     auto blend = [&](Point* out, int count, bool clipped) {
+      int facing = 4096;
       if (n == 1) {  // one art's: its own points, as authored
         const auto& p = slime::kArtPaths[paths[0]];
         for (int v = 0; v < count; ++v) {
           const Point q = place(placed[members[0]], slime::kArtPoints[(clipped ? p.clip : p.first) + v], g);
-          out[v] = projection.face(q.x, q.y);
+          out[v] = projection.face(q.x, q.y, &facing);
+          if (!clipped) facingSum += facing;
         }
         return;
       }
@@ -189,11 +198,14 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
         }
         // Kept in sixteenths of a pixel: a feature moves smoothly with the
         // body instead of stepping a whole pixel at a time.
-        out[v] = projection.face(x / weight, y / weight);
+        out[v] = projection.face(x / weight, y / weight, &facing);
+        if (!clipped) facingSum += facing;
       }
     };
     blend(vertices, path.count, false);
     blend(clip, path.clipCount, true);
+    raster.alpha = c.turn ? alpha * shownFacing(int(facingSum / std::max(1, int(path.count)))) / 4096 : alpha;
+    if (!raster.alpha) return;
     if (path.width)
       // The authored width, to a sixteenth, never thinner than 3/4 pixel.
       raster.stroke16(vertices, path.count,
@@ -242,8 +254,10 @@ void paintArt(Surface& surface, const Engine& engine, const PaintControls& c, bo
     raster.alpha = 255;
     const auto& top = placed[f.count - 1];
     const Point p = place(top, {0, int16_t(top.baseM)}, 3);
-    const Point at = projection.face(p.x, p.y);
-    raster.disk16(at.x, at.y, (4 * 16 + 8) * c.scale / 4096, rgb565(13, 43, 72));
+    int facing = 4096;
+    const Point at = projection.face(p.x, p.y, &facing);
+    raster.alpha = c.turn ? 255 * shownFacing(facing) / 4096 : 255;
+    if (raster.alpha) raster.disk16(at.x, at.y, (4 * 16 + 8) * c.scale / 4096, rgb565(13, 43, 72));
   }
 }
 }  // namespace render::gel

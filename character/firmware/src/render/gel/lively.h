@@ -6,9 +6,11 @@
 // - stretch: the body goes tall while it moves up or down fast, and flat as
 //   it lands, then wobbles back (its own spring, `flat`). Its volume stays
 //   the same, as the painter keeps it for every squash.
-// - settle: each body channel (squash, lean, lift, x, reach, melt and the
-//   glass) is a loose spring toward what the clips ask, so a stop goes past
-//   and wobbles back. Off, the channels are the clips' own.
+// - settle: each body channel (squash, lean, lift, x, reach, melt, the
+//   glass and the turn) is a loose spring toward what the clips ask, so a
+//   stop goes past and wobbles back. Off, the channels are the clips' own.
+//   The turn goes round the short way: a whole turn on is where it began,
+//   so a spin that ends never unwinds.
 // - drag: the crown follows the base, so a slide sideways or its stop bends
 //   the dome: the lean, opposite the body's speed across, on a spring of its
 //   own.
@@ -57,13 +59,15 @@ struct LivelySpring {
 };
 struct Lively {
   // settle: by the channels it springs, in kSettled's order.
-  static constexpr int kSettledCount = 7;
+  static constexpr int kSettledCount = 8;
   static constexpr rig::Channel kSettled[kSettledCount] = {rig::Channel::kSquash, rig::Channel::kLean,
                                                            rig::Channel::kLift,   rig::Channel::kX,
                                                            rig::Channel::kReach,  rig::Channel::kMelt,
-                                                           rig::Channel::kGlass};
+                                                           rig::Channel::kGlass,  rig::Channel::kTurn};
   static constexpr LivelySpring kSettle[kSettledCount] = {{44, 31}, {30, 21}, {40, 36}, {34, 31},
-                                                          {30, 30}, {30, 30}, {36, 36}};
+                                                          {30, 30}, {30, 30}, {36, 36}, {26, 24}};
+  // The turn's whole turn, in its channel's thousandths.
+  static constexpr int kWholeTurn = 1000;
   // stretch: the squash kTallPerSpeed thousandths of a thousandth taller
   // for each px a second up or down, at most kTallMost; landing, the flat spring is kicked by kLand
   // thousandths a second for each px a second it came down at.

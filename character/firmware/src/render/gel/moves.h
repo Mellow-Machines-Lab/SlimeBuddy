@@ -8,7 +8,7 @@
 //   looping while it waits; `invite-<payoff>` for the touch;
 //   `invite-<pose>-miss` with none; `invite-<pose>-late` as a late touch
 //   brings it back, then the payoff. A pose or payoff the pack has no clip
-//   for is drawn in code (render/gel/invite.h: the back, the sigh).
+//   for doesn't move the body.
 // - The knock, as something needs you (the needs-you scene's own time,
 //   which a needs-you interrupted keeps): `knock`, a fist on the glass, twice,
 //   then the climb, `knock-climb`, from slime::kKnockClimbAtMs (slimegen's

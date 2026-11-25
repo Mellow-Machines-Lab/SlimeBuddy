@@ -145,7 +145,7 @@ spring softens a knock.
 | Rule (its switch) | What it does | Its numbers |
 | --- | --- | --- |
 | Stretch with speed (`stretch`) | Taller while the body moves up or down fast, flat as it lands, then a wobble; the volume kept, as for every squash | 0.7 thousandths taller per px/s, at most 220; a landing kicks a `flat` spring (frequency 38, damping 23) 30 per px/s, within 300 |
-| Overshoot and settle (`settle`) | Each body channel (squash, lean, lift, x, reach, melt, the glass) a loose spring toward what the clips ask: a stop goes past and wobbles back. The lift stops at the floor | Frequency and damping: squash 44, 31; lean 30, 21; lift 40, 36; x 34, 31; reach and melt 30, 30; the glass 36, 36 |
+| Overshoot and settle (`settle`) | Each body channel (squash, lean, lift, x, reach, melt, the glass, `turn`) a loose spring toward what the clips ask: a stop goes past and wobbles back. The lift stops at the floor; `turn` goes round the short way, so a spin that ends a whole turn round never unwinds | Frequency and damping: squash 44, 31; lean 30, 21; lift 40, 36; x 34, 31; reach and melt 30, 30; the glass 36, 36; `turn` 26, 24 |
 | The crown drags (`drag`) | The crown behind the base: the lean opposite the body's speed across, so a slide and its stop bend the dome | 2.5 thousandths per px/s, at most 320, on a spring of 19, 11 |
 | The face lags (`face`) | The eyes and the mouth trail the body by a few px and catch up: the one rule that moves the face on the body by itself | Two springs (across, up) of 22, 22; drawn all the way behind, at most 8 canvas px |
 | Hands follow (`hands`) | Each hand's place and size follow its clip, arriving and leaving late; a hand off the desk's keys starts there at the paw's size, and one going back goes there before the desk has it again, so no hand jumps between owners | Place 24, 24; size 34, 38; the desk's paw at ±12 px, 4 up, size 765, home within 3 |
@@ -189,7 +189,8 @@ Each lasting mood has one idle move, a rig clip `idle-<mood>` that ends
 where it starts, which idle plays as its acting deals it (the mood's move
 and the expression's own bits, `Acting::takes`): the face plays the clip
 (`GelFace::advanceTo`), and every face plays its lasting mood's
-(slimegen's `kIdleMoves`). They replace the 19 faces' three mood gestures
+(slimegen's `kIdleMoves`), but a meme face, which plays its own move
+(Meme faces, below). They replace the 19 faces' three mood gestures
 each, the spring kicks motion V2 gives every pose by itself.
 
 | Mood | Its move | Why it reads so |
@@ -375,8 +376,8 @@ safe envelope or produce competing repeated impacts.
 ## Full activity scene matrix
 
 The engine implements all 22 factual states in the nine scene families of
-[STATES.md](STATES.md): 18 faces × 22 states, 396 cells,
-including 36 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
+[STATES.md](STATES.md): 24 faces × 22 states, 528 cells (the Mac's 18
+and the six meme faces), including 48 quiet aliases for asleep/no-app, and task-complete with success and failure. Every active cell has
 all its takes: three, a successful finish's four, a gesture's ten (each
 asked for, as the board does), and idle's (its mood's move, and excited's
 zoomies); quiet aliases keep the mood and use the
@@ -780,12 +781,13 @@ night's lock.
 
 After a skit the Mac may ask for one touch (the `do`'s `invite`, the
 engine's firmware/README.md, The invite): the engine times it and the face
-draws it from `FaceContext::invite` (`gel/invite.h`). The palm and the
-lean, their payoffs, misses and late returns are the pack's rig clips
-(Hands and the glass, below); the back, which the turn will take over, is
-in code. Once the skit's face, words and sign are over, Boop comes up to
-the glass, 1.15 its size (the back's a little less, `kBackGlass`), and
-holds its pose; the place to touch glows
+draws it from `FaceContext::invite` (`gel/invite.h`). Every pose, payoff,
+miss and late return is the pack's rig clip (Hands and the glass, and Turning
+round, below); `gel/invite.h` holds only what no clip is: the glow, the
+word, the payoff's sparks, hearts or breath, the "+3 XP" low sign, the
+face it wears and its sound. Once the skit's face, words and sign are
+over, Boop holds its pose, the palm and the lean up at the glass, 1.15 its
+size, the back turned away from it; the place to touch glows
 (light means "this is for you"), a warm gold light that breathes, a ripple
 going out from it every 1.6 s, so it reads as "touch here" with no word,
 and the Mac's `label` ("tap", "pet") stands by it in the sign's font,
@@ -793,17 +795,19 @@ rimmed dark, its letters rippling one after another.
 
 | Pose | What it does | Glows | Touch | Payoff |
 | --- | --- | --- | --- | --- |
-| palm | A hop, then faces you, happy, eyes wide, leaning a little to its right; its right hand, an open palm, flat on the glass beside its right eye (`invite-palm`, then `invite-palm-wait`), about 85 px across, its patch pale, the word under it | the palm, a ring round it | tap | high five (`invite-highfive`): the palm claps, a ring and a shake, sparks; it squashes, hops and wobbles, excited, the palm sinking back into its side |
+| palm | A hop, then faces you, happy, eyes wide, leaning a little to its right; its right hand, an open palm, flat on the glass beside its right eye (`invite-palm`, then `invite-palm-wait`), about 85 px across, its patch pale, the word under it | the palm, a ring round it | tap | high five (`invite-highfive`): the palm claps, a ring and a shake, sparks; it squashes, hops and spins all the way round (turning round), excited, the palm sinking back into its side |
 | lean | It perks up, comes up to the glass and rests its cheek on it, leaning, the patch pale where it touches, eyes up at you (`invite-lean`, `invite-lean-wait`) | its cheek, the word beside it, away from the face | stroke | purr (`invite-purr`): eyes shut, a fast small wiggle against the glass, three hearts rising |
-| back | Its back turned, slumped, its face (its mood's own) squeezed to its right rim, looking over its shoulder | its back, the word under it | stroke | sigh: a breath in, its shoulders drop as it turns round, pleased, a puff of breath |
+| back | A flinch and a stomp, then it turns its back, slumped, its face gone round the dome to its left (`invite-back`); waiting, it looks over its shoulder now and then, one eye at the rim in side-eye looking back at you, then turns its back again (`invite-back-wait`). It wears side-eye in every mood | its back, on the side away from its face, the word under it | stroke | sigh (`invite-sigh`): a breath in, its shoulders drop as it comes on round, pleased, a puff of breath |
 
 Missed, the palm's looks at its palm, lowers it and shrugs with both
 hands (`invite-palm-miss`); the lean's eases off the glass and shrugs
-(`invite-lean-miss`); the back's shrugs as it turns round; each under
-heavy lids, as the glow goes and it settles back to where it stood. A late
-touch brings the palm or the cheek back to the glass (`invite-<pose>-late`),
-or turns the back round with a hop and a pop of sparks by its head, then
-the payoff. A payoff that earns says so low, "high five", "purr" or
+(`invite-lean-miss`); the back's huffs and gets over it by itself, coming
+on round the way it turned (`invite-back-miss`); each under heavy lids, as
+the glow goes and it settles back to where it stood. A late touch brings
+the palm or the cheek back to the glass (`invite-<pose>-late`), with a pop
+of sparks by its head; a late stroke turns its back to you once more with
+a hop (`invite-back-late`), for the sigh to bring it round. Then the
+payoff. A payoff that earns says so low, "high five", "purr" or
 "better now" with the XP's chip, as a finish's does. While an invite shows
 no pastime, base pose, typing along, look of its own or idle gesture
 plays (`GelFace::showsLook`); a finger still takes the body, and leans in
@@ -836,7 +840,7 @@ hand stays on the keys.
 
 The glass is the screen. The rig's `glass` brings the whole body up to it,
 bigger about where it stands, 1.15 at most (`applyGlass`, the one way
-anything comes to the glass: a move's, the back's), over a finish's own
+anything comes to the glass: a move's), over a finish's own
 scale; the patch where it touches is `patch`, `patchX` and `patchY`, drawn
 on the body under its face (`paintPatch`). A move's cue is a hit on the
 glass: the hand on it most rings there for 340 ms and the body shakes
@@ -859,6 +863,63 @@ pixels, and the body's fill is most of a frame's cost (Finishes, Its
 cost: the look alone draws 40 frames a second). Only the board's profiling
 build (`gel_parts`' `body_us`) can say what that costs, and the frame rate
 of a palm, the knock and the flop on the AMOLED: not measured yet.
+
+## Turning round
+
+The dome is round, so turning round moves only the face across it (the rig's
+`turn`, thousandths of a whole turn, to its right for more than 0); the
+mesh, its outline and its light stay where they are. Turned half way, one
+eye shows at the rim: the look over the shoulder. Turned all the way, the
+face is gone: the back. A whole turn is a spin.
+
+**Each eye its own width.** The face's art is drawn by projecting each of
+its points onto the dome (`Projector::face`): a point of the face plane
+is a point on the dome's surface. Turning rotates that point about the
+dome's upright axis before it's projected, so every point goes round on
+its own circle. Nothing in the art changes and nothing needs a width per
+eye: the eye nearer the rim narrows by itself, as a mark on a ball does,
+and the other keeps its width (`test_the_turn_narrows_each_eye_on_its_own`:
+a sixth of a turn, the near eye about an eighth of its width, the far
+three quarters). A point gone round behind is held at the rim, and each
+path of the art fades by how far its outline faces the camera on average
+(`shownFacing`: whole from `kFacingShown`, none at `kFacingGone`), so a
+feature thins and goes at the rim instead of sliding off as a sticker.
+Its cost: four multiplications more for each point of the face while
+turned, a square root for one behind, and nothing at all at rest, where
+the art draws exactly as before.
+
+| Move | What it does |
+| --- | --- |
+| The back (`invite-back`, `invite-back-wait`) | The upset skit's invite: a flinch, a stomp, and it turns its back half a turn to its left; waiting, it looks back over its shoulder (a turn of about 0.21, wider eyes, side-eye) and snaps its back to you again |
+| The sigh (`invite-sigh`), the miss (`invite-back-miss`) | It comes on round the way it turned, to a whole turn, which is where it began |
+| The spin (`invite-highfive`) | The high five's payoff: all the way round during its hop, out at its right rim, its back, in again at its left |
+
+`gel/invite.h` holds none of this; `turn` is the rig's, so `dbg.clip`
+and a scenario play it as any clip (`tests/scenarios-gel/back.jsonl`,
+`spin.jsonl`).
+
+## Meme faces
+
+Six faces past the Mac's 18, each with one body move that sells it. They
+keep the gel's face language: solid dark eyes with no whites, one small
+mouth; the lids and where the eyes look do the acting. They're the pack's
+`board_faces` (character.json): the board draws each by its name on the
+wire, and the Mac doesn't read them, so no rule or brain picks one yet; a
+Moment, `state`, the invite's back or a scenario may name one.
+
+| Face | Its art | Its move (`face-<face>`) |
+| --- | --- | --- |
+| deadpan | Flat lids half down over each eye, a flat line of a mouth | Nothing but the lids: a still beat, one slow blink |
+| side_eye | A flat lid's line across each eye, the eye pressed under its one end, both to your right; a short mouth aslant | The body stays; only the eyes go further aside, hold and come back |
+| squint | One eye narrowed to a slit, the other under a flat lid; a wobbly mouth | It comes up to the glass, head tilted, to doubt you |
+| smug | Half lids, tilted, glancing aside; a cat's w of a mouth; pink cheeks | A dip, then the whole body tilts, chin up, eyes aside |
+| silent_scream | Tall dark eyes, a tall open oval of a mouth | It shoots up tall and shakes, both palms flat on its cheeks; no sound |
+| faint | Crosses for eyes, a wobbly mouth | It sways, tips over and melts, lies there, and pulls itself back up |
+
+Each move is a rig clip (`rig/clips/face-<face>.json`, a face's `_` a
+`-`): its face's idle move (`kIdleMoves`), played once as a Moment shows
+the face (`GelFace::sync`), unless a reply brings its own clip, and by
+`dbg.clip`. The every-face test changes each of the 24 to every other.
 
 ## Tagged pastimes
 

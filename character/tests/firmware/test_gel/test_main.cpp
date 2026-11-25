@@ -356,8 +356,8 @@ static void test_interrupted_alert_signals_exactly_once() {
     }
   }
 }
-// From every face to every other the
-// two arts cross over, their weights summing to one, each stepping no more
+// From every face to every other (the 24: the Mac's 18 and the six
+// meme faces) the two arts cross over, their weights summing to one, each stepping no more
 // than a slice of the shortest face window's ramp, the new one last; each
 // drawn ratio stays inside (0.75, 4/3) and moves its drawn size no further
 // than its control; a retarget keeps the controls' velocity, and a fifth art
@@ -366,6 +366,7 @@ static void test_interrupted_alert_signals_exactly_once() {
 static void test_face_and_props_move_without_jumps() {
   const F weightStep = q(.149), rampStep = q(.134);
   const int controls[] = {2, 4, 5};
+  TEST_ASSERT_EQUAL_INT(24, slime::kCanonical);
   for (int i = 0; i < slime::kCanonical * slime::kCanonical; ++i) {
     const int from = i / slime::kCanonical, to = i % slime::kCanonical;
     if (from == to) continue;
@@ -762,48 +763,69 @@ static void test_gel_clips_use_the_shared_mixer() {
     TEST_ASSERT_TRUE(audible);
   }
 }
-// The invite (render/gel/invite.h): the gel draws them; with none the body
-// is as it was; the palm and the lean are the pack's clips (render/gel/
-// moves.h), each up at the glass whole as it waits, the palm the right
-// hand open and flat on it, the lean's cheek a patch on it; the back,
-// drawn in code, comes up through the same glass; a late one's payoff
+// The invite (render/gel/invite.h): the gel draws them; every pose and
+// payoff is the pack's clip (render/gel/moves.h), nothing in code: the
+// palm and the lean each up at the glass whole as it waits, the palm the
+// right hand open and flat on it, the lean's cheek a patch on it; the back
+// turned half way round, away from the glass. The high five spins all the
+// way round and the sigh comes round from the back; a late one's payoff
 // waits for its turn round; the XP shows low only while a payoff that
 // earns plays.
 static void test_the_gel_draws_invites() {
   using rig::Channel;
   GelFace f;
   TEST_ASSERT_TRUE(f.drawsInvites());
-  const Surface s{502, 410, nullptr, 110};
-  PaintControls rest, c;
-  applyInvite(c, s, InviteShow{});
-  TEST_ASSERT_EQUAL_INT(rest.glass, c.glass);
-  TEST_ASSERT_EQUAL_INT(rest.faceX, c.faceX);
+  TEST_ASSERT_FALSE(inviteMove(InviteShow{}).on());
   for (InvitePose p : {InvitePose::kPalm, InvitePose::kLean, InvitePose::kBack}) {
     InviteShow v;
     v.phase = InviteShow::kPose, v.pose = p, v.ms = 2000;
     const MoveShow m = inviteMove(v);
-    TEST_ASSERT_EQUAL_INT(p != InvitePose::kBack, m.on());
+    TEST_ASSERT_TRUE(m.on());
     rig::Channels ch = rig::kRest;
     addMove(ch, m);
     PaintControls held;
-    applyInvite(held, s, v);
     applyRig(held, ch);
-    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack ? kBackGlass : 4096, held.glass);
-    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack, held.faceX > 0);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack ? 0 : 4096, held.glass);
+    TEST_ASSERT_EQUAL_INT(p == InvitePose::kBack ? -2048 : 0, held.turn);  // its back to you: half a turn, to its left
     TEST_ASSERT_EQUAL_INT(p == InvitePose::kLean, held.patch > 0);
     TEST_ASSERT_EQUAL_INT(p == InvitePose::kPalm ? 1000 : 0, ch[Channel::kHandRGlass]);
     TEST_ASSERT_EQUAL_INT(p == InvitePose::kPalm ? 1000 : 0, ch[Channel::kHandRShape]);
     TEST_ASSERT_FALSE(inviteSign(v).shows());
   }
-  // The miss and the high five have clips of their own; the sigh doesn't.
+  // Waiting with its back to you, it looks over its shoulder, its face
+  // part way back round, and turns its back again.
+  InviteShow back;
+  back.phase = InviteShow::kPose, back.pose = InvitePose::kBack;
+  const uint32_t in = inviteMove(back).clip->ms;
+  int nearest = -1000;
+  for (uint32_t ms = in; ms < in + 4000; ms += 50) {
+    back.ms = ms;
+    rig::Channels ch = rig::kRest;
+    addMove(ch, inviteMove(back));
+    nearest = std::max(nearest, int(ch[Channel::kTurn]));
+  }
+  TEST_ASSERT_TRUE(nearest < -200 && nearest > -300);
+  // The miss and the payoffs have clips of their own.
   InviteShow v;
   v.pose = InvitePose::kPalm, v.payoff = InvitePayoff::kHighFive, v.phase = InviteShow::kShrug;
   TEST_ASSERT_EQUAL_STRING("invite-palm-miss", inviteMove(v).clip->id);
   v.phase = InviteShow::kPayoff;
   TEST_ASSERT_EQUAL_STRING("invite-highfive", inviteMove(v).clip->id);
   TEST_ASSERT_EQUAL_INT(0, sinceHit(inviteMove(v)));  // the clap hits the glass as it starts
-  v.pose = InvitePose::kBack, v.payoff = InvitePayoff::kSigh;
-  TEST_ASSERT_FALSE(inviteMove(v).on());
+  v.ms = InviteShow::kPayoffMs;
+  rig::Channels spun = rig::kRest;
+  addMove(spun, inviteMove(v));
+  TEST_ASSERT_EQUAL_INT(1000, spun[Channel::kTurn]);  // the spin: all the way round
+  v.pose = InvitePose::kBack, v.payoff = InvitePayoff::kSigh, v.ms = 0;
+  TEST_ASSERT_EQUAL_STRING("invite-sigh", inviteMove(v).clip->id);
+  v.phase = InviteShow::kShrug;
+  TEST_ASSERT_EQUAL_STRING("invite-back-miss", inviteMove(v).clip->id);
+  for (InviteShow::Phase phase : {InviteShow::kPayoff, InviteShow::kShrug}) {
+    v.phase = phase, v.ms = phase == InviteShow::kPayoff ? InviteShow::kPayoffMs : InviteShow::kShrugMs;
+    rig::Channels round = rig::kRest;
+    addMove(round, inviteMove(v));
+    TEST_ASSERT_EQUAL_INT(-1000, round[Channel::kTurn]);  // round to you, on the way it turned
+  }
   InviteShow late;
   late.phase = InviteShow::kLate, late.pose = InvitePose::kPalm, late.payoff = InvitePayoff::kHighFive, late.xp = 3,
   late.ms = InviteShow::kTurnMs - 1;
@@ -816,6 +838,8 @@ static void test_the_gel_draws_invites() {
   TEST_ASSERT_EQUAL_INT(3, inviteSign(late).xp);
   late.xp = 0;
   TEST_ASSERT_FALSE(inviteSign(late).shows());
+  late.pose = InvitePose::kBack, late.payoff = InvitePayoff::kSigh, late.ms = 0;
+  TEST_ASSERT_EQUAL_STRING("invite-back-late", inviteMove(late).clip->id);
 }
 
 // The glass (render/gel/painter.h): the rig's glass brings the body up to
@@ -959,6 +983,104 @@ static void test_the_flop_plays_by_its_id() {
   TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandLGlass]);
   TEST_ASSERT_EQUAL_INT(1000, c[rig::Channel::kHandRGlass]);
   TEST_ASSERT_TRUE(c[rig::Channel::kPatch] > 0);
+}
+
+// Turning round (the rig's `turn`, render/gel/geometry.h's Projector::face): each
+// point of the face goes round the dome on its own, so the eye nearer the
+// rim narrows by itself while the other keeps its width, and one gone round
+// behind faces 0, which paintArt fades out whole (shownFacing); at its back
+// every feature is behind, and a whole turn draws as none.
+static void test_the_turn_narrows_each_eye_on_its_own() {
+  const Surface s{502, 410, nullptr, 110};
+  const auto& calm = slime::kProfile[slime::kCalm].face;
+  const int eyeX = scalar(calm[0]), eyeY = scalar(calm[1]), mouthY = scalar(calm[3]), half = 4096 * 4 / 100;
+  struct Eye {
+    int width, facing;
+  };
+  auto eye = [&](int turn, int side) {
+    PaintControls c;
+    c.turn = turn;
+    const Projector p(s, c);
+    int a = 0, b = 0, facing = 0;
+    const Point l = p.face(side * eyeX - half, eyeY, &a), r = p.face(side * eyeX + half, eyeY, &b);
+    p.face(side * eyeX, eyeY, &facing);
+    return Eye{std::abs(r.x - l.x), facing};
+  };
+  const Eye left = eye(0, -1), right = eye(0, 1);
+  TEST_ASSERT_INT_WITHIN(16, left.width, right.width);  // at rest, as drawn
+  TEST_ASSERT_TRUE(left.facing > 3500 && left.facing == right.facing);
+  // A sixth of a turn to its right: the right eye nears the rim, narrower
+  // by far (about an eighth of its width), the left, past the middle now,
+  // three quarters as wide.
+  const Eye nearL = eye(4096 / 6, -1), nearR = eye(4096 / 6, 1);
+  TEST_ASSERT_TRUE(nearR.width * 2 < nearL.width);
+  TEST_ASSERT_TRUE(nearL.width * 10 > left.width * 7);
+  TEST_ASSERT_TRUE(nearR.facing < nearL.facing && nearR.facing > kFacingGone);
+  // A quarter: the right eye has gone round behind, the left still shows.
+  TEST_ASSERT_EQUAL_INT(0, shownFacing(eye(1024, 1).facing));
+  TEST_ASSERT_EQUAL_INT(4096, shownFacing(eye(1024, -1).facing));
+  // Its back: nothing of the face shows.
+  PaintControls back;
+  back.turn = 2048;
+  const Projector p(s, back);
+  for (const int x : {-eyeX, 0, eyeX}) {
+    int facing = -1;
+    p.face(x, x ? eyeY : mouthY, &facing);
+    TEST_ASSERT_EQUAL_INT(0, shownFacing(facing));
+  }
+  // A whole turn is where it began.
+  PaintControls rest, whole;
+  whole.turn = 4096;
+  const Point a = Projector(s, rest).face(eyeX, eyeY), b = Projector(s, whole).face(eyeX, eyeY);
+  TEST_ASSERT_INT_WITHIN(16, a.x, b.x);
+  TEST_ASSERT_INT_WITHIN(16, a.y, b.y);
+  TEST_ASSERT_EQUAL_INT(0, shownFacing(kFacingGone));
+  TEST_ASSERT_EQUAL_INT(4096, shownFacing(kFacingShown));
+}
+
+// The meme faces (character.json's board_faces): six faces past the
+// pack's 18, each by its name on the wire, each with its own move,
+// face-<face>, a rig clip dbg.clip plays, idle's first take and played
+// once as a Moment shows the face. The silent scream's palms come up to
+// its cheeks; a face of the 18 plays no face move.
+static void test_the_meme_faces_and_their_moves() {
+  TEST_ASSERT_EQUAL_INT(24, slime::kCanonical);
+  TEST_ASSERT_EQUAL_INT(24, kMoodCount);
+  const char* faces[] = {"deadpan", "side_eye", "squint", "smug", "silent_scream", "faint"};
+  const char* moves[] = {"face-deadpan", "face-side-eye",      "face-squint",
+                         "face-smug",    "face-silent-scream", "face-faint"};
+  GelFace f;
+  linkkit::Rng rng;
+  f.reset(0, rng);
+  for (int i = 0; i < 6; ++i) {
+    Mood m;
+    TEST_ASSERT_TRUE_MESSAGE(parseMood(faces[i], m), faces[i]);
+    TEST_ASSERT_TRUE(int(m) >= 18);  // after the Mac's 18
+    const int p = expressionFromName(faces[i]);
+    TEST_ASSERT_TRUE(p >= 0 && p < slime::kCanonical);
+    TEST_ASSERT_EQUAL_STRING(moves[i], slime::kIdleMoves[p]);
+    TEST_ASSERT_NOT_NULL(rig::kRig.clip(moves[i]));
+    TEST_ASSERT_TRUE(f.playClip(moves[i], 16));
+  }
+  for (int p = 0; p < 18; ++p) TEST_ASSERT_EQUAL_INT(0, std::strncmp(slime::kIdleMoves[p], "idle-", 5));
+  // A Moment with the face: its move, once.
+  auto hands = [&](Mood mood) {
+    GelFace g;
+    g.reset(0, rng);
+    FaceSource src;
+    FaceContext c;
+    g.sync(src, c, 0);
+    src.anim = SceneState::kPoked, src.at = 100, src.mood = mood, c.borrowed = true;
+    int most = 0;
+    for (uint32_t t = 100; t <= 2000; t += 16) {
+      g.sync(src, c, t);
+      g.step(t, rng);
+      most = std::max(most, int(g.channels()[rig::Channel::kHandLSize]));
+    }
+    return most;
+  };
+  TEST_ASSERT_TRUE(hands(Mood::kSilentScream) > 600);
+  TEST_ASSERT_EQUAL_INT(0, hands(Mood::kSurprised));
 }
 
 // Each sound carries its own duck. A needs-you alert's
@@ -1726,6 +1848,7 @@ void test_each_motion_rule_off_gives_back_the_motion_before();
 void test_the_motion_layer_comes_to_rest();
 void test_hands_follow_and_change_owner_without_a_jump();
 void test_the_seven_idle_moves();
+void test_a_spin_never_unwinds();
 void test_the_finger_numbers();
 void test_acting_timing_and_springs();
 void test_setters_keep_springs_and_replay();
@@ -3253,6 +3376,8 @@ int main() {
   RUN_TEST(test_one_pair_of_hands);
   RUN_TEST(test_the_knock_is_one_move_that_climbs);
   RUN_TEST(test_the_flop_plays_by_its_id);
+  RUN_TEST(test_the_turn_narrows_each_eye_on_its_own);
+  RUN_TEST(test_the_meme_faces_and_their_moves);
   RUN_TEST(test_pick_is_pure_and_started_commits_it);
   RUN_TEST(test_a_power_on_seeds_the_engine_and_a_reset_restores_53);
   RUN_TEST(test_a_reset_lets_go_of_the_finger);
@@ -3342,6 +3467,7 @@ int main() {
   RUN_TEST(test_the_motion_layer_comes_to_rest);
   RUN_TEST(test_hands_follow_and_change_owner_without_a_jump);
   RUN_TEST(test_the_seven_idle_moves);
+  RUN_TEST(test_a_spin_never_unwinds);
   RUN_TEST(test_the_finger_numbers);
   RUN_TEST(test_acting_timing_and_springs);
   RUN_TEST(test_setters_keep_springs_and_replay);

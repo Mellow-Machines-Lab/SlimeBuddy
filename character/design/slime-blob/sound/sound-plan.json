@@ -314,6 +314,60 @@
       "pitch": 1.06,
       "gain": 0.1,
       "status": "planned-mood-tuning"
+    },
+    "deadpan": {
+      "family": "settled",
+      "activation": "low",
+      "intensity": "baseline",
+      "character": "Soft, airy little gel movements, with one tiny settling plop at most.",
+      "pitch": 0.94,
+      "gain": 0.12,
+      "status": "planned-mood-tuning"
+    },
+    "side_eye": {
+      "family": "frustration",
+      "activation": "medium",
+      "intensity": "mild",
+      "character": "Compact lower squish/firm contact; greater visual force, not a drum soundtrack or abusive noise.",
+      "pitch": 0.86,
+      "gain": 0.18,
+      "status": "planned-mood-tuning"
+    },
+    "squint": {
+      "family": "cognition",
+      "activation": "medium",
+      "intensity": "moderate",
+      "character": "Precise small contacts; one investigative wobble, typing when the desk really moves.",
+      "pitch": 1.01,
+      "gain": 0.13,
+      "status": "planned-mood-tuning"
+    },
+    "smug": {
+      "family": "confidence",
+      "activation": "medium",
+      "intensity": "moderate",
+      "character": "Firm clean contact and self-satisfied settling wobble; no spoken laugh or human voice.",
+      "pitch": 0.96,
+      "gain": 0.15,
+      "status": "planned-mood-tuning"
+    },
+    "silent_scream": {
+      "family": "surprise",
+      "activation": "high",
+      "intensity": "mild",
+      "character": "One tiny pop then silence; freeze face carries the beat.",
+      "pitch": 1.15,
+      "gain": 0.13,
+      "status": "planned-mood-tuning"
+    },
+    "faint": {
+      "family": "sadness",
+      "activation": "low",
+      "intensity": "strong",
+      "character": "Low soft squish; occasional tear plip at visible landing, no sob recording or constant water loop.",
+      "pitch": 0.9,
+      "gain": 0.1,
+      "status": "planned-mood-tuning"
     }
   }
 }

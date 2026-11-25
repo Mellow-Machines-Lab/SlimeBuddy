@@ -22,8 +22,9 @@ is as code, the one source of each:
 The faces and the lasting moods are the pack's own,
 `character/character.json`
 ([CHARACTER.md](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/characters/CHARACTER.md) §5):
-`moods` names the 18 faces, each of which needs an expression of its own
-here, and `lasting` the 7 moods and the faces each rests in. slimegen reads
+`moods` names the 18 faces the Mac picks from and `board_faces` the six
+meme faces only the board draws so far, each of which needs an expression
+of its own here, and `lasting` the 7 moods and the faces each rests in. slimegen reads
 it and never writes it. An expression whose id has a colon
 (`calm:asleep`, the board's sleeping face) is an alternate of the face
 before the colon, and no mood.
@@ -35,8 +36,10 @@ own and the face it borrows, which moods keep their own face through a
 gesture, the notice state's three takes' faces, the
 contact kinds' names (a rig clip's cues name them), the pastimes' takes
 by name, the lasting mood each face is of (`kMoodOf`: the body gives its
-beat only when that changes), each face's idle move (`kIdleMoves`: its
-lasting mood's rig clip, `rig/clips/idle-<mood>.json`, which must exist),
+beat only when that changes), each face's idle move (`kIdleMoves`: its own
+move, `rig/clips/face-<face>.json`, where it has one, the meme faces,
+else its lasting mood's rig clip, `rig/clips/idle-<mood>.json`, which must
+exist),
 and the sound
 effects, three takes of each sketch (`sound/sfx.js`) at 11,025 Hz.
 `slime_art.h` gives each art's groups (each eye, the mouth, the tears, the
@@ -51,8 +54,8 @@ pack's rig clip for it (`rig/clips/knock.json`), and lasts until the
 climbing knock (`knock-climb.json`) is over; `scenes.mjs`'s `knock` says
 whether the climb follows the knock at once (`'replaces'`) or after
 `followsMs` with nobody come (`'follows'`, 20 s), baked into `slime.h` as
-`kKnockClimbAtMs`. An invite's palm and lean are the pack's rig clips and
-its back is code (the gel's `render/gel/invite.h`), and take nothing from
+`kKnockClimbAtMs`. An invite's poses and payoffs are the pack's rig clips,
+the back's and the spin's on the rig's `turn`, and take nothing from
 here; nor do the keys' contacts sound, though the keyboard sketch is still
 baked into the bank.
 

@@ -484,6 +484,156 @@
         "lean": -0.0018409090909090908
       }
     },
+    "deadpan": {
+      "mood": "deadpan",
+      "label": "Deadpan",
+      "description": "A meme face: flat lids half down over solid dark eyes and a dead flat mouth; one slow blink sells it.",
+      "eyes": "flat-lids",
+      "mouth": "flat-line",
+      "blush": 0,
+      "family": "settled",
+      "tears": "none",
+      "art": {
+        "eyes": "flat-lids",
+        "mouth": "flat-line",
+        "eyeX": 0.29,
+        "eyeY": 0.035,
+        "mouthY": -0.1,
+        "cheeks": "none",
+        "note": "A meme face: flat lids half down over solid dark eyes and a dead flat mouth; one slow blink sells it."
+      },
+      "traits": {
+        "delayMs": 7.999999999999972,
+        "spacing": 0.9583333333333333,
+        "gain": 0.786,
+        "lean": 0.0002812499999999999
+      }
+    },
+    "side_eye": {
+      "mood": "side_eye",
+      "label": "Side-eye",
+      "description": "A meme face: the body stays, only the eyes go: both slid to one side under low flat lids, a short mouth aslant.",
+      "eyes": "side-glance",
+      "mouth": "side-line",
+      "blush": 0,
+      "family": "frustration",
+      "tears": "none",
+      "art": {
+        "eyes": "side-glance",
+        "mouth": "side-line",
+        "eyeX": 0.29,
+        "eyeY": 0.035,
+        "mouthY": -0.1,
+        "cheeks": "none",
+        "note": "A meme face: the body stays, only the eyes go: both slid to one side under low flat lids, a short mouth aslant."
+      },
+      "traits": {
+        "delayMs": -23.999999999999968,
+        "spacing": 0.88,
+        "gain": 0.864,
+        "lean": -0.006524999999999998
+      }
+    },
+    "squint": {
+      "mood": "squint",
+      "label": "Squint",
+      "description": "A meme face: it doubts you, eyes narrowed to slits top and bottom and a wobbly mouth; it comes up to the glass to look closer.",
+      "eyes": "slits",
+      "mouth": "wavy-line",
+      "blush": 0,
+      "family": "cognition",
+      "tears": "none",
+      "art": {
+        "eyes": "slits",
+        "mouth": "wavy-line",
+        "eyeX": 0.3,
+        "eyeY": 0.035,
+        "mouthY": -0.1,
+        "cheeks": "none",
+        "note": "A meme face: it doubts you, eyes narrowed to slits top and bottom and a wobbly mouth; it comes up to the glass to look closer."
+      },
+      "traits": {
+        "delayMs": -3.999999999999986,
+        "spacing": 0.9270833333333334,
+        "gain": 0.852,
+        "lean": 0.004312500000000001
+      }
+    },
+    "smug": {
+      "mood": "smug",
+      "label": "Smug",
+      "description": "A meme face: half lids tilted, a glance aside, a cat's w of a mouth and pink cheeks; a tilt of the whole body sells it.",
+      "eyes": "smug-half",
+      "mouth": "cat-w",
+      "blush": 0.3,
+      "family": "confidence",
+      "tears": "none",
+      "art": {
+        "eyes": "smug-half",
+        "mouth": "cat-w",
+        "eyeX": 0.31,
+        "eyeY": 0.035,
+        "mouthY": -0.09,
+        "cheeks": "blush",
+        "note": "A meme face: half lids tilted, a glance aside, a cat's w of a mouth and pink cheeks; a tilt of the whole body sells it."
+      },
+      "traits": {
+        "delayMs": 47.999999999999986,
+        "spacing": 1.0625,
+        "gain": 0.8959999999999999,
+        "lean": 0.0043125
+      }
+    },
+    "silent_scream": {
+      "mood": "silent_scream",
+      "label": "Silent scream",
+      "description": "A meme face: tall dark eyes and a tall open oval of a mouth, no sound; tall and shaking, hands on its cheeks.",
+      "eyes": "scream-eggs",
+      "mouth": "scream-o",
+      "blush": 0,
+      "family": "surprise",
+      "tears": "none",
+      "art": {
+        "eyes": "scream-eggs",
+        "mouth": "scream-o",
+        "eyeX": 0.3,
+        "eyeY": 0.05,
+        "mouthY": -0.11,
+        "cheeks": "none",
+        "note": "A meme face: tall dark eyes and a tall open oval of a mouth, no sound; tall and shaking, hands on its cheeks."
+      },
+      "traits": {
+        "delayMs": 3.999999999999986,
+        "spacing": 0.9479166666666666,
+        "gain": 1.016,
+        "lean": -0.0018409090909090908
+      }
+    },
+    "faint": {
+      "mood": "faint",
+      "label": "Faint",
+      "description": "A meme face: crosses for eyes and a wobbly mouth; it tips over and melts.",
+      "eyes": "x-eyes",
+      "mouth": "wavy-line",
+      "blush": 0,
+      "family": "sadness",
+      "tears": "none",
+      "art": {
+        "eyes": "x-eyes",
+        "mouth": "wavy-line",
+        "eyeX": 0.3,
+        "eyeY": 0.035,
+        "mouthY": -0.1,
+        "cheeks": "soft",
+        "note": "A meme face: crosses for eyes and a wobbly mouth; it tips over and melts."
+      },
+      "traits": {
+        "delayMs": 63.999999999999986,
+        "spacing": 1.1041666666666665,
+        "gain": 0.872,
+        "lean": -0.005931818181818181
+      }
+    },
     "calm:asleep": {
       "mood": "calm",
       "label": "Asleep",

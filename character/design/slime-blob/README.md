@@ -75,7 +75,7 @@ the initial 24-clip representative set before the matrix was filled out.
 
 ### Folder map
 
-- [MOODS.md](MOODS.md): how the 7 moods and the 18 faces fit; the table
+- [MOODS.md](MOODS.md): how the 7 moods and the 24 faces fit; the table
   itself is the pack's `character.json`.
 - [expressions.json](expressions.json): V3 art profiles, reference mapping,
   three gesture recipes per expression, the comedy gags idle plays
@@ -119,7 +119,8 @@ a time. A tool change alone neither resets it to calm nor escalates it.
 
 The pack's [character.json](../../character.json) is the one source: its
 `lasting` table has the 7 moods Boop settles into, each with its fade, and
-its `moods` the 18 faces the board draws. Read it there; nothing here
+its `moods` the 18 faces the Mac picks from, and its `board_faces` six
+more the board draws, the meme faces. Read it there; nothing here
 restates it. [MOODS.md](MOODS.md) says how the two fit.
 
 What the design holds for each face is in

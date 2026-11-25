@@ -206,6 +206,44 @@
       "face": "Rare. A lonely face: when CONTEXT says its wish is \"waiting 1 h\" or more, in hours, or NOW says you came back after 20 to 40 hours."
     }
   ],
+  "board_faces": [
+    {
+      "id": "deadpan",
+      "family": "settled",
+      "settles": "calm",
+      "face": "A deadpan face: flat lids and a flat mouth, unimpressed."
+    },
+    {
+      "id": "side_eye",
+      "family": "frustration",
+      "settles": "cross",
+      "face": "A side-eye: only the eyes go, to say it saw that."
+    },
+    {
+      "id": "squint",
+      "family": "cognition",
+      "settles": "focused",
+      "face": "A squint: it doubts you, and looks closer."
+    },
+    {
+      "id": "smug",
+      "family": "confidence",
+      "settles": "proud",
+      "face": "A smug face: half lids, a tilt and a cat's mouth: it knew it."
+    },
+    {
+      "id": "silent_scream",
+      "family": "surprise",
+      "settles": "cross",
+      "face": "A silent scream: tall, shaking, hands on its cheeks, and no sound."
+    },
+    {
+      "id": "faint",
+      "family": "sadness",
+      "settles": "sad",
+      "face": "A faint: too much, it tips over and melts."
+    }
+  ],
   "studio": [
     {
       "id": "board-gel",

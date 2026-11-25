@@ -29,10 +29,11 @@ struct PaintControls {
   // (anchorX, anchorY) and moved by (offsetX, offsetY), in sixteenths of a
   // pixel, its face and anchors with it.
   int scale = 4096, anchorX = 0, anchorY = 0, offsetX = 0, offsetY = 0;
-  // An invite's turn away (render/gel/invite.h): the face art squeezed to
-  // `faceW` (Q12) and moved `faceX` face units (Q12) across the dome, so it
-  // looks over its shoulder from near its rim.
-  int faceX = 0, faceW = 4096;
+  // The rig's turn (applyRig), Q12 of a whole turn, to its right for more
+  // than 0: each point of the face art goes round the dome that far, so
+  // the eye nearer its rim narrows on its own and goes behind it
+  // (Projector::face), its outline and its light where they were.
+  int turn = 0;
   // The face trailing the body (render/gel/lively.h's face rule): its art
   // drawn this far from where the body puts it, sixteenths of a panel px,
   // at the body's size.
@@ -100,7 +101,7 @@ constexpr int kRigGaze = 205, kRigMouthOpen = 300;
 // body unit, never into the floor: the whole dome rises), x (canvas px,
 // the whole dome sideways, off the screen if far enough), reach and melt,
 // the lids, shut as far as the more shut eye, and the eyes' size and
-// where they look; and the glass and its patch. The mouth is paint's, the
+// where they look; the glass and its patch; and the turn. The mouth is paint's, the
 // hands render/gel/hands.h's. At rest, none moves.
 void applyRig(PaintControls& c, const rig::Channels& rig);
 class Engine;
@@ -120,6 +121,12 @@ void paint(Surface&, const Engine&, bool mouthOpen = false, int dy = 0, uint32_t
            uint32_t t = 0, const PastimeShow* pastimes = nullptr, const DrawerPose* squeeze = nullptr,
            int duck = 0, const Stream* stream = nullptr, uint32_t now = 0, const CardShow* held = nullptr);
 void paintArt(Surface&, const Engine&, const PaintControls&, bool mouthOpen, rig::Anchors* anchors = nullptr);
+// Turned, a path of the art is drawn whole while its outline faces the
+// camera at least kFacingShown on average (Q12 of straight at it,
+// Projector::face), fading to none at kFacingGone, round at the dome's rim.
+constexpr int kFacingGone = 400, kFacingShown = 1000;
+// How much of it shows at that (Q12).
+int shownFacing(int facing);
 // The most room a cross-fading group of the art has taken (kCrossingBytes).
 extern int crossingPeak;
 // The desk's paws are where a pastime puts them (render/gel/pastimes.h),
