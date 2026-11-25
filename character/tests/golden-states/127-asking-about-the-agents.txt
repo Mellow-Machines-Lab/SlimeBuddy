@@ -6,7 +6,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -21,6 +22,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't
@@ -187,7 +190,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -202,6 +206,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't
@@ -384,7 +390,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -399,6 +406,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't
@@ -544,7 +553,7 @@ just now: You said to Boop: "did the tests pass?"
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 just now: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 Boop has been happy for under a minute.
 
 NOW (14:06)
@@ -568,7 +577,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 1 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 1 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 Boop has been happy for 1 min.
@@ -594,7 +603,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 2 min ago: You said to Boop: "so, is it finished?"
@@ -623,7 +632,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 3 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 2 min ago: You said to Boop: "so, is it finished?"
@@ -654,7 +663,7 @@ HISTORY (oldest first; indented lines add to the line above)
   Boop had a proud moment (medium), replying yes, holding up a sign: "yep!", and said "Mm-hm! Yep".
 4 min ago: claude's tests passed on "landing" after failing.
   Boop's mood changed: cross → happy.
-  Boop had a happy moment (medium), and said "Passed".
+  Boop had a happy moment (medium), and said "Cleared".
 4 min ago: claude finished turn 1 on "landing": done, a very long turn, 2 tool calls, after a failed check, just after the fix Boop already reacted to.
   Boop had a happy moment (small), playing a success.
 3 min ago: You said to Boop: "so, is it finished?"
@@ -677,7 +686,8 @@ anything.
 On its own, Boop shows what it's doing, names a push on a sign, answers
 touches and alerts when an agent needs the person. You decide whether
 its mood moves, and whether it has a moment: its emotion. What its body
-does, how big the moment is and what it says follow by themselves.
+does and how big the moment is follow by themselves; when it speaks,
+you pick which of the words offered it says.
 How to choose:
 - Judge by PERSONALITY and MOOD: who Boop is right now. MEMORY and
   CONTEXT are background to NOW, never news of their own, but they
@@ -692,6 +702,8 @@ How to choose:
   mood. Fading isn't yours: a mood settles by itself after a while, and
   HISTORY says so when it has.
 - When NOW moves the mood, react with the new mood's face.
+- When Boop speaks, pick the words Boop would say at this moment, in
+  its mood: what NOW calls for, not what it said last.
 - A touch never cheers a sad or cross MOOD's face.
 - When NOW says a push went through or failed and Boop's sign says so,
   the sign already shows, and no finish goes with it. It alone doesn't

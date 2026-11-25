@@ -248,7 +248,10 @@ ramps and springs can, and no jolt at an event. By file:
   missed, then a late stroke turning it round into a sigh, and a tap past
   the window a poke; `invite-cut.jsonl`: needs you and a newer Moment
   ending one; `missed-high-five.jsonl`: the palm coming and waiting, then
-  looking at its palm, lowering it, shrugging and back), the knock
+  looking at its palm, lowering it, shrugging and back;
+  `behind-a-finish.jsonl`: a busy board, then a finish and the low Moment
+  queued behind it with the Mac's ttls, the finish, the low sign and the
+  invite's pose all playing in turn), the knock
   (`knock.jsonl`: each step of the climb: the knock, the look round for
   you, louder, both fists, its forehead on the glass and slid down), the
   flop (`flop.jsonl`, by `dbg.clip`: holding its breath, flat on the glass,

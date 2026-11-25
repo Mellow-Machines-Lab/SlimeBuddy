@@ -2,6 +2,7 @@
 #include "render/gel/hands.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 
 #include "render/font.h"
