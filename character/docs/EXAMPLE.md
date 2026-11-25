@@ -1,6 +1,6 @@
 # Boop: harness example, end to end
 
-Updated 2026-11-24. One turn of failing tests, from the raw events to
+Updated 2026-11-25. One turn of failing tests, from the raw events to
 what Boop does: the view events, the state and questions Jev gets, its
 answers, and what the outputs did. How it works is in the code; this
 file only shows it.
@@ -13,7 +13,9 @@ below are copied from that run's log, and the passes' times are Jev's.
 Since then Jev is asked less: the move and the size became the rules',
 and on 2026-11-24 `say` went too, so what Boop says is the skits' (the
 engine's characters/CHARACTER.md §8). The `say` answers below are that
-day's.
+day's. So is the prompt's head: TALK was a steering file then (Talk is a
+setting in code now, the engine's characters/CHARACTER.md §7), and MEMORY
+and CONTEXT came after.
 The state is left out of the `pass` lines (`"state":"…"`).
 
 The eval has no device: its fake one answers each reaction `done` at
@@ -80,10 +82,9 @@ when it changes, so this pass shares the one written before the 14:00
 pass. HISTORY and NOW are the pass line's `state`. The guide and
 PERSONALITY are the steering files as they are
 ([steering/guide.md](../steering/guide.md),
-[steering/personality/boop.md](../steering/personality/boop.md)), so
-they're left out here; MOOD is calm's file and TALK normal's
-([steering/talk/normal.md](../steering/talk/normal.md)), then HISTORY
-and NOW:
+[steering/personality.md](../steering/personality.md)), so
+they're left out here; MOOD is calm's file and TALK normal's (that
+day's `steering/talk/normal.md`, gone since), then HISTORY and NOW:
 
 ```
 MOOD

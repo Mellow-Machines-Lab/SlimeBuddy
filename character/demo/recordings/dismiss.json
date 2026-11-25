@@ -6,43 +6,43 @@
       "line": "{\"t\":\"state\",\"base\":\"asleep\",\"mood\":\"calm\",\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 0,
+      "at": 0.002,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.009,
+      "at": 1.067,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 1.013,
+      "at": 1.068,
       "cause": {
         "kind": "prompt",
         "text": "You ask Claude: “Set up the local database”"
       }
     },
     {
-      "at": 1.334,
-      "effect": "Boop makes a curious face and says “Steady”",
-      "line": "{\"t\":\"do\",\"id\":932531910,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{\"take\":\"phase1.word.work.steady__curious__contained\"},\"mood\":\"curious\",\"loops\":1}}"
+      "at": 1.387,
+      "effect": "Boop makes a curious face",
+      "line": "{\"t\":\"do\",\"id\":74259710,\"name\":\"react\",\"play\":\"next\",\"ttl\":5000,\"args\":{\"reason\":\"you asked claude\",\"say\":{},\"mood\":\"curious\",\"loops\":1}}"
     },
     {
-      "at": 2.404,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"brew install\"]]}"
+      "at": 2.454,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"installing packages\"]]}"
     },
     {
-      "at": 2.618,
+      "at": 2.66,
       "effect": "Boop shows that it needs you",
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1862736845,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1646750609,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 2.619,
+      "at": 2.66,
       "cause": {
         "kind": "needs_you",
         "text": "Claude asks to install Postgres, and waits for you"
       }
     },
     {
-      "at": 5.817,
+      "at": 5.737,
       "cause": {
         "kind": "hold",
         "text": "You hold a finger on the needs-you screen: not now"
@@ -51,61 +51,58 @@
       "input": "hold"
     },
     {
-      "at": 7.097,
+      "at": 6.989,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.004,
+      "at": 12.749,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 13.498,
-      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"run\"]]}"
+      "at": 13.001,
+      "line": "{\"t\":\"state\",\"base\":\"working\",\"act\":\"terminal\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"],\"calls\":[[0,1,\"running run\"]]}"
     },
     {
-      "at": 13.712,
+      "at": 13.21,
       "effect": "Boop shows that it needs you",
-      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1862736846,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
+      "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"attn\":{\"agent\":\"claude\",\"project\":\"not-now\",\"more\":0,\"id\":1646750610,\"kind\":\"approve\"},\"busy\":0,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 19.996,
+      "at": 19.236,
       "line": "{\"t\":\"state\",\"base\":\"working\",\"mood\":\"calm\",\"busy\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 19.997,
+      "at": 19.237,
       "cause": {
         "kind": "needs_you",
         "text": "Claude asks to create the database, and you allow it"
       }
     },
     {
-      "at": 21.646,
+      "at": 20.884,
       "line": "{\"t\":\"state\",\"base\":\"idle\",\"mood\":\"calm\",\"busy\":0,\"idle\":1,\"vol\":6,\"when\":[\"day\"]}"
     },
     {
-      "at": 21.646,
-      "line": "{\"t\":\"do\",\"id\":932531911,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
+      "at": 20.885,
+      "line": "{\"t\":\"do\",\"id\":74259711,\"name\":\"call\",\"play\":\"next\",\"ttl\":1500,\"args\":{\"a\":0,\"w\":\"done\",\"as\":\"gather\"}}"
     },
     {
-      "at": 21.648,
+      "at": 20.886,
       "cause": {
         "kind": "done",
         "text": "Claude finishes"
       }
     },
     {
-      "at": 21.968,
-      "effect": "Boop celebrates and says “Phew...”",
-      "line": "{\"t\":\"do\",\"id\":932531912,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"who\":{\"agent\":\"claude\",\"thread\":\"not-now\"},\"say\":{\"take\":\"new.d13\"},\"mood\":\"pleased\",\"loops\":1}}"
+      "at": 21.205,
+      "effect": "Boop celebrates",
+      "line": "{\"t\":\"do\",\"id\":74259712,\"name\":\"task_complete\",\"play\":\"next\",\"ttl\":15000,\"args\":{\"outcome\":\"success\",\"turn\":0,\"xp\":5,\"who\":{\"agent\":\"claude\",\"thread\":\"not-now\"},\"say\":{},\"mood\":\"pleased\",\"loops\":1}}"
     }
   ],
   "face": "gel",
-  "length": 28,
+  "length": 27.24,
   "name": "Boop",
-  "script": "4b35838aea51d46f3a35ac21b22f3de021c0e7a793fdf59902941569e1a76067",
-  "takes": [
-    "phase1.word.work.steady__curious__contained",
-    "new.d13"
-  ],
+  "script": "3b51e9a9c3735b59d593059b9a4b6b49a36663a5c368aa253044e8ba5180efce",
+  "takes": [],
   "version": 1
 }

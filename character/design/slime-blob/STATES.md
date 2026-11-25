@@ -16,7 +16,7 @@ remaining matrix was implemented and exercised.
 | Shared scene | States | Distinction to preserve |
 | --- | --- | --- |
 | Quiet rest | no_app, asleep | Lost app vs no sessions; both quiet, retained mood suppressed visually; only asleep snores now and then |
-| Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn, a doze or a sneeze (excited has zoomies, the low moods a long yawn) |
+| Idle | idle | Available but not working; face/microgesture carries mood, then now and then a yawn or a sneeze (excited has zoomies) |
 | Listen | listening | Actual mic-on, not every input event |
 | Start | starting, wake_up, notice | starting perks up with no card, whatever its ctx (the Mac sends none); wake_up (you back after a long break) stretches with no card; notice (you named it) looks up at you, a gag under a borrowed face, with no card |
 | Desk | working, analyzing, terminal, waiting; tool_use, which the desk shows as working; and planning, searching, testing and delegating, which the Mac no longer sends | One computer, four activities, each a pose of the whole body: typing (working, tool_use, planning), looking (analyzing, searching), running (terminal, testing, delegating), waiting (CONTINUITY.md, The four activities). A helper lands in the work stream |
@@ -32,21 +32,21 @@ are compositions, not isolated exported assets.
 `task_complete` expands each variant for both success and failure. Do not count these as new
 moods/states or choose an outcome at random. A sad success is a small
 tearful-but-valid achievement; a happy failure is still visibly failure,
-never a misleading trophy. A success comes in four sizes, by how long it's
+never a misleading trophy. A success comes in three sizes, by how long it's
 held and how long its turn ran, from Little Win to the whole screen
 ([CONTINUITY.md](CONTINUITY.md), Finishes): its variations go on past its
 takes, one for each finish above small.
 
 Comedy adds takes, never states or moods ([CONTINUITY.md](CONTINUITY.md),
-Comedy). Idle's variations 4 to 6 are its gags (yawn and settle, doze off
-and snap awake, sneeze and shake it off), after an expression's own gag:
-excited's zoomies, the low moods' long yawn. Asleep's fourth is a snore
+Comedy). Idle's yawn and settle and its sneeze and shake it off are the
+face's pastimes, beside an expression's own gag: excited's zoomies.
+Asleep's fourth is a snore
 (only it sounds). A small successful finish's fourth is Little Win's
 trophy, then hiccups; failure keeps its three. Proud's lifted success
 shows a gift, a small bug beside its trophy. Each joins its bag's second
 round, so a fresh state opens as it always has.
 
-Occasions add takes too ([CONTINUITY.md](CONTINUITY.md), Occasions):
+Tagged pastimes add takes too ([CONTINUITY.md](CONTINUITY.md), Tagged pastimes):
 rows of the face's pastimes that need a tag, or asleep a long wait, which
 idle plays as gags and the typing desk and asleep as takes, the newest
 while they fit.
@@ -126,7 +126,7 @@ not replay an old alert. See [sound/README.md](sound/README.md).
 
 ## Production integration is not flat `state` JSON
 
-The 25 state IDs correspond to existing visuals, but on the wire the
+The 22 state IDs correspond to existing visuals, but on the wire the
 repo sends base/act/attn and named do requests, not a single state field.
 Follow LinkKit's [spec](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/linkkit/SPEC.md) and its
 turn. `no_app` is device timeout, needs_you is attn, activities are act,

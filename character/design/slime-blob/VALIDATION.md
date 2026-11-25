@@ -9,7 +9,7 @@ repository root:
 ```sh
 node character/tools/slimegen/slimegen.mjs --check
 make -C internal fw-test
-internal/tools/boopctl sim --face gel
+internal/tools/boopctl sim
 make -C internal mirror
 ```
 
@@ -213,11 +213,11 @@ ramps and springs can, and no jolt at an event. By file:
 
 ## The board's frames
 
-- `internal/tools/boopctl sim --face gel` plays the pack's
+- `internal/tools/boopctl sim` plays the pack's
   `tests/scenarios-gel/` and compares their pinned shots with its
   `tests/golden-gel/`. The set is frozen small on purpose while the
   gel's pictures are redesigned: each scenario pins one or two shots,
-  the ones that say the most about it (`"pin": true` on the step), 69 in
+  the ones that say the most about it (`"pin": true` on the step), 73 in
   all, and only those have a golden; the engine's `test_pins` holds it
   to that. The other shots are still taken, for a person to look at,
   `boopctl mirror` and `boopctl run`, and every `expect` still runs.
@@ -232,7 +232,7 @@ ramps and springs can, and no jolt at an event. By file:
   up, a finish with words and a caption, and the needs-you card for each
   kind and for none), the
   comedy (`comedy.jsonl`: the yawn and the sneeze's wind-up, asked for, the
-  long yawn, the zoomies at either edge, a snore, the hiccups and the
+  zoomies at either edge, a snore, the hiccups and the
   gift), the gestures (`gestures.jsonl`: BOOT handing you an agent, a stroke, a boop
   on the nose, a shake and peekaboo, each by the board's own input, its
   variation expected), the tagged pastimes (`occasions.jsonl`:

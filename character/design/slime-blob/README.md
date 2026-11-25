@@ -9,8 +9,8 @@ Mac's mirror of the board run too ([CHARACTER.md](https://github.com/Mellow-Mach
 engine's tables. The JavaScript reference engine it was first written in,
 with its WebGL preview, traces and checks, retired once the engine was the
 C++ one alone; git keeps it. This is a separate, code-rendered character
-series, not a replacement of the shipping pixel animation bank (the CYD
-keeps that).
+series; the pixel animation bank it once stood beside went with Pixel and
+the CYD, both archived.
 
 ## Start here
 
@@ -48,7 +48,7 @@ never over a file. After editing this design, bake it and check it:
 ```sh
 node character/tools/slimegen/slimegen.mjs
 make -C internal fw-test
-internal/tools/boopctl sim --face gel
+internal/tools/boopctl sim
 ```
 
 None of these launches Boop, installs agent hooks, touches Bluetooth or
@@ -62,7 +62,7 @@ in [VALIDATION.md](VALIDATION.md).
 | Body/material | The gel dome, sampled with its blue glow and studio material into a mesh the board deforms and projects every frame (slimegen's `mesh.mjs`) | Art review on the panel |
 | Baseline motion | Accepted V1 springs and timing, their numbers held by `test_gel` | Any change is a named motion revision |
 | Faces | V3 candidate faces for every canonical mood, plus two face alternates (slimegen's `painter.mjs`, baked as vector paths) | Owner review of cuteness/readability at target size |
-| Acting | Three authored gesture recipes per expression; idle comedy: a yawn, a doze and a sneeze for every mood, a long yawn for the low moods, zoomies for excited | Owner review of the comedy on the board |
+| Acting | Three authored gesture recipes per expression; idle comedy: a yawn and a sneeze for every mood, zoomies for excited | Owner review of the comedy on the board |
 | Drag | Bounded local surface pull, face follows body, release wobble | Real touchscreen QA |
 | Mood changes | The face crosses over, and the body gives one of three small beats at a change of mood | Owner review on the board |
 | Activity/state | All 22 states in eight scene families, one set of takes for each state with the mood's timing, persistent desk/cards and factual contexts/outcomes; asleep's snore, a success's hiccups, proud's gift; a gag and a borrowed face for each of the board's ten gestures and the notice's three takes; occasions for idle, typing and sleep | Physical board measurements/review |
@@ -87,7 +87,7 @@ the initial 24-clip representative set before the matrix was filled out.
 - [STATES.md](STATES.md): the 22 states in their eight scene families, and
   how the host's events reach them.
 - [CONTINUITY.md](CONTINUITY.md): the persistent actor, layer ownership,
-  the scenes, comedy, gestures, occasions, the mood beat and the rules of what is
+  the scenes, comedy, gestures, tagged pastimes, the mood beat and the rules of what is
   drawn, each with the C++ that keeps it.
 - [VALIDATION.md](VALIDATION.md): what checks each rule.
 - [sound/sound-plan.json](sound/sound-plan.json), [sound/README.md](sound/README.md)
@@ -140,7 +140,7 @@ The body gives a small beat when the mood changes
 
 Preserve every existing semantic state ID and its event meaning. Simplify
 **visual scenes**, not event coverage: [STATES.md](STATES.md) groups the IDs into
-nine reusable scene families. Most work states share one persistent
+eight reusable scene families. Most work states share one persistent
 computer/keyboard, with small overlays and state-specific behavior.
 There is no need for hundreds of unrelated professions or props.
 
@@ -211,7 +211,7 @@ but speech selection/recording is outside this package.
 ## 6. Current repository integration — read before changing production
 
 This package is **nonshipping design data** under `character/design/`, in Boop's pack.
-CYD ships [boop-sound-bank-v4](https://github.com/Mellow-Machines-Lab/PixelBuddy/blob/main/character/design/boop-sound-bank-v4/README.md); AMOLED ships the generated native gel catalogs.
+The AMOLED ships the generated native gel catalogs.
 The moods and faces Boop runs are the pack's
 `character.json`, which `character/tools/slimegen` reads for the faces'
 names and the mood each is of.
@@ -227,7 +227,7 @@ The repository evolved after the earlier transcript examples:
 - [LinkKit](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/linkkit/README.md) owns state/do/hello/ev and the
   device's turn/lifecycle. Do not bypass it or put rendering into Jev.
 - Boop's `app/BoopKit/Core/Activity.swift` classifies work; `Core` owns
-  factual priority; `Outputs/MoodOutput.swift` and `MoodGraph.swift` own
+  factual priority; `Outputs/MoodOutput.swift` and `Brains/MoodMap.swift` own
   Boop's emotional choices; `Outputs/MomentOutput.swift` owns reactions.
 - `StateSnapshot.swift` and `DeviceLink/BoopDevice.swift` express Boop's
   vocabulary over LinkKit. Existing `state.base` is asleep/idle/working;
@@ -236,8 +236,7 @@ The repository evolved after the earlier transcript examples:
 - `firmware/src/render/` and `firmware/src/app/` render the selected board
   face; the gel's is `character/firmware/src/render/gel/`, whose
   `face.cpp` turns what the board's Behaviour follows into the engine's
-  facts, mood and moments. `facegen`/`sfxgen` build the pixel bank;
-  `slimegen` builds the gel catalogs and authored vector face paths. The
+  facts, mood and moments. `slimegen` builds the gel catalogs and authored vector face paths. The
   native renderer uses an integer mesh and rasterizer, with no GPU.
 
 The old log's `ts/type/phase` shape is accepted as legacy; current logs
@@ -246,13 +245,12 @@ include talk, presence and separate needs_you. Use the current code and
 [LinkKit's spec](https://github.com/Mellow-Machines-Lab/buddygotchi/blob/main/linkkit/SPEC.md) as contracts, not an old
 copied schema. Coverage of both forms is in [STATES.md](STATES.md).
 
-Gel firmware recognizes every canonical mood; pixel retains its compatibility
-vocabulary. Sending a new
+Gel firmware recognizes every canonical mood. Sending a new
 ID such as `focused` to old firmware does **not** enable its face;
 unknown moods fall back. The Mac maps outgoing IDs using `hello.face`.
 
-The owner chose one face per board: pixel on the CYD, integer gel on the
-AMOLED, behind a shared face interface. Never stream frames over the
+The owner chose one face per board: integer gel on the AMOLED, behind a
+shared face interface (pixel on the CYD is archived). Never stream frames over the
 control link or claim ESP32 performance without actual board measurements
 (`boopctl ping`'s `draw_us`).
 

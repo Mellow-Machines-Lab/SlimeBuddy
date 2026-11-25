@@ -68,8 +68,8 @@ The Mac's popover and onboarding show the board's own firmware: the pack's
 a change here that changes what the board draws builds it again, in the
 same commit.
 
-After `firmware/tools/pio.sh run -e native`, `internal/tools/boopctl sim
---face gel` checks native RGB565 screenshots against the gel goldens (one
+After `firmware/tools/pio.sh run -e native`, `internal/tools/boopctl sim`
+checks native RGB565 screenshots against the gel goldens (one
 or two pinned shots a scenario, a set frozen small on purpose until the
 gel's redesign settles; design/slime-blob/VALIDATION.md), and
 `make -C internal fw-test` runs `test_gel`, the engine's rules. These
